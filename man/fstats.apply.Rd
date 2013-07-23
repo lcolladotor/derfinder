@@ -2,8 +2,8 @@
 \alias{fstats.apply}
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame.}
 \usage{
-  fstats.apply(i, data, chunksize, lastloop, numrow,
-    scalefac, mod, mod0)
+  fstats.apply(i, data, comparison, chunksize, lastloop,
+    numrow, scalefac, mod, mod0)
 }
 \arguments{
   \item{i}{The chunk number identifier.}
@@ -11,6 +11,10 @@
   \item{data}{The DataFrame containing the coverage
   information. Normally stored in
   \code{coverageInfo$coverage} from \link{makeCoverage}.}
+
+  \item{comparison}{Whether you are comparing if there is
+  \code{expression} (intercept vs no intercept) or
+  \code{group differences} (model with group vs no group).}
 
   \item{chunksize}{How many rows of \code{data} should be
   processed at a time?}
