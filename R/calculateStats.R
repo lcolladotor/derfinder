@@ -112,8 +112,13 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 		}
 	}	
 	
+	## Log2 transform and scale
+	for(i in seq_len(numcol)) {
+		data[[i]] <- log2(data[[i]] + scalefac)
+	}
+	
 	## Fit a model to each row (chunk) of database:
-	fstats.output <- mclapply(0:lastloop, fstats.apply, data=data, comparison=comparison, chunksize=chunksize, lastloop=lastloop, numrow=numrow, scalefac=scalefac, mod=mod, mod0=mod0, mc.cores=mc.cores)
+	fstats.output <- mclapply(0:lastloop, fstats.apply, data=data,chunksize=chunksize, lastloop=lastloop, numrow=numrow, mod=mod, mod0=mod0, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0
 	fstats.output <- do.call(c, fstats.output)
