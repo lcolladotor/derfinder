@@ -1,0 +1,104 @@
+\name{calculateStats}
+\alias{calculateStats}
+\title{Merge the coverage information for a group of samples.}
+\usage{
+  calculateStats(coverageInfo, group,
+    comparison = "group differences", colsubset = NULL,
+    adjustvars = NULL, cutoff = 5, scalefac = 32,
+    nonzero = FALSE, chunksize = 1e+05,
+    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+}
+\arguments{
+  \item{coverageInfo}{A list containing a DataFrame
+  --\code{$coverage}-- with the coverage data and a logical
+  Rle --\code{$position}-- with the positions that passed
+  the cutoff. This object is generated using
+  \link{makeCoverage}.}
+
+  \item{group}{A factor vector specifying the sample
+  groups. It's length should match the number of columns
+  used from \code{coverageInfo$coverage}.}
+
+  \item{comparison}{Whether you are comparing if there is
+  \code{expression} (intercept vs no intercept) or
+  \code{group differences} (model with group vs no group).}
+
+  \item{colsubset}{Optional vector of column indices of
+  \code{coverageInfo$coverage} that denote samples you wish
+  to include in analysis.}
+
+  \item{adjustvars}{Optional matrix of adjustment variables
+  (e.g. measured confounders, output from SVA, etc.) to use
+  in fitting linear models to each nucleotide. These
+  variables have to be specified by sample and the number
+  of rows must match the number of columns used.}
+
+  \item{cutoff}{Per base pair, at least one sample has to
+  have coverage greater than \code{cutoff} to be included
+  in the result.}
+
+  \item{scalefac}{A log transformation is used on the count
+  tables, so zero counts present a problem.  What number
+  should we add to the entire matrix before running the
+  models?}
+
+  \item{nonzero}{If \code{TRUE}, use the median of only the
+  nonzero counts as the library size adjustment.}
+
+  \item{chunksize}{How many rows of
+  \code{coverageInfo$coverage} should be processed at a
+  time?}
+
+  \item{mc.cores}{The number of cores to use, i.e. at most
+  how many child processes will be run simultaneously. The
+  option is initialized from environment variable MC_CORES
+  if set. Must be at least one, and parallelization
+  requires at least two cores. (Taken from mclapply in the
+  parallel package).}
+
+  \item{verbose}{If \code{TRUE} basic status updates will
+  be printed along the way.}
+}
+\value{
+  A list with three objects. The first one,
+  \code{coverage}, is a DataFrame object where each column
+  represents a sample. Note that if \code{colsubset} is not
+  \code{NULL} the number of columns will be less than those
+  in \code{coverageInfo$coverage}. The number of rows
+  depends on the number of base pairs that passed the
+  cutoff and the information stored is the coverage at that
+  given base. Note that \link{filterData} is re-applied if
+  \code{colsubset} is not \code{NULL} and could thus lead
+  to fewer rows compared to \code{coverageInfo$coverage}.
+  The second one, \code{position}, is a logical Rle with
+  the positions of the chromosome that passed the cutoff.
+  The third one, \code{fstats}, is a numeric Rle with the
+  F-statistics per base pair that passed the cutoff.
+}
+\description{
+  For a group of samples this function reads the coverage
+  information for a specific chromosome directly from the
+  BAM files. It then merges them into a DataFrame and
+  removes the bases that do not pass the cutoff.
+}
+\examples{
+## Choose the adjusting variables and define all the parameters for calculateStats()
+coverageInfo <- brainData
+group <- brainInfo$outcome
+colsubset <- NULL
+adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
+cutoff <- 5
+scalefac <- 32
+nonzero <- TRUE
+chunksize <- 1e+03
+mc.cores <- 1
+verbose <- TRUE
+## Run the function
+stats <- calculateStats(coverageInfo, group, comparison="group differences", colsubset, adjustvars, cutoff, scalefac, nonzero, chunksize, mc.cores, verbose)
+names(stats)
+stats
+}
+\author{
+  Leonardo Collado-Torres
+}
+

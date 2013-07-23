@@ -1,0 +1,33 @@
+Package: derfinder2
+Type: Package
+Title: Fast differential expression analysis of RNA-seq data at base-pair
+    resolution
+Version: 0.0.1
+Date: 2013-07-18
+Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
+    = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
+    = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
+    "andrew.jaffe@libd.org"), person("Jeffrey", "Leek", role = c("aut", "ths"),
+    email = "jtleek@gmail.com"))
+Depends:
+    R(>= 3.0.1)
+Imports:
+    IRanges
+Suggests:
+    Rsamtools,
+    BSgenome.Hsapiens.UCSC.hg19,
+    BSgenome.Mmusculus.UCSC.mm10,
+    parallel
+Description: Fast differential expression analysis of RNA-seq data at base-pair
+    resolution
+License: What license is it under?
+LazyData: true
+URL: https://github.com/lcolladotor/derfinder2
+Collate:
+    'derfinder2-package.R'
+    'makeCoverage.R'
+    'filterData.R'
+    'brainData-data.R'
+    'calculateStats.R'
+    'fstats.R'
+    'brainInfo-data.R'

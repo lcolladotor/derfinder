@@ -1,0 +1,6 @@
+export(calculateStats)
+export(filterData)
+export(fstats)
+export(fstats.apply)
+export(makeCoverage)
+import(IRanges)
