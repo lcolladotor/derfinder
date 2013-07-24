@@ -20,6 +20,10 @@
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path readBamGappedAlignments
+#' @importFrom IRanges IRanges RangesList
+#' @importMethodsFrom GenomicRanges coverage
+#' @importMethodsFrom Rsamtools names
 #' @examples
 #' datadir <- system.file("extdata", "brainData", package="derfinder2")
 #' ## Reading the data and filtering it is quite fast.
@@ -31,9 +35,6 @@
 #' print(object.size(data), units="Kb")
 
 loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cutoff=5, chrlen=NULL, bamterm="accepted_hits.bam", output=NULL, verbose=TRUE) {
-	## Load required pkgs
-	require("Rsamtools")
-	
 	## Determine the full paths to the sample directories
 	if(!is.null(sampledirs)) {
 		if(!is.null(datadir)) {

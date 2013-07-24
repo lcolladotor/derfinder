@@ -23,7 +23,8 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @import IRanges
+#' @importFrom parallel mclapply
+#' @importMethodsFrom IRanges ncol nrow sapply median "[[" "[[<-" c
 #' @examples
 #' ## Choose the adjusting variables and define all the parameters for calculateStats()
 #' coverageInfo <- brainData
@@ -46,9 +47,6 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 	if(!comparison %in% c("expression", "group differences")) {
 		stop("Invalid value for 'comparison'.")
 	}
-	
-	## Load required pkgs
-	require("parallel")
 	
 	## Subset the DataFrame to use only the columns of interest
 	if(!is.null(colsubset)) {

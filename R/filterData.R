@@ -16,9 +16,11 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @importFrom IRanges DataFrame
+#' @importMethodsFrom IRanges "[" "[<-" colnames "colnames<-" lapply
 #' @seealso \link{loadCoverage}
 #' @examples
-#' require("IRanges")
+#' library("IRanges")
 #' x <- Rle(round(runif(1e4, max=10)))
 #' y <- Rle(round(runif(1e4, max=10)))
 #' z <- Rle(round(runif(1e4, max=10)))

@@ -14,7 +14,8 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @import IRanges
+#' @importFrom IRanges Rle
+#' @importMethodsFrom IRanges as.data.frame as.matrix "["
 #' @seealso \link{calculateStats}, \link{fstats}.
 #' @examples
 #' ## Create the model matrices

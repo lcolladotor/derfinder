@@ -12,15 +12,18 @@ Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
 Depends:
     R(>= 3.0.1)
 Imports:
-    IRanges
-Suggests:
+    IRanges,
+    GenomicRanges,
     Rsamtools,
-    parallel
+    parallel,
+    bumphunter (>= 1.1.10)
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-License: What license is it under?
+License: Artistic-2.0
 LazyData: true
 URL: https://github.com/lcolladotor/derfinder2
+biocViews: DifferentialExpression, HighThroughputSequencing, RNAseq,
+    MultipleComparisons, Software
 Collate:
     'derfinder2-package.R'
     'filterData.R'

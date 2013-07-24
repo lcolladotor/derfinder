@@ -41,7 +41,7 @@
   removes the bases that do not pass the cutoff.
 }
 \examples{
-require("IRanges")
+library("IRanges")
 x <- Rle(round(runif(1e4, max=10)))
 y <- Rle(round(runif(1e4, max=10)))
 z <- Rle(round(runif(1e4, max=10)))
