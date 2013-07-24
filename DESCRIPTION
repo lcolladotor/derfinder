@@ -15,8 +15,6 @@ Imports:
     IRanges
 Suggests:
     Rsamtools,
-    BSgenome.Hsapiens.UCSC.hg19,
-    BSgenome.Mmusculus.UCSC.mm10,
     parallel
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
@@ -25,10 +23,10 @@ LazyData: true
 URL: https://github.com/lcolladotor/derfinder2
 Collate:
     'derfinder2-package.R'
-    'makeCoverage.R'
     'filterData.R'
     'brainData-data.R'
     'calculateStats.R'
     'fstats.R'
     'brainInfo-data.R'
     'fstats.apply.R'
+    'loadCoverage.R'

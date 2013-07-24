@@ -2,7 +2,7 @@
 #'
 #' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff.
 #' 
-#' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{makeCoverage}.
+#' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
 #' @param group A factor vector specifying the sample groups. It's length should match the number of columns used from \code{coverageInfo$coverage}.
 #' @param comparison Whether you are comparing if there is \code{expression} (intercept vs no intercept) or \code{group differences} (model with group vs no group). 
 #' @param colsubset Optional vector of column indices of \code{coverageInfo$coverage} that denote samples you wish to include in analysis. 
@@ -14,7 +14,12 @@
 #' @param mc.cores The number of cores to use, i.e. at most how many child processes will be run simultaneously. The option is initialized from environment variable MC_CORES if set. Must be at least one, and parallelization requires at least two cores. (Taken from mclapply in the parallel package).
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return A list with three objects. The first one, \code{coverage}, is a DataFrame object where each column represents a sample. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The number of rows depends on the number of base pairs that passed the cutoff and the information stored is the coverage at that given base. Note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. The second one, \code{position}, is a logical Rle with the positions of the chromosome that passed the cutoff. The third one, \code{fstats}, is a numeric Rle with the F-statistics per base pair that passed the cutoff.
+#' @return A list with three components.
+#' \describe{
+#' \item{coverage }{ is a DataFrame object where each column represents a sample. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The number of rows depends on the number of base pairs that passed the cutoff and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
+#' \item{position }{  is a logical Rle with the positions of the chromosome that passed the cutoff.}
+#' \item{fstats }{ is a numeric Rle with the F-statistics per base pair that passed the cutoff.}
+#' }
 #'
 #' @author Leonardo Collado-Torres
 #' @export
@@ -80,7 +85,7 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 		colmeds <- sapply(data, median)
 	}
 	## Info for the user
-	if(verbose) print(paste0("These are the column medians used: ", paste(colmeds, collapse=", "), "."))
+	if(verbose) message(paste0("calculateStats: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
 
 	## Create model matrices
 	if(!is.null(adjustvars)){
@@ -118,6 +123,7 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 	}
 	
 	## Fit a model to each row (chunk) of database:
+	if(verbose) message("calculateStats: calculating the F-statistics")
 	fstats.output <- mclapply(0:lastloop, fstats.apply, data=data,chunksize=chunksize, lastloop=lastloop, numrow=numrow, mod=mod, mod0=mod0, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0

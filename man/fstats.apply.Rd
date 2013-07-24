@@ -10,7 +10,7 @@
 
   \item{data}{The DataFrame containing the coverage
   information. Normally stored in
-  \code{coverageInfo$coverage} from \link{makeCoverage}.}
+  \code{coverageInfo$coverage} from \link{loadCoverage}.}
 
   \item{chunksize}{How many rows of \code{data} should be
   processed at a time?}

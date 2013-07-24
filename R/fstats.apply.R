@@ -3,7 +3,7 @@
 #' Extract chunks from a DataFrame, apply the scaling factor, log2 transform and then get the F-statistics. This is a helper function for \link{calculateStats}.
 #'
 #' @param i The chunk number identifier.
-#' @param data The DataFrame containing the coverage information. Normally stored in \code{coverageInfo$coverage} from \link{makeCoverage}.
+#' @param data The DataFrame containing the coverage information. Normally stored in \code{coverageInfo$coverage} from \link{loadCoverage}.
 #' @param chunksize How many rows of \code{data} should be processed at a time?
 #' @param lastloop The last chunk number.
 #' @param numrow Total number of rows in \code{data}.

@@ -13,7 +13,7 @@
   --\code{$coverage}-- with the coverage data and a logical
   Rle --\code{$position}-- with the positions that passed
   the cutoff. This object is generated using
-  \link{makeCoverage}.}
+  \link{loadCoverage}.}
 
   \item{group}{A factor vector specifying the sample
   groups. It's length should match the number of columns
@@ -60,20 +60,20 @@
   be printed along the way.}
 }
 \value{
-  A list with three objects. The first one,
-  \code{coverage}, is a DataFrame object where each column
-  represents a sample. Note that if \code{colsubset} is not
-  \code{NULL} the number of columns will be less than those
-  in \code{coverageInfo$coverage}. The number of rows
-  depends on the number of base pairs that passed the
-  cutoff and the information stored is the coverage at that
-  given base. Note that \link{filterData} is re-applied if
-  \code{colsubset} is not \code{NULL} and could thus lead
-  to fewer rows compared to \code{coverageInfo$coverage}.
-  The second one, \code{position}, is a logical Rle with
-  the positions of the chromosome that passed the cutoff.
-  The third one, \code{fstats}, is a numeric Rle with the
-  F-statistics per base pair that passed the cutoff.
+  A list with three components. \describe{ \item{coverage
+  }{ is a DataFrame object where each column represents a
+  sample. Note that if \code{colsubset} is not \code{NULL}
+  the number of columns will be less than those in
+  \code{coverageInfo$coverage}. The number of rows depends
+  on the number of base pairs that passed the cutoff and
+  the information stored is the coverage at that given
+  base. Further note that \link{filterData} is re-applied
+  if \code{colsubset} is not \code{NULL} and could thus
+  lead to fewer rows compared to
+  \code{coverageInfo$coverage}. } \item{position }{ is a
+  logical Rle with the positions of the chromosome that
+  passed the cutoff.} \item{fstats }{ is a numeric Rle with
+  the F-statistics per base pair that passed the cutoff.} }
 }
 \description{
   For a group of samples this function reads the coverage

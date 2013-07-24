@@ -26,13 +26,13 @@
   rows are remaining out of the original ones.}
 }
 \value{
-  A list with two objects. The first one, \code{coverage},
+  A list with two components. \describe{ \item{coverage }{
   is a DataFrame object where each column represents a
   sample. The number of rows depends on the number of base
   pairs that passed the cutoff and the information stored
-  is the coverage at that given base. The second one,
-  \code{position}, is a logical Rle with the positions of
-  the chromosome that passed the cutoff.
+  is the coverage at that given base.} \item{position }{ is
+  a logical Rle with the positions of the chromosome that
+  passed the cutoff.} }
 }
 \description{
   For a group of samples this function reads the coverage
@@ -57,6 +57,6 @@ identical(sum(filt2$pos), nrow(filt2$cov))
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{makeCoverage}
+  \link{loadCoverage}
 }
 

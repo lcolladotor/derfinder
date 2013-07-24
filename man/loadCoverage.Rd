@@ -1,10 +1,9 @@
-\name{makeCoverage}
-\alias{makeCoverage}
-\title{Merge the coverage information for a group of samples.}
+\name{loadCoverage}
+\alias{loadCoverage}
+\title{Load the coverage information from a group of BAM files.}
 \usage{
-  makeCoverage(chr, datadir = NULL, sampledirs = NULL,
+  loadCoverage(chr, datadir = NULL, sampledirs = NULL,
     samplepatt = NULL, cutoff = 5, chrlen = NULL,
-    org = "BSgenome.Hsapiens.UCSC.hg19",
     bamterm = "accepted_hits.bam", output = NULL,
     verbose = TRUE)
 }
@@ -31,12 +30,6 @@
 
   \item{chrlen}{The chromosome length in base pairs.}
 
-  \item{org}{If \code{chrlen} is set to \code{NULL}, then
-  the chromosome length is deduced using the BSgenome
-  annotation packages for either Human or Mouse. This is
-  just meant as an easy to use option for a handful of
-  genomes.}
-
   \item{bamterm}{Name of the BAM file used in each sample.
   By default it is set to \code{accepted_hits.bam} since
   that is the automatic name generated when aligning with
@@ -54,13 +47,13 @@
   be printed along the way.}
 }
 \value{
-  A list with two objects. The first one, \code{coverage},
+  A list with two components. \describe{ \item{coverage }{
   is a DataFrame object where each column represents a
   sample. The number of rows depends on the number of base
   pairs that passed the cutoff and the information stored
-  is the coverage at that given base. The second one,
-  \code{position}, is a logical Rle with the positions of
-  the chromosome that passed the cutoff.
+  is the coverage at that given base.} \item{position }{ is
+  a logical Rle with the positions of the chromosome that
+  passed the cutoff.} }
 }
 \description{
   For a group of samples this function reads the coverage
@@ -71,7 +64,7 @@
 \examples{
 datadir <- system.file("extdata", "brainData", package="derfinder2")
 ## Reading the data and filtering it is quite fast.
-system.time(data <- makeCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL))
+system.time(data <- loadCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL))
 ## Shorten the column names
 colnames(data$coverage) <- gsub("_accepted_hits.bam", "", colnames(data$coverage))
 data
@@ -79,6 +72,6 @@ data
 print(object.size(data), units="Kb")
 }
 \author{
-  Leonardo Collado-Torres
+  Leonardo Collado-Torres, Andrew Jaffe
 }
 

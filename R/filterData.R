@@ -8,11 +8,15 @@
 #' @param colnames Specifies the column names to be used for the results DataFrame. If \code{NULL}, no names are assigned.
 #' @param verbose If \code{TRUE} it will report how many rows are remaining out of the original ones.
 #'
-#' @return A list with two objects. The first one, \code{coverage}, is a DataFrame object where each column represents a sample. The number of rows depends on the number of base pairs that passed the cutoff and the information stored is the coverage at that given base. The second one, \code{position}, is a logical Rle with the positions of the chromosome that passed the cutoff.
+#' @return A list with two components. 
+#' \describe{
+#' \item{coverage }{ is a DataFrame object where each column represents a sample. The number of rows depends on the number of base pairs that passed the cutoff and the information stored is the coverage at that given base.}
+#' \item{position }{  is a logical Rle with the positions of the chromosome that passed the cutoff.}
+#' }
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @seealso \link{makeCoverage}
+#' @seealso \link{loadCoverage}
 #' @examples
 #' require("IRanges")
 #' x <- Rle(round(runif(1e4, max=10)))
@@ -62,7 +66,7 @@ filterData <- function(data, cutoff, index=NULL, colnames=NULL, verbose=TRUE) {
 	
 	## Info for the user
 	if(verbose) {
-		print(paste("Originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
+		message(paste("filterData: originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
 	}
 	
 	## Make the final resulting object.
