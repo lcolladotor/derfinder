@@ -60,7 +60,9 @@ loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cu
 	
 	## Tell R which are the BAM files
 	if(!is.null(bamterm)) {
-		dirs <- file.path(dirs, bamterm)
+		tmp <- file.path(dirs, bamterm)
+		names(tmp) <- names(dirs)
+		dirs <- tmp
 	}
 	## Do the indexes exist?
 	bai <- paste0(dirs, ".bai")
