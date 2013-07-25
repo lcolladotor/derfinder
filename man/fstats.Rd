@@ -21,7 +21,8 @@
 \description{
   A function for calculating F-statistics on the rows of
   dat, comparing the models mod (alternative) and mod0
-  (null).
+  (null). This is a helper function for
+  \link{calculateStats}.
 }
 \examples{
 ## Generate random data

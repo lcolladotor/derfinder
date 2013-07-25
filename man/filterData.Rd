@@ -1,6 +1,6 @@
 \name{filterData}
 \alias{filterData}
-\title{Filter the positions of interest.}
+\title{Filter the positions of interest}
 \usage{
   filterData(data, cutoff, index = NULL, colnames = NULL,
     verbose = TRUE)
@@ -38,7 +38,9 @@
   For a group of samples this function reads the coverage
   information for a specific chromosome directly from the
   BAM files. It then merges them into a DataFrame and
-  removes the bases that do not pass the cutoff.
+  removes the bases that do not pass the cutoff. This is a
+  helper function for \link{loadCoverage} and
+  \code{calculateStats}.
 }
 \examples{
 library("IRanges")

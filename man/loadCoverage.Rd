@@ -1,6 +1,6 @@
 \name{loadCoverage}
 \alias{loadCoverage}
-\title{Load the coverage information from a group of BAM files.}
+\title{Load the coverage information from a group of BAM files}
 \usage{
   loadCoverage(chr, datadir = NULL, sampledirs = NULL,
     samplepatt = NULL, cutoff = 5, chrlen = NULL,

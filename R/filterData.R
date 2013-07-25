@@ -1,6 +1,6 @@
-#' Filter the positions of interest.
+#' Filter the positions of interest
 #'
-#' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff.
+#' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff. This is a helper function for \link{loadCoverage} and \code{calculateStats}.
 #' 
 #' @param data Either a list of Rle objects or a DataFrame with the coverage information.
 #' @param cutoff Per base pair, at least one sample has to have coverage greater than \code{cutoff} to be included in the result.

@@ -1,4 +1,4 @@
-#' Load the coverage information from a group of BAM files.
+#' Load the coverage information from a group of BAM files
 #'
 #' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff.
 #' 

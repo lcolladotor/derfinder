@@ -1,6 +1,6 @@
 \name{calculateStats}
 \alias{calculateStats}
-\title{Merge the coverage information for a group of samples.}
+\title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
   calculateStats(coverageInfo, group,
     comparison = "group differences", colsubset = NULL,
@@ -76,10 +76,10 @@
   the F-statistics per base pair that passed the cutoff.} }
 }
 \description{
-  For a group of samples this function reads the coverage
-  information for a specific chromosome directly from the
-  BAM files. It then merges them into a DataFrame and
-  removes the bases that do not pass the cutoff.
+  After defining the models of interest and adjusting for
+  confounders, this function extracts the data from loaded
+  BAM files (\link{loadCoverage}) and calculates the
+  F-statistics.
 }
 \examples{
 ## Choose the adjusting variables and define all the parameters for calculateStats()

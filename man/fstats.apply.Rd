@@ -1,6 +1,6 @@
 \name{fstats.apply}
 \alias{fstats.apply}
-\title{Calculate F-statistics per base by extracting chunks from a DataFrame.}
+\title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
   fstats.apply(i, data, chunksize, lastloop, numrow, mod,
     mod0)
@@ -19,12 +19,9 @@
 
   \item{numrow}{Total number of rows in \code{data}.}
 
-  \item{mod}{The design matrix for the alternative model.
-  Should be m by p where p is the number of covariates
-  (normally also including the intercept).}
+  \item{mod}{This argument is passed to \link{fstats}.}
 
-  \item{mod0}{The deisgn matrix for the null model. Should
-  be m by p_0.}
+  \item{mod0}{This argument is passed to \link{fstats}.}
 }
 \value{
   A Rle with the F-statistics per base for the chunk in

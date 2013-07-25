@@ -2,8 +2,8 @@ Package: derfinder2
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.1
-Date: 2013-07-18
+Version: 0.0.2
+Date: 2013-07-25
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -17,6 +17,10 @@ Imports:
     Rsamtools,
     parallel,
     bumphunter (>= 1.1.10)
+Suggests:
+    IRanges,
+    bumphunter (>= 1.1.10),
+    microbenchmark
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
 License: Artistic-2.0
@@ -33,3 +37,6 @@ Collate:
     'brainInfo-data.R'
     'fstats.apply.R'
     'loadCoverage.R'
+    'findRegions.R'
+    'getSegmentsRle.R'
+    'clusterMakerRle.R'

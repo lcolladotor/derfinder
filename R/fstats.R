@@ -1,6 +1,6 @@
 #' Calculate F-statistics per base
 #'
-#' A function for calculating F-statistics on the rows of dat, comparing the models mod (alternative) and mod0 (null).
+#' A function for calculating F-statistics on the rows of dat, comparing the models mod (alternative) and mod0 (null). This is a helper function for \link{calculateStats}.
 #' 
 #' @param dat A numeric matrix of size n by m. There should be n bases of the genome and m samples.
 #' @param mod The design matrix for the alternative model. Should be m by p where p is the number of covariates (normally also including the intercept).

@@ -1,6 +1,6 @@
-#' Merge the coverage information for a group of samples.
+#' Calculate F-statistics at base pair resolution from a loaded BAM files
 #'
-#' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff.
+#' After defining the models of interest and adjusting for confounders, this function extracts the data from loaded BAM files (\link{loadCoverage}) and calculates the F-statistics.
 #' 
 #' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
 #' @param group A factor vector specifying the sample groups. It's length should match the number of columns used from \code{coverageInfo$coverage}.

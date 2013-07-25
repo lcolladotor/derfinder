@@ -1,4 +1,4 @@
-#' Calculate F-statistics per base by extracting chunks from a DataFrame.
+#' Calculate F-statistics per base by extracting chunks from a DataFrame
 #'
 #' Extract chunks from a DataFrame, apply the scaling factor, log2 transform and then get the F-statistics. This is a helper function for \link{calculateStats}.
 #'
@@ -7,8 +7,8 @@
 #' @param chunksize How many rows of \code{data} should be processed at a time?
 #' @param lastloop The last chunk number.
 #' @param numrow Total number of rows in \code{data}.
-#' @param mod The design matrix for the alternative model. Should be m by p where p is the number of covariates (normally also including the intercept).
-#' @param mod0 The deisgn matrix for the null model. Should be m by p_0.
+#' @param mod This argument is passed to \link{fstats}.
+#' @param mod0 This argument is passed to \link{fstats}.
 #'
 #' @return A Rle with the F-statistics per base for the chunk in question.
 #'
