@@ -106,7 +106,7 @@ loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cu
 	## Save if output is specified
 	if(!is.null(output)) {
 		## Rename the object to a name that will make more sense later
-		varname <- paste0("chr", chr, "DF")
+		varname <- paste0("chr", chr, "CovInfo")
 		assign(varname, res)
 		
 		## Automatic output name
