@@ -39,10 +39,12 @@
   be printed along the way.}
 }
 \value{
-  A GRanges with metadata columns given by
-  \link{findRegions} and \describe{ \item{pvalues }{
-  p-value of the region calculated via permutations of the
-  samples.} }
+  A list with two components. The first one
+  --\code{$regions}-- is a GRanges with metadata columns
+  given by \link{findRegions} and \describe{ \item{pvalues
+  }{ p-value of the region calculated via permutations of
+  the samples.} } The second one --\code{$nullstats}-- is a
+  numeric Rle with the null statistics.
 }
 \description{
   First, this function clusters the genomic positions and
@@ -61,15 +63,47 @@
 group <- brainInfo$outcome
 adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
 statsInfo <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+
+## Determine a cutoff from the F-distribution.
+## This step is very important and you should consider using quantiles from the observed F statistics
+n <- dim(statsInfo$coverageSplit[[1]])[2]
+df1 <- dim(statsInfo$mod)[2]
+df0 <- dim(statsInfo$mod0)[2]
+cutoff <- qf(0.95, df1-df0, n-df1)
+
 ## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1)
+regsWithP <- calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 regsWithP
-hist(regsWithP$pvalues)
+
+## Histogram of the original F statistics
+f.ori <- as.numeric(statsInfo$fstats)
+hist(f.ori, main="Distribution original F-stats", freq=FALSE)
+
+## Histogram of the null F statistics
+f.null <- as.numeric(regsWithP$nullstats)
+hist(f.null, main="Distribution null F-stats by region", freq=FALSE)
+
+## Histogram of the original p-values
+hist(pf(f.ori, df1-df0, n-df1), main="Distribution original p-values", freq=FALSE)
+
+## Histogram of the null p-values
+hist(pf(f.null, df1-df0, n-df1), main="Distribution null p-values by region", freq=FALSE)
+
+## By region
+
+## Histogram of the original F statistics by region
+hist(regsWithP$regions$value, main="Distribution original F-stats by region", freq=FALSE)
+
+## Histogram of the original p-values by region
+hist(pf(regsWithP$regions$value, df1-df0, n-df1), main="Distribution original p-values by region", freq=FALSE)
+
+## Histogram of the p-values by region
+hist(regsWithP$regions$pvalues, main="Distribution permutted p-values by region", freq=FALSE)
 
 \dontrun{
 ## Annotate the results
 library("bumphunter")
-annotation <- annotateNearest(regsWithP, "hg19")
+annotation <- annotateNearest(regsWithP$regions, "hg19")
 head(annotation)
 
 ## Compare speed between 1 and 4 cores (must have them!)
