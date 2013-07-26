@@ -2,7 +2,7 @@ Package: derfinder2
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.2
+Version: 0.0.3
 Date: 2013-07-25
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
@@ -40,3 +40,4 @@ Collate:
     'findRegions.R'
     'getSegmentsRle.R'
     'clusterMakerRle.R'
+    'calculatePvalues.R'

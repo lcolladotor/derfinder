@@ -2,9 +2,9 @@
 \alias{findRegions}
 \title{Find non-zero regions in a Rle}
 \usage{
-  findRegions(statsInfo, chr, y = statsInfo$fstats,
-    oneTable = TRUE, maxGap = 300L,
-    cutoff = quantile(abs(statsInfo$fstats), 0.99),
+  findRegions(statsInfo, chr, fstats = statsInfo$fstats,
+    cluster = NULL, y = fstats, oneTable = TRUE,
+    maxGap = 300L, cutoff = quantile(abs(fstats), 0.99),
     verbose = TRUE)
 }
 \arguments{
@@ -15,6 +15,13 @@
 
   \item{chr}{A single element character vector specifying
   the chromosome name.}
+
+  \item{fstats}{A numeric Rle with the F-statistics.
+  Normally stored in \code{statsInfo$fstats}.}
+
+  \item{cluster}{The clusters of locations that are to be
+  analyzed together, normally given by
+  \link{clusterMakerRle}.}
 
   \item{y}{A numeric Rle of the same length as
   \code{statsInfo$fstats} containing values to be averaged
@@ -50,7 +57,8 @@
 \description{
   Find genomic regions for which a numeric vector is above
   (or below) predefined thresholds. This is similar to
-  \link[bumphunter]{regionFinder}.
+  \link[bumphunter]{regionFinder} and is a helper function
+  for \link{calculatePvalues}.
 }
 \details{
   \link[bumphunter]{regionFinder} adapted to Rle world.
@@ -60,6 +68,7 @@
 group <- brainInfo$outcome
 adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
 stats <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+## Find the regions
 regs <- findRegions(stats, "chr21", verbose=TRUE)
 regs
 
@@ -86,6 +95,6 @@ annotation
   Leonardo Collado-Torres
 }
 \seealso{
-  \link[bumphunter]{regionFinder}
+  \link[bumphunter]{regionFinder}, \link{calculatePvalues}
 }
 

@@ -1,6 +1,6 @@
 #' Calculate F-statistics per base by extracting chunks from a DataFrame
 #'
-#' Extract chunks from a DataFrame, apply the scaling factor, log2 transform and then get the F-statistics. This is a helper function for \link{calculateStats}.
+#' Extract chunks from a DataFrame, apply the scaling factor, log2 transform and then get the F-statistics. This is a helper function for \link{calculateStats} and \link{calculatePvalues}.
 #'
 #' @param i The chunk number identifier.
 #' @param data The DataFrame containing the coverage information. Normally stored in \code{coverageInfo$coverage} from \link{loadCoverage}.

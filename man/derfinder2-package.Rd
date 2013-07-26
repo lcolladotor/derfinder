@@ -8,8 +8,9 @@
   pipeline involves loading the sample BAM files using
   \link{loadCoverage}, calculating the F-statistics
   according (while adjusting for some confounders) using
-  \link{calculateStats}, finding the regions of interest
-  using \link{findRegions}, and finally annotating them
+  \link{calculateStats}, calculating the p-values and
+  finding the regions of interest using
+  \link{calculatePvalues}, and finally annotating them
   using \link[bumphunter]{annotateNearest} from the
   bumphunter package.
 }

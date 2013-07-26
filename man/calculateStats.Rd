@@ -5,7 +5,7 @@
   calculateStats(coverageInfo, group,
     comparison = "group differences", colsubset = NULL,
     adjustvars = NULL, cutoff = 5, scalefac = 32,
-    nonzero = FALSE, chunksize = 1e+05,
+    nonzero = FALSE, chunksize = 5e+06,
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
@@ -49,31 +49,30 @@
   \code{coverageInfo$coverage} should be processed at a
   time?}
 
-  \item{mc.cores}{The number of cores to use, i.e. at most
-  how many child processes will be run simultaneously. The
-  option is initialized from environment variable MC_CORES
-  if set. Must be at least one, and parallelization
-  requires at least two cores. (Taken from mclapply in the
-  parallel package).}
+  \item{mc.cores}{This argument is passed to
+  \link[parallel]{mclapply}) to run \link{fstats.apply}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
 \value{
-  A list with three components. \describe{ \item{coverage
-  }{ is a DataFrame object where each column represents a
-  sample. Note that if \code{colsubset} is not \code{NULL}
-  the number of columns will be less than those in
-  \code{coverageInfo$coverage}. The number of rows depends
-  on the number of base pairs that passed the cutoff and
-  the information stored is the coverage at that given
-  base. Further note that \link{filterData} is re-applied
-  if \code{colsubset} is not \code{NULL} and could thus
-  lead to fewer rows compared to
+  A list with five components. \describe{ \item{coverage }{
+  is a DataFrame object where each column represents a
+  sample. The coverage information is scaled and log2
+  transformed. Note that if \code{colsubset} is not
+  \code{NULL} the number of columns will be less than those
+  in \code{coverageInfo$coverage}. The number of rows
+  depends on the number of base pairs that passed the
+  cutoff and the information stored is the coverage at that
+  given base. Further note that \link{filterData} is
+  re-applied if \code{colsubset} is not \code{NULL} and
+  could thus lead to fewer rows compared to
   \code{coverageInfo$coverage}. } \item{position }{ is a
   logical Rle with the positions of the chromosome that
   passed the cutoff.} \item{fstats }{ is a numeric Rle with
-  the F-statistics per base pair that passed the cutoff.} }
+  the F-statistics per base pair that passed the cutoff.}
+  \item{mod }{ The alternative model matrix.} \item{mod0 }{
+  The null model matrix.} }
 }
 \description{
   After defining the models of interest and adjusting for

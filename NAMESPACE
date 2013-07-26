@@ -1,3 +1,4 @@
+export(calculatePvalues)
 export(calculateStats)
 export(clusterMakerRle)
 export(filterData)

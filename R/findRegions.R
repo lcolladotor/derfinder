@@ -1,9 +1,11 @@
 #' Find non-zero regions in a Rle
 #'
-#' Find genomic regions for which a numeric vector is above (or below) predefined thresholds. This is similar to \link[bumphunter]{regionFinder}.
+#' Find genomic regions for which a numeric vector is above (or below) predefined thresholds. This is similar to \link[bumphunter]{regionFinder} and is a helper function for \link{calculatePvalues}.
 #' 
 #' @param statsInfo A list with \code{$position} and \code{$fstats} components where the first one is a logical Rle of genomic positions and the second one is a numeric Rle. 
 #' @param chr A single element character vector specifying the chromosome name.
+#' @param fstats A numeric Rle with the F-statistics. Normally stored in \code{statsInfo$fstats}.
+#' @param cluster The clusters of locations that are to be analyzed together, normally given by \link{clusterMakerRle}.
 #' @param y A numeric Rle of the same length as \code{statsInfo$fstats} containing values to be averaged for the region. 
 #' @param oneTable If \code{TRUE} only one results GRanges is returned. Otherwise, a GRangesList with two components is returned: one for the regions with positive values and one for the negative values.
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
@@ -21,7 +23,7 @@
 #' }
 #'
 #' @details \link[bumphunter]{regionFinder} adapted to Rle world.
-#' @seealso \link[bumphunter]{regionFinder}
+#' @seealso \link[bumphunter]{regionFinder}, \link{calculatePvalues}
 #'
 #' @author Leonardo Collado-Torres
 #' @export
@@ -34,6 +36,7 @@
 #' group <- brainInfo$outcome
 #' adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
 #' stats <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+#' ## Find the regions
 #' regs <- findRegions(stats, "chr21", verbose=TRUE)
 #' regs
 #'
@@ -56,11 +59,14 @@
 #' annotation
 #' }
 
-findRegions <- function(statsInfo, chr, y = statsInfo$fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(abs(statsInfo$fstats), 0.99), verbose = TRUE) {
+findRegions <- function(statsInfo, chr, fstats=statsInfo$fstats, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), verbose = TRUE) {
+	stopifnot(length(intersect(names(statsInfo), c("position"))) == 1)
 	
 	## Identify the clusters
-	if(verbose) message("findRegions: identifying clusters")
-	cluster <- clusterMakerRle(statsInfo$position, maxGap)
+	if(is.null(cluster)) {
+		if(verbose) message("findRegions: identifying clusters")
+		cluster <- clusterMakerRle(statsInfo$position, maxGap)
+	}	
 	
 	## Find the segments
 	Indexes <- getSegmentsRle(x = statsInfo$fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
@@ -90,8 +96,8 @@ findRegions <- function(statsInfo, chr, y = statsInfo$fstats, oneTable = TRUE, m
 			area = abs(sum(view)),
             indexStart = start(Indexes[[i]]), 
             indexEnd = end(Indexes[[i]]),
-			cluster = clus,
-			clusterL = runLength(cluster)[clus]
+			cluster = Rle(as.integer(clus)),
+			clusterL = Rle(runLength(cluster)[clus])
 		)
     }
 	## Fix names and format

@@ -30,7 +30,8 @@
 \description{
   Extract chunks from a DataFrame, apply the scaling
   factor, log2 transform and then get the F-statistics.
-  This is a helper function for \link{calculateStats}.
+  This is a helper function for \link{calculateStats} and
+  \link{calculatePvalues}.
 }
 \examples{
 ## Create the model matrices
