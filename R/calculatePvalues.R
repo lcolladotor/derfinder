@@ -77,7 +77,7 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
 		}
-		idx.permute <- sample(seq_len(ncol(statsInfo$coverage)))
+		idx.permute <- sample(seq_len(ncol(statsInfo$coverageSplit)[[1]]))
 	
 		### !!! I don't think that the model matrices have to get permuted too. Otherwise the results should be the same (except for some tiny numerical differences).
 		## New model matrices
