@@ -141,7 +141,7 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 	## Calculate pvalues
 	if(verbose) message(paste(date(), "calculatePvalues: calculating the p-values"))
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
-	pvals <- (pvals + 1) / length(nullstats)
+	pvals <- (pvals + 1) / (length(nullstats) + 1)
 	
 	## Finish up
 	regs$pvalues <- pvals
