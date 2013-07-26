@@ -68,6 +68,7 @@
 group <- brainInfo$outcome
 adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
 stats <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+
 ## Find the regions
 regs <- findRegions(stats, "chr21", verbose=TRUE)
 regs
@@ -93,6 +94,11 @@ annotation
 }
 \author{
   Leonardo Collado-Torres
+}
+\references{
+  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
+  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
+  Hunter. R package version 1.1.10.
 }
 \seealso{
   \link[bumphunter]{regionFinder}, \link{calculatePvalues}

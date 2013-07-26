@@ -16,6 +16,7 @@
 #' @return A list of IRanges, one for the up segments, one for the down segments, and if \code{zero} is set to \code{TRUE} then one for the zero segments.
 #'
 #' @seealso \link[bumphunter]{getSegments}, \link{clusterMakerRle}, \link{findRegions}
+#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom IRanges Rle runValue "runValue<-" nrun IRanges start end Views ranges

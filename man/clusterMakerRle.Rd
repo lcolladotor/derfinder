@@ -49,6 +49,11 @@ micro
 \author{
   Leonardo Collado-Torres
 }
+\references{
+  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
+  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
+  Hunter. R package version 1.1.10.
+}
 \seealso{
   \link[bumphunter]{clusterMaker}, \link{findRegions}
 }

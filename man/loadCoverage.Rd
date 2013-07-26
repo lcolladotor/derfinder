@@ -28,7 +28,9 @@
   have coverage greater than \code{cutoff} to be included
   in the result.}
 
-  \item{chrlen}{The chromosome length in base pairs.}
+  \item{chrlen}{The chromosome length in base pairs. If
+  it's \code{NULL}, the chromosome length is extracted from
+  the BAM files.}
 
   \item{bamterm}{Name of the BAM file used in each sample.
   By default it is set to \code{accepted_hits.bam} since
@@ -65,9 +67,11 @@
 datadir <- system.file("extdata", "brainData", package="derfinder2")
 ## Reading the data and filtering it is quite fast.
 system.time(data <- loadCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL))
+
 ## Shorten the column names
 colnames(data$coverage) <- gsub("_accepted_hits.bam", "", colnames(data$coverage))
 data
+
 ## The data is compact enough to be loaded in memory
 print(object.size(data), units="Kb")
 }

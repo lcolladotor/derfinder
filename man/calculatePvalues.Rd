@@ -4,12 +4,12 @@
 \usage{
   calculatePvalues(statsInfo, nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    chunksize = 5e+06, chr, maxGap = 300L,
+    chr, maxGap = 300L,
     cutoff = quantile(abs(statsInfo$fstats), 0.99),
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
-  \item{statsInfo}{A list with \code{$coverage},
+  \item{statsInfo}{A list with \code{$coverageSplit},
   \code{$position}, \code{$fstats}, \code{$mod}, and
   \code{mod0} components as generated using
   \link{calculateStats}.}
@@ -22,9 +22,6 @@
   specifying the seeds to be used for each permutation. If
   \code{NULL} no seeds are used.}
 
-  \item{chunksize}{How many rows of
-  \code{statsInfo$coverage} should be processed at a time?}
-
   \item{chr}{A single element character vector specifying
   the chromosome name. This argument is passed to
   \link{findRegions}.}
@@ -36,7 +33,7 @@
   \link{getSegmentsRle}.}
 
   \item{mc.cores}{This argument is passed to
-  \link[parallel]{mclapply}) to run \link{fstats.apply}.}
+  \link[parallel]{mclapply} to run \link{fstats.apply}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
@@ -55,6 +52,9 @@
   the original clusters and cutoffs. The mean of the
   statistics from these segments are then used to calculate
   p-values for the original regions.
+}
+\details{
+  Partially based on \link[derfinder]{get.pvals.DF}.
 }
 \examples{
 ## Get the statistics
@@ -76,16 +76,19 @@ head(annotation)
 ## The chunksize is artifically reduced just to actually need to run mclapply
 library("microbenchmark")
 micro <- microbenchmark(
-calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), chunksize=1e3, mc.cores=1, verbose=FALSE),
-calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), chunksize=1e3, mc.cores=4, verbose=FALSE),
+calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
 times=10)
 levels(micro$expr) <- c("one", "four")
 micro
-## Doesn't seem to help with this toy data.
+## Doesn't seem to help much with this toy data.
 }
 }
 \author{
   Leonardo Collado-Torres
+}
+\references{
+  Frazee et al. Biostatistics in review.
 }
 \seealso{
   \link{findRegions}, \link{clusterMakerRle},

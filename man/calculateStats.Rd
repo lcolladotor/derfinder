@@ -50,35 +50,39 @@
   time?}
 
   \item{mc.cores}{This argument is passed to
-  \link[parallel]{mclapply}) to run \link{fstats.apply}.}
+  \link[parallel]{mclapply} to run \link{fstats.apply}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
 \value{
-  A list with five components. \describe{ \item{coverage }{
-  is a DataFrame object where each column represents a
-  sample. The coverage information is scaled and log2
-  transformed. Note that if \code{colsubset} is not
-  \code{NULL} the number of columns will be less than those
-  in \code{coverageInfo$coverage}. The number of rows
-  depends on the number of base pairs that passed the
-  cutoff and the information stored is the coverage at that
-  given base. Further note that \link{filterData} is
-  re-applied if \code{colsubset} is not \code{NULL} and
-  could thus lead to fewer rows compared to
-  \code{coverageInfo$coverage}. } \item{position }{ is a
-  logical Rle with the positions of the chromosome that
-  passed the cutoff.} \item{fstats }{ is a numeric Rle with
-  the F-statistics per base pair that passed the cutoff.}
-  \item{mod }{ The alternative model matrix.} \item{mod0 }{
-  The null model matrix.} }
+  A list with five components. \describe{
+  \item{coverageSplit }{ is a SplitDataFrameList object
+  where each column represents a sample and the data is
+  partioned according to \code{chunksize}. The coverage
+  information is scaled and log2 transformed. Note that if
+  \code{colsubset} is not \code{NULL} the number of columns
+  will be less than those in \code{coverageInfo$coverage}.
+  The total number of rows depends on the number of base
+  pairs that passed the \code{cutoff} and the information
+  stored is the coverage at that given base. Further note
+  that \link{filterData} is re-applied if \code{colsubset}
+  is not \code{NULL} and could thus lead to fewer rows
+  compared to \code{coverageInfo$coverage}. }
+  \item{position }{ is a logical Rle with the positions of
+  the chromosome that passed the cutoff.} \item{fstats }{
+  is a numeric Rle with the F-statistics per base pair that
+  passed the cutoff.} \item{mod }{ The alternative model
+  matrix.} \item{mod0 }{ The null model matrix.} }
 }
 \description{
   After defining the models of interest and adjusting for
   confounders, this function extracts the data from loaded
   BAM files (\link{loadCoverage}) and calculates the
   F-statistics.
+}
+\details{
+  Partially based on \link[derfinder]{getLimmaInput.DF}.
 }
 \examples{
 ## Choose the adjusting variables and define all the parameters for calculateStats()
@@ -92,6 +96,7 @@ nonzero <- TRUE
 chunksize <- 1e+03
 mc.cores <- 1
 verbose <- TRUE
+
 ## Run the function
 stats <- calculateStats(coverageInfo, group, comparison="group differences", colsubset, adjustvars, cutoff, scalefac, nonzero, chunksize, mc.cores, verbose)
 names(stats)
@@ -99,5 +104,8 @@ stats
 }
 \author{
   Leonardo Collado-Torres
+}
+\references{
+  Frazee et al. Biostatistics in review.
 }
 

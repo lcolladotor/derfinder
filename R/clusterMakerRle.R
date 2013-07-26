@@ -14,6 +14,7 @@
 #' @return An integer Rle with the cluster IDs.
 #'
 #' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
+#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom IRanges IRanges start end runValue reduce Views Rle

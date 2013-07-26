@@ -7,7 +7,7 @@
 #' @param sampledirs A character vector with the names of the sample directories. If \code{datadir} is \code{NULL} it is then assumed that \code{sampledirs} specifies the full path to each sample.
 #' @param samplepatt If specified and \code{sampledirs} is set to \code{NULL}, then the directories matching this pattern in \code{datadir} (set to \code{.} if it's set to \code{NULL}) are used as the sample directories.
 #' @param cutoff Per base pair, at least one sample has to have coverage greater than \code{cutoff} to be included in the result.
-#' @param chrlen The chromosome length in base pairs.
+#' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files.
 #' @param bamterm Name of the BAM file used in each sample. By default it is set to \code{accepted_hits.bam} since that is the automatic name generated when aligning with TopHat. If \code{NULL} it is then ignored when reading the BAM files. This can be useful if all the BAM files are stored in a single directory.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} then an automatic name is constructed (chrXDF.Rdata for example). If another character is specified, then that name is used for the output file.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
@@ -28,9 +28,11 @@
 #' datadir <- system.file("extdata", "brainData", package="derfinder2")
 #' ## Reading the data and filtering it is quite fast.
 #' system.time(data <- loadCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL))
+#'
 #' ## Shorten the column names
 #' colnames(data$coverage) <- gsub("_accepted_hits.bam", "", colnames(data$coverage))
 #' data
+#'
 #' ## The data is compact enough to be loaded in memory
 #' print(object.size(data), units="Kb")
 

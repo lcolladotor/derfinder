@@ -18,7 +18,11 @@
   Leonardo Collado-Torres <lcollado@jhsph.edu>
 }
 \references{
-  Paper coming soon.
+  Frazee et al. Biostatistics in review.
+
+  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
+  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
+  Hunter. R package version 1.1.10.
 }
 \keyword{package}
 

@@ -16,7 +16,7 @@
   \item{index}{A logical Rle with the positions of the
   chromosome that passed the cutoff. If \code{NULL} it is
   assumed that this is the first time using
-  \code{filterData} and thus no previous index exists.}
+  \link{filterData} and thus no previous index exists.}
 
   \item{colnames}{Specifies the column names to be used for
   the results DataFrame. If \code{NULL}, no names are
@@ -40,7 +40,7 @@
   BAM files. It then merges them into a DataFrame and
   removes the bases that do not pass the cutoff. This is a
   helper function for \link{loadCoverage} and
-  \code{calculateStats}.
+  \link{calculateStats}.
 }
 \examples{
 library("IRanges")
