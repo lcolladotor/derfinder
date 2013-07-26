@@ -15,7 +15,7 @@
 #' \describe{
 #' \item{pvalues }{ p-value of the region calculated via permutations of the samples.}
 #' }
-#' The second one --\code{$nullstats}-- is a numeric Rle with the null statistics.
+#' The second one --\code{$nullstats}-- is a numeric Rle with the mean of the null statistics by segment.
 #'
 #' @details Partially based on \link[derfinder]{get.pvals.DF}.
 #' @author Leonardo Collado-Torres
