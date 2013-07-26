@@ -66,7 +66,7 @@ findRegions <- function(statsInfo, chr, fstats=statsInfo$fstats, cluster=NULL, y
 	
 	## Identify the clusters
 	if(is.null(cluster)) {
-		if(verbose) message("findRegions: identifying clusters")
+		if(verbose) message(paste(date(), "findRegions: identifying clusters"))
 		cluster <- clusterMakerRle(statsInfo$position, maxGap)
 	}	
 	

@@ -94,7 +94,7 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 	stopifnot(length(intersect(names(statsInfo), c("coverageSplit", "position", "fstats", "mod", "mod0"))) == 5)
 	
 	## Identify the clusters
-	if(verbose) message("calculatePvalues: identifying clusters")
+	if(verbose) message(paste(date(), "calculatePvalues: identifying clusters"))
 	cluster <- clusterMakerRle(statsInfo$position, maxGap)
 	
 	## Find the regions
@@ -105,7 +105,7 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 	last <- 0
 		
 	for(i in seq_along(seeds)) {
-		if(verbose) message(paste("calculatePvalues: calculating F-statistics for permutation", i))		
+		if(verbose) message(paste(date(), "calculatePvalues: calculating F-statistics for permutation", i))		
 		
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
@@ -139,7 +139,7 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 	nullstats <- abs(do.call(c, nullstats))
 	
 	## Calculate pvalues
-	if(verbose) message("calculatePvalues: calculating the p-values")
+	if(verbose) message(paste(date(), "calculatePvalues: calculating the p-values"))
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
 	pvals <- (pvals + 1) / length(nullstats)
 	

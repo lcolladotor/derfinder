@@ -91,7 +91,7 @@ loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cu
 	
 	## Read in the data for all the chrs
 	data <- lapply(bList, function(x) {
-		if(verbose) message(paste("loadCoverage: loading BAM file", path(x)))
+		if(verbose) message(paste(date(), "loadCoverage: loading BAM file", path(x)))
 	
 		## Read the BAM file and get the coverage. Extract only the one for the chr in question.
 		output <- coverage(readBamGappedAlignments(x, param=param))[[chr]]
@@ -101,7 +101,7 @@ loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cu
 	})
 	
 	## Identify which bases pass the cutoff
-	if(verbose) message("loadCoverage: applying the cutoff to the merged data")
+	if(verbose) message(paste(date(), "loadCoverage: applying the cutoff to the merged data"))
 	
 	res <- filterData(data=data, cutoff=cutoff, index=NULL, colnames=names(dirs), verbose=verbose)
 	
@@ -117,7 +117,7 @@ loadCoverage <- function(chr, datadir=NULL, sampledirs=NULL, samplepatt=NULL, cu
 		}
 		
 		## Print output name
-		if(verbose) message(paste("loadCoverage: saving the output file", output))
+		if(verbose) message(paste(date(), "loadCoverage: saving the output file", output))
 		
 		## Save the DataFrame
 		save(list=varname, file=output, compress="gzip")

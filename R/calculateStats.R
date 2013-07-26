@@ -90,7 +90,7 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 		colmeds <- sapply(data, median)
 	}
 	## Info for the user
-	if(verbose) message(paste0("calculateStats: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
+	if(verbose) message(paste0(date(), " calculateStats: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
 
 	## Create model matrices
 	if(!is.null(adjustvars)){
@@ -141,7 +141,7 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 	data.split <- split(data, split.idx)
 	
 	## Fit a model to each row (chunk) of database:
-	if(verbose) message("calculateStats: calculating the F-statistics")
+	if(verbose) message(paste(date(), "calculateStats: calculating the F-statistics"))
 	fstats.output <- mclapply(data.split, fstats.apply, mod=mod, mod0=mod0, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0
