@@ -72,14 +72,20 @@ getSegmentsRle <- function(x, f, cutoff = quantile(abs(x), 0.99), verbose = FALS
 	## Apply the cutoff
     direction <- x >= cutoff[2]
     direction[x <= cutoff[1]] <- -1L
+	rm(x)
+	
 	
 	## Find the segments
 	segments <- direction
 	runValue(segments) <- seq_len(nrun(segments))
     segments <- segments + f
+	rm(f)
+	
 	
 	## Original segments
 	segs <- IRanges(start=start(segments), end=end(segments))
+	rm(segments)
+	
 	
 	## Construct the output
 	if (verbose) message(paste(date(), "getSegmentsRle: constructing the output"))
@@ -91,15 +97,21 @@ getSegmentsRle <- function(x, f, cutoff = quantile(abs(x), 0.99), verbose = FALS
 	## Construct the individual indexes		
 	segs.up <- Views(up, segs)
 	upIndex <- ranges(segs.up)[sapply(segs.up, all)]
+	rm(up, segs.up)
+	
 	
 	segs.down <- Views(down, segs)
 	dnIndex <- ranges(segs.down[sapply(segs.down, all)])
+	rm(down, segs.down)
+	
 	
 	## Construct the final output
 	if(zero) {
 		zero <- direction == 0
 		segs.zero <- Views(zero, segs)
 		zeroIndex <- ranges(segs.zero[sapply(segs.zero, all)])
+		rm(zero, segs.zero)
+		
 		res <- list(upIndex = upIndex, dnIndex = dnIndex, zeroIndex = zeroIndex)
 	} else {
 		res <- list(upIndex = upIndex, dnIndex = dnIndex)

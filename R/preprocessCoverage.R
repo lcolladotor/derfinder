@@ -16,7 +16,7 @@
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{calculateStats}
+#' @seealso \link{loadCoverage}, \link{calculateStats}
 #' @export
 #' @importMethodsFrom IRanges ncol nrow sapply "[" "[[" "[[<-" c split
 #' @importFrom IRanges Rle
@@ -39,8 +39,6 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	
 	## Get the positions and shorter variables
 	data <- coverageInfo$coverage
-	## I don't think that we need this anymore.
-	#pos <- which(coverageInfo$position)
 	
 	## Determine total and loop sizes
 	numrow <- nrow(data)

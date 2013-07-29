@@ -1,6 +1,6 @@
 #' Filter the positions of interest
 #'
-#' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff. This is a helper function for \link{loadCoverage} and \link{calculateStats}.
+#' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff. This is a helper function for \link{loadCoverage} and \link{preprocessCoverage}.
 #' 
 #' @param data Either a list of Rle objects or a DataFrame with the coverage information.
 #' @param cutoff Per base pair, at least one sample has to have coverage greater than \code{cutoff} to be included in the result.
@@ -17,7 +17,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom IRanges DataFrame
-#' @importMethodsFrom IRanges "[" "[<-" colnames "colnames<-" lapply
+#' @importMethodsFrom IRanges "[" "[<-" "[[" colnames "colnames<-" lapply
 #' @seealso \link{loadCoverage}
 #' @examples
 #' library("IRanges")
@@ -42,22 +42,6 @@ filterData <- function(data, cutoff, index=NULL, colnames=NULL, verbose=TRUE) {
 		}
 	}
 	
-	## Keep only bases that pass the cutoff
-	if(is(data, "DataFrame")) {
-		DF <- data[newindex, ]
-	} else {
-		## Subset the data
-		newdata <- lapply(data, function(x) { x[newindex] })
-		
-		## Group into DataFrame, though the list might be more useful for downstream stuff
-		DF <- DataFrame(newdata)	
-	}	
-	
-	## Assign column names
-	if(!is.null(colnames)) {
-		colnames(DF) <- colnames
-	}	
-	
 	## Build the final index	
 	if(!is.null(index)) {
 		finalidx <- index
@@ -65,12 +49,31 @@ filterData <- function(data, cutoff, index=NULL, colnames=NULL, verbose=TRUE) {
 	} else {
 		finalidx <- newindex
 	}
+	rm(index)
+	
+	
+	## Keep only bases that pass the cutoff
+	if(is(data, "DataFrame")) {
+		DF <- data[newindex, ]
+	} else {
+		## Subset the data and group into DataFrame
+		DF <- DataFrame(lapply(data, function(x) { x[newindex] }))
+	}	
+	rm(newindex)
+	
 	
 	## Info for the user
 	if(verbose) {
 		message(paste(date(), "filterData: originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
 	}
+	rm(data)
+		
 	
+	## Assign column names
+	if(!is.null(colnames)) {
+		colnames(DF) <- colnames
+	}	
+		
 	## Make the final resulting object.
 	res <- list("coverage"=DF, "position"=finalidx)
 	return(res)

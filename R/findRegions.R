@@ -80,6 +80,8 @@ findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTabl
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this
 	pos <- which(position)
+	rm(position)
+	
 	
 	## Build the output shell
 	hasInfo <- sapply(Indexes, length) != 0
@@ -106,6 +108,9 @@ findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTabl
 			clusterL = Rle(runLength(cluster)[clus])
 		)
     }
+	rm(position, Indexes, view, clus, pos.ir, y, fstats)
+	
+	
 	## Fix names and format
     names(res) <- gsub("Index", "", names(res))
 	res <- GRangesList(res)

@@ -25,9 +25,8 @@
 fstats.apply <- function(data, mod, mod0) {
 	##  Subset the DataFrame to the current chunk and transform to a regular matrix
 	mymat <- as.matrix(as.data.frame(data))
-		
-	## I don't think that we need the Amean for the F-stats.
-	# Amean <- rowMeans(mymat) 
+	rm(data)
+	
 	
 	## Get the Fstats
 	stats <- Rle(fstats(mymat, mod, mod0))

@@ -106,10 +106,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	## Find the regions
 	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
+	rm(fstats)
+	
 	
 	## Pre-allocate memory
 	nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
+	allcols <- seq_len(ncol(coveragePrep$coverageSplit)[[1]])
 		
 	for(i in seq_along(seeds)) {
 		if(verbose) message(paste(date(), "calculatePvalues: calculating F-statistics for permutation", i))		
@@ -117,7 +120,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
 		}
-		idx.permute <- sample(seq_len(ncol(coveragePrep$coverageSplit)[[1]]))
+		idx.permute <- sample(allcols)
 		
 		## Permuted data
 		data.p <- lapply(coveragePrep$coverageSplit, function(x) x[, idx.permute])
@@ -125,6 +128,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		## Get the F-statistics
 		fstats.output <- mclapply(data.p, fstats.apply, mod=models$mod, mod0=models$mod0, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)
+		rm(data.p)
+		
 			
 		## Find the segments
 		Indexes <- getSegmentsRle(x = fstats.output, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
@@ -136,17 +141,17 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		last <- last + 2
 		
 		## Finish loop
-		rm(idx.permute, data.p, fstats.output, Indexes)
+		rm(idx.permute, fstats.output, Indexes)
+		
 	}
 	nullstats <- abs(do.call(c, nullstats))
+	rm(coveragePrep)
+	
 	
 	## Calculate pvalues
 	if(verbose) message(paste(date(), "calculatePvalues: calculating the p-values"))
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
-	pvals <- (pvals + 1) / (length(nullstats) + 1)
-	
-	## Finish up
-	regs$pvalues <- pvals
+	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
 	
 	## Save the nullstats too
 	final <- list(regions=regs, nullstats=Rle(nullstats))

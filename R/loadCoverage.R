@@ -76,6 +76,8 @@ loadCoverage <- function(dirs, chr, cutoff=5, chrlen=NULL, output=NULL, verbose=
 	if(verbose) message(paste(date(), "loadCoverage: applying the cutoff to the merged data"))
 	
 	res <- filterData(data=data, cutoff=cutoff, index=NULL, colnames=names(dirs), verbose=verbose)
+	rm(data)
+	
 	
 	## Save if output is specified
 	if(!is.null(output)) {

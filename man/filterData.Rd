@@ -40,7 +40,7 @@
   BAM files. It then merges them into a DataFrame and
   removes the bases that do not pass the cutoff. This is a
   helper function for \link{loadCoverage} and
-  \link{calculateStats}.
+  \link{preprocessCoverage}.
 }
 \examples{
 library("IRanges")

@@ -66,6 +66,6 @@ dataReady
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculateStats}
+  \link{loadCoverage}, \link{calculateStats}
 }
 
