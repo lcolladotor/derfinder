@@ -65,9 +65,9 @@
 }
 \examples{
 ## Get the statistics
-group <- brainInfo$outcome
-adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
-stats <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+group <- genomeInfo$pop
+adjustvars <- data.frame(genomeInfo$gender)
+stats <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
 
 ## Find the regions
 regs <- findRegions(stats, "chr21", verbose=TRUE)

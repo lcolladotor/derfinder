@@ -67,7 +67,7 @@ getSegmentsRle <- function(x, f, cutoff = quantile(abs(x), 0.99), verbose = FALS
     cutoff <- sort(cutoff)
 	
 	## Construct segments
-    if (verbose) message(paste(date(), "getSegmentsRle: segmenting with cutoffs", cutoff))
+    if (verbose) message(paste(date(), "getSegmentsRle: segmenting with cutoffs", paste(cutoff, collapse=", ")))
 
 	## Apply the cutoff
     direction <- x >= cutoff[2]

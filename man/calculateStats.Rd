@@ -81,16 +81,13 @@
   BAM files (\link{loadCoverage}) and calculates the
   F-statistics.
 }
-\details{
-  Partially based on \link[derfinder]{getLimmaInput.DF}.
-}
 \examples{
 ## Choose the adjusting variables and define all the parameters for calculateStats()
-coverageInfo <- brainData
-group <- brainInfo$outcome
+coverageInfo <- genomeData
+group <- genomeInfo$pop
 colsubset <- NULL
-adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
-cutoff <- 5
+adjustvars <- data.frame(genomeInfo$gender)
+cutoff <- 0
 scalefac <- 32
 nonzero <- TRUE
 chunksize <- 1e+03
@@ -104,8 +101,5 @@ stats
 }
 \author{
   Leonardo Collado-Torres
-}
-\references{
-  Frazee et al. Biostatistics in review.
 }
 

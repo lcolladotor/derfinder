@@ -22,8 +22,6 @@
 #' \item{mod }{ The alternative model matrix.}
 #' \item{mod0 }{ The null model matrix.}
 #' }
-#' @details Partially based on \link[derfinder]{getLimmaInput.DF}.
-#' @references Frazee et al. Biostatistics in review.
 #'
 #' @author Leonardo Collado-Torres
 #' @export
@@ -32,11 +30,11 @@
 #' @importFrom IRanges RleList
 #' @examples
 #' ## Choose the adjusting variables and define all the parameters for calculateStats()
-#' coverageInfo <- brainData
-#' group <- brainInfo$outcome
+#' coverageInfo <- genomeData
+#' group <- genomeInfo$pop
 #' colsubset <- NULL
-#' adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
-#' cutoff <- 5
+#' adjustvars <- data.frame(genomeInfo$gender)
+#' cutoff <- 0
 #' scalefac <- 32
 #' nonzero <- TRUE
 #' chunksize <- 1e+03
@@ -85,7 +83,12 @@ calculateStats <- function(coverageInfo, group, comparison = "group differences"
 		
 	## Get the medians of the columns
 	if(nonzero) {
-		colmeds <- sapply(data, function(y) { median(y[y > 0]) })
+		colmeds <- sapply(data, function(y) { 
+			## Catch cases where the is no data points greater than 0
+			tmp <- try(median(y[y > 0]), silent=TRUE)
+			res <- ifelse(inherits(tmp, "try-error"), 0, tmp)
+			return(res)
+		})
 	} else {
 		colmeds <- sapply(data, median)
 	}

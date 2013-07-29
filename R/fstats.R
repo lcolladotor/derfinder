@@ -23,7 +23,7 @@
 #' 
 #' ## Get the F-statistics
 #' result <- fstats(dat, mod, mod0)
-#' hist(result)
+#' hist(result, freq=FALSE, main="Distribution of F statistics")
 #' 
 
 fstats <- function(dat, mod, mod0){

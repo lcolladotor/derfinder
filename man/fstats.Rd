@@ -36,7 +36,7 @@ mod0 <- model.matrix(~ 0 + rep(1, 10))
 
 ## Get the F-statistics
 result <- fstats(dat, mod, mod0)
-hist(result)
+hist(result, freq=FALSE, main="Distribution of F statistics")
 }
 \author{
   Jeff Leek, Leonardo Collado-Torres

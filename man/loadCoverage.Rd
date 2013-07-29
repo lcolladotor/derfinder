@@ -64,13 +64,16 @@
   removes the bases that do not pass the cutoff.
 }
 \examples{
-datadir <- system.file("extdata", "brainData", package="derfinder2")
+datadir <- system.file("extdata", "genomeData", package="derfinder2")
 ## Reading the data and filtering it is quite fast.
-system.time(data <- loadCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL))
+system.time(data <- loadCoverage(chr="21", datadir=datadir, samplepatt="*accepted_hits.bam$", cutoff=0, bamterm=NULL))
 
 ## Shorten the column names
 colnames(data$coverage) <- gsub("_accepted_hits.bam", "", colnames(data$coverage))
 data
+
+## For other examples this data is included in the package
+identical(data, genomeData)
 
 ## The data is compact enough to be loaded in memory
 print(object.size(data), units="Kb")

@@ -56,14 +56,11 @@
   statistics from these segments are then used to calculate
   p-values for the original regions.
 }
-\details{
-  Partially based on \link[derfinder]{get.pvals.DF}.
-}
 \examples{
 ## Get the statistics
-group <- brainInfo$outcome
-adjustvars <- brainInfo[, c("sex", "age", "left.hemisph", "pmi", "brainpH")]
-statsInfo <- calculateStats(brainData, group, adjustvars=adjustvars, mc.cores=1, verbose=TRUE)
+group <- genomeInfo$pop
+adjustvars <- data.frame(genomeInfo$gender)
+statsInfo <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
@@ -121,9 +118,6 @@ micro
 }
 \author{
   Leonardo Collado-Torres
-}
-\references{
-  Frazee et al. Biostatistics in review.
 }
 \seealso{
   \link{findRegions}, \link{clusterMakerRle},

@@ -24,10 +24,10 @@
 }
 \examples{
 ## Create the model matrices
-mod <- model.matrix(~ brainInfo$outcome)
-mod0 <- model.matrix(~ 0 + rep(1, nrow(brainInfo)))
+mod <- model.matrix(~ genomeInfo$pop)
+mod0 <- model.matrix(~ 0 + rep(1, nrow(genomeInfo)))
 ## Run the function
-fstats.output <- fstats.apply(brainData$coverage, mod, mod0)
+fstats.output <- fstats.apply(genomeData$coverage, mod, mod0)
 fstats.output
 }
 \author{
