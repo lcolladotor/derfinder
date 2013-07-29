@@ -116,7 +116,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	## Pre-allocate memory
 	nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
-	allcols <- seq_len(ncol(coveragePrep$coverageSplit)[[1]])
+	nSamples <- seq_len(nrow(models$mod))
 		
 	for(i in seq_along(seeds)) {
 		if(verbose) message(paste(date(), "calculatePvalues: calculating F-statistics for permutation", i))		
@@ -124,16 +124,15 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
 		}
-		idx.permute <- sample(allcols)
+		idx.permute <- sample(nSamples)
 		
-		## Permuted data
-		data.p <- lapply(coveragePrep$coverageSplit, function(x) x[, idx.permute])
+		## Permuted sample labels
+		mod.p <- models$mod[idx.permute, ]
+		mod0.p <- models$mod0[idx.permute, ]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(data.p, fstats.apply, mod=models$mod, mod0=models$mod0, mc.cores=mc.cores)
-		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)
-		rm(data.p)
-		
+		fstats.output <- mclapply(coveragePrep$coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores)
+		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
 		Indexes <- getSegmentsRle(x = fstats.output, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
@@ -147,7 +146,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		last <- last + 2
 		
 		## Finish loop
-		rm(idx.permute, fstats.output, Indexes, view)
+		rm(idx.permute, fstats.output, Indexes, view, mod.p, mod0.p)
 		
 	}
 	nullstats <- do.call(c, nullstats)

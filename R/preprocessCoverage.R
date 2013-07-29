@@ -11,7 +11,7 @@
 #'
 #' @return A list with two components.
 #' \describe{
-#' \item{coverageSplit }{ is a SplitDataFrameList object where each column represents a sample and the data is partioned according to \code{chunksize}. The coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
+#' \item{coverageSplit }{ is a list of DataFrames. Each DataFrame column represents a sample and the data is partioned according to \code{chunksize}. The coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
 #' \item{position }{  is a logical Rle with the positions of the chromosome that passed the cutoff.}
 #' }
 #'
@@ -67,7 +67,7 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 		}
 	}
 	split.idx <- Rle(0:lastloop, split.len)
-	data.split <- split(data, split.idx)
+	data.split <- as.list(split(data, split.idx))
 	
 	## Done =)
 	result <- list("coverageSplit"=data.split, "position"=coverageInfo$position)
