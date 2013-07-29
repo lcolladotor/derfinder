@@ -2,22 +2,21 @@
 \alias{findRegions}
 \title{Find non-zero regions in a Rle}
 \usage{
-  findRegions(statsInfo, chr, fstats = statsInfo$fstats,
-    cluster = NULL, y = fstats, oneTable = TRUE,
-    maxGap = 300L, cutoff = quantile(abs(fstats), 0.99),
-    verbose = TRUE)
+  findRegions(position, fstats, chr, cluster = NULL,
+    y = fstats, oneTable = TRUE, maxGap = 300L,
+    cutoff = quantile(abs(fstats), 0.99), verbose = TRUE)
 }
 \arguments{
-  \item{statsInfo}{A list with \code{$position} and
-  \code{$fstats} components where the first one is a
-  logical Rle of genomic positions and the second one is a
-  numeric Rle.}
+  \item{position}{A logical Rle of genomic positions. This
+  is generated in \link{loadCoverage}. Note that it gets
+  updated in \link{preprocessCoverage} if \code{colsubset}
+  is not \code{NULL}.}
+
+  \item{fstats}{A numeric Rle with the F-statistics.
+  Normally obtained using \link{calculateStats}.}
 
   \item{chr}{A single element character vector specifying
   the chromosome name.}
-
-  \item{fstats}{A numeric Rle with the F-statistics.
-  Normally stored in \code{statsInfo$fstats}.}
 
   \item{cluster}{The clusters of locations that are to be
   analyzed together, normally given by
@@ -64,13 +63,19 @@
   \link[bumphunter]{regionFinder} adapted to Rle world.
 }
 \examples{
-## Get the statistics
+## Construct the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-stats <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
+models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+
+## Preprocess the data
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+
+## Get the F statistics
+fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 
 ## Find the regions
-regs <- findRegions(stats, "chr21", verbose=TRUE)
+regs <- findRegions(prep$position, fstats, "chr21", verbose=TRUE)
 regs
 
 \dontrun{
@@ -82,7 +87,7 @@ regs2
 identical(width(regs), as.integer(regs2$L))
 ## Time comparison
 library("microbenchmark")
-micro <- microbenchmark(findRegions(stats, "chr21", verbose=FALSE), regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
+micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
 levels(micro$expr) <- c("new", "original")
 micro
 ## The bumphunter function regionFinder() is faster in small data sets.

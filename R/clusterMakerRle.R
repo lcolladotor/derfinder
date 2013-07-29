@@ -8,7 +8,7 @@
 #' 
 #' It is a a helper function for \link{findRegions}.
 #' 
-#' @param pos A logical Rle indicating the chromosome positions.
+#' @param position A logical Rle indicating the chromosome positions.
 #' @param maxGap An integer. Genomic locations within \code{maxGap} from each other are placed into the same cluster.
 #'
 #' @return An integer Rle with the cluster IDs.
@@ -34,15 +34,15 @@
 #' micro
 #' }
 
-clusterMakerRle <- function(pos, maxGap=300L) {
+clusterMakerRle <- function(position, maxGap=300L) {
 	## Instead of using which(), identify the regions of the chr with data
-	ir <- IRanges(start=start(pos)[runValue(pos)], end=end(pos)[runValue(pos)])
+	ir <- IRanges(start=start(position)[runValue(position)], end=end(position)[runValue(position)])
 	
 	## Apply the gap reduction
 	ir.red <-  reduce(ir, min.gapwidth=maxGap + 1)
 	
 	## Identify the clusters
-	clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(pos, ir.red)))
+	clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position, ir.red)))
 	## Note that sum(Views(pos, ir.red)) is faster than sapply(ir.red, function(x) sum(pos[x]))
 	
 	## Done

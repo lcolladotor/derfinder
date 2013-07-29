@@ -54,7 +54,6 @@ names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 
 ## Reading the data and filtering it is quite fast.
 system.time(data <- loadCoverage(dirs=dirs, chr="21", cutoff=0))
-
 data
 
 ## For other examples this data is included in the package

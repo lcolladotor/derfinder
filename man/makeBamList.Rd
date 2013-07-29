@@ -39,7 +39,6 @@
 datadir <- system.file("extdata", "genomeData", package="derfinder2")
 dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 dirs
-names(dirs)
 }
 \author{
   Leonardo Collado-Torres

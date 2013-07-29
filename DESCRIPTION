@@ -42,3 +42,5 @@ Collate:
     'genomeData-data.R'
     'genomeInfo-data.R'
     'makeBamList.R'
+    'makeModels.R'
+    'preprocessCoverage.R'

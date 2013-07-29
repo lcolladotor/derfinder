@@ -2,17 +2,23 @@
 \alias{calculatePvalues}
 \title{Calculate p-values and identify regions}
 \usage{
-  calculatePvalues(statsInfo, nPermute = 1L,
+  calculatePvalues(coveragePrep, models, fstats,
+    nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     chr, maxGap = 300L,
-    cutoff = quantile(abs(statsInfo$fstats), 0.99),
+    cutoff = quantile(abs(fstats), 0.99),
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
-  \item{statsInfo}{A list with \code{$coverageSplit},
-  \code{$position}, \code{$fstats}, \code{$mod}, and
-  \code{mod0} components as generated using
-  \link{calculateStats}.}
+  \item{coveragePrep}{A list with \code{$coverageSplit} and
+  \code{$position} normally generated using
+  \link{preprocessCoverage}.}
+
+  \item{models}{A list with \code{$mod} and \code{$mod0}
+  normally generated using \link{makeModels}.}
+
+  \item{fstats}{A numerical Rle with the F-statistics
+  normally generated using \link{calculateStats}.}
 
   \item{nPermute}{The number of permutations. Note that for
   a full chromosome, a small amount (10) of permutations is
@@ -57,24 +63,30 @@
   p-values for the original regions.
 }
 \examples{
-## Get the statistics
+## Construct the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-statsInfo <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
+models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+
+## Preprocess the data
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+
+## Get the F statistics
+fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
-n <- dim(statsInfo$coverageSplit[[1]])[2]
-df1 <- dim(statsInfo$mod)[2]
-df0 <- dim(statsInfo$mod0)[2]
+n <- dim(prep$coverageSplit[[1]])[2]
+df1 <- dim(models$mod)[2]
+df0 <- dim(models$mod0)[2]
 cutoff <- qf(0.95, df1-df0, n-df1)
 
 ## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
+regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 regsWithP
 
 ## Histogram of the original F statistics
-f.ori <- as.numeric(statsInfo$fstats)
+f.ori <- as.numeric(fstats)
 hist(f.ori, main="Distribution original F-stats", freq=FALSE)
 
 ## Histogram of the null F statistics
@@ -108,8 +120,8 @@ head(annotation)
 ## The chunksize is artifically reduced just to actually need to run mclapply
 library("microbenchmark")
 micro <- microbenchmark(
-calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
-calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
+calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
 times=10)
 levels(micro$expr) <- c("one", "four")
 micro

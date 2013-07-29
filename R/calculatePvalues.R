@@ -2,7 +2,9 @@
 #'
 #' First, this function clusters the genomic positions and finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The F-statistics are segmented using the original clusters and cutoffs. The mean of the statistics from these segments are then used to calculate p-values for the original regions.
 #' 
-#' @param statsInfo A list with \code{$coverageSplit}, \code{$position}, \code{$fstats}, \code{$mod}, and \code{mod0} components as generated using \link{calculateStats}.
+#' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
+#' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
+#' @param fstats A numerical Rle with the F-statistics normally generated using \link{calculateStats}.
 #' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient.
 #' @param seeds An integer vector of length \code{nPermute} specifying the seeds to be used for each permutation. If \code{NULL} no seeds are used.
 #' @param chr A single element character vector specifying the chromosome name. This argument is passed to \link{findRegions}.
@@ -24,24 +26,30 @@
 #' @importFrom IRanges Views RleList Rle
 #' @importFrom parallel mclapply
 #' @examples
-#' ## Get the statistics
+#' ## Construct the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' statsInfo <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
+#' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+#'
+#' ## Preprocess the data
+#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+#' 
+#' ## Get the F statistics
+#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' n <- dim(statsInfo$coverageSplit[[1]])[2]
-#' df1 <- dim(statsInfo$mod)[2]
-#' df0 <- dim(statsInfo$mod0)[2]
+#' n <- dim(prep$coverageSplit[[1]])[2]
+#' df1 <- dim(models$mod)[2]
+#' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
 #'
 #' ## Calculate the p-values and define the regions of interest.
-#' regsWithP <- calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
+#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 #' regsWithP
 #'
 #' ## Histogram of the original F statistics
-#' f.ori <- as.numeric(statsInfo$fstats)
+#' f.ori <- as.numeric(fstats)
 #' hist(f.ori, main="Distribution original F-stats", freq=FALSE)
 #'
 #' ## Histogram of the null F statistics
@@ -75,28 +83,29 @@
 #' ## The chunksize is artifically reduced just to actually need to run mclapply
 #' library("microbenchmark")
 #' micro <- microbenchmark(
-#' calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
-#' calculatePvalues(statsInfo, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
+#' calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+#' calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
 #' times=10)
 #' levels(micro$expr) <- c("one", "four")
 #' micro
 #' ## Doesn't seem to help much with this toy data.
 #' }
 
-calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(abs(statsInfo$fstats), 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
 	}
 	stopifnot(nPermute == length(seeds))
-	stopifnot(length(intersect(names(statsInfo), c("coverageSplit", "position", "fstats", "mod", "mod0"))) == 5)
+	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position"))) == 2)
+	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	
 	## Identify the clusters
 	if(verbose) message(paste(date(), "calculatePvalues: identifying clusters"))
-	cluster <- clusterMakerRle(statsInfo$position, maxGap)
+	cluster <- clusterMakerRle(coveragePrep$position, maxGap)
 	
 	## Find the regions
-	regs <- findRegions(statsInfo, chr=chr, fstats=statsInfo$fstats, cluster=cluster, y=statsInfo$fstats, cutoff=cutoff, verbose=verbose) 
+	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
 	
 	## Pre-allocate memory
 	nullstats <- vector("list", length(seeds) * 2)
@@ -108,18 +117,13 @@ calculatePvalues <- function(statsInfo, nPermute = 1L, seeds = as.integer(gsub("
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
 		}
-		idx.permute <- sample(seq_len(ncol(statsInfo$coverageSplit)[[1]]))
-	
-		### !!! I don't think that the model matrices have to get permuted too. Otherwise the results should be the same (except for some tiny numerical differences).
-		## New model matrices
-		## mod.p <- statsInfo$mod[idx.permute, ]
-		## mod0.p <- statsInfo$mod0[idx.permute, ]
+		idx.permute <- sample(seq_len(ncol(coveragePrep$coverageSplit)[[1]]))
 		
 		## Permuted data
-		data.p <- lapply(statsInfo$coverageSplit, function(x) x[, idx.permute])
+		data.p <- lapply(coveragePrep$coverageSplit, function(x) x[, idx.permute])
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(data.p, fstats.apply, mod=statsInfo$mod, mod0=statsInfo$mod0, mc.cores=mc.cores)
+		fstats.output <- mclapply(data.p, fstats.apply, mod=models$mod, mod0=models$mod0, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)
 			
 		## Find the segments

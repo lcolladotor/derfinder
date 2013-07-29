@@ -2,9 +2,9 @@
 #'
 #' Find genomic regions for which a numeric vector is above (or below) predefined thresholds. This is similar to \link[bumphunter]{regionFinder} and is a helper function for \link{calculatePvalues}.
 #' 
-#' @param statsInfo A list with \code{$position} and \code{$fstats} components where the first one is a logical Rle of genomic positions and the second one is a numeric Rle. 
+#' @param position A logical Rle of genomic positions. This is generated in \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage} if \code{colsubset} is not \code{NULL}.
+#' @param fstats A numeric Rle with the F-statistics. Normally obtained using \link{calculateStats}.
 #' @param chr A single element character vector specifying the chromosome name.
-#' @param fstats A numeric Rle with the F-statistics. Normally stored in \code{statsInfo$fstats}.
 #' @param cluster The clusters of locations that are to be analyzed together, normally given by \link{clusterMakerRle}.
 #' @param y A numeric Rle of the same length as \code{statsInfo$fstats} containing values to be averaged for the region. 
 #' @param oneTable If \code{TRUE} only one results GRanges is returned. Otherwise, a GRangesList with two components is returned: one for the regions with positive values and one for the negative values.
@@ -33,13 +33,19 @@
 #' @importMethodsFrom IRanges which length mean
 #' @importMethodsFrom GenomicRanges unlist
 #' @examples
-#' ## Get the statistics
+#' ## Construct the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' stats <- calculateStats(genomeData, group, adjustvars=adjustvars, cutoff=0, nonzero=TRUE, mc.cores=1, verbose=TRUE)
+#' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+#'
+#' ## Preprocess the data
+#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+#' 
+#' ## Get the F statistics
+#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 #'
 #' ## Find the regions
-#' regs <- findRegions(stats, "chr21", verbose=TRUE)
+#' regs <- findRegions(prep$position, fstats, "chr21", verbose=TRUE)
 #' regs
 #'
 #' \dontrun{
@@ -51,7 +57,7 @@
 #' identical(width(regs), as.integer(regs2$L))
 #' ## Time comparison
 #' library("microbenchmark")
-#' micro <- microbenchmark(findRegions(stats, "chr21", verbose=FALSE), regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
+#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
 #' levels(micro$expr) <- c("new", "original")
 #' micro
 #' ## The bumphunter function regionFinder() is faster in small data sets.
@@ -61,21 +67,19 @@
 #' annotation
 #' }
 
-findRegions <- function(statsInfo, chr, fstats=statsInfo$fstats, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), verbose = TRUE) {
-	stopifnot(length(intersect(names(statsInfo), c("position"))) == 1)
-	
+findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), verbose = TRUE) {
 	## Identify the clusters
 	if(is.null(cluster)) {
 		if(verbose) message(paste(date(), "findRegions: identifying clusters"))
-		cluster <- clusterMakerRle(statsInfo$position, maxGap)
+		cluster <- clusterMakerRle(position, maxGap)
 	}	
 	
 	## Find the segments
-	Indexes <- getSegmentsRle(x = statsInfo$fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
+	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
 	
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this
-	pos <- which(statsInfo$position)
+	pos <- which(position)
 	
 	## Build the output shell
 	hasInfo <- sapply(Indexes, length) != 0

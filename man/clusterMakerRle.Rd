@@ -2,10 +2,10 @@
 \alias{clusterMakerRle}
 \title{Make clusters of genomic locations based on distance in Rle() world}
 \usage{
-  clusterMakerRle(pos, maxGap = 300L)
+  clusterMakerRle(position, maxGap = 300L)
 }
 \arguments{
-  \item{pos}{A logical Rle indicating the chromosome
+  \item{position}{A logical Rle indicating the chromosome
   positions.}
 
   \item{maxGap}{An integer. Genomic locations within
