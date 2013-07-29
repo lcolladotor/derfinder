@@ -35,8 +35,8 @@
 }
 \value{
   A list with two components. \describe{
-  \item{coverageSplit }{ is a SplitDataFrameList object
-  where each column represents a sample and the data is
+  \item{coverageSplit }{ is a list of DataFrames. Each
+  DataFrame column represents a sample and the data is
   partioned according to \code{chunksize}. The coverage
   information is scaled and log2 transformed. Note that if
   \code{colsubset} is not \code{NULL} the number of columns
