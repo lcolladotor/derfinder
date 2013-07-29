@@ -51,13 +51,13 @@
 #' \dontrun{
 #' ## Compare vs bumphunter
 #' library("bumphunter")
-#' regs2 <- regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE)
+#' regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE)
 #' regs2
 #' ## Note that regs$L can be calculated with width(regs)
 #' identical(width(regs), as.integer(regs2$L))
 #' ## Time comparison
 #' library("microbenchmark")
-#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(stats$fstats), rep("chr21", length(stats$fstats)), which(stats$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
+#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
 #' levels(micro$expr) <- c("new", "original")
 #' micro
 #' ## The bumphunter function regionFinder() is faster in small data sets.
@@ -108,7 +108,7 @@ findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTabl
 			clusterL = Rle(runLength(cluster)[clus])
 		)
     }
-	rm(position, Indexes, view, clus, pos.ir, y, fstats)
+	rm(Indexes, view, clus, pos.ir, y, fstats)
 	
 	
 	## Fix names and format

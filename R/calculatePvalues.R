@@ -13,11 +13,12 @@
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return A list with two components. The first one --\code{$regions}-- is a GRanges with metadata columns given by \link{findRegions} and
+#' @return A list with thre components:
 #' \describe{
-#' \item{pvalues }{ p-value of the region calculated via permutations of the samples.}
+#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples.}
+#' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
+#' \item{nullwidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
 #' }
-#' The second one --\code{$nullstats}-- is a numeric Rle with the mean of the null statistics by segment.
 #'
 #' @author Leonardo Collado-Torres
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}
@@ -47,6 +48,9 @@
 #' ## Calculate the p-values and define the regions of interest.
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 #' regsWithP
+#'
+#' ## Calculate areas of the null segments
+#' abs(regsWithP$nullstats) * regsWithP$nullwidths
 #'
 #' ## Histogram of the original F statistics
 #' f.ori <- as.numeric(fstats)
@@ -110,7 +114,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	
 	## Pre-allocate memory
-	nullstats <- vector("list", length(seeds) * 2)
+	nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	allcols <- seq_len(ncol(coveragePrep$coverageSplit)[[1]])
 		
@@ -136,15 +140,18 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		
 		## Calculate mean statistics
 	    for (j in 1:2) {
-			nullstats[[last + j]] <- mean(Views(fstats.output, Indexes[[j]]))
+			view <- Views(fstats.output, Indexes[[j]])
+			nullstats[[last + j]] <- mean(view)
+			nullwidths[[last + j]] <- Rle(width(view))
 	    }		
 		last <- last + 2
 		
 		## Finish loop
-		rm(idx.permute, fstats.output, Indexes)
+		rm(idx.permute, fstats.output, Indexes, view)
 		
 	}
-	nullstats <- abs(do.call(c, nullstats))
+	nullstats <- do.call(c, nullstats)
+	nullwidths <- do.call(c, nullwidths)
 	rm(coveragePrep)
 	
 	
@@ -154,7 +161,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
 	
 	## Save the nullstats too
-	final <- list(regions=regs, nullstats=Rle(nullstats))
+	final <- list(regions=regs, nullstats=Rle(nullstats), nullwidths=nullwidths)
 	
 	## Done =)
 	return(final)	

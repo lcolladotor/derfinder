@@ -45,13 +45,16 @@
   be printed along the way.}
 }
 \value{
-  A list with two components. The first one
-  --\code{$regions}-- is a GRanges with metadata columns
-  given by \link{findRegions} and \describe{ \item{pvalues
-  }{ p-value of the region calculated via permutations of
-  the samples.} } The second one --\code{$nullstats}-- is a
+  A list with thre components: \describe{ \item{regions }{
+  is a GRanges with metadata columns given by
+  \link{findRegions} with the additional metadata column
+  \code{pvalues}: p-value of the region calculated via
+  permutations of the samples.} \item{nullstats}{ is a
   numeric Rle with the mean of the null statistics by
-  segment.
+  segment.} \item{nullwidths}{ is a numeric Rle with the
+  length of each of the segments in the null distribution.
+  The area can be obtained by multiplying the absolute
+  \code{nullstats} by the corresponding lengths.} }
 }
 \description{
   First, this function clusters the genomic positions and
@@ -84,6 +87,9 @@ cutoff <- qf(0.95, df1-df0, n-df1)
 ## Calculate the p-values and define the regions of interest.
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 regsWithP
+
+## Calculate areas of the null segments
+abs(regsWithP$nullstats) * regsWithP$nullwidths
 
 ## Histogram of the original F statistics
 f.ori <- as.numeric(fstats)
