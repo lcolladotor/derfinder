@@ -82,7 +82,8 @@ loadCoverage <- function(dirs, chr, cutoff=5, chrlen=NULL, output=NULL, verbose=
 	## Save if output is specified
 	if(!is.null(output)) {
 		## Rename the object to a name that will make more sense later
-		varname <- paste0("chr", chr, "CovInfo")
+		chrnum <- gsub("chr", "", chr)
+		varname <- paste0("chr", chrnum, "CovInfo")
 		assign(varname, res)
 		
 		## Automatic output name
