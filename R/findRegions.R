@@ -11,6 +11,7 @@
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
+#' @param method This argument is passed to \link{getSegmentsRle} and in most cases should be used with the default value.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. Each of them has the following metadata variables.
 #' \describe{
@@ -30,7 +31,7 @@
 #' @export
 #' @importFrom IRanges IRanges start end width Views Rle runLength
 #' @importFrom GenomicRanges GRanges GRangesList
-#' @importMethodsFrom IRanges which length mean
+#' @importMethodsFrom IRanges quantile which length mean
 #' @importMethodsFrom GenomicRanges unlist
 #' @examples
 #' ## Construct the models
@@ -67,15 +68,15 @@
 #' annotation
 #' }
 
-findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), verbose = TRUE) {
+findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE, method="speed") {
 	## Identify the clusters
 	if(is.null(cluster)) {
-		if(verbose) message(paste(date(), "findRegions: identifying clusters"))
+		if(verbose) message(paste(Sys.time(), "findRegions: identifying clusters"))
 		cluster <- clusterMakerRle(position, maxGap)
 	}	
 	
 	## Find the segments
-	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
+	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE, method=method)
 	
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this

@@ -5,9 +5,9 @@
   calculatePvalues(coveragePrep, models, fstats,
     nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    chr, maxGap = 300L,
-    cutoff = quantile(abs(fstats), 0.99),
-    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+    chr, maxGap = 300L, cutoff = quantile(fstats, 0.99),
+    mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
+    method = "speed")
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -43,6 +43,10 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
+
+  \item{method}{This argument is passed to
+  \link{getSegmentsRle} and in most cases should be used
+  with the default value.}
 }
 \value{
   A list with thre components: \describe{ \item{regions }{

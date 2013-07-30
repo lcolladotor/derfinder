@@ -56,7 +56,7 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 		colmeds <- sapply(coverageInfo$coverage, median)
 	}
 	## Info for the user
-	if(verbose) message(paste0(date(), " makeModels: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
+	if(verbose) message(paste0(Sys.time(), " makeModels: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
 		
 	## To avoid a warning in R CMD check
 	mod <- mod0 <- NULL

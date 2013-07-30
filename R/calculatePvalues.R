@@ -12,6 +12,7 @@
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
+#' @param method This argument is passed to \link{getSegmentsRle} and in most cases should be used with the default value.
 #'
 #' @return A list with thre components:
 #' \describe{
@@ -23,7 +24,7 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}
 #' @export
-#' @importMethodsFrom IRanges nrow ncol c mean lapply unlist 
+#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' @importFrom IRanges Views RleList Rle
 #' @importFrom parallel mclapply
 #' @examples
@@ -95,7 +96,7 @@
 #' ## Doesn't seem to help much with this toy data.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(abs(fstats), 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, method="speed") {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
@@ -105,11 +106,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	
 	## Identify the clusters
-	if(verbose) message(paste(date(), "calculatePvalues: identifying clusters"))
+	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
 	cluster <- clusterMakerRle(coveragePrep$position, maxGap)
 	
 	## Find the regions
-	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
+	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose, method=method) 
 	rm(fstats)
 	
 	
@@ -119,7 +120,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	nSamples <- seq_len(nrow(models$mod))
 		
 	for(i in seq_along(seeds)) {
-		if(verbose) message(paste(date(), "calculatePvalues: calculating F-statistics for permutation", i))		
+		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i))		
 		
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
@@ -135,7 +136,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		Indexes <- getSegmentsRle(x = fstats.output, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
+		Indexes <- getSegmentsRle(x=fstats.output, f=cluster, cutoff=cutoff, verbose=verbose, zero=FALSE, method=method)
 		
 		## Calculate mean statistics
 	    for (j in 1:2) {
@@ -155,7 +156,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	
 	## Calculate pvalues
-	if(verbose) message(paste(date(), "calculatePvalues: calculating the p-values"))
+	if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
 	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
 	

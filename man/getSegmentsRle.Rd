@@ -2,8 +2,8 @@
 \alias{getSegmentsRle}
 \title{Segment a Rle into positive, zero, and negative regions}
 \usage{
-  getSegmentsRle(x, f, cutoff = quantile(abs(x), 0.99),
-    verbose = FALSE, zero = TRUE)
+  getSegmentsRle(x, f, cutoff = quantile(x, 0.99),
+    verbose = FALSE, zero = TRUE, method = "speed")
 }
 \arguments{
   \item{x}{A numeric Rle.}
@@ -25,6 +25,12 @@
 
   \item{zero}{If \code{TRUE} the zero index is computed. If
   \code{FALSE} only the up and down indexes are computed.}
+
+  \item{method}{If \code{speed} then the original
+  \link[bumphunter]{getSegments} is used and the final
+  IRanges is built from the results. If \code{memory} then
+  the function operates in Rle world and attempts to reduce
+  the memory overhead.}
 }
 \value{
   A list of IRanges, one for the up segments, one for the
@@ -38,9 +44,14 @@
   \link[bumphunter]{getSegments}.
 }
 \details{
-  \link[bumphunter]{getSegments} adapted to Rle world.
-
-  It is a a helper function for \link{findRegions}.
+  Note that with an Rle of length 5 millon that resulted in
+  a total of 7319 segments (upIndex and downIndex only),
+  \link{getSegmentsRle} with \code{method="speed"} runs in
+  around 12 seconds versus 24 seconds with
+  \code{method="memory"}. The memory difference was less
+  than 1Gb of RAM. Thus unless you have a much larger data
+  set that has many more segments and are running into
+  memory problems you should use \code{method="speed"}.
 }
 \examples{
 library("IRanges")
@@ -48,15 +59,18 @@ set.seed(20130725)
 pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
 cluster <- clusterMakerRle(pos, 100L)
 data <- Rle(rnorm(sum(pos)))
-segs <- getSegmentsRle(data, cluster, verbose=TRUE)
-segs
+cutoff <- quantile(data, .99)
+
+## Time differences between methods
+system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE, method="speed"))
+system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE, method="memory"))
 
 \dontrun{
 ## The output is different in look than the one from getSegments() but it's use is similar.
 ## Plus it can be transformed into the same format as the ouptut from getSegmentsRle().
 library("bumphunter")
 foo <- function() {
-	segs2 <- getSegments(as.numeric(data), as.integer(cluster))
+	segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, assumeSorted=TRUE)
 	segs.ir <- lapply(segs2, function(ind) {
 		tmp <- lapply(ind, function(segment) {
 			c("start"=min(segment), "end"=max(segment))
@@ -68,9 +82,9 @@ foo <- function() {
 }
 identical(foo(), segs)
 
-## getSegmentsRle() is slower, yet hopefully less memory intense.
+## getSegmentsRle(method="memory") is slower, yet hopefully less memory heavy.
 library("microbenchmark")
-micro <- microbenchmark(getSegmentsRle(data, cluster), foo())
+micro <- microbenchmark(getSegmentsRle(data, cluster, cutoff, method="memory"), getSegmentsRle(data, cluster, cutoff, method="speed"), foo())
 micro
 }
 }

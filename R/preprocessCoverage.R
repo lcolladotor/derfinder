@@ -33,7 +33,7 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	## Subset the DataFrame to use only the columns of interest
 	if(!is.null(colsubset)) {
 		## Re-filter
-		if(verbose) message(paste(date(), "preprocessCoverage: filtering the data"))
+		if(verbose) message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
 		coverageInfo <- filterData(data=coverageInfo$coverage[, colsubset], cutoff=cutoff, index=coverageInfo$position, verbose=verbose)
 	}
 	
@@ -56,7 +56,7 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	}
 	
 	## Split the data into appropriate chunks
-	if(verbose) message(paste(date(), "preprocessCoverage: splitting the data"))
+	if(verbose) message(paste(Sys.time(), "preprocessCoverage: splitting the data"))
 	if(lastloop == 0) {
 		split.len <- numrow
 	} else {

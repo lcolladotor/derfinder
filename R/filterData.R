@@ -64,7 +64,7 @@ filterData <- function(data, cutoff, index=NULL, colnames=NULL, verbose=TRUE) {
 	
 	## Info for the user
 	if(verbose) {
-		message(paste(date(), "filterData: originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
+		message(paste(Sys.time(), "filterData: originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
 	}
 	rm(data)
 		
