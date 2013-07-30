@@ -8,6 +8,9 @@
 #' @param scalefac A log transformation is used on the count tables, so zero counts present a problem.  What number should we add to the entire matrix before running the models?
 #' @param chunksize How many rows of \code{coverageInfo$coverage} should be processed at a time?
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
+#' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
+#'
+#' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to determine the \code{chunksize}. This is useful if you want to split the data so each core gets the same amount of data (up to rounding).
 #'
 #' @return A list with two components.
 #' \describe{
@@ -26,7 +29,7 @@
 #' names(dataReady)
 #' dataReady
 
-preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksize = 5e6, colsubset = NULL, verbose=FALSE) {
+preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksize = 5e6, colsubset = NULL, mc.cores=getOption("mc.cores", 1L), verbose=FALSE) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
 		
@@ -39,9 +42,15 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	
 	## Get the positions and shorter variables
 	data <- coverageInfo$coverage
-	
-	## Determine total and loop sizes
 	numrow <- nrow(data)
+	
+	## Automatic chunksize depending on the number of cores
+	if(is.null(chunksize)) {
+		chunksize <- ceiling(numrow / mc.cores)
+		if(verbose) message(paste(Sys.time(), "preprocessCoverage: using chunksize", chunksize))
+	}
+	
+	## Determine number of loops
 	lastloop <- trunc(numrow / chunksize)
 	
 	## Fix the lastloop in case that the N is a factor of chunksize

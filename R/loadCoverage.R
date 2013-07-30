@@ -66,7 +66,9 @@ loadCoverage <- function(dirs, chr, cutoff=5, chrlen=NULL, output=NULL, verbose=
 		if(verbose) message(paste(Sys.time(), "loadCoverage: loading BAM file", path(x)))
 	
 		## Read the BAM file and get the coverage. Extract only the one for the chr in question.
+## In R-devel, readBamGappedAlignments is deprecated! Check ?readGAlignmentsFromBam
 		output <- coverage(readBamGappedAlignments(x, param=param))[[chr]]
+		
 		
 		## Done
 		return(output)

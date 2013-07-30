@@ -4,7 +4,7 @@
 \usage{
   preprocessCoverage(coverageInfo, cutoff = 5,
     scalefac = 32, chunksize = 5e+06, colsubset = NULL,
-    verbose = FALSE)
+    mc.cores = getOption("mc.cores", 1L), verbose = FALSE)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -32,6 +32,9 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
+
+  \item{mc.cores}{This argument is passed to
+  \link[parallel]{mclapply} to run \link{fstats.apply}.}
 }
 \value{
   A list with two components. \describe{
@@ -55,6 +58,12 @@
   \link{loadCoverage}, scales the data, does the log2
   transformation, and splits it into appropriate chunks for
   using \link{calculateStats}.
+}
+\details{
+  If \code{chunksize} is \code{NULL}, then \code{mc.cores}
+  is used to determine the \code{chunksize}. This is useful
+  if you want to split the data so each core gets the same
+  amount of data (up to rounding).
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()
