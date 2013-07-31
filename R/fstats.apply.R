@@ -1,18 +1,17 @@
 #' Calculate F-statistics per base by extracting chunks from a DataFrame
 #'
-#' Extract chunks from a DataFrame and get the F-statistics. This is a helper function for \link{calculateStats} and \link{calculatePvalues}.
+#' Extract chunks from a DataFrame and get the F-statistics on the rows of \code{data}, comparing the models \code{mod} (alternative) and \code{mod0} (null). This is a helper function for \link{calculateStats} and \link{calculatePvalues}.
 #'
-#' @param data The DataFrame containing the coverage information. Normally stored in \code{coverageInfo$coverage} from \link{loadCoverage}.
-#' @param mod This argument is passed to \link{fstats}.
-#' @param mod0 This argument is passed to \link{fstats}.
+#' @param data The DataFrame containing the coverage information. Normally stored in \code{coveragePrep$coverageSplit} from \link{preprocessCoverage}. Could also be the full data from \link{loadCoverage}.
+#' @param mod The design matrix for the alternative model. Should be m by p where p is the number of covariates (normally also including the intercept).
+#' @param mod0 The design matrix for the null model. Should be m by p_0.
 #'
-#' @return A Rle with the F-statistics per base for the chunk in question.
+#' @return A numeric Rle with the F-statistics per base for the chunk in question.
 #'
-#' @author Leonardo Collado-Torres
+#' @author Jeff Leek, Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges Rle
 #' @importMethodsFrom IRanges as.data.frame as.matrix
-#' @seealso \link{calculateStats}, \link{fstats}, \link{calculatePvalues}
+#' @seealso \link{calculateStats}, \link{calculatePvalues}
 #' @examples
 #' ## Create the model matrices
 #' mod <- model.matrix(~ genomeInfo$pop)
@@ -24,11 +23,35 @@
 
 fstats.apply <- function(data, mod, mod0) {
 	##  Subset the DataFrame to the current chunk and transform to a regular matrix
-	mymat <- as.matrix(as.data.frame(data))
+	dat <- as.matrix(as.data.frame(data))
 	rm(data)
 	
+	# A function for calculating F-statistics
+	# on the rows of dat, comparing the models
+	# mod (alternative) and mod0 (null). 	
+	n <- dim(dat)[2]
+	m <- dim(dat)[1]
+	p <- rep(0, m)
+	Id <- diag(n)
+	nVec <- rep(1, n)
+
+	## Calculate rss1
+	resid <- dat %*% (Id - mod %*% solve(t(mod) %*% mod) %*% t(mod))
+	rss1 <- (resid*resid) %*% nVec
+	rm(resid)
 	
-	## Get the Fstats
-	stats <- Rle(fstats(mymat, mod, mod0))
-	return(stats)
+	
+	## Calculate rss2
+	resid0 <- dat %*% (Id - mod0 %*% solve(t(mod0) %*% mod0) %*% t(mod0))
+	rss0 <- (resid0*resid0) %*% nVec
+	rm(resid0, nVec, Id)
+	
+
+	## Get the F-stats
+	df1 <- dim(mod)[2]
+	df0 <- dim(mod0)[2]
+	fstats <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (rss1 / (n - df1))))
+	
+	## Done
+	return(fstats)
 }

@@ -4,8 +4,7 @@
 \usage{
   findRegions(position, fstats, chr, cluster = NULL,
     y = fstats, oneTable = TRUE, maxGap = 300L,
-    cutoff = quantile(fstats, 0.99), verbose = TRUE,
-    method = "speed")
+    cutoff = quantile(fstats, 0.99), verbose = TRUE)
 }
 \arguments{
   \item{position}{A logical Rle of genomic positions. This
@@ -40,10 +39,6 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
-
-  \item{method}{This argument is passed to
-  \link{getSegmentsRle} and in most cases should be used
-  with the default value.}
 }
 \value{
   Either a GRanges or a GRangesList as determined by

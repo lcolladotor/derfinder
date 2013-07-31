@@ -3,7 +3,7 @@
 #' This function takes the coverage data from \link{loadCoverage}, scales the data, does the log2 transformation, and splits it into appropriate chunks for using \link{calculateStats}.
 #' 
 #' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
-#' @param cutoff Per base pair, at least one sample has to have coverage greater than \code{cutoff} to be included in the result.
+#' @param cutoff This argument is passed to \link{filterData}.
 #' @param colsubset Optional vector of column indices of \code{coverageInfo$coverage} that denote samples you wish to include in analysis. 
 #' @param scalefac A log transformation is used on the count tables, so zero counts present a problem.  What number should we add to the entire matrix before running the models?
 #' @param chunksize How many rows of \code{coverageInfo$coverage} should be processed at a time?
@@ -19,7 +19,7 @@
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{loadCoverage}, \link{calculateStats}
+#' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
 #' @importMethodsFrom IRanges ncol nrow sapply "[" "[[" "[[<-" c split
 #' @importFrom IRanges Rle
@@ -75,7 +75,7 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 			split.len <- c(split.len, split.len.sum)
 		}
 	}
-	split.idx <- Rle(0:lastloop, split.len)
+	split.idx <- Rle(seq_len(lastloop + 1), split.len)
 	data.split <- as.list(split(data, split.idx))
 	
 	## Done =)

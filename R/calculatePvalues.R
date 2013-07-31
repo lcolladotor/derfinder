@@ -12,9 +12,8 @@
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
-#' @param method This argument is passed to \link{getSegmentsRle} and in most cases should be used with the default value.
 #'
-#' @return A list with thre components:
+#' @return A list with three components:
 #' \describe{
 #' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples.}
 #' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
@@ -34,7 +33,8 @@
 #' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
 #'
 #' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+#' ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
+#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 #' 
 #' ## Get the F statistics
 #' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
@@ -85,7 +85,6 @@
 #' head(annotation)
 #'
 #' ## Compare speed between 1 and 4 cores (must have them!)
-#' ## The chunksize is artifically reduced just to actually need to run mclapply
 #' library("microbenchmark")
 #' micro <- microbenchmark(
 #' calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
@@ -93,10 +92,10 @@
 #' times=10)
 #' levels(micro$expr) <- c("one", "four")
 #' micro
-#' ## Doesn't seem to help much with this toy data.
+#' ## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, method="speed") {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
@@ -110,7 +109,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	cluster <- clusterMakerRle(coveragePrep$position, maxGap)
 	
 	## Find the regions
-	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose, method=method) 
+	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
 	rm(fstats)
 	
 	
@@ -136,7 +135,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		Indexes <- getSegmentsRle(x=fstats.output, f=cluster, cutoff=cutoff, verbose=verbose, zero=FALSE, method=method)
+		Indexes <- getSegmentsRle(x=fstats.output, f=cluster, cutoff=cutoff, verbose=verbose, zero=FALSE)
 		
 		## Calculate mean statistics
 	    for (j in 1:2) {

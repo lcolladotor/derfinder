@@ -13,9 +13,8 @@
   the cutoff. This object is generated using
   \link{loadCoverage}.}
 
-  \item{cutoff}{Per base pair, at least one sample has to
-  have coverage greater than \code{cutoff} to be included
-  in the result.}
+  \item{cutoff}{This argument is passed to
+  \link{filterData}.}
 
   \item{colsubset}{Optional vector of column indices of
   \code{coverageInfo$coverage} that denote samples you wish
@@ -75,6 +74,7 @@ dataReady
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}, \link{calculateStats}
+  \link{filterData}, \link{loadCoverage},
+  \link{calculateStats}
 }
 

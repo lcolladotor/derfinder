@@ -6,8 +6,7 @@
     nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     chr, maxGap = 300L, cutoff = quantile(fstats, 0.99),
-    mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
-    method = "speed")
+    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -43,13 +42,9 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
-
-  \item{method}{This argument is passed to
-  \link{getSegmentsRle} and in most cases should be used
-  with the default value.}
 }
 \value{
-  A list with thre components: \describe{ \item{regions }{
+  A list with three components: \describe{ \item{regions }{
   is a GRanges with metadata columns given by
   \link{findRegions} with the additional metadata column
   \code{pvalues}: p-value of the region calculated via
@@ -76,7 +71,8 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
 
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 
 ## Get the F statistics
 fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
@@ -127,7 +123,6 @@ annotation <- annotateNearest(regsWithP$regions, "hg19")
 head(annotation)
 
 ## Compare speed between 1 and 4 cores (must have them!)
-## The chunksize is artifically reduced just to actually need to run mclapply
 library("microbenchmark")
 micro <- microbenchmark(
 calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
@@ -135,7 +130,7 @@ calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cut
 times=10)
 levels(micro$expr) <- c("one", "four")
 micro
-## Doesn't seem to help much with this toy data.
+## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 }
 }
 \author{

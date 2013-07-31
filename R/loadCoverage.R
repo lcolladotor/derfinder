@@ -4,7 +4,7 @@
 #' 
 #' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}.
 #' @param chr Chromosome to read. Should be in simple format. For example, use X and not chrX.
-#' @param cutoff Per base pair, at least one sample has to have coverage greater than \code{cutoff} to be included in the result.
+#' @param cutoff This argument is passed to \link{filterData}.
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} then an automatic name is constructed (chrXCovInfo.Rdata for example). If another character is specified, then that name is used for the output file.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
@@ -36,8 +36,17 @@
 #'
 #' ## The data is compact enough to be loaded in memory
 #' print(object.size(data), units="Kb")
+#'
+#' \dontrun{
+#' ## Read the coverage without applying any cutoff.
+#' ## This can be useful for downstream analysis including coverage plots.
+#' system.time(data2 <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL))
+#' 
+#' ## Note that the object size is pretty much the same due to the Rle compression
+#' print(object.size(data2), units="Kb")
+#' }
 
-loadCoverage <- function(dirs, chr, cutoff=5, chrlen=NULL, output=NULL, verbose=TRUE) {
+loadCoverage <- function(dirs, chr, cutoff=NULL, chrlen=NULL, output=NULL, verbose=TRUE) {
 	## Do the indexes exist?
 	bai <- paste0(dirs, ".bai")
 	if(all(file.exists(bai))) {

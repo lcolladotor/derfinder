@@ -3,7 +3,7 @@
 \title{Segment a Rle into positive, zero, and negative regions}
 \usage{
   getSegmentsRle(x, f, cutoff = quantile(x, 0.99),
-    verbose = FALSE, zero = TRUE, method = "speed")
+    verbose = FALSE, zero = TRUE)
 }
 \arguments{
   \item{x}{A numeric Rle.}
@@ -25,12 +25,6 @@
 
   \item{zero}{If \code{TRUE} the zero index is computed. If
   \code{FALSE} only the up and down indexes are computed.}
-
-  \item{method}{If \code{speed} then the original
-  \link[bumphunter]{getSegments} is used and the final
-  IRanges is built from the results. If \code{memory} then
-  the function operates in Rle world and attempts to reduce
-  the memory overhead.}
 }
 \value{
   A list of IRanges, one for the up segments, one for the
@@ -40,18 +34,8 @@
 \description{
   Given two cutoffs, L and U, this function divides a
   numerical Rle into contiguous parts that are above U,
-  between L and U, and below L. This is very similar to
+  between L and U, and below L. This is wrapper for
   \link[bumphunter]{getSegments}.
-}
-\details{
-  Note that with an Rle of length 5 millon that resulted in
-  a total of 7319 segments (upIndex and downIndex only),
-  \link{getSegmentsRle} with \code{method="speed"} runs in
-  around 12 seconds versus 24 seconds with
-  \code{method="memory"}. The memory difference was less
-  than 1Gb of RAM. Thus unless you have a much larger data
-  set that has many more segments and are running into
-  memory problems you should use \code{method="speed"}.
 }
 \examples{
 library("IRanges")
@@ -61,9 +45,8 @@ cluster <- clusterMakerRle(pos, 100L)
 data <- Rle(rnorm(sum(pos)))
 cutoff <- quantile(data, .99)
 
-## Time differences between methods
-system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE, method="speed"))
-system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE, method="memory"))
+## It's quite fast
+system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE))
 
 \dontrun{
 ## The output is different in look than the one from getSegments() but it's use is similar.
@@ -82,9 +65,9 @@ foo <- function() {
 }
 identical(foo(), segs)
 
-## getSegmentsRle(method="memory") is slower, yet hopefully less memory heavy.
+## Pretty much the same speed if not a tiny bit faster
 library("microbenchmark")
-micro <- microbenchmark(getSegmentsRle(data, cluster, cutoff, method="memory"), getSegmentsRle(data, cluster, cutoff, method="speed"), foo())
+micro <- microbenchmark(getSegmentsRle(data, cluster, cutoff), foo())
 micro
 }
 }

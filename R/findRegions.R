@@ -11,7 +11,6 @@
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
-#' @param method This argument is passed to \link{getSegmentsRle} and in most cases should be used with the default value.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. Each of them has the following metadata variables.
 #' \describe{
@@ -68,7 +67,7 @@
 #' annotation
 #' }
 
-findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE, method="speed") {
+findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE) {
 	## Identify the clusters
 	if(is.null(cluster)) {
 		if(verbose) message(paste(Sys.time(), "findRegions: identifying clusters"))
@@ -76,7 +75,7 @@ findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTabl
 	}	
 	
 	## Find the segments
-	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE, method=method)
+	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
 	
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this

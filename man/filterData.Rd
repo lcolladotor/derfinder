@@ -2,16 +2,16 @@
 \alias{filterData}
 \title{Filter the positions of interest}
 \usage{
-  filterData(data, cutoff, index = NULL, colnames = NULL,
-    verbose = TRUE)
+  filterData(data, cutoff = NULL, index = NULL,
+    colnames = NULL, verbose = TRUE)
 }
 \arguments{
   \item{data}{Either a list of Rle objects or a DataFrame
   with the coverage information.}
 
   \item{cutoff}{Per base pair, at least one sample has to
-  have coverage greater than \code{cutoff} to be included
-  in the result.}
+  have coverage strictly greater than \code{cutoff} to be
+  included in the result.}
 
   \item{index}{A logical Rle with the positions of the
   chromosome that passed the cutoff. If \code{NULL} it is
@@ -42,6 +42,16 @@
   helper function for \link{loadCoverage} and
   \link{preprocessCoverage}.
 }
+\details{
+  If \code{cutoff} is \code{NULL} then the data is grouped
+  into DataFrame without applying any cutoffs. This can be
+  useful if you want to use \link{loadCoverage} to build
+  the coverage DataFrame without applying any cutoffs for
+  other downstream purposes like plotting the coverage
+  values of a given region. You can always specify the
+  \code{colsubset} argument in \link{preprocessCoverage} to
+  filter the data before calculating the F statistics.
+}
 \examples{
 library("IRanges")
 x <- Rle(round(runif(1e4, max=10)))
@@ -59,6 +69,6 @@ identical(sum(filt2$pos), nrow(filt2$cov))
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}
+  \link{loadCoverage}, \link{preprocessCoverage}
 }
 

@@ -2,7 +2,7 @@
 \alias{loadCoverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-  loadCoverage(dirs, chr, cutoff = 5, chrlen = NULL,
+  loadCoverage(dirs, chr, cutoff = NULL, chrlen = NULL,
     output = NULL, verbose = TRUE)
 }
 \arguments{
@@ -14,9 +14,8 @@
   \item{chr}{Chromosome to read. Should be in simple
   format. For example, use X and not chrX.}
 
-  \item{cutoff}{Per base pair, at least one sample has to
-  have coverage greater than \code{cutoff} to be included
-  in the result.}
+  \item{cutoff}{This argument is passed to
+  \link{filterData}.}
 
   \item{chrlen}{The chromosome length in base pairs. If
   it's \code{NULL}, the chromosome length is extracted from
@@ -61,6 +60,15 @@ identical(data, genomeData)
 
 ## The data is compact enough to be loaded in memory
 print(object.size(data), units="Kb")
+
+\dontrun{
+## Read the coverage without applying any cutoff.
+## This can be useful for downstream analysis including coverage plots.
+system.time(data2 <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL))
+
+## Note that the object size is pretty much the same due to the Rle compression
+print(object.size(data2), units="Kb")
+}
 }
 \author{
   Leonardo Collado-Torres, Andrew Jaffe

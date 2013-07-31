@@ -7,19 +7,26 @@
 \arguments{
   \item{data}{The DataFrame containing the coverage
   information. Normally stored in
-  \code{coverageInfo$coverage} from \link{loadCoverage}.}
+  \code{coveragePrep$coverageSplit} from
+  \link{preprocessCoverage}. Could also be the full data
+  from \link{loadCoverage}.}
 
-  \item{mod}{This argument is passed to \link{fstats}.}
+  \item{mod}{The design matrix for the alternative model.
+  Should be m by p where p is the number of covariates
+  (normally also including the intercept).}
 
-  \item{mod0}{This argument is passed to \link{fstats}.}
+  \item{mod0}{The design matrix for the null model. Should
+  be m by p_0.}
 }
 \value{
-  A Rle with the F-statistics per base for the chunk in
-  question.
+  A numeric Rle with the F-statistics per base for the
+  chunk in question.
 }
 \description{
-  Extract chunks from a DataFrame and get the F-statistics.
-  This is a helper function for \link{calculateStats} and
+  Extract chunks from a DataFrame and get the F-statistics
+  on the rows of \code{data}, comparing the models
+  \code{mod} (alternative) and \code{mod0} (null). This is
+  a helper function for \link{calculateStats} and
   \link{calculatePvalues}.
 }
 \examples{
@@ -31,10 +38,9 @@ fstats.output <- fstats.apply(genomeData$coverage, mod, mod0)
 fstats.output
 }
 \author{
-  Leonardo Collado-Torres
+  Jeff Leek, Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculateStats}, \link{fstats},
-  \link{calculatePvalues}
+  \link{calculateStats}, \link{calculatePvalues}
 }
 
