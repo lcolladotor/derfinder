@@ -32,17 +32,22 @@
 preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksize = 5e6, colsubset = NULL, mc.cores=getOption("mc.cores", 1L), verbose=FALSE) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
+	
+	coverage <- coverageInfo$coverage
+	position <- coverageInfo$position
 		
 	## Subset the DataFrame to use only the columns of interest
 	if(!is.null(colsubset)) {
 		## Re-filter
 		if(verbose) message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
 		coverageInfo <- filterData(data=coverageInfo$coverage[, colsubset], cutoff=cutoff, index=coverageInfo$position, verbose=verbose)
+		coverage <- coverageInfo$coverage
+		position <- coverageInfo$position
 	}
+	rm(coverageInfo)
 	
 	## Get the positions and shorter variables
-	data <- coverageInfo$coverage
-	numrow <- nrow(data)
+	numrow <- nrow(coverage)
 	
 	## Automatic chunksize depending on the number of cores
 	if(is.null(chunksize)) {
@@ -59,9 +64,9 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	}
 		
 	## Log2 transform and scale
-	numcol <- ncol(coverageInfo$coverage)
+	numcol <- ncol(coverage)
 	for(i in seq_len(numcol)) {
-		data[[i]] <- log2(data[[i]] + scalefac)
+		coverage[[i]] <- log2(coverage[[i]] + scalefac)
 	}
 	
 	## Split the data into appropriate chunks
@@ -76,10 +81,10 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 		}
 	}
 	split.idx <- Rle(seq_len(lastloop + 1), split.len)
-	data.split <- as.list(split(data, split.idx))
+	coverage.split <- as.list(split(coverage, split.idx))
 	
 	## Done =)
-	result <- list("coverageSplit"=data.split, "position"=coverageInfo$position)
+	result <- list("coverageSplit"=coverage.split, "position"=position)
 	return(result)	
 	
 }

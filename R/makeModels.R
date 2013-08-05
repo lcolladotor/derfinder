@@ -35,9 +35,10 @@
 makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, verbose=FALSE) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
+	coverage <- coverageInfo$coverage
 		
 	## Check that the columns match
-	numcol <- ncol(coverageInfo$coverage)
+	numcol <- ncol(coverage)
 	if(numcol != length(group)) {
 		stop("The length of 'group' and the number of columns in 'coverageInfo$coverage' do not match.")
 	} else if (!is.null(adjustvars) & NROW(adjustvars) != numcol) {
@@ -46,15 +47,16 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 			
 	## Get the medians of the columns
 	if(nonzero) {
-		colmeds <- sapply(coverageInfo$coverage, function(y) { 
+		colmeds <- sapply(coverage, function(y) { 
 			## Catch cases where the is no data points greater than 0
 			tmp <- try(median(y[y > 0]), silent=TRUE)
 			res <- ifelse(inherits(tmp, "try-error"), 0, tmp)
 			return(res)
 		})
 	} else {
-		colmeds <- sapply(coverageInfo$coverage, median)
+		colmeds <- sapply(coverage, median)
 	}
+	rm(coverage)
 	## Info for the user
 	if(verbose) message(paste0(Sys.time(), " makeModels: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
 		

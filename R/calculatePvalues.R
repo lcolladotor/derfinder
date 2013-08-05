@@ -106,17 +106,19 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	## Identify the clusters
 	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
-	cluster <- clusterMakerRle(coveragePrep$position, maxGap)
+	position <- coveragePrep$position
+	cluster <- clusterMakerRle(position, maxGap)
 	
 	## Find the regions
-	regs <- findRegions(coveragePrep$position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
-	rm(fstats)
+	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
+	rm(fstats, position)
 	
 	
 	## Pre-allocate memory
 	nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	nSamples <- seq_len(nrow(models$mod))
+	coverageSplit <- coveragePrep$coverageSplit
 		
 	for(i in seq_along(seeds)) {
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i))		
@@ -131,7 +133,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, ]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(coveragePrep$coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores)
+		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
@@ -151,7 +153,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	}
 	nullstats <- do.call(c, nullstats)
 	nullwidths <- do.call(c, nullwidths)
-	rm(coveragePrep)
+	rm(coveragePrep, coverageSplit)
 	
 	
 	## Calculate pvalues

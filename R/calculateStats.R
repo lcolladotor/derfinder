@@ -32,20 +32,25 @@ calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 
 	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position"))) == 2)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	
+	coverageSplit <- coveragePrep$coverageSplit
+	rm(coveragePrep)
+	mod <- models$mod
+	mod0 <- models$mod0
+	
 	## Check that the columns match
-	numcol <- ncol(coveragePrep$coverageSplit[[1]])
+	numcol <- ncol(coverageSplit[[1]])
 	if(numcol != dim(models$mod)[1]) {
 		stop("The alternative model 'models$mod' is not compatible with the number of samples in 'coveragePrep$coverageSplit'. Check the dimensions of the alternative model.")
 	}
 	
-	chunks <- length(coveragePrep$coverageSplit)
+	chunks <- length(coverageSplit)
 	if(chunks < mc.cores) {
 		warning("The number of chunks in coveragePrep$coverageSplit is smaller than the number of cores selected. For using all the cores specified consider splitting the data into more chunks.")
 	}
 			
 	## Fit a model to each row (chunk) of database:
 	if(verbose) message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
-	fstats.output <- mclapply(coveragePrep$coverageSplit, fstats.apply, mod=models$mod, mod0=models$mod0, mc.cores=mc.cores)
+	fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod, mod0=mod0, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0
 	result <- unlist(RleList(fstats.output), use.names=FALSE)
