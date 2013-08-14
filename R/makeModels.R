@@ -39,7 +39,7 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 		
 	## Check that the columns match
 	numcol <- ncol(coverage)
-	if(numcol != length(group)) {
+	if(numcol != NROW(group)) {
 		stop("The length of 'group' and the number of columns in 'coverageInfo$coverage' do not match.")
 	} else if (!is.null(adjustvars) & NROW(adjustvars) != numcol) {
 		stop("The dimensions of 'adjustvars' should match with the number of columns in 'coverageInfo$coverage'.")
@@ -71,7 +71,7 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 			string1 <- paste(string1, paste0("av", i), sep="+")
 		}		
 	} 
-	eval(parse(text=paste0("mod = model.matrix(~ as.factor(group) + colmeds", string1, ")")))
+	eval(parse(text=paste0("mod = model.matrix(~ group + colmeds", string1, ")")))
 	eval(parse(text=paste0("mod0 = model.matrix(~ + colmeds", string1, ")")))	
 		
 	## Finish
