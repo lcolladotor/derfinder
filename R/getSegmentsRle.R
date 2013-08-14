@@ -64,14 +64,18 @@ getSegmentsRle <- function(x, f, cutoff = quantile(x, 0.99), verbose = FALSE, ze
 	## Built the IRanges object
 	if (verbose) message(paste(Sys.time(), "getSegmentsRle: constructing the output"))
 	res <- lapply(Indexes, function(ind) {
-		tmp <- lapply(ind, function(segment) {
-			c("start"=min(segment), "end"=max(segment))
-		})
-		info <- do.call(rbind, tmp)
-		IRanges(start=info[,"start"], end=info[,"end"])
+		if(length(ind) == 0) {
+			result <- IRanges()
+		} else {
+			tmp <- lapply(ind, function(segment) {
+				c("start"=min(segment), "end"=max(segment))
+			})
+			info <- do.call(rbind, tmp)
+			result <- IRanges(start=info[,"start"], end=info[,"end"])
+		}
+		return(result)
 	})
 
-	
 	## Done!
     return(res)	
 }
