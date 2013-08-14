@@ -6,7 +6,8 @@
     nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     chr, maxGap = 300L, cutoff = quantile(fstats, 0.99),
-    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+    mc.cores = getOption("mc.cores", 2L), method = "fdr",
+    verbose = TRUE)
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -40,6 +41,10 @@
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
 
+  \item{method}{The method to use for adjusting the
+  p-values. This argument is passed to
+  \link[stats]{p.adjust}.}
+
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
@@ -48,11 +53,12 @@
   is a GRanges with metadata columns given by
   \link{findRegions} with the additional metadata column
   \code{pvalues}: p-value of the region calculated via
-  permutations of the samples.} \item{nullstats}{ is a
-  numeric Rle with the mean of the null statistics by
-  segment.} \item{nullwidths}{ is a numeric Rle with the
-  length of each of the segments in the null distribution.
-  The area can be obtained by multiplying the absolute
+  permutations of the samples; \code{padj}: the adjusted
+  p-values.} \item{nullstats}{ is a numeric Rle with the
+  mean of the null statistics by segment.}
+  \item{nullwidths}{ is a numeric Rle with the length of
+  each of the segments in the null distribution. The area
+  can be obtained by multiplying the absolute
   \code{nullstats} by the corresponding lengths.} }
 }
 \description{
