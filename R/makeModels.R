@@ -4,7 +4,7 @@
 #' 
 #' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
 #' @param group A factor vector specifying the sample groups. It's length should match the number of columns used from \code{coverageInfo$coverage}.
-#' @param adjustvars Optional matrix of adjustment variables (e.g. measured confounders, output from SVA, etc.) to use in fitting linear models to each nucleotide. These variables have to be specified by sample and the number of rows must match the number of columns used.
+#' @param adjustvars Optional matrix of adjustment variables (e.g. measured confounders, output from SVA, etc.) to use in fitting linear models to each nucleotide. These variables have to be specified by sample and the number of rows must match the number of columns used. It will also work if it is a vector of the correct length.
 #' @param nonzero If \code{TRUE}, use the median of only the nonzero counts as the library size adjustment.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
@@ -47,18 +47,18 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 			
 	## Get the medians of the columns
 	if(nonzero) {
-		colmeds <- sapply(coverage, function(y) { 
+		colmedians <- sapply(coverage, function(y) { 
 			## Catch cases where the is no data points greater than 0
 			tmp <- try(median(y[y > 0]), silent=TRUE)
 			res <- ifelse(inherits(tmp, "try-error"), 0, tmp)
 			return(res)
 		})
 	} else {
-		colmeds <- sapply(coverage, median)
+		colmedians <- sapply(coverage, median)
 	}
 	rm(coverage)
 	## Info for the user
-	if(verbose) message(paste0(Sys.time(), " makeModels: these are the column medians used: ", paste(colmeds, collapse=", "), "."))
+	if(verbose) message(paste0(Sys.time(), " makeModels: these are the column medians used: ", paste(colmedians, collapse=", "), "."))
 		
 	## To avoid a warning in R CMD check
 	mod <- mod0 <- NULL
@@ -66,13 +66,17 @@ makeModels <- function(coverageInfo, group, adjustvars = NULL, nonzero = FALSE, 
 	## Build the adjusted variables	if needed
 	string1 <- ""
 	if(!is.null(adjustvars)){
-		for(i in 1:dim(adjustvars)[2]){
-			eval(parse(text=paste0("av", i, " <- adjustvars[,", i, "]")))
-			string1 <- paste(string1, paste0("av", i), sep="+")
+		if(NCOL(adjustvars) == 1) {
+			## Only if a vector was supplied
+			adjustvars <- as.data.frame(adjustvars)
+		}		
+		for(i in seq_len(NCOL(adjustvars))) {
+			eval(parse(text=paste0("adjustVar", i, " <- adjustvars[,", i, "]")))
+			string1 <- paste(string1, paste0("adjustVar", i), sep="+")
 		}		
 	} 
-	eval(parse(text=paste0("mod = model.matrix(~ group + colmeds", string1, ")")))
-	eval(parse(text=paste0("mod0 = model.matrix(~ + colmeds", string1, ")")))	
+	eval(parse(text=paste0("mod = model.matrix(~ group + colmedians", string1, ")")))
+	eval(parse(text=paste0("mod0 = model.matrix(~ + colmedians", string1, ")")))	
 		
 	## Finish
 	result <- list(mod=mod, mod0=mod0)

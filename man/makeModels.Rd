@@ -20,7 +20,8 @@
   (e.g. measured confounders, output from SVA, etc.) to use
   in fitting linear models to each nucleotide. These
   variables have to be specified by sample and the number
-  of rows must match the number of columns used.}
+  of rows must match the number of columns used. It will
+  also work if it is a vector of the correct length.}
 
   \item{nonzero}{If \code{TRUE}, use the median of only the
   nonzero counts as the library size adjustment.}
