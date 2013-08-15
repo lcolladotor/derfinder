@@ -52,6 +52,11 @@
   and exons (if any) overlapping in the vicinity of the
   region of interest.
 }
+\details{
+  See the parameter \code{significantCut} in
+  \link{calculatePvalues} for how the significance cutoffs
+  are determined.
+}
 \examples{
 ## Get coverage info without any cutoff
 datadir <- system.file("extdata", "genomeData", package="derfinder2")

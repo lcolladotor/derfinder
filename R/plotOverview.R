@@ -8,6 +8,7 @@
 #' @param type Must be either \code{pval}, \code{qval} or \code{annotation}. It determines whether the plot coloring should be done according to significant p-values (<0.05), significant q-values (<0.10) or annotation regions.
 #' @param base_size Base point size of the plot. This argument is passed to \link[ggplot2]{element_text} (\code{size} argument).
 #' @param areaRel The relative size for the area label when \code{type="pval"} or \code{type="qval"}. Can be useful when making high resolution versions of these plots in devices like CairoPNG.
+#' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
 #'
@@ -64,8 +65,9 @@
 #' plotOverview
 #' }
 
-plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, areaRel=4) {
+plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, areaRel=4, significantCut=c(0.05, 0.10)) {
 	stopifnot(type %in% c("pval", "qval", "annotation"))
+	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
 	## Keeping R CMD check happy
 	hg19Ideogram <- significant <- midpoint <- area <- x <- y <- xend <- significantQval <- region <- NULL
@@ -87,7 +89,7 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 		result <- autoplot(seqinfo(regions)) +
 			layout_karyogram(regions, aes(fill=significant, color=significant), geom="rect", base_size=30) +
 			layout_karyogram(regions, aes(x=midpoint, y=area), geom="line", color="coral1", ylim=c(10, 20)) +
-			labs(title="Overview of regions found in the genome; significant: p-value <0.05") +
+			labs(title=paste0("Overview of regions found in the genome; significant: p-value <", significantCut[1])) +
 			scale_colour_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			geom_text(aes(x=x, y=y), data=ann_text, label="Area", size=rel(areaRel)) +
@@ -99,7 +101,7 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 		result <- autoplot(seqinfo(regions)) +
 			layout_karyogram(regions, aes(fill=significantQval, color=significantQval), geom="rect") +
 			layout_karyogram(regions, aes(x=midpoint, y=area), geom="line", color="coral1", ylim=c(10, 20)) +
-			labs(title="Overview of regions found in the genome; significant: q-value <0.10") +
+			labs(title=paste0("Overview of regions found in the genome; significant: q-value <", significantCut[2])) +
 			scale_colour_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			geom_text(aes(x=x, y=y), data=ann_text, label="Area", size=rel(areaRel)) +

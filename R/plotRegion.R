@@ -16,6 +16,8 @@
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
 #'
+#' @details See the parameter \code{significantCut} in \link{calculatePvalues} for how the significance cutoffs are determined.
+#'
 #' @seealso \link{loadCoverage}, \link{calculatePvalues}, \link[bumphunter]{annotateNearest}, \link[ggbio]{plotIdeogram}
 #' @author Leonardo Collado-Torres
 #' @export

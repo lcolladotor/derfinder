@@ -3,7 +3,8 @@
 \title{Plot a karyotype overview of the genome with the identified regions}
 \usage{
   plotOverview(regions, annotation = NULL, type = "pval",
-    base_size = 12, areaRel = 4)
+    base_size = 12, areaRel = 4,
+    significantCut = c(0.05, 0.1))
 }
 \arguments{
   \item{regions}{The \code{$regions} output from
@@ -28,6 +29,12 @@
   \code{type="pval"} or \code{type="qval"}. Can be useful
   when making high resolution versions of these plots in
   devices like CairoPNG.}
+
+  \item{significantCut}{A vector of length two specifiying
+  the cutoffs used to determine significance. The first
+  element is used to determine significance for the
+  p-values and the second element is used for the
+  q-values.}
 }
 \value{
   A ggplot2 plot that is ready to be printed out.
