@@ -54,11 +54,13 @@
   \link{findRegions} with the additional metadata column
   \code{pvalues}: p-value of the region calculated via
   permutations of the samples; \code{padj}: the adjusted
-  p-values.} \item{nullstats}{ is a numeric Rle with the
-  mean of the null statistics by segment.}
-  \item{nullwidths}{ is a numeric Rle with the length of
-  each of the segments in the null distribution. The area
-  can be obtained by multiplying the absolute
+  p-values; \code{significant}: whether the p-value is less
+  than 0.05; \code{significantPadj}: whether the adjusted
+  p-value is less than 0.10 (10% FDR).} \item{nullstats}{
+  is a numeric Rle with the mean of the null statistics by
+  segment.} \item{nullwidths}{ is a numeric Rle with the
+  length of each of the segments in the null distribution.
+  The area can be obtained by multiplying the absolute
   \code{nullstats} by the corresponding lengths.} }
 }
 \description{

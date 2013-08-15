@@ -5,7 +5,7 @@
 #' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
 #' @param cutoff This argument is passed to \link{filterData}.
 #' @param colsubset Optional vector of column indices of \code{coverageInfo$coverage} that denote samples you wish to include in analysis. 
-#' @param scalefac A log transformation is used on the count tables, so zero counts present a problem.  What number should we add to the entire matrix before running the models?
+#' @param scalefac A log transformation is used on the count tables, so zero counts present a problem.  What number should we add to the entire matrix?
 #' @param chunksize How many rows of \code{coverageInfo$coverage} should be processed at a time?
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.

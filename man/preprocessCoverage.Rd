@@ -22,8 +22,7 @@
 
   \item{scalefac}{A log transformation is used on the count
   tables, so zero counts present a problem.  What number
-  should we add to the entire matrix before running the
-  models?}
+  should we add to the entire matrix?}
 
   \item{chunksize}{How many rows of
   \code{coverageInfo$coverage} should be processed at a

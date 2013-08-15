@@ -16,7 +16,7 @@
 #'
 #' @return A list with three components:
 #' \describe{
-#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the adjusted p-values.}
+#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the adjusted p-values; \code{significant}: whether the p-value is less than 0.05; \code{significantPadj}: whether the adjusted p-value is less than 0.10 (10% FDR).}
 #' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
 #' \item{nullwidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
 #' }
@@ -162,6 +162,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
 	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
 	regs$padj <- p.adjust(regs$pvalues, method=method)
+	regs$significant <- factor(regs$pvalues < 0.05, levels=c(TRUE, FALSE))
+	regs$significantPadj <- factor(regs$padj < 0.10, levels=c(TRUE, FALSE))
 	
 	## Save the nullstats too
 	final <- list(regions=regs, nullstats=Rle(nullstats), nullwidths=nullwidths)
