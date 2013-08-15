@@ -8,6 +8,7 @@
 #' @param type Must be either \code{pval}, \code{qval} or \code{annotation}. It determines whether the plot coloring should be done according to significant p-values (<0.05), significant q-values (<0.10) or annotation regions.
 #' @param base_size Base point size of the plot. This argument is passed to \link[ggplot2]{element_text} (\code{size} argument).
 #' @param areaRel The relative size for the area label when \code{type="pval"} or \code{type="qval"}. Can be useful when making high resolution versions of these plots in devices like CairoPNG.
+#' @param legend.position This argument is passed to \link[ggplot2]{theme}. From ggplot2: the position of legends. ("left", "right", "bottom", "top", or two-element numeric vector).
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
@@ -17,55 +18,45 @@
 #' @export
 #' @importFrom GenomicRanges seqlengths "seqlengths<-" seqinfo
 #' @importMethodsFrom ggbio autoplot layout_karyogram
-#' @importFrom ggplot2 aes labs scale_colour_manual scale_fill_manual geom_text rel geom_segment xlab theme element_text
+#' @importFrom ggplot2 aes labs scale_colour_manual scale_fill_manual geom_text rel geom_segment xlab theme element_text element_blank
 #' 
 #' @examples
-#' ## Construct the models
-#' group <- genomeInfo$pop
-#' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+#' ## Construct toy data
+#' chrs <- paste0("chr", c(1:22, "X", "Y"))
+#' chrs <- factor(chrs, levels=chrs)
+#' suppressMessages(library("GenomicRanges"))
+#' regs <- GRanges(rep(chrs, 10), ranges=IRanges(runif(240, 1, 4e7), width=1e3), significant=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), significantQval=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), area=rnorm(240))
+#' annotation <- data.frame(region=sample(c("upstream", "promoter", "overlaps 5'", "inside", "overlaps 3'", "close to 3'", "downstream"), 240, TRUE))
 #'
-#' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+#' ## Type pval
+#' plotOverview(regs)
+#'
+#' ## Type qval
+#' plotOverview(regs, type="qval")
+#'
+#' ## Annotation
+#' plotOverview(regs, annotation, type="annotation")
 #' 
-#' ## Get the F statistics
-#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=FALSE)
-#'
-#' ## Determine a cutoff from the F-distribution.
-#' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' \dontrun{
-#' n <- dim(prep$coverageSplit[[1]])[2]
-#' df1 <- dim(models$mod)[2]
-#' df0 <- dim(models$mod0)[2]
-#' cutoff <- qf(0.95, df1-df0, n-df1)
-#' }
-#' ## Low cutoff used for illustrative purposes
-#' cutoff <- 1
-#'
-#' ## Calculate the p-values and define the regions of interest.
-#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1, verbose=FALSE)
-#'
-#' ## Overview with type pval
-#' plotOverview(regions=regsWithP$regions, type="pval")
-#'
-#' ## Overview with type qval
-#' plotOverview(regions=regsWithP$regions, type="qval")
+#' ## Resize the plots if needed.
 #'
 #' \dontrun{
-#' ## Annotate the results
-#' suppressMessages(library("bumphunter"))
-#' annotation <- annotateNearest(regsWithP$regions, "hg19")
+#' ## You might prefer to leave the legend at ggplot2's default option: right
+#' plotOverview(regs, legend.position="right")
+#' 
+#' ## Although the legend looks better on the bottom
+#' plotOverview(regs, legend.position="bottom")
 #'
-#' ## Annotation overview
-#' plotOverview(regions=regsWithP$regions, annotation=annotation, type="annotation")
-#'
-#' ## This function is meant to be an example of the plots you can make with the output from calculatePvalues()
-#' ## For more details or custom plots check the ggbio and ggplot2 packages
-#' ## as well as the code from this function:
+#' ## Example knitr chunk for higher res plot using the CairoPNG device
+#' ```{r overview, message=FALSE, fig.width=7, fig.height=9, dev="CairoPNG", dpi=300}
+#' plotOverview(regs, base_size=30, areaRel=10, legend.position=c(0.95, 0.12))
+#' ```
+#' 
+#' ## For more custom plots, take a look at the ggplot2 and ggbio packages
+#' ## and feel free to look at the code of this function:
 #' plotOverview
 #' }
 
-plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, areaRel=4, significantCut=c(0.05, 0.10)) {
+plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, areaRel=4, legend.position=c(0.85, 0.12), significantCut=c(0.05, 0.10)) {
 	stopifnot(type %in% c("pval", "qval", "annotation"))
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
@@ -95,7 +86,7 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 			geom_text(aes(x=x, y=y), data=ann_text, label="Area", size=rel(areaRel)) +
 			geom_segment(aes(x=x, xend=xend, y=y, yend=y), data=ann_line, colour="coral1") +
 			xlab("Genomic coordinate") + 
-			theme(text=element_text(size=base_size))
+			theme(text=element_text(size=base_size), legend.background=element_blank(), legend.position=legend.position)
 	} else if (type == "qval") {
 		## Adjusted p-value plot
 		result <- autoplot(seqinfo(regions)) +
@@ -107,7 +98,7 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 			geom_text(aes(x=x, y=y), data=ann_text, label="Area", size=rel(areaRel)) +
 			geom_segment(aes(x=x, xend=xend, y=y, yend=y), data=ann_line, colour="coral1") +
 			xlab("Genomic coordinate") + 
-			theme(text=element_text(size=base_size))
+			theme(text=element_text(size=base_size), legend.background=element_blank(), legend.position=legend.position)
 	} else {
 		## Annotation region plot
 		stopifnot(is.null(annotation) == FALSE)
@@ -116,7 +107,7 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 			layout_karyogram(regions, aes(fill=region, color=region), geom="rect") +
 			labs(title="Annotation region (if available)") +
 			xlab("Genomic location") + 
-			theme(text=element_text(size=base_size))
+			theme(text=element_text(size=base_size), legend.background=element_blank(), legend.position=legend.position)
 	}
 	return(result)
 }
