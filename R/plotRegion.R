@@ -8,7 +8,7 @@
 #' @param annotation The output from running \link[bumphunter]{annotateNearest} on the output from \link{calculatePvalues}.
 #' @param coverageInfo A DataFrame resulting from \link{loadCoverage} using \code{cutoff=NULL}.
 #' @param groupInfo A factor specifying the group membership of each sample.
-#' @param titleUse Whether to show the p-value (\code{pval}) or the adjusted p-value (\code{padj}) in the title.
+#' @param titleUse Whether to show the p-value (\code{pval}) or the q-value (\code{qval}) in the title.
 #' @param txdb A transcript data base such as TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no annotation information is used.
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
 #' @param minExtend The minimum number of base-pairs to extend the view before and after the region of interest.
@@ -48,10 +48,14 @@
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
+#' \dontrun{
 #' n <- dim(prep$coverageSplit[[1]])[2]
 #' df1 <- dim(models$mod)[2]
 #' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
+#' }
+#' ## Low cutoff used for illustrative purposes
+#' cutoff <- 1
 #'
 #' ## Calculate the p-values and define the regions of interest.
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1, verbose=FALSE)
@@ -72,10 +76,10 @@
 #' }
 
 plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="pval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
-	stopifnot(titleUse %in% c("pval", "padj"))
+	stopifnot(titleUse %in% c("pval", "qval"))
 	
 	## Satisfying R CMD check
-	significant <- significantPadj <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
+	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
 		
 	## Select region and build title
 	l <-  width(regions[idx]) + 2 * max(minExtend, width(regions[idx]))
@@ -83,7 +87,7 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 	if(titleUse == "pval") {
 		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", regions$pvalues[idx],", sf=", scalefac)
 	} else {
-		title <- paste0("Annotated name ", annotation$name[idx], " with adjusted p-value ", regions$padj[idx],", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx], " with q-value ", regions$qvalues[idx],", sf=", scalefac)
 	}
 	
 	## Plot the ideogram if not supplied
@@ -96,7 +100,7 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 	if(titleUse == "pval") {
 		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significant)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
 	} else {
-		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significantPadj)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
+		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significantQval)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
 	}
 	
 

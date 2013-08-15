@@ -5,9 +5,9 @@
 #' 
 #' @param regions The \code{$regions} output from \link{calculatePvalues}.
 #' @param annotation The output from running \link[bumphunter]{annotateNearest} on the output from \link{calculatePvalues}. It is only required if \code{type="annotation"}.
-#' @param type Must be either \code{pval}, \code{padj} or \code{annotation}. It determines whether the plot coloring should be done according to significant p-values, significant adjusted p-values or annotation regions.
+#' @param type Must be either \code{pval}, \code{qval} or \code{annotation}. It determines whether the plot coloring should be done according to significant p-values (<0.05), significant q-values (<0.10) or annotation regions.
 #' @param base_size Base point size of the plot. This argument is passed to \link[ggplot2]{element_text} (\code{size} argument).
-#' @param areaRel The relative size for the area label when \code{type="pval"} or \code{type="padj"}. Can be useful when making high resolution versions of these plots in devices like CairoPNG.
+#' @param areaRel The relative size for the area label when \code{type="pval"} or \code{type="qval"}. Can be useful when making high resolution versions of these plots in devices like CairoPNG.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
 #'
@@ -32,7 +32,13 @@
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' ## A low cutoff is used here just for illustration purposes
+#' \dontrun{
+#' n <- dim(prep$coverageSplit[[1]])[2]
+#' df1 <- dim(models$mod)[2]
+#' df0 <- dim(models$mod0)[2]
+#' cutoff <- qf(0.95, df1-df0, n-df1)
+#' }
+#' ## Low cutoff used for illustrative purposes
 #' cutoff <- 1
 #'
 #' ## Calculate the p-values and define the regions of interest.
@@ -41,8 +47,8 @@
 #' ## Overview with type pval
 #' plotOverview(regions=regsWithP$regions, type="pval")
 #'
-#' ## Overview with type padj
-#' plotOverview(regions=regsWithP$regions, type="padj")
+#' ## Overview with type qval
+#' plotOverview(regions=regsWithP$regions, type="qval")
 #'
 #' \dontrun{
 #' ## Annotate the results
@@ -59,10 +65,10 @@
 #' }
 
 plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, areaRel=4) {
-	stopifnot(type %in% c("pval", "padj", "annotation"))
+	stopifnot(type %in% c("pval", "qval", "annotation"))
 	
 	## Keeping R CMD check happy
-	hg19Ideogram <- significant <- midpoint <- area <- x <- y <- xend <- significantPadj <- region <- NULL
+	hg19Ideogram <- significant <- midpoint <- area <- x <- y <- xend <- significantQval <- region <- NULL
 	
 	## Assign chr lengths if needed
 	if(any(is.na(seqlengths(regions)))) {
@@ -88,12 +94,12 @@ plotOverview <- function(regions, annotation=NULL, type="pval", base_size=12, ar
 			geom_segment(aes(x=x, xend=xend, y=y, yend=y), data=ann_line, colour="coral1") +
 			xlab("Genomic coordinate") + 
 			theme(text=element_text(size=base_size))
-	} else if (type == "padj") {
+	} else if (type == "qval") {
 		## Adjusted p-value plot
 		result <- autoplot(seqinfo(regions)) +
-			layout_karyogram(regions, aes(fill=significantPadj, color=significantPadj), geom="rect") +
+			layout_karyogram(regions, aes(fill=significantQval, color=significantQval), geom="rect") +
 			layout_karyogram(regions, aes(x=midpoint, y=area), geom="line", color="coral1", ylim=c(10, 20)) +
-			labs(title="Overview of regions found in the genome; significant: adjusted p-value <0.10") +
+			labs(title="Overview of regions found in the genome; significant: q-value <0.10") +
 			scale_colour_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
 			geom_text(aes(x=x, y=y), data=ann_text, label="Area", size=rel(areaRel)) +

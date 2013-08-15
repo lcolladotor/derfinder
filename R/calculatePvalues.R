@@ -11,22 +11,24 @@
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
-#' @param method The method to use for adjusting the p-values. This argument is passed to \link[stats]{p.adjust}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
+#' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #'
 #' @return A list with three components:
 #' \describe{
-#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the adjusted p-values; \code{significant}: whether the p-value is less than 0.05; \code{significantPadj}: whether the adjusted p-value is less than 0.10 (10% FDR).}
+#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default).}
 #' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
 #' \item{nullwidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}
+#' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' @importFrom IRanges Views RleList Rle
 #' @importFrom parallel mclapply
+#' @importFrom qvalue qvalue
+#'
 #' @examples
 #' ## Construct the models
 #' group <- genomeInfo$pop
@@ -46,6 +48,9 @@
 #' df1 <- dim(models$mod)[2]
 #' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
+#' 
+#' ## Low cutoff used for illustrative purposes
+#' cutoff <- 1
 #'
 #' ## Calculate the p-values and define the regions of interest.
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
@@ -96,7 +101,7 @@
 #' ## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), method="fdr", verbose=TRUE) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10)) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
@@ -104,6 +109,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	stopifnot(nPermute == length(seeds))
 	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position"))) == 2)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
+	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
 	## Identify the clusters
 	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
@@ -161,9 +167,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
 	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
 	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
-	regs$padj <- p.adjust(regs$pvalues, method=method)
-	regs$significant <- factor(regs$pvalues < 0.05, levels=c(TRUE, FALSE))
-	regs$significantPadj <- factor(regs$padj < 0.10, levels=c(TRUE, FALSE))
+	regs$qvalues <- qvalue(regs$pvalues)$qvalues
+	regs$significant <- factor(regs$pvalues < significantCut[1], levels=c(TRUE, FALSE))
+	regs$significantQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
 	
 	## Save the nullstats too
 	final <- list(regions=regs, nullstats=Rle(nullstats), nullwidths=nullwidths)

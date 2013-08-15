@@ -14,10 +14,10 @@
   \link{calculatePvalues}. It is only required if
   \code{type="annotation"}.}
 
-  \item{type}{Must be either \code{pval}, \code{padj} or
+  \item{type}{Must be either \code{pval}, \code{qval} or
   \code{annotation}. It determines whether the plot
-  coloring should be done according to significant
-  p-values, significant adjusted p-values or annotation
+  coloring should be done according to significant p-values
+  (<0.05), significant q-values (<0.10) or annotation
   regions.}
 
   \item{base_size}{Base point size of the plot. This
@@ -25,7 +25,7 @@
   (\code{size} argument).}
 
   \item{areaRel}{The relative size for the area label when
-  \code{type="pval"} or \code{type="padj"}. Can be useful
+  \code{type="pval"} or \code{type="qval"}. Can be useful
   when making high resolution versions of these plots in
   devices like CairoPNG.}
 }
@@ -55,7 +55,13 @@ fstats <- calculateStats(prep, models, mc.cores=1, verbose=FALSE)
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
-## A low cutoff is used here just for illustration purposes
+\dontrun{
+n <- dim(prep$coverageSplit[[1]])[2]
+df1 <- dim(models$mod)[2]
+df0 <- dim(models$mod0)[2]
+cutoff <- qf(0.95, df1-df0, n-df1)
+}
+## Low cutoff used for illustrative purposes
 cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
@@ -64,8 +70,8 @@ regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr
 ## Overview with type pval
 plotOverview(regions=regsWithP$regions, type="pval")
 
-## Overview with type padj
-plotOverview(regions=regsWithP$regions, type="padj")
+## Overview with type qval
+plotOverview(regions=regsWithP$regions, type="qval")
 
 \dontrun{
 ## Annotate the results

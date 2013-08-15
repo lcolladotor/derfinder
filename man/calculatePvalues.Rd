@@ -6,8 +6,8 @@
     nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     chr, maxGap = 300L, cutoff = quantile(fstats, 0.99),
-    mc.cores = getOption("mc.cores", 2L), method = "fdr",
-    verbose = TRUE)
+    mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
+    significantCut = c(0.05, 0.1))
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -41,23 +41,26 @@
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
 
-  \item{method}{The method to use for adjusting the
-  p-values. This argument is passed to
-  \link[stats]{p.adjust}.}
-
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
+
+  \item{significantCut}{A vector of length two specifiying
+  the cutoffs used to determine significance. The first
+  element is used to determine significance for the
+  p-values and the second element is used for the
+  q-values.}
 }
 \value{
   A list with three components: \describe{ \item{regions }{
   is a GRanges with metadata columns given by
   \link{findRegions} with the additional metadata column
   \code{pvalues}: p-value of the region calculated via
-  permutations of the samples; \code{padj}: the adjusted
-  p-values; \code{significant}: whether the p-value is less
-  than 0.05; \code{significantPadj}: whether the adjusted
-  p-value is less than 0.10 (10% FDR).} \item{nullstats}{
-  is a numeric Rle with the mean of the null statistics by
+  permutations of the samples; \code{padj}: the qvalues
+  calculated using \link[qvalue]{qvalue};
+  \code{significant}: whether the p-value is less than 0.05
+  (by default); \code{significantPadj}: whether the q-value
+  is less than 0.10 (by default).} \item{nullstats}{ is a
+  numeric Rle with the mean of the null statistics by
   segment.} \item{nullwidths}{ is a numeric Rle with the
   length of each of the segments in the null distribution.
   The area can be obtained by multiplying the absolute
@@ -91,6 +94,9 @@ n <- dim(prep$coverageSplit[[1]])[2]
 df1 <- dim(models$mod)[2]
 df0 <- dim(models$mod0)[2]
 cutoff <- qf(0.95, df1-df0, n-df1)
+
+## Low cutoff used for illustrative purposes
+cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
@@ -146,6 +152,7 @@ micro
 }
 \seealso{
   \link{findRegions}, \link{clusterMakerRle},
-  \link{getSegmentsRle}, \link{fstats.apply}
+  \link{getSegmentsRle}, \link{fstats.apply},
+  \link[qvalue]{qvalue}
 }
 
