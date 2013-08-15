@@ -41,7 +41,6 @@
 #' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
 #'
 #' ## Preprocess the data
-#' ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
 #' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 #' 
 #' ## Get the F statistics
@@ -71,7 +70,6 @@
 #' ## Also feel free to look at the code for this function:
 #' plotRegion
 #' }
-
 
 plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="pval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
 	stopifnot(titleUse %in% c("pval", "padj"))
