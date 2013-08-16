@@ -29,7 +29,7 @@ Note that the current Bioconductor release version of __bumphunter__ for R 3.0.1
 
 # Citation
 
-Below is the citation output from using `citation("derfinder2")` in R.
+Below is the citation output from using `citation("derfinder2")` in R. Please run this yourself to check for any updates on how to cite __derfinder2__.
 
 ---
 
