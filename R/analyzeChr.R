@@ -48,7 +48,7 @@
 #' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, cutoffFstat=1, cutoffType="manual", mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
+analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
 	chr <- paste0("chr", chrnum)
 	## Begin timing

@@ -2,10 +2,10 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-  analyzeChr(chrnum, coverageInfo, testvars, adjustvars,
-    nonzero = TRUE, center = TRUE, testIntercept = FALSE,
-    cutoffPre = 5, colsubset = NULL, scalefac = 32,
-    chunksize = NULL, cutoffFstat = 1e-08,
+  analyzeChr(chrnum, coverageInfo, testvars,
+    adjustvars = NULL, nonzero = TRUE, center = TRUE,
+    testIntercept = FALSE, cutoffPre = 5, colsubset = NULL,
+    scalefac = 32, chunksize = NULL, cutoffFstat = 1e-08,
     cutoffType = "theoretical", nPermute = 1,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     maxGap = 300L, groupInfo = testvars, subject = "hg19",
