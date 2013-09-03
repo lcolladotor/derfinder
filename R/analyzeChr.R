@@ -129,7 +129,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Using the following", cutoffType, "cutoff for the F-statistics", cutoff))
 	
-	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxGap=maxGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose)
+	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxGap=maxGap, cutoff=rep(cutoff, 2), mc.cores=mc.cores, verbose=verbose)
 
 	## calculatePValues
 	timeinfo <- c(timeinfo, list(Sys.time()))
