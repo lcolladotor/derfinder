@@ -24,15 +24,15 @@
   be printed along the way.}
 }
 \value{
-  Six Rdata files. \describe{ \item{fullFstats.Rdata }{
-  Full F-statistics from all chromosomes.}
-  \item{fullTime.Rdata }{ Timing information from all
-  chromosomes.} \item{fullNullstats.Rdata }{ Null
-  F-statistics from all chromosomes.}
-  \item{fullNullwidths.Rdata }{ Null region widths from all
-  chromosomes.} \item{fullNullchrs.Rdata}{ Null region
-  chromosome identifier.} \item{fullRegions.Rdata}{ Regions
-  found with full annotation from
+  Five Rdata files. \describe{ \item{fullFstats.Rdata }{
+  Full F-statistics from all chromosomes in a list of Rle
+  objects.} \item{fullTime.Rdata }{ Timing information from
+  all chromosomes.} \item{fullNullstats.Rdata }{ Null
+  F-statistics from all chromosomes in a list of Rle
+  objects.} \item{fullNullwidths.Rdata }{ Null region
+  widths from all chromosomes in a list of Rle objects.}
+  \item{fullRegions.Rdata}{ GRanges object with regions
+  found and with full annotation from
   \link[bumphunter]{annotateNearest}. Note that the column
   \code{strand} from \link[bumphunter]{annotateNearest} is
   renamed to \code{annoStrand} to comply with GRanges

@@ -41,7 +41,7 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = FALS
 		
 	## Check that the columns match
 	numcol <- ncol(coverage)
-	if(!is.null(testIntercept) & numcol != NROW(testvars)) {
+	if(!testIntercept & numcol != NROW(testvars)) {
 		stop("The length of 'testvars' and the number of columns in 'coverageInfo$coverage' do not match.")
 	} 
 	if (!is.null(adjustvars) & NROW(adjustvars) != numcol) {

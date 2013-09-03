@@ -7,14 +7,13 @@
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values just like in \link{calculatePvalues}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return Six Rdata files.
+#' @return Five Rdata files.
 #' \describe{
-#' \item{fullFstats.Rdata }{ Full F-statistics from all chromosomes.}
+#' \item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list of Rle objects.}
 #' \item{fullTime.Rdata }{ Timing information from all chromosomes.}
-#' \item{fullNullstats.Rdata }{ Null F-statistics from all chromosomes.}
-#' \item{fullNullwidths.Rdata }{ Null region widths from all chromosomes.}
-#' \item{fullNullchrs.Rdata}{ Null region chromosome identifier.}
-#' \item{fullRegions.Rdata}{ Regions found with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
+#' \item{fullNullstats.Rdata }{ Null F-statistics from all chromosomes in a list of Rle objects.}
+#' \item{fullNullwidths.Rdata }{ Null region widths from all chromosomes in a list of Rle objects.}
+#' \item{fullRegions.Rdata}{ GRanges object with regions found and with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
 #' }
 #'
 #' @author Leonardo Collado-Torres
@@ -31,13 +30,13 @@
 #' mergeResults(prefix="run1")
 #' }
 
-mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), verbose=TRUE) {
-	library("IRanges")
-	library("GenomicRanges")
+mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), verbose=TRUE) {	
+	## For R CMD check
+	fstats <- regions <- annotation <- timeinfo <- NULL
 	
 	## Initialize
 	fullTime <- fullNullwidths <- fullNullstats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))
-	names(fullTime) <- names(fullNullwidths) <- names(fullNullstats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- chrnums
+	names(fullTime) <- names(fullNullwidths) <- names(fullNullstats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- paste0("chr", chrnums)
 
 	## Actual processing
 	for(current in chrnums) {
@@ -50,9 +49,9 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 		## Process the regions, nullstats and nullwidths
 		load(file.path(prefix, chr, "regions.Rdata"))
-		fullRegs[[chr]] <- regs$regions
-		fullNullstats[[chr]] <- regs$nullstats
-		fullNullwidths[[chr]] <- regs$nullwidths
+		fullRegs[[chr]] <- regions$regions
+		fullNullstats[[chr]] <- regions$nullstats
+		fullNullwidths[[chr]] <- regions$nullwidths
 	
 		## Process the annotation results
 		load(file.path(prefix, chr, "annotation.Rdata"))
@@ -75,9 +74,6 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullwidths"))
 	save(fullNullwidths, file=file.path(prefix, "fullNullwidths.Rdata"))
-	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullchrs"))
-	save(fullNullchrs, file=file.path(prefix, "fullNullchrs.Rdata"))
 
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
