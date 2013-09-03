@@ -3,7 +3,7 @@
 \title{Find non-zero regions in a Rle}
 \usage{
   findRegions(position, fstats, chr, cluster = NULL,
-    y = fstats, oneTable = TRUE, maxGap = 300L,
+    oneTable = TRUE, maxGap = 300L,
     cutoff = quantile(fstats, 0.99), verbose = TRUE)
 }
 \arguments{
@@ -21,10 +21,6 @@
   \item{cluster}{The clusters of locations that are to be
   analyzed together, normally given by
   \link{clusterMakerRle}.}
-
-  \item{y}{A numeric Rle of the same length as
-  \code{statsInfo$fstats} containing values to be averaged
-  for the region.}
 
   \item{oneTable}{If \code{TRUE} only one results GRanges
   is returned. Otherwise, a GRangesList with two components

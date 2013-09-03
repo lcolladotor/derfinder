@@ -5,7 +5,7 @@
 #' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
 #' @param fstats A numerical Rle with the F-statistics normally generated using \link{calculateStats}.
-#' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient.
+#' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient. If set to 0, no permutations are performed and thus no null regions are used, however, the \code{$regions} component is created.
 #' @param seeds An integer vector of length \code{nPermute} specifying the seeds to be used for each permutation. If \code{NULL} no seeds are used.
 #' @param chr A single element character vector specifying the chromosome name. This argument is passed to \link{findRegions}.
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
@@ -14,11 +14,12 @@
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #'
-#' @return A list with three components:
+#' @return A list with four components:
 #' \describe{
 #' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default). It also includes the mean coverage of the region (mean from the mean coverage at each base calculated in \link{preprocessCoverage}).}
-#' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
-#' \item{nullwidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
+#' \item{nullStats}{ is a numeric Rle with the mean of the null statistics by segment.}
+#' \item{nullWidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
+#' \item{nullPermutation}{ is a Rle with the permutation number from which the null region originated from.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
@@ -57,14 +58,14 @@
 #' regsWithP
 #'
 #' ## Calculate areas of the null segments
-#' abs(regsWithP$nullstats) * regsWithP$nullwidths
+#' abs(regsWithP$nullStats) * regsWithP$nullWidths
 #'
 #' ## Histogram of the original F statistics
 #' f.ori <- as.numeric(fstats)
 #' hist(f.ori, main="Distribution original F-stats", freq=FALSE)
 #'
 #' ## Histogram of the null F statistics
-#' f.null <- as.numeric(regsWithP$nullstats)
+#' f.null <- as.numeric(regsWithP$nullStats)
 #' hist(f.null, main="Distribution null F-stats by region", freq=FALSE)
 #'
 #' ## Histogram of the original p-values
@@ -118,13 +119,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	cluster <- clusterMakerRle(position, maxGap)
 	
 	## Find the regions
-	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
+	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, cutoff=cutoff, verbose=verbose) 
 	regs$meanCoverage <- mean(Views(means, IRanges(start=regs$indexStart, end=regs$indexEnd)))
-	rm(fstats, position)
+	rm(fstats, position, means)
 	
 	
 	## Pre-allocate memory
-	nullwidths <- nullstats <- vector("list", length(seeds) * 2)
+	nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	nSamples <- seq_len(nrow(models$mod))
 	coverageSplit <- coveragePrep$coverageSplit
@@ -146,29 +147,29 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		Indexes <- getSegmentsRle(x=fstats.output, f=cluster, cutoff=cutoff, verbose=verbose, zero=FALSE)
+		segments <- getSegmentsRle(x=fstats.output, cutoff=cutoff, verbose=verbose)
 		
 		## Calculate mean statistics
 	    for (j in 1:2) {
-			view <- Views(fstats.output, Indexes[[j]])
-			nullstats[[last + j]] <- Rle(mean(view))
-			nullwidths[[last + j]] <- Rle(width(view))
+			nullstats[[last + j]] <- Rle(mean(segments[[j]]))
+			nullwidths[[last + j]] <- Rle(width(segments[[j]]))
+			nullpermutation[[last + j]] <- Rle(i, length(segments[[j]]))
 	    }		
 		last <- last + 2
 		
 		## Finish loop
-		rm(idx.permute, fstats.output, Indexes, view, mod.p, mod0.p)
+		rm(idx.permute, fstats.output, segments, mod.p, mod0.p)
 		
 	}
 	nullstats <- do.call(c, nullstats)
 	nullwidths <- do.call(c, nullwidths)
+	nullpermutation <- do.call(c, nullpermutation)
+	rm(coveragePrep, coverageSplit)
 	
 	if(length(nullstats) > 0) {
 		## Proceed only if there is at least one null stats
 		nullareas <- as.numeric(abs(nullstats) * nullwidths)
-		rm(coveragePrep, coverageSplit)
-	
-	
+		
 		## Calculate pvalues
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
 		pvals <- sapply(regs$area, function(x) { sum(nullareas > x) })
@@ -181,7 +182,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: no null regions found. Skipping p-value calculation."))
 	}
 	## Save the nullstats too
-	final <- list(regions=regs, nullstats=nullstats, nullwidths=nullwidths)
+	final <- list(regions=regs, nullStats=nullstats, nullWidths=nullwidths, nullPermutation=nullpermutation)
 	
 	
 	## Done =)

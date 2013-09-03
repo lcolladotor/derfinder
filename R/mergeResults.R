@@ -7,12 +7,11 @@
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values just like in \link{calculatePvalues}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return Five Rdata files.
+#' @return Four Rdata files.
 #' \describe{
 #' \item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list of Rle objects.}
 #' \item{fullTime.Rdata }{ Timing information from all chromosomes.}
-#' \item{fullNullstats.Rdata }{ Null F-statistics from all chromosomes in a list of Rle objects.}
-#' \item{fullNullwidths.Rdata }{ Null region widths from all chromosomes in a list of Rle objects.}
+#' \item{fullNullSummary.Rdata}{ A DataFrame with the null region information: statistic, width, chromosome and permutation identifier. It's ordered by the statistics}
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
 #' }
 #'
@@ -22,7 +21,7 @@
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges unlist
 #' @importFrom IRanges DataFrame
-#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-"
+#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length
 #' @importFrom qvalue qvalue
 #'
 #' @examples
@@ -50,8 +49,9 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Process the regions, nullstats and nullwidths
 		load(file.path(prefix, chr, "regions.Rdata"))
 		fullRegs[[chr]] <- regions$regions
-		fullNullstats[[chr]] <- regions$nullstats
-		fullNullwidths[[chr]] <- regions$nullwidths
+		fullNullStats[[chr]] <- regions$nullStats
+		fullNullWidths[[chr]] <- regions$nullWidths
+		fullNullPermutation[[chr]] <- regions$nullPermutation
 	
 		## Process the annotation results
 		load(file.path(prefix, chr, "annotation.Rdata"))
@@ -69,12 +69,6 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullTime"))
 	save(fullTime, file=file.path(prefix, "fullTime.Rdata"))
 	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullstats"))
-	save(fullNullstats, file=file.path(prefix, "fullNullstats.Rdata"))
-	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullwidths"))
-	save(fullNullwidths, file=file.path(prefix, "fullNullwidths.Rdata"))
-
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
 	colnames(fullAnnotation)[which(colnames(fullAnnotation) == "strand")] <- "annoStrand"
@@ -86,22 +80,40 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	## Re-calculate p-values and q-values
 	if(verbose) message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
 		
-	## Actual calculation
-	nullareas <- as.numeric(abs(fullNullstats) * fullNullwidths)
-	pvals <- sapply(fullRegions$area, function(x) { sum(nullareas > x) })
+	## Summarize the null regions
+	nulls <- do.call(c, fullNullStats)
+	widths <- do.call(c, fullNullWidths)
+	permutations <- do.call(c, fullNullPermutation)
+	howMany <- unlist(lapply(fullNullStats, length))
+	fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
+	rm(nulls, widths, howMany, permutations)
 	
-	## Update info
-	fullRegions$pvalues <- (pvals + 1) / (length(nullareas) + 1)
-	fullRegions$qvalues <- qvalue(fullRegions$pvalues)$qvalues
-	fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
-	fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+	if(length(nulls) > 0) {
+		## Proceed only if there are null regions to work with
+		fullNullSummary[order(fullNullSummary$stat), ]
+		fullNullSummary$area <- fullNullSummary$stat * fullNullSummary$width
+	}
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
+	save(fullNullSummary, file=file.path(prefix, "fullNullSummary.Rdata"))
+		
+	if(nrow(fullNullSummary) > 0) {
+		## Actual calculation
+		nullareas <- as.numeric(abs(fullNullSummary$stat) * fullNullSummary$width)
+		pvals <- sapply(fullRegions$area, function(x) { sum(nullareas > x) })
 	
-	## Sort by decreasing area
-	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE), ]
+		## Update info
+		fullRegions$pvalues <- (pvals + 1) / (length(nullareas) + 1)
+		fullRegions$qvalues <- qvalue(fullRegions$pvalues)$qvalues
+		fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
+		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+	
+		## Sort by decreasing area
+		fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE), ]
 
-	## save GRanges version
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
-	save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
+		## save GRanges version
+		if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
+		save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
+	}	
 	
 	## Finish
 	return(invisible(NULL))

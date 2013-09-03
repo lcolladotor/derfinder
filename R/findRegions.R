@@ -6,7 +6,6 @@
 #' @param fstats A numeric Rle with the F-statistics. Normally obtained using \link{calculateStats}.
 #' @param chr A single element character vector specifying the chromosome name.
 #' @param cluster The clusters of locations that are to be analyzed together, normally given by \link{clusterMakerRle}.
-#' @param y A numeric Rle of the same length as \code{statsInfo$fstats} containing values to be averaged for the region. 
 #' @param oneTable If \code{TRUE} only one results GRanges is returned. Otherwise, a GRangesList with two components is returned: one for the regions with positive values and one for the negative values.
 #' @param maxGap This argument is passed to \link{clusterMakerRle}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
@@ -28,7 +27,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges IRanges start end width Views Rle runLength
+#' @importFrom IRanges IRanges start end width Views Rle runLength ranges
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importMethodsFrom IRanges quantile which length mean
 #' @importMethodsFrom GenomicRanges unlist
@@ -67,15 +66,14 @@
 #' annotation
 #' }
 
-findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE) {
+findRegions <- function(position, fstats, chr, cluster=NULL, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE) {
 	## Identify the clusters
 	if(is.null(cluster)) {
 		if(verbose) message(paste(Sys.time(), "findRegions: identifying clusters"))
 		cluster <- clusterMakerRle(position, maxGap)
 	}	
 	
-	## Find the segments
-	Indexes <- getSegmentsRle(x = fstats, f = cluster, cutoff = cutoff, verbose = verbose, zero=FALSE)
+	segments <- getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
 	
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this
@@ -84,31 +82,30 @@ findRegions <- function(position, fstats, chr, cluster=NULL, y = fstats, oneTabl
 	
 	
 	## Build the output shell
-	hasInfo <- sapply(Indexes, length) != 0
+	hasInfo <- sapply(segments, length) != 0
     res <- vector("list", sum(hasInfo))
 	names(res) <- names(hasInfo)[hasInfo]
 	
     for (i in names(hasInfo)[hasInfo]) {
 		## Define the chr ranges
-		pos.ir <- IRanges(start=pos[start(Indexes[[i]])], width = width(Indexes[[i]]) )
+		pos.ir <- IRanges(start=pos[start(segments[[i]])], width = width(segments[[i]]) )
 		
-		## Extract info from y
-		view <- Views(y, Indexes[[i]])
-		clus <- mean(Views(cluster, Indexes[[i]]))
+		## Extract info from views
+		clus <- mean(Views(cluster, ranges(segments[[i]])))
 	
 		## Actually build the GRanges
 		res[[i]] <- GRanges(
-			seqnames = Rle(chr, length(Indexes[[i]])),
+			seqnames = Rle(chr, length(segments[[i]])),
 			ranges = pos.ir,
-			value = mean(view),
-			area = abs(sum(view)),
-            indexStart = start(Indexes[[i]]), 
-            indexEnd = end(Indexes[[i]]),
+			value = mean(segments[[i]]),
+			area = abs(sum(segments[[i]])),
+            indexStart = start(segments[[i]]), 
+            indexEnd = end(segments[[i]]),
 			cluster = Rle(as.integer(clus)),
 			clusterL = Rle(runLength(cluster)[clus])
 		)
     }
-	rm(Indexes, view, clus, pos.ir, y, fstats)
+	rm(segments, clus, pos.ir, fstats)
 	
 	
 	## Fix names and format

@@ -24,19 +24,19 @@
   be printed along the way.}
 }
 \value{
-  Five Rdata files. \describe{ \item{fullFstats.Rdata }{
+  Four Rdata files. \describe{ \item{fullFstats.Rdata }{
   Full F-statistics from all chromosomes in a list of Rle
   objects.} \item{fullTime.Rdata }{ Timing information from
-  all chromosomes.} \item{fullNullstats.Rdata }{ Null
-  F-statistics from all chromosomes in a list of Rle
-  objects.} \item{fullNullwidths.Rdata }{ Null region
-  widths from all chromosomes in a list of Rle objects.}
-  \item{fullRegions.Rdata}{ GRanges object with regions
-  found and with full annotation from
-  \link[bumphunter]{annotateNearest}. Note that the column
-  \code{strand} from \link[bumphunter]{annotateNearest} is
-  renamed to \code{annoStrand} to comply with GRanges
-  specifications. } }
+  all chromosomes.} \item{fullNullSummary.Rdata}{ A
+  DataFrame with the null region information: statistic,
+  width, chromosome and permutation identifier. It's
+  ordered by the statistics} \item{fullRegions.Rdata}{
+  GRanges object with regions found and with full
+  annotation from \link[bumphunter]{annotateNearest}. Note
+  that the column \code{strand} from
+  \link[bumphunter]{annotateNearest} is renamed to
+  \code{annoStrand} to comply with GRanges specifications.
+  } }
 }
 \description{
   This function merges the results from running

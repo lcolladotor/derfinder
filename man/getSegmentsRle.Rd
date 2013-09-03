@@ -2,17 +2,11 @@
 \alias{getSegmentsRle}
 \title{Segment a Rle into positive, zero, and negative regions}
 \usage{
-  getSegmentsRle(x, f, cutoff = quantile(x, 0.99),
-    verbose = FALSE, zero = TRUE)
+  getSegmentsRle(x, cutoff = quantile(x, 0.99),
+    verbose = FALSE)
 }
 \arguments{
   \item{x}{A numeric Rle.}
-
-  \item{f}{An integer Rle used to pre-divide x into pieces.
-  Each piece is then segmented based on the cutoff. Setting
-  this to NULL says that there is no pre-division. Often,
-  \link{clusterMakerRle} is used to define this integer
-  Rle.}
 
   \item{cutoff}{A numeric vector of length either 1 or 2.
   If length is 1, U will be cutoff and L will be -cutoff.
@@ -22,38 +16,34 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
-
-  \item{zero}{If \code{TRUE} the zero index is computed. If
-  \code{FALSE} only the up and down indexes are computed.}
 }
 \value{
-  A list of IRanges, one for the up segments, one for the
-  down segments, and if \code{zero} is set to \code{TRUE}
-  then one for the zero segments.
+  A list of IRanges views, one for the up segments and one
+  for the down segments.
 }
 \description{
-  Given two cutoffs, L and U, this function divides a
-  numerical Rle into contiguous parts that are above U,
-  between L and U, and below L. This is wrapper for
-  \link[bumphunter]{getSegments}.
+  Given two cutoffs, L and U, this function slices a
+  numerical Rle into up and down sections. It is a wrapper
+  for \link[IRanges]{slice} with functionality inspired
+  from \link[bumphunter]{getSegments}.
 }
 \examples{
 library("IRanges")
 set.seed(20130725)
 pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
-cluster <- clusterMakerRle(pos, 100L)
 data <- Rle(rnorm(sum(pos)))
 cutoff <- quantile(data, .99)
 
 ## It's quite fast
-system.time(segs <- getSegmentsRle(data, cluster, cutoff, verbose=TRUE))
+system.time(segs <- getSegmentsRle(data, cutoff, verbose=TRUE))
 
 \dontrun{
 ## The output is different in look than the one from getSegments() but it's use is similar.
 ## Plus it can be transformed into the same format as the ouptut from getSegmentsRle().
 library("bumphunter")
+cluster <- clusterMakerRle(pos, 100L)
 foo <- function() {
-	segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, assumeSorted=TRUE)
+	segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, assumeSorted=TRUE)[c("upIndex", "dnIndex")]
 	segs.ir <- lapply(segs2, function(ind) {
 		tmp <- lapply(ind, function(segment) {
 			c("start"=min(segment), "end"=max(segment))
@@ -63,24 +53,20 @@ foo <- function() {
 	})
 	return(segs.ir)
 }
-identical(foo(), segs)
+segs3 <- lapply(segs, ranges)
+identical(foo(), segs3)
 
-## Pretty much the same speed if not a tiny bit faster
+## It's a bit faster
 library("microbenchmark")
-micro <- microbenchmark(getSegmentsRle(data, cluster, cutoff), foo())
+micro <- microbenchmark(getSegmentsRle(data, cutoff), foo())
 micro
 }
 }
 \author{
   Leonardo Collado-Torres
 }
-\references{
-  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
-  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
-  Hunter. R package version 1.1.10.
-}
 \seealso{
-  \link[bumphunter]{getSegments}, \link{clusterMakerRle},
-  \link{findRegions}
+  \link[bumphunter]{getSegments}, \link[IRanges]{slice},
+  \link{clusterMakerRle}, \link{findRegions}
 }
 

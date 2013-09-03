@@ -22,7 +22,9 @@
 
   \item{nPermute}{The number of permutations. Note that for
   a full chromosome, a small amount (10) of permutations is
-  sufficient.}
+  sufficient. If set to 0, no permutations are performed
+  and thus no null regions are used, however, the
+  \code{$regions} component is created.}
 
   \item{seeds}{An integer vector of length \code{nPermute}
   specifying the seeds to be used for each permutation. If
@@ -51,7 +53,7 @@
   q-values.}
 }
 \value{
-  A list with three components: \describe{ \item{regions }{
+  A list with four components: \describe{ \item{regions }{
   is a GRanges with metadata columns given by
   \link{findRegions} with the additional metadata column
   \code{pvalues}: p-value of the region calculated via
@@ -62,12 +64,14 @@
   is less than 0.10 (by default). It also includes the mean
   coverage of the region (mean from the mean coverage at
   each base calculated in \link{preprocessCoverage}).}
-  \item{nullstats}{ is a numeric Rle with the mean of the
-  null statistics by segment.} \item{nullwidths}{ is a
+  \item{nullStats}{ is a numeric Rle with the mean of the
+  null statistics by segment.} \item{nullWidths}{ is a
   numeric Rle with the length of each of the segments in
   the null distribution. The area can be obtained by
   multiplying the absolute \code{nullstats} by the
-  corresponding lengths.} }
+  corresponding lengths.} \item{nullPermutation}{ is a Rle
+  with the permutation number from which the null region
+  originated from.} }
 }
 \description{
   First, this function clusters the genomic positions and
@@ -106,14 +110,14 @@ regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr
 regsWithP
 
 ## Calculate areas of the null segments
-abs(regsWithP$nullstats) * regsWithP$nullwidths
+abs(regsWithP$nullStats) * regsWithP$nullWidths
 
 ## Histogram of the original F statistics
 f.ori <- as.numeric(fstats)
 hist(f.ori, main="Distribution original F-stats", freq=FALSE)
 
 ## Histogram of the null F statistics
-f.null <- as.numeric(regsWithP$nullstats)
+f.null <- as.numeric(regsWithP$nullStats)
 hist(f.null, main="Distribution null F-stats by region", freq=FALSE)
 
 ## Histogram of the original p-values
