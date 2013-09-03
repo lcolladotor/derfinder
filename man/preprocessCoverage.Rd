@@ -35,7 +35,7 @@
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
 }
 \value{
-  A list with two components. \describe{
+  A list with three components. \describe{
   \item{coverageSplit }{ is a list of DataFrames. Each
   DataFrame column represents a sample and the data is
   partioned according to \code{chunksize}. The coverage
@@ -49,7 +49,9 @@
   is not \code{NULL} and could thus lead to fewer rows
   compared to \code{coverageInfo$coverage}. }
   \item{position }{ is a logical Rle with the positions of
-  the chromosome that passed the cutoff.} }
+  the chromosome that passed the cutoff.}
+  \item{meanCoverage }{ is a numeric Rle with the mean
+  coverage at each filtered base.} }
 }
 \description{
   This function takes the coverage data from

@@ -7,7 +7,7 @@
 #' @param regions The \code{$regions} output from \link{calculatePvalues}.
 #' @param annotation The output from running \link[bumphunter]{annotateNearest} on the output from \link{calculatePvalues}.
 #' @param coverageInfo A DataFrame resulting from \link{loadCoverage} using \code{cutoff=NULL}.
-#' @param groupInfo A factor specifying the group membership of each sample.
+#' @param groupInfo A factor specifying the group membership of each sample. It will be used to color the samples by group.
 #' @param titleUse Whether to show the p-value (\code{pval}) or the q-value (\code{qval}) in the title.
 #' @param txdb A transcript data base such as TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no annotation information is used.
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
@@ -40,7 +40,7 @@
 #' ## Construct the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+#' models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
 #'
 #' ## Preprocess the data
 #' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)

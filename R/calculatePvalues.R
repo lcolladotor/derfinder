@@ -1,6 +1,6 @@
 #' Calculate p-values and identify regions
 #'
-#' First, this function clusters the genomic positions and finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The F-statistics are segmented using the original clusters and cutoffs. The mean of the statistics from these segments are then used to calculate p-values for the original regions.
+#' First, this function clusters the genomic positions and finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The F-statistics are segmented using the original clusters and cutoffs. The area of the statistics from these segments are then used to calculate p-values for the original regions.
 #' 
 #' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
@@ -16,7 +16,7 @@
 #'
 #' @return A list with three components:
 #' \describe{
-#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default).}
+#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default). It also includes the mean coverage of the region (mean from the mean coverage at each base calculated in \link{preprocessCoverage}).}
 #' \item{nullstats}{ is a numeric Rle with the mean of the null statistics by segment.}
 #' \item{nullwidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
 #' }
@@ -24,8 +24,8 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
-#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
-#' @importFrom IRanges Views RleList Rle
+#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist as.numeric "$" "$<-"
+#' @importFrom IRanges Views RleList Rle IRanges Views
 #' @importFrom parallel mclapply
 #' @importFrom qvalue qvalue
 #'
@@ -33,7 +33,7 @@
 #' ## Construct the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+#' models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
 #'
 #' ## Preprocess the data
 #' ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
@@ -107,17 +107,19 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		seeds <- rep(NA, nPermute)
 	}
 	stopifnot(nPermute == length(seeds))
-	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position"))) == 2)
+	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position", "meanCoverage"))) == 3)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
 	## Identify the clusters
 	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
 	position <- coveragePrep$position
+	means <- coveragePrep$meanCoverage
 	cluster <- clusterMakerRle(position, maxGap)
 	
 	## Find the regions
 	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, y=fstats, cutoff=cutoff, verbose=verbose) 
+	regs$meanCoverage <- mean(Views(means, IRanges(start=regs$indexStart, end=regs$indexEnd)))
 	rm(fstats, position)
 	
 	
@@ -149,7 +151,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		## Calculate mean statistics
 	    for (j in 1:2) {
 			view <- Views(fstats.output, Indexes[[j]])
-			nullstats[[last + j]] <- mean(view)
+			nullstats[[last + j]] <- Rle(mean(view))
 			nullwidths[[last + j]] <- Rle(width(view))
 	    }		
 		last <- last + 2
@@ -160,19 +162,27 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	}
 	nullstats <- do.call(c, nullstats)
 	nullwidths <- do.call(c, nullwidths)
-	rm(coveragePrep, coverageSplit)
+	
+	if(length(nullstats) > 0) {
+		## Proceed only if there is at least one null stats
+		nullareas <- as.numeric(nullstats * nullwidths)
+		rm(coveragePrep, coverageSplit)
 	
 	
-	## Calculate pvalues
-	if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
-	pvals <- sapply(abs(regs$value), function(x) { sum(nullstats > x) })
-	regs$pvalues <- (pvals + 1) / (length(nullstats) + 1)
-	regs$qvalues <- qvalue(regs$pvalues)$qvalues
-	regs$significant <- factor(regs$pvalues < significantCut[1], levels=c(TRUE, FALSE))
-	regs$significantQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
-	
+		## Calculate pvalues
+		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
+		pvals <- sapply(regs$area, function(x) { sum(nullareas > x) })
+		regs$pvalues <- (pvals + 1) / (length(nullareas) + 1)
+		regs$qvalues <- qvalue(regs$pvalues)$qvalues
+		regs$significant <- factor(regs$pvalues < significantCut[1], levels=c(TRUE, FALSE))
+		regs$significantQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		regs <- regs[order(regs$area, decreasing=TRUE), ]
+	} else {
+		if(verbose) message(paste(Sys.time(), "calculatePvalues: no null regions found. Skipping p-value calculation."))
+	}
 	## Save the nullstats too
-	final <- list(regions=regs, nullstats=Rle(nullstats), nullwidths=nullwidths)
+	final <- list(regions=regs, nullstats=nullstats, nullwidths=nullwidths)
+	
 	
 	## Done =)
 	return(final)	

@@ -21,7 +21,8 @@
   \link{loadCoverage} using \code{cutoff=NULL}.}
 
   \item{groupInfo}{A factor specifying the group membership
-  of each sample.}
+  of each sample. It will be used to color the samples by
+  group.}
 
   \item{titleUse}{Whether to show the p-value (\code{pval})
   or the q-value (\code{qval}) in the title.}
@@ -67,7 +68,7 @@ covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
 ## Construct the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
 
 ## Preprocess the data
 prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)

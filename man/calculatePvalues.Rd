@@ -59,19 +59,22 @@
   calculated using \link[qvalue]{qvalue};
   \code{significant}: whether the p-value is less than 0.05
   (by default); \code{significantPadj}: whether the q-value
-  is less than 0.10 (by default).} \item{nullstats}{ is a
-  numeric Rle with the mean of the null statistics by
-  segment.} \item{nullwidths}{ is a numeric Rle with the
-  length of each of the segments in the null distribution.
-  The area can be obtained by multiplying the absolute
-  \code{nullstats} by the corresponding lengths.} }
+  is less than 0.10 (by default). It also includes the mean
+  coverage of the region (mean from the mean coverage at
+  each base calculated in \link{preprocessCoverage}).}
+  \item{nullstats}{ is a numeric Rle with the mean of the
+  null statistics by segment.} \item{nullwidths}{ is a
+  numeric Rle with the length of each of the segments in
+  the null distribution. The area can be obtained by
+  multiplying the absolute \code{nullstats} by the
+  corresponding lengths.} }
 }
 \description{
   First, this function clusters the genomic positions and
   finds the regions of interest according to specified
   cutoffs. Then it permutes the samples and re-calculates
   the F-statistics. The F-statistics are segmented using
-  the original clusters and cutoffs. The mean of the
+  the original clusters and cutoffs. The area of the
   statistics from these segments are then used to calculate
   p-values for the original regions.
 }
@@ -79,7 +82,7 @@
 ## Construct the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(coverageInfo=genomeData, group=group, adjustvars=adjustvars, nonzero=TRUE)
+models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
 
 ## Preprocess the data
 ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section

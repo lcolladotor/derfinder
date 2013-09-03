@@ -2,8 +2,9 @@
 \alias{makeModels}
 \title{Build model matrices for differential expression}
 \usage{
-  makeModels(coverageInfo, group, adjustvars = NULL,
-    nonzero = FALSE, verbose = FALSE)
+  makeModels(coverageInfo, testvars, adjustvars = NULL,
+    nonzero = FALSE, verbose = FALSE, center = TRUE,
+    testIntercept = FALSE)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -12,9 +13,11 @@
   the cutoff. This object is generated using
   \link{loadCoverage}.}
 
-  \item{group}{A factor vector specifying the sample
-  groups. It's length should match the number of columns
-  used from \code{coverageInfo$coverage}.}
+  \item{testvars}{A vector or matrix specifying the
+  variables to test. For example, a factor with the group
+  memberships when testing for differences across groups.
+  It's length should match the number of columns used from
+  \code{coverageInfo$coverage}.}
 
   \item{adjustvars}{Optional matrix of adjustment variables
   (e.g. measured confounders, output from SVA, etc.) to use
@@ -28,6 +31,14 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
+
+  \item{center}{If \code{TRUE} the column medians are
+  centered by the mean of the column medians. This is
+  helpful for interpretation purposes.}
+
+  \item{testIntercept}{If \code{TRUE} then \code{testvars}
+  is ignored and mod0 will contain the column medians and
+  any adjusting variables specified, but no intercept.}
 }
 \value{
   A list with two components. \describe{ \item{mod }{ The
@@ -44,14 +55,14 @@
 \examples{
 ## Choose the adjusting variables and define all the parameters for makeModels()
 coverageInfo <- genomeData
-group <- genomeInfo$pop
+testvars <- genomeInfo$pop
 colsubset <- NULL
 adjustvars <- data.frame(genomeInfo$gender)
 nonzero <- TRUE
 verbose <- TRUE
 
 ## Run the function
-models <- makeModels(coverageInfo, group, adjustvars, nonzero, verbose)
+models <- makeModels(coverageInfo, testvars, adjustvars, nonzero, verbose)
 names(models)
 models
 }

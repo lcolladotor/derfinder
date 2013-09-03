@@ -12,10 +12,11 @@
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to determine the \code{chunksize}. This is useful if you want to split the data so each core gets the same amount of data (up to rounding).
 #'
-#' @return A list with two components.
+#' @return A list with three components.
 #' \describe{
 #' \item{coverageSplit }{ is a list of DataFrames. Each DataFrame column represents a sample and the data is partioned according to \code{chunksize}. The coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
 #' \item{position }{  is a logical Rle with the positions of the chromosome that passed the cutoff.}
+#' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each filtered base.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
@@ -62,6 +63,13 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	if(numrow %% chunksize == 0 & lastloop > 0)  {
 		lastloop <- lastloop - 1
 	}
+	
+	## Find the mean coverage
+	means <- Rle(0, nrow(coverage))
+	for(i in seq_len(length(coverage))) {
+		means <- means + coverage[[i]]
+	}
+	means <- means / length(coverage)
 		
 	## Log2 transform and scale
 	numcol <- ncol(coverage)
@@ -84,7 +92,7 @@ preprocessCoverage <- function(coverageInfo, cutoff = 5, scalefac = 32, chunksiz
 	coverage.split <- as.list(split(coverage, split.idx))
 	
 	## Done =)
-	result <- list("coverageSplit"=coverage.split, "position"=position)
+	result <- list("coverageSplit"=coverage.split, "position"=position, "meanCoverage"=means)
 	return(result)	
 	
 }
