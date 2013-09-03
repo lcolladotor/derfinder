@@ -138,8 +138,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		idx.permute <- sample(nSamples)
 		
 		## Permuted sample labels
-		mod.p <- models$mod[idx.permute, ]
-		mod0.p <- models$mod0[idx.permute, ]
+		mod.p <- models$mod[idx.permute, , drop=FALSE]
+		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
 		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores)
