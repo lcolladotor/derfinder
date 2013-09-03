@@ -165,7 +165,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	if(length(nullstats) > 0) {
 		## Proceed only if there is at least one null stats
-		nullareas <- as.numeric(nullstats * nullwidths)
+		nullareas <- as.numeric(abs(nullstats) * nullwidths)
 		rm(coveragePrep, coverageSplit)
 	
 	

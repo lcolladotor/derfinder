@@ -87,7 +87,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	if(verbose) message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
 		
 	## Actual calculation
-	nullareas <- as.numeric(fullNullstats * fullNullwidths)
+	nullareas <- as.numeric(abs(fullNullstats) * fullNullwidths)
 	pvals <- sapply(fullRegions$area, function(x) { sum(nullareas > x) })
 	
 	## Update info
