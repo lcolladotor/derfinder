@@ -108,14 +108,12 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullRegions$qvalues <- qvalue(fullRegions$pvalues)$qvalues
 		fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
 		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
-	
-		## Sort by decreasing area
-		fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE), ]
-
-		## save GRanges version
-		if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
-		save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
 	}	
+	## Sort by decreasing area
+	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE), ]
+	## save GRanges version
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
+	save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
 	
 	## Finish
 	return(invisible(NULL))
