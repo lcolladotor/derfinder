@@ -34,8 +34,8 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	fstats <- regions <- annotation <- timeinfo <- NULL
 	
 	## Initialize
-	fullTime <- fullNullwidths <- fullNullstats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))
-	names(fullTime) <- names(fullNullwidths) <- names(fullNullstats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- paste0("chr", chrnums)
+	fullTime <- fullNullPermutation <- fullNullWidths <- fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))
+	names(fullTime) <- names(fullNullPermutation) <- names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- paste0("chr", chrnums)
 
 	## Actual processing
 	for(current in chrnums) {
