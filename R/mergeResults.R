@@ -81,17 +81,17 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	if(verbose) message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
 		
 	## Summarize the null regions
-	nulls <- do.call(c, fullNullStats)
-	widths <- do.call(c, fullNullWidths)
-	permutations <- do.call(c, fullNullPermutation)
+	nulls <- unlist(RleList(fullNullStats), use.names=FALSE)
+	widths <- unlist(RleList(fullNullWidths), use.names=FALSE)
+	permutations <- unlist(RleList(fullNullPermutation), use.names=FALSE)
 	howMany <- unlist(lapply(fullNullStats, length))
 		
 	if(length(nulls) > 0) {
 		## Proceed only if there are null regions to work with
 		fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
 		rm(nulls, widths, howMany, permutations)
-		fullNullSummary[order(fullNullSummary$stat), ]
 		fullNullSummary$area <- fullNullSummary$stat * fullNullSummary$width
+		fullNullSummary <- fullNullSummary[order(fullNullSummary$area, decreasing=TRUE), ]
 	} else {
 		fullNullSummary <- DataFrame(NULL)	
 	}
