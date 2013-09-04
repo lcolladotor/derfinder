@@ -85,13 +85,15 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	widths <- do.call(c, fullNullWidths)
 	permutations <- do.call(c, fullNullPermutation)
 	howMany <- unlist(lapply(fullNullStats, length))
-	fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
-	rm(nulls, widths, howMany, permutations)
-	
+		
 	if(length(nulls) > 0) {
 		## Proceed only if there are null regions to work with
+		fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
+		rm(nulls, widths, howMany, permutations)
 		fullNullSummary[order(fullNullSummary$stat), ]
 		fullNullSummary$area <- fullNullSummary$stat * fullNullSummary$width
+	} else {
+		fullNullSummary <- DataFrame(NULL)	
 	}
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
 	save(fullNullSummary, file=file.path(prefix, "fullNullSummary.Rdata"))
