@@ -180,6 +180,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		regs <- regs[order(regs$area, decreasing=TRUE), ]
 	} else {
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: no null regions found. Skipping p-value calculation."))
+		regs$pvalues <- rep(NA, length(regs))
+		regs$qvalues <- rep(NA, length(regs))
+		regs$significant <- rep(NA, length(regs))
+		regs$significantQval <- rep(NA, length(regs))
 	}
 	## Save the nullstats too
 	final <- list(regions=regs, nullStats=nullstats, nullWidths=nullwidths, nullPermutation=nullpermutation)

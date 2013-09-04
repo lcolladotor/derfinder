@@ -20,8 +20,8 @@
 #' @export
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges unlist
-#' @importFrom IRanges DataFrame
-#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length
+#' @importFrom IRanges DataFrame RleList
+#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist
 #' @importFrom qvalue qvalue
 #'
 #' @examples
