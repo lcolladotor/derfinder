@@ -1,0 +1,334 @@
+[derfinder2](https://github.com/lcolladotor/derfinder2) basic results exploration
+=================================================================================
+
+Project: `r project`.
+
+# Introduction
+
+This report is meant to help explore the results of the `derfinder2` `r mycitep(bib[["derfinder2"]])` package. While the report is rich, it is meant to just start the exploration of the results and exemplify some of the code used to do so. You will most likely need a more in-depth analysis for your specific data set.
+
+Most plots are made with using `ggplot2` `r mycitep(bib[["ggplot2"]])`.
+
+## Code setup
+
+```{r setup}
+## For ggplot
+tmp <- fullRegions
+names(tmp) <- seq_len(length(tmp))
+regions.df <- as.data.frame(tmp)
+regions.df$width <- width(fullRegions)
+rm(tmp)
+nulls.df <- as.data.frame(fullNullSummary)
+
+## Get chr lengths
+if(hg19) {
+	data(hg19Ideogram, package = "biovizBase")
+	seqlengths(fullRegions) <- seqlengths(hg19Ideogram)[names(seqlengths(fullRegions))]
+}
+
+## Find which chrs are present in the data set
+chrs <- levels(seqnames(fullRegions))
+names(chrs) <- gsub("chr", "", chrs)
+```
+
+`r ifelse(nullExist, "", "Note that there were no null regions in this analysis, and thus no p-values, q-values were calculated. Plots required information from null regions will be skipped.")`
+
+
+# Quality checks
+
+## P-values
+
+```{r pvals, fig.width=10, fig.height=10, dev=device, eval=nullExist, echo=nullExist}
+p1 <- ggplot(regions.df, aes(x=pvalues, colour=seqnames)) + geom_line(stat="density") + xlim(0, 1) + labs(title="Density of p-values") + xlab("p-values") + scale_colour_discrete(limits=chrs)
+p1
+```
+
+```{r summPval, eval=nullExist, echo=nullExist}
+## Compare the pvalues
+summary(fullRegions$pvalues)
+```
+
+`r ifelse(!nullExist, "", "This is the numerical summary of the distribution of the p-values.")`
+
+## Q-values
+
+```{r qvals, fig.width=10, fig.height=10, dev=device, eval=nullExist, echo=nullExist}
+p2 <- ggplot(regions.df, aes(x=qvalues, colour=seqnames)) + geom_line(stat="density") + xlim(0, 1) + labs(title="Density of q-values") + xlab("q-values") + scale_colour_discrete(limits=chrs)
+p2
+```
+
+```{r summQval, eval=nullExist, echo=nullExist}
+summary(fullRegions$qvalues)
+```
+
+`r ifelse(!nullExist, "", "This is the numerical summary of the distribution of the q-values.")`
+
+## F-stat vs width
+
+```{r widths, fig.width=14, fig.height=14, dev=device, eval=nullExist, echo=nullExist}
+xrange <- range(log10(c(regions.df$width, nulls.df$width)))
+p3 <- ggplot(regions.df, aes(x=log10(width), y=value, colour=seqnames)) + geom_point() + labs(title="F-statistic vs width (regions)") + xlab("Region width (log10)") + ylab("Mean F-stat") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+p4 <- ggplot(nulls.df, aes(x=log10(width), y=stat, colour=chr)) + geom_point() + labs(title="F-statistic vs width (null regions)") + xlab("Region width (log10)") + ylab("Mean F-stat") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+grid.arrange(p3, p4)
+```
+
+```{r widths2, fig.width=10, fig.height=10, dev=device, eval=!nullExist, echo=!nullExist}
+p3 <- ggplot(regions.df, aes(x=log10(width), y=value, colour=seqnames)) + geom_point() + labs(title="F-statistic vs width (regions)") + xlab("Region width (log10)") + ylab("F-stat") + scale_colour_discrete(limits=chrs)
+p3
+```
+
+This plot shows the relationship between the mean F-statistics and the width (length) for the regions. `r ifelse(!nullExist, "", "The bottom panel is the same information but this time for the null regions.")`
+
+## Region width
+
+```{r regLen, fig.width=14, fig.height=14, dev=device, eval=nullExist, echo=nullExist}
+xrange <- range(log10(regions.df$width))
+p5a <- ggplot(regions.df, aes(x=log10(width), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region lengths") + xlab("Region width (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+p5b <- ggplot(subset(regions.df, pvalues < 0.05), aes(x=log10(width), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region lengths (significant only)") + xlab("Region width (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+grid.arrange(p5a, p5b)
+```
+
+```{r regLen2, fig.width=10, fig.height=10, dev=device, eval=!nullExist, echo=!nullExist}
+p5a <- ggplot(regions.df, aes(x=log10(width), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region lengths") + xlab("Region width (log10)") + scale_colour_discrete(limits=chrs)
+p5a
+```
+This plot shows the density of the region lengths for all regions`r ifelse(nullExist, "; the bottom panel is restricted to significant regions", "")`.
+
+## Region Area
+
+```{r regArea, fig.width=14, fig.height=14, dev=device, eval=nullExist, echo=nullExist}
+xrange <- range(log10(regions.df$area))
+p7a <- ggplot(regions.df, aes(x=log10(area), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region areas") + xlab("Region area (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+p7b <- ggplot(subset(regions.df, pvalues < 0.05), aes(x=log10(area), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region areas (significant only)") + xlab("Region area (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange)
+grid.arrange(p7a, p7b)
+```
+
+```{r regArea2, fig.width=10, fig.height=10, dev=device, eval=!nullExist, echo=!nullExist}
+p7a <- ggplot(regions.df, aes(x=log10(area), colour=seqnames)) + geom_line(stat="density") + labs(title="Density of region areas") + xlab("Region area (log10)") + scale_colour_discrete(limits=chrs)
+p7a
+```
+
+This plot shows the density of the region areas for all regions`r ifelse(nullExist, "; the bottom panel is restricted to significant regions", "")`.
+
+## Null regions: width and area
+
+```{r nullLengthArea, fig.width=14, fig.height=14, dev=device, eval=nullExist, echo=nullExist}
+p6 <- ggplot(nulls.df, aes(x=log10(width), colour=chr)) + geom_line(stat="density") + labs(title="Density of null region lengths") + xlab("Region width (log10)") + scale_colour_discrete(limits=chrs)
+p8 <- ggplot(nulls.df, aes(x=log10(area), colour=chr)) + geom_line(stat="density") + labs(title="Density of null region areas") + xlab("Region area (log10)") + scale_colour_discrete(limits=chrs)
+grid.arrange(p6, p8)
+```
+
+`r ifelse(!nullExist, "", "This plot shows the density of the null region lengths and areas.")`
+
+
+## Mean coverage
+
+## Mean coverage vs area
+
+## Mean coverage vs 
+
+
+# Genomic overview
+
+The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotOverview` in `derfinder2` `r mycitep(bib[["derfinder2"]])`.
+
+
+## P-values
+
+Theoretically, the p-values should be uniformly distributed between 0 and 1.
+
+```{r genomeOverview1, message=FALSE, fig.width=7, fig.height=9, dev=device, dpi=300, eval=nullExist, echo=nullExist}
+plotOverview(regions=fullRegions, type="pval", base_size=30, areaRel=10, legend.position=c(0.97, 0.12))
+```
+
+This plot shows the genomic locations of the regions found in the analysis. The significant regions (by default p-value less than 0.05) are highlighted and the area of the regions is shown on top of each chromosome. Note that the area is in a relative scale.
+
+## Q-values
+
+```{r genomeOverview2, message=FALSE, fig.width=7, fig.height=9, dev=device, dpi=300, eval=nullExist, echo=nullExist}
+plotOverview(regions=fullRegions, type="qval", base_size=30, areaRel=10, legend.position=c(0.97, 0.12))
+```
+
+This plot is similar to the previous one except that significance is now determined by a q-value less than 0.10 (if using default settings). 
+
+
+## Annotation
+
+```{r genomeOverview3, message=FALSE, fig.width=7, fig.height=9, dev=device, dpi=300}
+plotOverview(regions=fullRegions, annotation=fullRegions, type="annotation", base_size=30, areaRel=10, legend.position=c(0.97, 0.12))
+```
+
+This final genomic overview plot shows the annotation region type. Note that the regions are shown only if the information is available. Below is a table of the actual number of results per annotation region type.
+
+```{r annoReg}
+table(fullRegions$region, useNA="always")
+```
+
+
+
+# Best regions
+
+The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotRegion` in `derfinder2` `r mycitep(bib[["derfinder2"]])`. The dynamic table in this section is generated using `rCharts` `r mycitep(bib[["rCharts"]])`.
+
+```{r plotGenome, message=FALSE, eval=makeBestPlots, echo=makeBestPlots}
+## Select best by area
+bestArea <- head(order(fullRegions$area, decreasing=TRUE), nBest)
+
+## Graphical setup: ideograms 
+if(hg19 & is.null(p.ideos)) {
+	ideos.set <- as.character(unique(seqnames(fullRegions[bestArea])))
+	p.ideos <- lapply(ideos.set, function(xx) { 
+		plotIdeogram(genome = "hg19", subchr=xx)
+	})
+	names(p.ideos) <- ideos.set
+} else {
+	stopifnot(!is.null(p.ideos))
+}
+
+## Graphical setup: transcription database
+if(hg19 & is.null(txdb)) {
+	txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+} else {
+	stopifnot(!is.null(txdb))
+}
+
+## Graphical setup: main plotting function
+regionPlot <- function(idx, tUse="pval") {
+	## Chr specific selections
+	chr <- as.character(seqnames(fullRegions[idx]))
+	chrnum <- gsub("chr", "", chr)
+	p.ideo <- p.ideos[[chr]]
+	covInfo <- fullCov[[chrnum]]
+	
+	## Make the plot
+	p <- plotRegion(idx, regions=fullRegions, annotation=regions.df, coverageInfo=covInfo, groupInfo=optionsStats$groupInfo, titleUse=tUse, txdb=txdb, p.ideogram=p.ideo)
+	print(p)
+	rm(p.ideo, covInfo)
+	
+	return(invisible(TRUE))	
+}
+```
+
+
+`r ifelse(makeBestPlots, paste("Below are the best", nBest, "regions ordered by area."), "No plots were generated as requested.")`
+ 
+
+```{r bestArea, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestPlots, echo=makeBestPlots}
+
+## Genome plots
+for(idx in bestArea) {
+	regionPlot(idx, ifelse(nullExist, "pval", "none"))
+}
+```
+
+Below is an interactive table with the top 100 regions ranked by area.
+
+<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+```{r bestAreaInfo, results="asis"}
+topArea <- head(regions.df, 100)
+topArea <- data.frame("areaRank"=order(topArea$area, decreasing=TRUE), topArea)
+d <- data.table(topArea)
+t1 <- dTable(d, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='100%')
+t1$print("chart1", cdn=TRUE)
+```
+
+# Wallclock time
+
+```{r time, fig.width=16, dev=device}
+## Process the time info
+time <- lapply(fullTime, function(x) data.frame(diff(x)))
+time <- do.call(rbind, time)
+colnames(time) <- "sec"
+time$sec <- as.integer(round(time$sec))
+time$min <- time$sec / 60
+time$chr <- gsub("\\..*", "", rownames(time))
+time$step <- gsub(".*\\.", "", rownames(time))
+rownames(time) <- seq_len(nrow(time))
+
+## Make plot
+ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() + labs(title="Wallclock time by step") + scale_colour_discrete(limits=chrs) + scale_x_discrete(limits=names(fullTime[[1]])[-1]) + ylab("Time (min)") + xlab("Step")
+```
+
+This plot shows the wallclock time spent in each of the `derfinder2` `r mycitep(bib[["derfinder2"]])` analysis steps.
+
+# Permutations
+
+Below is the information on how the samples were permutted. 
+
+
+```{r permute, eval=usedPermutations, echo=usedPermutations}
+## Get the permutation information
+nSamples <- seq_len(length(optionsStats$groupInfo))
+permuteInfo <- lapply(seeds, function(x) {
+	set.seed(x)
+	idx <- sample(nSamples)
+	data.frame(optionsStats$groupInfo[idx])
+})
+permuteInfo <- cbind(data.frame(optionsStats$groupInfo), do.call(cbind, permuteInfo))
+colnames(permuteInfo) <- c("original", paste0("perm", 1:10))
+## The raw information
+# permuteInfo
+
+n <- names(table(permuteInfo[, 2]))
+permuteDetail <- data.frame(matrix(NA, nrow=10*length(n), ncol = 2 + length(n)))
+permuteDetail[, 1] <- rep(1:10, each=length(n))
+permuteDetail[, 2] <- rep(n, 10)
+colnames(permuteDetail) <- c("permutation", "group", as.character(n))
+l <- 1
+m <- 3:ncol(permuteDetail)
+for(j in n) {
+	k <- which(permuteInfo[, 1] == j)
+	for(i in 2:11) {
+		permuteDetail[l, m] <- table(permuteInfo[k, i])
+		l <- l + 1
+	}
+}
+```
+
+## Summary
+
+```{r permute2, eval=usedPermutations, echo=usedPermutations}
+summary(permuteDetail[, m])
+```
+
+`r ifelse(usedPermutations, "This table shows the summary per group of and can be used for fast detection of anomalies.", "")`
+
+
+Note that in `derfinder2` `r mycitep(bib[["derfinder2"]])` the re-sampling of the samples is done without replacement. This is done in an effort to avoid singular model matrices. While the sample balance is the same across the permutations, what changes are the adjusted variables (including the column medians).
+
+## Interactive
+
+The following table `r ifelse(usedPermutations, "", "(not shown because no permutations were used)")` shows how the group labels were permuted. This can be useful to detect whether a permutation in particular had too many samples of a group labeled as another group, meaning that the resulting permuted group label resulted in pretty much a name change.
+
+```{r permuteTable, results="asis", eval=usedPermutations, echo=usedPermutations}
+d2 <- data.table(permuteDetail)
+t2 <- dTable(d2, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='100%')
+t2$print("chart2")
+```
+
+
+# Bibliography
+
+This report is part of `derfinder2` `r mycitep(bib[["derfinder2"]])` and was generated using `knitrBootstrap` `r mycitep(bib[["knitrBootstrap"]])`.
+
+Citations made with `knitcitations` `r mycitep(bib[["knitcitations"]])`.
+
+```{r bibliography, results='asis', echo=FALSE, cache=FALSE}
+## Print bibliography
+bibliography()
+```
+
+# Reproducibility
+
+This report was generated in path `r tmpdir`.
+
+```{r reproducibility}
+## Date the report was generated
+paste("Date the report was generated:", Sys.time())
+## Processing time in seconds
+proc.time()
+## Session info
+sessionInfo()
+```

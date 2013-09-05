@@ -63,7 +63,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	timeinfo <- c(timeinfo, list(Sys.time()))
 
 	if(writeOutput) {
-		dir.create(chr, recursive=TRUE)
+		dir.create(chr, showWarnings = FALSE, recursive = TRUE)
 		save(optionsStats, file=file.path(chr, "optionsStats.Rdata"))
 	}	
 	## saveStatsOpts

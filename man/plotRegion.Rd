@@ -25,7 +25,11 @@
   group.}
 
   \item{titleUse}{Whether to show the p-value (\code{pval})
-  or the q-value (\code{qval}) in the title.}
+  or the q-value (\code{qval}) in the title. If
+  \code{titleUse=none} then no p-value or q-value
+  information is used; useful if no permutations were
+  performed and thus p-value and q-value information is
+  absent.}
 
   \item{txdb}{A transcript data base such as
   TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no

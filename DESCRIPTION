@@ -2,8 +2,8 @@ Package: derfinder2
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.15
-Date: 2013-09-03
+Version: 0.0.16
+Date: 2013-09-04
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -31,7 +31,13 @@ Suggests:
     GenomicRanges,
     microbenchmark,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
-    biovizBase
+    biovizBase,
+    rCharts (>= 0.3.51),
+    data.table,
+    knitr,
+    knitrBootstrap (>= 0.8.0),
+    knitcitations,
+    devtools
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
 License: Artistic-2.0
@@ -58,3 +64,4 @@ Collate:
     'plotOverview.R'
     'analyzeChr.R'
     'mergeResults.R'
+    'generateReport.R'

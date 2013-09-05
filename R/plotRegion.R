@@ -8,7 +8,7 @@
 #' @param annotation The output from running \link[bumphunter]{annotateNearest} on the output from \link{calculatePvalues}.
 #' @param coverageInfo A DataFrame resulting from \link{loadCoverage} using \code{cutoff=NULL}.
 #' @param groupInfo A factor specifying the group membership of each sample. It will be used to color the samples by group.
-#' @param titleUse Whether to show the p-value (\code{pval}) or the q-value (\code{qval}) in the title.
+#' @param titleUse Whether to show the p-value (\code{pval}) or the q-value (\code{qval}) in the title. If \code{titleUse=none} then no p-value or q-value information is used; useful if no permutations were performed and thus p-value and q-value information is absent.
 #' @param txdb A transcript data base such as TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no annotation information is used.
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
 #' @param minExtend The minimum number of base-pairs to extend the view before and after the region of interest.
@@ -78,7 +78,7 @@
 #' }
 
 plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="pval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
-	stopifnot(titleUse %in% c("pval", "qval"))
+	stopifnot(titleUse %in% c("pval", "qval", "none"))
 	
 	## Satisfying R CMD check
 	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
@@ -87,9 +87,11 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 	l <-  width(regions[idx]) + 2 * max(minExtend, width(regions[idx]))
 	wh <- resize(regions[idx], l, fix="center")
 	if(titleUse == "pval") {
-		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", regions$pvalues[idx],", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", signif(regions$pvalues[idx], 4), ", sf=", scalefac)
+	} else if (titleUse == "qval") {
+		title <- paste0("Annotated name ", annotation$name[idx], " with q-value ", signif(regions$qvalues[idx], 2), ", sf=", scalefac)
 	} else {
-		title <- paste0("Annotated name ", annotation$name[idx], " with q-value ", regions$qvalues[idx],", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx], ", sf=", scalefac)
 	}
 	
 	## Plot the ideogram if not supplied
@@ -101,8 +103,10 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 	## Regions found (from the view)
 	if(titleUse == "pval") {
 		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significant)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
-	} else {
+	} else if (titleUse == "qval" ){
 		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significantQval)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
+	} else {
+		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]])
 	}
 	
 
