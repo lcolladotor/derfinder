@@ -2,9 +2,10 @@
 \alias{preprocessCoverage}
 \title{Transform and split the data}
 \usage{
-  preprocessCoverage(coverageInfo, cutoff = 5,
-    scalefac = 32, chunksize = 5e+06, colsubset = NULL,
-    mc.cores = getOption("mc.cores", 1L), verbose = FALSE)
+  preprocessCoverage(coverageInfo, groupInfo = NULL,
+    cutoff = 5, scalefac = 32, chunksize = 5e+06,
+    colsubset = NULL, mc.cores = getOption("mc.cores", 1L),
+    verbose = FALSE)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -12,6 +13,12 @@
   Rle --\code{$position}-- with the positions that passed
   the cutoff. This object is generated using
   \link{loadCoverage}.}
+
+  \item{groupInfo}{A factor specifying the group membership
+  of each sample. If \code{NULL} no group mean coverages
+  are calculated. If the factor has more than one level,
+  the first one will be used to calculate the log2 fold
+  change in \link{calculatePvalues}.}
 
   \item{cutoff}{This argument is passed to
   \link{filterData}.}
@@ -35,7 +42,7 @@
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
 }
 \value{
-  A list with three components. \describe{
+  A list with four components. \describe{
   \item{coverageSplit }{ is a list of DataFrames. Each
   DataFrame column represents a sample and the data is
   partioned according to \code{chunksize}. The coverage
@@ -51,7 +58,10 @@
   \item{position }{ is a logical Rle with the positions of
   the chromosome that passed the cutoff.}
   \item{meanCoverage }{ is a numeric Rle with the mean
-  coverage at each filtered base.} }
+  coverage at each filtered base.} \item{groupMeans }{ is a
+  list of Rle objects containing the mean coverage at each
+  filtered base calculated by group. This list has length 0
+  if \code{groupInfo=NULL}.} }
 }
 \description{
   This function takes the coverage data from

@@ -2,8 +2,8 @@ Package: derfinder2
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.16
-Date: 2013-09-04
+Version: 0.0.17
+Date: 2013-09-09
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -37,7 +37,8 @@ Suggests:
     knitr,
     knitrBootstrap (>= 0.8.0),
     knitcitations,
-    devtools
+    devtools,
+    xtable
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
 License: Artistic-2.0

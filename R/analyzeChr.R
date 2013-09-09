@@ -85,7 +85,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 
 	## pre-process the coverage data with automatic chunks depending on the number of cores
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Pre-processing the coverage data"))
-	prep <- preprocessCoverage(coverageInfo=coverageInfo, cutoff=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, mc.cores=mc.cores, verbose=verbose)
+	prep <- preprocessCoverage(coverageInfo=coverageInfo, groupInfo=groupInfo, cutoff=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, mc.cores=mc.cores, verbose=verbose)
 
 	## prepData
 	timeinfo <- c(timeinfo, list(Sys.time()))

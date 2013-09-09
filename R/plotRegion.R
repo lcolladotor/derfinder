@@ -79,6 +79,7 @@
 
 plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="pval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
 	stopifnot(titleUse %in% c("pval", "qval", "none"))
+	stopifnot(is.factor(groupInfo))
 	
 	## Satisfying R CMD check
 	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL

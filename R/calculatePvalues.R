@@ -16,7 +16,7 @@
 #'
 #' @return A list with four components:
 #' \describe{
-#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default). It also includes the mean coverage of the region (mean from the mean coverage at each base calculated in \link{preprocessCoverage}).}
+#' \item{regions }{ is a GRanges with metadata columns given by \link{findRegions} with the additional metadata column \code{pvalues}: p-value of the region calculated via permutations of the samples; \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; \code{significant}: whether the p-value is less than 0.05 (by default); \code{significantPadj}: whether the q-value is less than 0.10 (by default). It also includes the mean coverage of the region (mean from the mean coverage at each base calculated in \link{preprocessCoverage}). Furthermore, if \code{groupInfo} was not \code{NULL} in \link{preprocessCoverage}, then the group mean coverage is calculated as well as the log 2 fold change (using group 1 as the reference). }
 #' \item{nullStats}{ is a numeric Rle with the mean of the null statistics by segment.}
 #' \item{nullWidths}{ is a numeric Rle with the length of each of the segments in the null distribution. The area can be obtained by multiplying the absolute \code{nullstats} by the corresponding lengths.}
 #' \item{nullPermutation}{ is a Rle with the permutation number from which the null region originated from.}
@@ -25,8 +25,8 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
-#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist as.numeric "$" "$<-"
-#' @importFrom IRanges Views RleList Rle IRanges Views
+#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist as.numeric "$" "$<-" cbind
+#' @importFrom IRanges Views RleList Rle IRanges Views DataFrame values "values<-"
 #' @importFrom parallel mclapply
 #' @importFrom qvalue qvalue
 #'
@@ -38,7 +38,7 @@
 #'
 #' ## Preprocess the data
 #' ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+#' prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 #' 
 #' ## Get the F statistics
 #' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
@@ -57,33 +57,16 @@
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 #' regsWithP
 #'
-#' ## Calculate areas of the null segments
-#' abs(regsWithP$nullStats) * regsWithP$nullWidths
-#'
-#' ## Histogram of the original F statistics
-#' f.ori <- as.numeric(fstats)
-#' hist(f.ori, main="Distribution original F-stats", freq=FALSE)
-#'
-#' ## Histogram of the null F statistics
-#' f.null <- as.numeric(regsWithP$nullStats)
-#' hist(f.null, main="Distribution null F-stats by region", freq=FALSE)
-#'
-#' ## Histogram of the original p-values
-#' hist(pf(f.ori, df1-df0, n-df1), main="Distribution original p-values", freq=FALSE)
-#' 
-#' ## Histogram of the null p-values
-#' hist(pf(f.null, df1-df0, n-df1), main="Distribution null p-values by region", freq=FALSE)
-#'
-#' ## By region
-#'
-#' ## Histogram of the original F statistics by region
-#' hist(regsWithP$regions$value, main="Distribution original F-stats by region", freq=FALSE)
-#'
-#' ## Histogram of the original p-values by region
+#' ## Histogram of the theoretical p-values by region
 #' hist(pf(regsWithP$regions$value, df1-df0, n-df1), main="Distribution original p-values by region", freq=FALSE)
 #'
-#' ## Histogram of the p-values by region
+#' ## Histogram of the permutted p-values by region
 #' hist(regsWithP$regions$pvalues, main="Distribution permutted p-values by region", freq=FALSE)
+#'
+#' ## MA style plot
+#' library("ggplot2")
+#' ma <- data.frame(mean=regsWithP$regions$meanCoverage, foldChange=regsWithP$regions$foldChangeYRIvsCEU)
+#' ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
 #'
 #' \dontrun{
 #' ## Annotate the results
@@ -108,7 +91,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		seeds <- rep(NA, nPermute)
 	}
 	stopifnot(nPermute == length(seeds))
-	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position", "meanCoverage"))) == 3)
+	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position", "meanCoverage", "groupMeans"))) == 4)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
@@ -116,12 +99,43 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
 	position <- coveragePrep$position
 	means <- coveragePrep$meanCoverage
+	groupMeans <- coveragePrep$groupMeans
 	cluster <- clusterMakerRle(position, maxGap)
 	
 	## Find the regions
 	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, cutoff=cutoff, verbose=verbose) 
-	regs$meanCoverage <- mean(Views(means, IRanges(start=regs$indexStart, end=regs$indexEnd)))
-	rm(fstats, position, means)
+	
+	## Assign mean coverage (overall)
+	indexIR <- IRanges(start=regs$indexStart, end=regs$indexEnd)
+	regs$meanCoverage <- mean(Views(means, indexIR))
+	
+	## Calculate mean coverage by group and fold changes
+	if(length(groupMeans) > 0) {
+		regionGroupMean <- lapply(groupMeans, function(x) {
+			mean(Views(x, indexIR))
+		})
+			
+		## Calculate fold coverage vs group 1
+		if(length(regionGroupMean) > 1){
+			foldChange <- vector("list", length(regionGroupMean) - 1)
+			names(foldChange) <- names(regionGroupMean)[-1]
+			for(group in names(foldChange)) {
+				foldChange[[group]] <- log2(regionGroupMean[[group]] / regionGroupMean[[1]])
+			}
+		}
+		
+		## Finish up
+		names(regionGroupMean) <- paste0("mean", names(regionGroupMean))
+		values(regs) <- cbind(values(regs), DataFrame(regionGroupMean))
+		if(length(regionGroupMean) > 1) {
+			names(foldChange) <- paste0("foldChange", names(foldChange), "vs", names(groupMeans)[1])
+			values(regs) <- cbind(values(regs), DataFrame(foldChange))
+			rm(foldChange)
+		}
+		rm(regionGroupMean)
+	}
+	
+	rm(fstats, position, means, groupMeans)
 	
 	
 	## Pre-allocate memory

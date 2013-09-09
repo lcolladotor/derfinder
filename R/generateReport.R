@@ -15,7 +15,6 @@
 #' @param txdb Specify the transcription database to use for making the plots for the top regions by area. If \code{NULL} and \code{hg19=TRUE} then TxDb.Hsapiens.UCSC.hg19.knownGene is used.
 #' @param installMissing If \code{TRUE} all missing required packages are installed. Note that some are development versions hosted in GitHub.
 #' @param device The graphical device used when knitting. See more at http://yihui.name/knitr/options (dev argument).
-#' @param fullTime Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #' @param fullRegions Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #' @param fullNullSummary Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #' @param optionsStats Part of the output of \link{analyzeChr}. Specify it only if you have already loaded it in memory.
@@ -33,11 +32,13 @@
 #' }
 
 
-generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), makeBestPlots=TRUE, nBest=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullTime=NULL, fullRegions=NULL, fullNullSummary=NULL, optionsStats=NULL) {
+generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), makeBestPlots=TRUE, nBest=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, optionsStats=NULL) {
 	## Load all required packages and install them if needed
-	pkgs <- c("IRanges", "GenomicRanges", "TxDb.Hsapiens.UCSC.hg19.knownGene", "ggplot2", "gridExtra", "data.table", "knitcitations", "knitrBootstrap", "rCharts")
-	pkgs.type <- c(rep("BioC", 3), rep("CRAN", 4), rep("git", 2))
+	pkgs <- c("IRanges", "GenomicRanges", "TxDb.Hsapiens.UCSC.hg19.knownGene", "ggplot2", "gridExtra", "data.table", "knitcitations", "xtable", "knitrBootstrap", "rCharts")
+	pkgs.type <- c(rep("BioC", 3), rep("CRAN", 5), rep("git", 2))
 	stopifnot(length(pkgs) == length(pkgs.type))
+	
+	startTime <- Sys.time()
 	
 	dir.create(file.path(prefix, outdir), showWarnings = FALSE, recursive = TRUE)
 	
@@ -93,11 +94,10 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 	}
 	
 	## Write bibliography information
-	write.bibtex(c("knitcitations" = citation("knitcitations"), "derfinder2" = citation("derfinder2"), "knitrBootstrap" = citation("knitrBootstrap"), "ggbio" = citation("ggbio"), "ggplot2" = citation("ggplot2"), "rCharts" = citation("rCharts")), file = file.path(prefix, outdir, "references.bib"))
+	write.bibtex(c("knitcitations" = citation("knitcitations"), "derfinder2" = citation("derfinder2"), "knitrBootstrap" = citation("knitrBootstrap"), "ggbio" = citation("ggbio"), "ggplot2" = citation("ggplot2"), "rCharts" = citation("rCharts"), "knitr" = citation("knitr")[1]), file = file.path(prefix, outdir, "references.bib"))
 	bib <- read.bibtex(file.path(prefix, outdir, "references.bib"))
 	
 	## Load files
-	if(is.null(fullTime)) load(file.path(prefix, "fullTime.Rdata"))
 	if(is.null(fullRegions)) load(file.path(prefix, "fullRegions.Rdata"))
 	if(is.null(fullNullSummary)) load(file.path(prefix, "fullNullSummary.Rdata"))
 	if(is.null(optionsStats)) load(file.path(prefix, dir(prefix, pattern="chr")[1], "optionsStats.Rdata"))
@@ -115,6 +115,11 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 	## Were permutations used?
 	seeds <- optionsStats$seeds
 	usedPermutations <- length(optionsStats$nPermute) > 0 & !is.null(seeds)
+	## Are there significant (by q-value) regions?
+	idx.sig <- which(as.logical(fullRegions$significantQval))
+	hasSig <- length(idx.sig) > 0
+	## Save the call
+	theCall <- match.call()
 	
 	## Generate report
 	tmpdir <- getwd()

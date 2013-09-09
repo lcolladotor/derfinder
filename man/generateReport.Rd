@@ -7,9 +7,8 @@
     browse = interactive(), makeBestPlots = TRUE,
     nBest = 2, fullCov = NULL, hg19 = TRUE, p.ideos = NULL,
     txdb = NULL, installMissing = TRUE,
-    device = "CairoPNG", fullTime = NULL,
-    fullRegions = NULL, fullNullSummary = NULL,
-    optionsStats = NULL)
+    device = "CairoPNG", fullRegions = NULL,
+    fullNullSummary = NULL, optionsStats = NULL)
 }
 \arguments{
   \item{prefix}{The main data directory path where
@@ -59,10 +58,6 @@
   \item{device}{The graphical device used when knitting.
   See more at http://yihui.name/knitr/options (dev
   argument).}
-
-  \item{fullTime}{Part of the output of
-  \link{mergeResults}. Specify it only if you have already
-  loaded it in memory.}
 
   \item{fullRegions}{Part of the output of
   \link{mergeResults}. Specify it only if you have already

@@ -63,15 +63,18 @@
   (by default); \code{significantPadj}: whether the q-value
   is less than 0.10 (by default). It also includes the mean
   coverage of the region (mean from the mean coverage at
-  each base calculated in \link{preprocessCoverage}).}
-  \item{nullStats}{ is a numeric Rle with the mean of the
-  null statistics by segment.} \item{nullWidths}{ is a
-  numeric Rle with the length of each of the segments in
-  the null distribution. The area can be obtained by
-  multiplying the absolute \code{nullstats} by the
-  corresponding lengths.} \item{nullPermutation}{ is a Rle
-  with the permutation number from which the null region
-  originated from.} }
+  each base calculated in \link{preprocessCoverage}).
+  Furthermore, if \code{groupInfo} was not \code{NULL} in
+  \link{preprocessCoverage}, then the group mean coverage
+  is calculated as well as the log 2 fold change (using
+  group 1 as the reference). } \item{nullStats}{ is a
+  numeric Rle with the mean of the null statistics by
+  segment.} \item{nullWidths}{ is a numeric Rle with the
+  length of each of the segments in the null distribution.
+  The area can be obtained by multiplying the absolute
+  \code{nullstats} by the corresponding lengths.}
+  \item{nullPermutation}{ is a Rle with the permutation
+  number from which the null region originated from.} }
 }
 \description{
   First, this function clusters the genomic positions and
@@ -90,7 +93,7 @@ models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustv
 
 ## Preprocess the data
 ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 
 ## Get the F statistics
 fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
@@ -109,33 +112,16 @@ cutoff <- 1
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 regsWithP
 
-## Calculate areas of the null segments
-abs(regsWithP$nullStats) * regsWithP$nullWidths
-
-## Histogram of the original F statistics
-f.ori <- as.numeric(fstats)
-hist(f.ori, main="Distribution original F-stats", freq=FALSE)
-
-## Histogram of the null F statistics
-f.null <- as.numeric(regsWithP$nullStats)
-hist(f.null, main="Distribution null F-stats by region", freq=FALSE)
-
-## Histogram of the original p-values
-hist(pf(f.ori, df1-df0, n-df1), main="Distribution original p-values", freq=FALSE)
-
-## Histogram of the null p-values
-hist(pf(f.null, df1-df0, n-df1), main="Distribution null p-values by region", freq=FALSE)
-
-## By region
-
-## Histogram of the original F statistics by region
-hist(regsWithP$regions$value, main="Distribution original F-stats by region", freq=FALSE)
-
-## Histogram of the original p-values by region
+## Histogram of the theoretical p-values by region
 hist(pf(regsWithP$regions$value, df1-df0, n-df1), main="Distribution original p-values by region", freq=FALSE)
 
-## Histogram of the p-values by region
+## Histogram of the permutted p-values by region
 hist(regsWithP$regions$pvalues, main="Distribution permutted p-values by region", freq=FALSE)
+
+## MA style plot
+library("ggplot2")
+ma <- data.frame(mean=regsWithP$regions$meanCoverage, foldChange=regsWithP$regions$foldChangeYRIvsCEU)
+ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
 
 \dontrun{
 ## Annotate the results
