@@ -34,7 +34,8 @@
   \item{fullCov}{A list where each element is the result
   from \link{loadCoverage} used with \code{cutoff=NULL}.
   The elements of the list should be named according to the
-  chromosome number.}
+  chromosome number. Can be generated using
+  \link{fullCoverage}.}
 
   \item{hg19}{If \code{TRUE} then the reference is assumed
   to be hg19 and chromosome lengths as well as the default
@@ -87,6 +88,7 @@ generateReport(prefix="run1", makeBestPlots=FALSE)
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{mergeResults}, \link{analyzeChr}
+  \link{mergeResults}, \link{analyzeChr},
+  \link{fullCoverage}
 }
 

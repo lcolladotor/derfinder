@@ -9,7 +9,7 @@
 #' @param browse If \code{TRUE} the HTML report is opened in your browser once it's completed.
 #' @param makeBestPlots If \code{TRUE}, \link{plotRegion} is used on the \code{nBest} regions by area. These plots take some time to make
 #' @param nBest The number of best by area plots to make.
-#' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number.
+#' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param hg19 If \code{TRUE} then the reference is assumed to be hg19 and chromosome lengths as well as the default transcription database (TxDb.Hsapiens.UCSC.hg19.knownGene) will be used.
 #' @param p.ideos A list where each element is the result of \link[ggbio]{plotIdeogram}. If it's \code{NULL} and \code{hg19=TRUE} then they are created for the hg19 human reference.
 #' @param txdb Specify the transcription database to use for making the plots for the top regions by area. If \code{NULL} and \code{hg19=TRUE} then TxDb.Hsapiens.UCSC.hg19.knownGene is used.
@@ -22,7 +22,7 @@
 #' @return An HTML report with a basic exploration of the results.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{mergeResults}, \link{analyzeChr}
+#' @seealso \link{mergeResults}, \link{analyzeChr}, \link{fullCoverage}
 #' @export
 #' @importMethodsFrom IRanges as.numeric
 #'
@@ -33,44 +33,100 @@
 
 
 generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), makeBestPlots=TRUE, nBest=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, optionsStats=NULL) {
-	## Load all required packages and install them if needed
-	pkgs <- c("IRanges", "GenomicRanges", "TxDb.Hsapiens.UCSC.hg19.knownGene", "ggplot2", "gridExtra", "data.table", "knitcitations", "xtable", "knitrBootstrap", "rCharts")
-	pkgs.type <- c(rep("BioC", 3), rep("CRAN", 5), rep("git", 2))
-	stopifnot(length(pkgs) == length(pkgs.type))
-	
+
+	## Save start time for getting the total processing time
 	startTime <- Sys.time()
 	
-	dir.create(file.path(prefix, outdir), showWarnings = FALSE, recursive = TRUE)
+	## Pleasing R CMD check
+	biocLite <- function(x) { NA }
+	rm(biocLite)
 	
-	for(i in seq_len(length(pkgs))) {
-		if(pkgs[i] != "TxDb.Hsapiens.UCSC.hg19.knownGene" | hg19) {
-			## Ignored only if hg19 == FALSE
-			tmp <- suppressMessages(require(pkgs[i], character.only=TRUE))
-		} else {
-			tmp <- TRUE
+	#### Load/install packages
+	## BioC
+	if(!suppressMessages(require("IRanges"))) {
+		if(installMissing) {
+			source("http://bioconductor.org/biocLite.R")
+			biocLite("IRanges")
 		}
-		
-		if(!tmp & installMissing) {
-			if(pkgs.type[i] == "BioC") {
+		library("IRanges")
+	}
+	if(!suppressMessages(require("GenomicRanges"))) {
+		if(installMissing) {
+			source("http://bioconductor.org/biocLite.R")
+			biocLite("GenomicRanges")
+		}
+		library("GenomicRanges")
+	}
+	if(hg19) {
+		if(!suppressMessages(require("TxDb.Hsapiens.UCSC.hg19.knownGene"))) {
+			if(installMissing) {
 				source("http://bioconductor.org/biocLite.R")
-				biocLite(pkgs[i])
-			} else if (pkgs.type[i] == "CRAN") {
-				install.packages(pkgs[i])
-				
-			} else {
-				if(!require("devtools")) {
-					install.packages("devtools")
-					library("devtools")
-				}
-				if(pkgs[i] == "rCharts") {
-					install_github('rCharts', 'ramnathv', ref='dev')
-				} else if (pkgs[i] == "knitrBootstrap") {
-					install_github(username='jimhester', repo='knitrBootstrap')
-				}
+				biocLite("TxDb.Hsapiens.UCSC.hg19.knownGene")
 			}
-			library(pkgs[i])
+			library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 		}
 	}
+	
+	## CRAN
+	if(!suppressMessages(require("ggplot2"))) {
+		if(installMissing) {
+			install.packages("ggplot2")
+		}
+		library("ggplot2")
+	}
+	if(!suppressMessages(require("gridExtra"))) {
+		if(installMissing) {
+			install.packages("gridExtra")
+		}
+		library("gridExtra")
+	}
+	if(!suppressMessages(require("data.table"))) {
+		if(installMissing) {
+			install.packages("data.table")
+		}
+		library("data.table")
+	}
+	if(!suppressMessages(require("knitcitations"))) {
+		if(installMissing) {
+			install.packages("knitcitations")
+		}
+		library("knitcitations")
+	}
+	if(!suppressMessages(require("xtable"))) {
+		if(installMissing) {
+			install.packages("xtable")
+		}
+		library("xtable")
+	}
+	
+	## GitHub	
+	if(!suppressMessages(require("knitrBootstrap"))) {
+		if(installMissing) {
+			if(!require("devtools")) {
+				if(installMissing) {
+					install.packages("devtools")
+				}				
+				library("devtools")
+			}
+			install_github(username='jimhester', repo='knitrBootstrap')
+		}
+		library("knitrBootstrap")
+	}
+	if(!suppressMessages(require("rCharts"))) {
+		if(installMissing) {
+			if(!require("devtools")) {
+				if(installMissing) {
+					install.packages("devtools")
+				}				
+				library("devtools")
+			}
+			install_github('rCharts', 'ramnathv', ref='dev')
+		}
+		library("rCharts")
+	}
+	
+	## Create outdir
+	dir.create(file.path(prefix, outdir), showWarnings = FALSE, recursive = TRUE)
 	
 	## Locate Rmd
 	template <- system.file(file.path("basicExploration", "basicExploration.Rmd"), package="derfinder2")
