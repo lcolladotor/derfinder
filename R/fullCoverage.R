@@ -13,6 +13,8 @@
 #' \describe{ Each element is a DataFrame with the coverage information produced by \link{loadCoverage}.
 #' }
 #'
+#' @seealso \link{loadCoverage}, \link{filterData}, \link{generateReport}
+#'
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom parallel mclapply

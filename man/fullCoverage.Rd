@@ -61,4 +61,8 @@ mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 \author{
   Leonardo Collado-Torres
 }
+\seealso{
+  \link{loadCoverage}, \link{filterData},
+  \link{generateReport}
+}
 
