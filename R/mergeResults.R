@@ -24,7 +24,7 @@
 #' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 #' @export
 #' @importFrom GenomicRanges GRangesList
-#' @importMethodsFrom GenomicRanges unlist "$" "$<-" "[" "[<-" order
+#' @importMethodsFrom GenomicRanges unlist "$" "$<-" "[" "[<-" "[[" "[[<-"
 #' @importFrom IRanges DataFrame RleList
 #' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist as.numeric nrow
 #' @importFrom qvalue qvalue
@@ -149,9 +149,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
 	}	
 	## Sort by decreasing area
-	print(8)
 	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE)]
-	print(9)
 	
 	## save GRanges version
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
