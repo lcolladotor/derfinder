@@ -46,6 +46,7 @@ fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=get
 		
 	## Subsetting function that runs loadCoverage
 	loadChr <- function(idx, dirs, chrnums, chrlens, outputs, verbose) {
+		if(verbose) message(paste(Sys.time(), "fullCoverage: processing chromosome", chrnums[idx]))
 		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, chrlen=chrlens[idx], output=outputs[idx], verbose=verbose)$coverage
 	}
 	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores)

@@ -74,7 +74,8 @@ getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRU
 	## Warning when seqlengths are not specified
 	if(all(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
-	cc <- coverage(regions)
+	## use logical rle to subset large coverage matrix
+	cc <- coverage(regions) ## The output of coverage() differs on whether seqlenths are provided or not. If absent, it assumes that the last base is the end of the chromosome.
 	for(i in seq(along=cc)) {
 		cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
 	}
@@ -85,11 +86,11 @@ getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRU
 		z <- as.data.frame(subset(fullCov[[i]], cc[[i]]))
 		g <- sort(regions[seqnames(regions) == seqlevels(regions)[i]])
 		ind <- rep(names(g), width(g))
-		tmp <- split(z, ind)
-		fullCovList[[i]] <- tmp
+		tmpList <- split(z, ind)
+		fullCovList[[i]] <- tmpList
 	}
-	tmp2 <- do.call(c, fullCovList)
-	theData <- tmp2[order(as.numeric(names(tmp2)), decreasing=FALSE)]
+	tmp <- do.call(c, fullCovList)
+	theData <- tmp[order(as.numeric(names(tmp)), decreasing=FALSE)]
 	out <- list(coverageData = theData)
 	
 	if(sum(unlist(lapply(out$coverageData, nrow))) != sum(width(regions))) {
