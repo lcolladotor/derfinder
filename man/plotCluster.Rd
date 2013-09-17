@@ -1,9 +1,9 @@
-\name{plotRegion}
-\alias{plotRegion}
-\title{Plot the coverage information surrounding a region}
+\name{plotCluster}
+\alias{plotCluster}
+\title{Plot the coverage information surrounding a region cluster}
 \usage{
-  plotRegion(idx, regions, annotation, coverageInfo,
-    groupInfo, titleUse = "pval", txdb = NULL,
+  plotCluster(idx, regions, annotation, coverageInfo,
+    groupInfo, titleUse = "qval", txdb = NULL,
     p.ideogram = NULL, minExtend = 200, scalefac = 32)
 }
 \arguments{
@@ -52,10 +52,11 @@
 }
 \description{
   For a given region found in \link{calculatePvalues}, plot
-  the coverage in it's vicinity as well as the mean by
-  group. If annotation exists, you can plot the trancripts
-  and exons (if any) overlapping in the vicinity of the
-  region of interest.
+  the coverage for the cluster this region belongs to as
+  well as some padding. The mean by group is shown to
+  facilitate comparisons between groups. If annotation
+  exists, you can plot the trancripts and exons (if any)
+  overlapping in the vicinity of the region of interest.
 }
 \details{
   See the parameter \code{significantCut} in
@@ -100,13 +101,13 @@ annotation <- annotateNearest(regsWithP$regions, "hg19")
 
 ## Make the plot
 suppressMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
-plotRegion(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
+plotCluster(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 ## Resize the plot window and the labels will look good.
 
 \dontrun{
 ## For a custom plot, check the ggbio and ggplot2 packages.
 ## Also feel free to look at the code for this function:
-plotRegion
+plotCluster
 }
 }
 \author{

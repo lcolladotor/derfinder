@@ -1,6 +1,6 @@
-#' Plot the coverage information surrounding a region
+#' Plot the coverage information surrounding a region cluster
 #'
-#' For a given region found in \link{calculatePvalues}, plot the coverage in it's vicinity as well as the mean by group. If annotation exists, you can plot the trancripts and exons (if any) overlapping in the vicinity of the region of interest.
+#' For a given region found in \link{calculatePvalues}, plot the coverage for the cluster this region belongs to as well as some padding. The mean by group is shown to facilitate comparisons between groups. If annotation exists, you can plot the trancripts and exons (if any) overlapping in the vicinity of the region of interest.
 #'
 #' 
 #' @param idx A integer specifying the index number of the region of interest.
@@ -24,7 +24,7 @@
 #' @importFrom IRanges width resize
 #' @importMethodsFrom IRanges "$" "[" as.matrix findOverlaps
 #' @importFrom GenomicRanges seqnames
-#' @importMethodsFrom GenomicRanges findOverlaps start end as.data.frame
+#' @importMethodsFrom GenomicRanges findOverlaps start end as.data.frame range
 #' @importFrom ggbio plotIdeogram tracks theme_tracks_sunset
 #' @importMethodsFrom ggbio autoplot
 #' @importFrom reshape2 melt
@@ -68,16 +68,16 @@
 #'
 #' ## Make the plot
 #' suppressMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
-#' plotRegion(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' plotCluster(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' ## Resize the plot window and the labels will look good.
 #'
 #' \dontrun{
 #' ## For a custom plot, check the ggbio and ggplot2 packages.
 #' ## Also feel free to look at the code for this function:
-#' plotRegion
+#' plotCluster
 #' }
 
-plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="pval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
+plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
 	stopifnot(titleUse %in% c("pval", "qval", "none"))
 	stopifnot(is.factor(groupInfo))
 	
@@ -85,8 +85,12 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
 		
 	## Select region and build title
-	l <-  width(regions[idx]) + 2 * max(minExtend, width(regions[idx]))
-	wh <- resize(regions[idx], l, fix="center")
+	cluster <- regions[ seqnames(regions) == seqnames(regions)[idx] & regions$cluster == regions$cluster[idx]]
+	if(length(cluster) > 1) {
+		cluster <- range(cluster)
+	}
+	l <-  width(cluster) + max(2 * minExtend, width(cluster))
+	wh <- resize(cluster, l, fix="center")
 	if(titleUse == "pval") {
 		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", signif(regions$pvalues[idx], 4), ", sf=", scalefac)
 	} else if (titleUse == "qval") {
@@ -133,15 +137,7 @@ plotRegion <- function(idx, regions, annotation, coverageInfo, groupInfo, titleU
 		p.transcripts <- tryCatch(autoplot(txdb, which = wh, names.expr = "tx_name(gene_id)"), warning=function(w) { FALSE })
 	}	
 	if(!is.logical(p.transcripts)) {
-		## tryCatch needed because if the region is smaller than an exon, the stat="reduce" fails
-		p.exons <- tryCatch(autoplot(txdb, which = wh, stat = "reduce", color = "brown", fill = "brown"), error=function(w) { FALSE })
-		if(!is.logical(p.exons)) {
-			result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, "Known\ntx_name(gene_id)" = p.transcripts, "Exons" = p.exons, heights = c(2, 4, 4, 1.5, 3, 1), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
-		} else {
-			result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, "Known\ntx_name(gene_id)" = p.transcripts, heights = c(2, 4, 4, 1.5, 3), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
-		}
-		
-		
+		result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, "Known\ntx_name(gene_id)" = p.transcripts, heights = c(2, 4, 4, 1.5, 3), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()		
 	} else {
 		result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, heights = c(1.5, 5, 5, 2), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
 	}

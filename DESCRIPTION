@@ -44,7 +44,8 @@ Suggests:
     knitcitations,
     devtools,
     xtable,
-    GenomicFeatures
+    GenomicFeatures,
+    RColorBrewer
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
 License: Artistic-2.0
@@ -67,7 +68,6 @@ Collate:
     'makeBamList.R'
     'makeModels.R'
     'preprocessCoverage.R'
-    'plotRegion.R'
     'plotOverview.R'
     'analyzeChr.R'
     'mergeResults.R'
@@ -77,3 +77,5 @@ Collate:
     'annotateRegions.R'
     'getRegionCoverage.R'
     'coverageToExon.R'
+    'plotRegionCoverage.R'
+    'plotCluster.R'

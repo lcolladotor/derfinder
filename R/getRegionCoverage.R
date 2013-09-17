@@ -72,7 +72,7 @@ getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRU
 	fullCov <- fullCov[gsub("chr", "", seqlevels(regions))] ## added
 	
 	## Warning when seqlengths are not specified
-	if(all(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
+	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
 	## use logical rle to subset large coverage matrix
 	cc <- coverage(regions) ## The output of coverage() differs on whether seqlenths are provided or not. If absent, it assumes that the last base is the end of the chromosome.
