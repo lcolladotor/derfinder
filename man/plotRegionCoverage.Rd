@@ -4,7 +4,7 @@
 \usage{
   plotRegionCoverage(regions, regionCoverage, groupInfo,
     nearestAnnotation, annotatedRegions, N = 100,
-    colors = NULL, scalefac = 32, ask = FALSE)
+    colors = NULL, scalefac = 32, ask = interactive())
 }
 \arguments{
   \item{regions}{The \code{$regions} output from

@@ -7,8 +7,8 @@
 #' @param output The name output HTML file.
 #' @param project The title of the project.
 #' @param browse If \code{TRUE} the HTML report is opened in your browser once it's completed.
-#' @param makeBestPlots If \code{TRUE}, \link{plotRegion} is used on the \code{nBest} regions by area. These plots take some time to make
-#' @param nBest The number of best by area plots to make.
+#' @param makeBestClusters If \code{TRUE}, \link{plotCluster} is used on the \code{nBestClusters} regions by area. These plots take some time to make.
+#' @param nBestClusters The number of best by area plots to make.
 #' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param hg19 If \code{TRUE} then the reference is assumed to be hg19 and chromosome lengths as well as the default transcription database (TxDb.Hsapiens.UCSC.hg19.knownGene) will be used.
 #' @param p.ideos A list where each element is the result of \link[ggbio]{plotIdeogram}. If it's \code{NULL} and \code{hg19=TRUE} then they are created for the hg19 human reference.
@@ -28,11 +28,11 @@
 #'
 #' @examples
 #' \dontrun{
-#' generateReport(prefix="run1", makeBestPlots=FALSE)
+#' generateReport(prefix="run1", makeBestClusters=FALSE)
 #' }
 
 
-generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), makeBestPlots=TRUE, nBest=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, optionsStats=NULL) {
+generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), makeBestClusters=TRUE, nBestClusters=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, optionsStats=NULL) {
 
 	## Save start time for getting the total processing time
 	startTime <- Sys.time()
@@ -159,10 +159,10 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 	if(is.null(optionsStats)) load(file.path(prefix, dir(prefix, pattern="chr")[1], "optionsStats.Rdata"))
 
 	## Require fullCov
-	if(makeBestPlots) {
+	if(makeBestClusters) {
 		stopifnot(!is.null(fullCov))
 	} else {
-		nBest <- 0
+		nBestClusters <- 0
 	}
 
 	##### Setup chunk options

@@ -88,7 +88,7 @@
 #' dev.off()
 #' }
 
-plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, N = 100, colors=NULL, scalefac = 32, ask = FALSE) {
+plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, N = 100, colors=NULL, scalefac = 32, ask = interactive()) {
 	stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 1)
 	stopifnot(length(intersect(names(regionCoverage), c("coverageData"))) == 1)
 	stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, "GRanges"))
@@ -106,7 +106,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	
 	anno <- annotatedRegions$annotationList
 
-	layout(matrix(c(1, 1, 2), nc = 1))
+	layout(matrix(c(1, 1, 2), ncol = 1))
 	N <- min(N, length(regions))
 	for(i in seq_len(N)) {
 		if(i %% 10 == 0) cat(".")
@@ -123,7 +123,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		m <- ceiling(max(y))
 		axis(2, at = 5:m, labels = 2^(5:m) - scalefac, cex.axis = 1.5)
 		
-		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), nc = length(levels(groupInfo)), cex = 1.2, pt.cex = 1.5)
+		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), ncol = length(levels(groupInfo)), cex = 1.2, pt.cex = 1.5)
 		mtext("Coverage", side = 2, line = 2.5, cex = 1.3)
 		mtext(paste(nearestAnnotation$name[i], ",", nearestAnnotation$distance[i], "bp from tss:", nearestAnnotation$region[i]), outer = TRUE, cex = 1.3)
 		## annotation

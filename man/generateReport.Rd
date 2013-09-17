@@ -4,9 +4,9 @@
 \usage{
   generateReport(prefix, outdir = "basicExploration",
     output = "basicExploration.html", project = prefix,
-    browse = interactive(), makeBestPlots = TRUE,
-    nBest = 2, fullCov = NULL, hg19 = TRUE, p.ideos = NULL,
-    txdb = NULL, installMissing = TRUE,
+    browse = interactive(), makeBestClusters = TRUE,
+    nBestClusters = 2, fullCov = NULL, hg19 = TRUE,
+    p.ideos = NULL, txdb = NULL, installMissing = TRUE,
     device = "CairoPNG", fullRegions = NULL,
     fullNullSummary = NULL, optionsStats = NULL)
 }
@@ -25,11 +25,12 @@
   \item{browse}{If \code{TRUE} the HTML report is opened in
   your browser once it's completed.}
 
-  \item{makeBestPlots}{If \code{TRUE}, \link{plotRegion} is
-  used on the \code{nBest} regions by area. These plots
-  take some time to make}
+  \item{makeBestClusters}{If \code{TRUE},
+  \link{plotCluster} is used on the \code{nBestClusters}
+  regions by area. These plots take some time to make.}
 
-  \item{nBest}{The number of best by area plots to make.}
+  \item{nBestClusters}{The number of best by area plots to
+  make.}
 
   \item{fullCov}{A list where each element is the result
   from \link{loadCoverage} used with \code{cutoff=NULL}.
@@ -81,7 +82,7 @@
 }
 \examples{
 \dontrun{
-generateReport(prefix="run1", makeBestPlots=FALSE)
+generateReport(prefix="run1", makeBestClusters=FALSE)
 }
 }
 \author{

@@ -185,9 +185,9 @@ The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in
 
 ## Plots
 
-```{r plotGenome, message=FALSE, eval=makeBestPlots, echo=makeBestPlots}
+```{r plotGenome, message=FALSE, eval=makeBestClusters, echo=makeBestClusters}
 ## Select best by area
-bestArea <- head(order(fullRegions$area, decreasing=TRUE), nBest)
+bestArea <- head(order(fullRegions$area, decreasing=TRUE), nBestClusters)
 
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
@@ -225,10 +225,10 @@ regionPlot <- function(idx, tUse="pval") {
 ```
 
 
-`r ifelse(makeBestPlots, paste("Below are the best", nBest, "regions ordered by area."), "No plots were generated as requested.")`
+`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "regions ordered by area."), "No plots were generated as requested.")`
  
 
-```{r bestArea, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestPlots, echo=makeBestPlots}
+```{r bestArea, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}
 
 ## Genome plots
 for(idx in bestArea) {
