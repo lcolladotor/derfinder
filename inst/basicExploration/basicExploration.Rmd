@@ -16,7 +16,7 @@ Most plots are made with using `ggplot2` `r mycitep(bib[["ggplot2"]])`.
 tmp <- fullRegions
 names(tmp) <- seq_len(length(tmp))
 regions.df <- as.data.frame(tmp)
-regions.df$width <- width(fullRegions)
+regions.df$width <- width(tmp)
 rm(tmp)
 nulls.df <- as.data.frame(fullNullSummary)
 
@@ -29,6 +29,9 @@ if(hg19) {
 ## Find which chrs are present in the data set
 chrs <- levels(seqnames(fullRegions))
 names(chrs) <- gsub("chr", "", chrs)
+
+## Get region coverage for the top regions
+regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
 ```
 
 
@@ -143,6 +146,22 @@ p7a
 
 This plot shows the relationship between the region mean coverage and the area for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
 
+## Mean coverage vs fold change
+
+The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. Note that the fold change as calculated here is not taking into account the library sizes.
+
+They are only shown when there are two or more groups.
+
+```{r MAstyle, fig.width=10, fig.height=10, dev=device}
+for(j in grep("foldChange", colnames(values(fullRegions)))) {
+	ma <- data.frame(mean=fullRegions$meanCoverage, foldChange=values(fullRegions)[, j]))
+	groups <- strsplit(gsub("foldChange", "", colnames(values(fullRegions))[j]), "vs")[[1]]
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title=paste("MA style plot", groups[1], "vs", groups[2])
+	print(p.ma)
+}
+```
+
+
 # Genomic overview
 
 The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotOverview` in `derfinder2` `r mycitep(bib[["derfinder2"]])`.
@@ -181,7 +200,36 @@ This genomic overview plot shows the annotation region type for the __candidate_
 
 # Best regions
 
-The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotRegion` in `derfinder2` `r mycitep(bib[["derfinder2"]])`. The dynamic table in this section is generated using `rCharts` `r mycitep(bib[["rCharts"]])`.
+
+
+## Plots
+
+Below are the plots for the top `r nBestRegions` regions as ranked by area.
+
+
+```{r plotRegions}
+plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE) 
+```
+
+## Region information
+
+Below is an interactive table with the top `r nBestRegions` regions as ranked by area. This table was generated using `rCharts` `r mycitep(bib[["rCharts"]])`.
+
+<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
+
+```{r bestAreaInfo, results="asis"}
+topArea <- head(regions.df, nBestRegions)
+topArea <- data.frame("areaRank"=order(topArea$area, decreasing=TRUE), topArea)
+d <- data.table(topArea)
+t1 <- dTable(d, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='100%')
+t1$print("regions", cdn=TRUE)
+```
+
+
+# Best region clusters
+
+The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotRegion` in `derfinder2` `r mycitep(bib[["derfinder2"]])`. 
 
 ## Plots
 
@@ -208,7 +256,7 @@ if(hg19 & is.null(txdb)) {
 }
 
 ## Graphical setup: main plotting function
-regionPlot <- function(idx, tUse="pval") {
+regionClusterPlot <- function(idx, tUse="qval") {
 	## Chr specific selections
 	chr <- as.character(seqnames(fullRegions[idx]))
 	chrnum <- gsub("chr", "", chr)
@@ -216,7 +264,7 @@ regionPlot <- function(idx, tUse="pval") {
 	covInfo <- fullCov[[chrnum]]
 	
 	## Make the plot
-	p <- plotRegion(idx, regions=fullRegions, annotation=regions.df, coverageInfo=covInfo, groupInfo=optionsStats$groupInfo, titleUse=tUse, txdb=txdb, p.ideogram=p.ideo)
+	p <- plotCluster(idx, regions=fullRegions, annotation=regions.df, coverageInfo=covInfo, groupInfo=optionsStats$groupInfo, titleUse=tUse, txdb=txdb, p.ideogram=p.ideo)
 	print(p)
 	rm(p.ideo, covInfo)
 	
@@ -232,24 +280,10 @@ regionPlot <- function(idx, tUse="pval") {
 
 ## Genome plots
 for(idx in bestArea) {
-	regionPlot(idx, ifelse(nullExist, "pval", "none"))
+	regionClusterPlot(idx, ifelse(nullExist, "qval", "none"))
 }
 ```
 
-## Region information
-
-Below is an interactive table with the top 100 regions ranked by area.
-
-<link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
-
-```{r bestAreaInfo, results="asis"}
-topArea <- head(regions.df, 100)
-topArea <- data.frame("areaRank"=order(topArea$area, decreasing=TRUE), topArea)
-d <- data.table(topArea)
-t1 <- dTable(d, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='100%')
-t1$print("regions", cdn=TRUE)
-```
 
 # Permutations
 

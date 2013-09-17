@@ -4,11 +4,13 @@
 \usage{
   generateReport(prefix, outdir = "basicExploration",
     output = "basicExploration.html", project = prefix,
-    browse = interactive(), makeBestClusters = TRUE,
-    nBestClusters = 2, fullCov = NULL, hg19 = TRUE,
-    p.ideos = NULL, txdb = NULL, installMissing = TRUE,
+    browse = interactive(), nBestRegions = 100,
+    makeBestClusters = TRUE, nBestClusters = 2,
+    fullCov = NULL, hg19 = TRUE, p.ideos = NULL,
+    txdb = NULL, installMissing = TRUE,
     device = "CairoPNG", fullRegions = NULL,
-    fullNullSummary = NULL, optionsStats = NULL)
+    fullNullSummary = NULL, fullAnnotatedRegions = NULL,
+    optionsStats = NULL)
 }
 \arguments{
   \item{prefix}{The main data directory path where
@@ -25,12 +27,16 @@
   \item{browse}{If \code{TRUE} the HTML report is opened in
   your browser once it's completed.}
 
+  \item{nBestRegions}{The number of region plots to make,
+  ordered by area.}
+
   \item{makeBestClusters}{If \code{TRUE},
   \link{plotCluster} is used on the \code{nBestClusters}
-  regions by area. These plots take some time to make.}
-
-  \item{nBestClusters}{The number of best by area plots to
+  regions by area. Note that these plots take some time to
   make.}
+
+  \item{nBestClusters}{The number of region cluster plots
+  to make, ordered by area.}
 
   \item{fullCov}{A list where each element is the result
   from \link{loadCoverage} used with \code{cutoff=NULL}.
@@ -66,6 +72,10 @@
   loaded it in memory.}
 
   \item{fullNullSummary}{Part of the output of
+  \link{mergeResults}. Specify it only if you have already
+  loaded it in memory.}
+
+  \item{fullAnnotatedRegions}{Part of the output of
   \link{mergeResults}. Specify it only if you have already
   loaded it in memory.}
 

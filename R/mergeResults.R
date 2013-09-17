@@ -1,22 +1,27 @@
 #' Merge results from different chromosomes
 #'
-#' This function merges the results from running \link{analyzeChr} on several chromosomes. It re-calculates the p-values and q-values using the pooled areas from the null regions from all chromosomes.
+#' This function merges the results from running \link{analyzeChr} on several chromosomes and assigns genomic states using \link{annotateRegions}. It re-calculates the p-values and q-values using the pooled areas from the null regions from all chromosomes.
 #' 
 #' @param chrnums The chromosome numbers of the files to be merged.
 #' @param prefix The main data directory path, which can be useful if \link{analyzeChr} is used for several parameters and the results are saved in different directories.
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values just like in \link{calculatePvalues}.
+#' @param genomicState This argument is passed to \link{annotateRegions}.
+#' @param minoverlap This argument is passed to \link{annotateRegions}.
+#' @param fullOrCoding This argument is passed to \link{annotateRegions}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return Four Rdata files.
+#' @return Six Rdata files.
 #' \describe{
 #' \item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list of Rle objects.}
 #' \item{fullTime.Rdata }{ Timing information from all chromosomes.}
 #' \item{fullNullSummary.Rdata}{ A DataFrame with the null region information: statistic, width, chromosome and permutation identifier. It's ordered by the statistics}
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
+#' \item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data from all chromosomes.}
+#' \item{fullAnnotatedRegions.Rdata}{ A list as constructed in \link{annotateRegions} with the assigned genomic states.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{analyzeChr}, \link{calculatePvalues}
+#' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 #' @export
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges unlist
@@ -26,16 +31,42 @@
 #'
 #' @examples
 #' \dontrun{
-#' mergeResults(prefix="run1")
+#' ## Hsapiens.UCSC.hg19.knownGene GenomicState
+#' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
+#' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+#'
+#' ## Creating this GenomicState object takes around 8 min
+#' GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
+#'
+#' ## Merge the results
+#' mergeResults(prefix="run1", genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene)
+#'
+#' ## You can then explore the wallclock time spent on each step
+#' prefix <- "." ## Set to the same prefix you used in mergeResults()
+#' load(file.path(prefix, "fullRegions.Rdata"))
+#' 
+#' ## Process the time info
+#' time <- lapply(fullTime, function(x) data.frame(diff(x)))
+#' time <- do.call(rbind, time)
+#' colnames(time) <- "sec"
+#' time$sec <- as.integer(round(time$sec))
+#' time$min <- time$sec / 60
+#' time$chr <- paste0("chr", gsub("\\..*", "", rownames(time)))
+#' time$step <- gsub(".*\\.", "", rownames(time))
+#' rownames(time) <- seq_len(nrow(time))
+#' 
+#' ## Make plot
+#' library("ggplot2")
+#' ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() + labs(title="Wallclock time by step") + scale_colour_discrete(limits=chrs) + scale_x_discrete(limits=names(fullTime[[1]])[-1]) + ylab("Time (min)") + xlab("Step")
 #' }
 
-mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), verbose=TRUE) {	
+mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), genomicState, minoverlap=20, fullOrCoding = "full", verbose=TRUE) {	
 	## For R CMD check
-	fstats <- regions <- annotation <- timeinfo <- NULL
+	prep <- fstats <- regions <- annotation <- timeinfo <- NULL
 	
 	## Initialize
-	fullTime <- fullNullPermutation <- fullNullWidths <- fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))
-	names(fullTime) <- names(fullNullPermutation) <- names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- paste0("chr", chrnums)
+	fullCoveragePrep <- fullTime <- fullNullPermutation <- fullNullWidths <- fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))
+	names(fullCoveragePrep) <- names(fullTime) <- names(fullNullPermutation) <- names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- paste0("chr", chrnums)
 
 	## Actual processing
 	for(current in chrnums) {
@@ -60,6 +91,10 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Process the timing information
 		load(file.path(prefix, chr, "timeinfo.Rdata"))
 		fullTime[[chr]] <- timeinfo
+		
+		## Process the covPrep data
+		load(file.path(prefix, chr, "coveragePrep.Rdata"))
+		fullCoveragePrep[[chr]] <- prep
 	}
 
 	## Save Fstats, Nullstats, and time info
@@ -68,6 +103,9 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullTime"))
 	save(fullTime, file=file.path(prefix, "fullTime.Rdata"))
+	
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
+	save(fullCoveragePrep, file=file.path(prefix, "fullCoveragePrep.Rdata"))
 	
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
@@ -95,6 +133,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	} else {
 		fullNullSummary <- DataFrame(NULL)	
 	}
+	
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
 	save(fullNullSummary, file=file.path(prefix, "fullNullSummary.Rdata"))
 		
@@ -111,9 +150,17 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	}	
 	## Sort by decreasing area
 	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE), ]
+	
 	## save GRanges version
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
 	save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
+	
+	## Assign genomic states
+	if(verbose) message(paste(Sys.time(), "mergeResults: assigning genomic states"))
+	fullAnnotatedRegions <- annotateRegions(regions=fullRegions, genomicState=genomicState, minoverlap=minoverlap, fullOrCoding = fullOrCoding, annotate=TRUE, verbose=verbose)
+	
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullAnnotatedRegions"))
+	save(fullAnnotatedRegions, file=file.path(prefix, "fullAnnotatedRegions.Rdata"))		
 	
 	## Finish
 	return(invisible(NULL))
