@@ -18,12 +18,12 @@
   prefix to the chromosome names (seqlevels).}
 }
 \value{
-  A GRangesList object with two elements: \code{fullGenome}
-  and \code{codingGenome}. Both have metadata information
-  for the type of region (theRegion), transcript IDs
-  (tx_id), transcript name (tx_name), and gene ID
-  (gene_id). \code{fullGenome} classifies each region as
-  either being exon, intron or intragenic.
+  A \code{GRangesList} object with two elements:
+  \code{fullGenome} and \code{codingGenome}. Both have
+  metadata information for the type of region (theRegion),
+  transcript IDs (tx_id), transcript name (tx_name), and
+  gene ID (gene_id). \code{fullGenome} classifies each
+  region as either being exon, intron or intragenic.
   \code{codingGenome} classfies the regions as being
   promoter, exon, intro, 5UTR, 3UTR or intragenic.
 }
@@ -39,6 +39,8 @@
 ## Hsapiens.UCSC.hg19.knownGene GenomicState
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+## Creating this GenomicState object takes around 8 min
 GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
 
 ## Save for later use
@@ -46,7 +48,11 @@ save(GenomicState.Hsapiens.UCSC.hg19.knownGene, file="GenomicState.Hsapiens.UCSC
 
 ## Hsapiens ENSEMBL GRCh37
 library("GenomicFeatures")
-txdb <- makeTxDbPackageFromBiomart(version = "0.99", maintainer = "Your Name", author="Your Name")
+## Can take several minutes and speed will depend on your internet speed
+xx <- makeTxDbPackageFromBiomart(version = "0.99", maintainer = "Your Name", author="Your Name")
+txdb <- loadDb(file.path("TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11", "inst", "extdata", "TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11.sqlite"))
+
+## Creating this GenomicState object takes around 13 min
 GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb, chrs=c(1:22, "X", "Y"), addChrPrefix=TRUE)
 
 ## Save for later use
@@ -55,5 +61,8 @@ save(GenomicState.Hsapiens.ensembl.GRCh37.p11, file="GenomicState.Hsapiens.ensem
 }
 \author{
   Andrew Jaffe, Leonardo Collado-Torres
+}
+\seealso{
+  \link[GenomicFeatures]{TranscriptDb}
 }
 
