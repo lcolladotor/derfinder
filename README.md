@@ -23,7 +23,7 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "ggbio", "qvalue",
 	 "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures"))
 
-## GitHub dependencis
+## GitHub dependencies
 library(devtools)
 install_github("rCharts", "ramnathv", ref="dev")
 install_github(username="jimhester", repo="knitrBootstrap")
