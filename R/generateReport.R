@@ -172,6 +172,7 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 		stopifnot(!is.null(fullCov))
 	} else {
 		nBestClusters <- 0
+		nBestRegions <- 0
 	}
 
 	##### Setup chunk options

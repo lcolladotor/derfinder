@@ -31,7 +31,9 @@ chrs <- levels(seqnames(fullRegions))
 names(chrs) <- gsub("chr", "", chrs)
 
 ## Get region coverage for the top regions
-regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
+if(nBestRegions > 0) {
+	regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
+}
 ```
 
 
@@ -207,8 +209,10 @@ This genomic overview plot shows the annotation region type for the __candidate_
 Below are the plots for the top `r nBestRegions` regions as ranked by area.
 
 
-```{r plotRegions}
-plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE) 
+```{r plotRegions, fig.width=10, fig.height=10, dev=device}
+if(nBestRegions > 0) {
+	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE) 
+}
 ```
 
 ## Region information
