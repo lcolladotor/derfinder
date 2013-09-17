@@ -75,3 +75,4 @@ Collate:
     'fullCoverage.R'
     'makeGenomicState.R'
     'annotateRegions.R'
+    'getRegionCoverage.R'

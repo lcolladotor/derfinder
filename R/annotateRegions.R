@@ -19,7 +19,6 @@
 #' @seealso \link{makeGenomicState}, \link{calculatePvalues}
 #' @export
 #' @importFrom IRanges queryHits subjectHits
-#' @importFrom GenomicRanges GRangesList seqnames seqlengths seqlevels "seqlevels<-"
 #' @importMethodsFrom GenomicRanges names "names<-" length "$" split countOverlaps findOverlaps "["
 #' @importMethodsFrom IRanges sapply
 #'
