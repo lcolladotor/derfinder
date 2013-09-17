@@ -150,15 +150,25 @@ This plot shows the relationship between the region mean coverage and the area f
 
 ## Mean coverage vs fold change
 
-The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. Note that the fold change as calculated here is not taking into account the library sizes.
+The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. The mean coverage is calculated using only two groups at a time and is weighted according to the number of samples on each group. Note that the mean coverage and fold change as calculated here do not taking into account the library sizes.
 
-They are only shown when there are two or more groups.
+These plots are only shown when there are two or more groups. A total of number of groups - 1 plots are made.
 
 ```{r MAstyle, fig.width=10, fig.height=10, dev=device}
 for(j in grep("foldChange", colnames(values(fullRegions)))) {
-	ma <- data.frame(mean=fullRegions$meanCoverage, foldChange=values(fullRegions)[, j]))
+	## Identify the groups
 	groups <- strsplit(gsub("foldChange", "", colnames(values(fullRegions))[j]), "vs")[[1]]
-	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title=paste("MA style plot", groups[1], "vs", groups[2])
+	
+	## Calculate the mean coverage only using the 2 groups in question
+	j.mean <- which(colnames(values(fullRegions)) %in% paste0("mean", groups))
+	groups.n <- sapply(groups, function(x) { sum(optionsStats$groupInfo == x) })
+	ma.mean.mat <- as.matrix(values(fullRegions)[, j.mean])
+	## Weighted means
+	ma.mean <- drop(ma.mean.mat %*% groups.n) / sum(groups.n)
+	
+	ma <- data.frame(mean=ma.mean, foldChange=values(fullRegions)[, j]))
+	
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot", groups[1], "vs", groups[2])
 	print(p.ma)
 }
 ```

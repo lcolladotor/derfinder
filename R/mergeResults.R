@@ -26,7 +26,7 @@
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges unlist
 #' @importFrom IRanges DataFrame RleList
-#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist as.numeric sapply
+#' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist as.numeric sapply nrow Ops Math Math2 Summary Complex
 #' @importFrom qvalue qvalue
 #'
 #' @examples
@@ -128,7 +128,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Proceed only if there are null regions to work with
 		fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
 		rm(nulls, widths, howMany, permutations)
-		fullNullSummary$area <- fullNullSummary$stat * fullNullSummary$width
+		fullNullSummary$area <- abs(fullNullSummary$stat) * fullNullSummary$width
 		fullNullSummary <- fullNullSummary[order(fullNullSummary$area, decreasing=TRUE), ]
 	} else {
 		fullNullSummary <- DataFrame(NULL)	
@@ -139,7 +139,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		
 	if(nrow(fullNullSummary) > 0) {
 		## Actual calculation
-		nullareas <- as.numeric(abs(fullNullSummary$stat) * fullNullSummary$width)
+		nullareas <- as.numeric(fullNullSummary$area)
 		pvals <- sapply(fullRegions$area, function(x) { sum(nullareas > x) })
 	
 		## Update info
