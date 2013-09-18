@@ -3,7 +3,7 @@
 \title{Transform and split the data}
 \usage{
   preprocessCoverage(coverageInfo, groupInfo = NULL,
-    cutoff = 5, scalefac = 32, chunksize = 5000000,
+    cutoff = 5, scalefac = 32, chunksize = 5e+06,
     colsubset = NULL, mc.cores = getOption("mc.cores", 1L),
     verbose = FALSE)
 }

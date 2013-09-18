@@ -4,7 +4,7 @@
 \usage{
   plotCluster(idx, regions, annotation, coverageInfo,
     groupInfo, titleUse = "qval", txdb = NULL,
-    p.ideogram = NULL, minExtend = 200, scalefac = 32,
+    p.ideogram = NULL, maxExtend = 1000, scalefac = 32,
     colsubset = NULL)
 }
 \arguments{
@@ -40,8 +40,11 @@
   is built for the corresponding chromosome. Otherwise an
   ideogram resuling from \link[ggbio]{plotIdeogram}.}
 
-  \item{minExtend}{The minimum number of base-pairs to
-  extend the view before and after the region of interest.}
+  \item{maxExtend}{The maximum number of base-pairs to
+  extend the view (on each side) before and after the
+  region cluster of interest. For small region clusters,
+  the one side extension is equal to the width of the
+  region cluster.}
 
   \item{scalefac}{A log transformation is used on the count
   tables, so zero counts present a problem. Ideally, the

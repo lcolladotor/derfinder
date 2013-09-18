@@ -11,7 +11,7 @@
 #' @param titleUse Whether to show the p-value (\code{pval}) or the q-value (\code{qval}) in the title. If \code{titleUse=none} then no p-value or q-value information is used; useful if no permutations were performed and thus p-value and q-value information is absent.
 #' @param txdb A transcript data base such as TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no annotation information is used.
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
-#' @param minExtend The minimum number of base-pairs to extend the view before and after the region of interest.
+#' @param maxExtend The maximum number of base-pairs to extend the view (on each side) before and after the region cluster of interest. For small region clusters, the one side extension is equal to the width of the region cluster.
 #' @param scalefac A log transformation is used on the count tables, so zero counts present a problem. Ideally, the same you provided to \link{preprocessCoverage}.
 #' @param colsubset Column subset in case that it was specified in \link{preprocessCoverage}.
 #'
@@ -78,7 +78,7 @@
 #' plotCluster
 #' }
 
-plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32, colsubset=NULL) {
+plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, maxExtend=1000, scalefac=32, colsubset=NULL) {
 	stopifnot(titleUse %in% c("pval", "qval", "none"))
 	stopifnot(is.factor(groupInfo))
 	if(is.null(colsubset)) colsubset <- seq_len(length(groupInfo))
@@ -91,7 +91,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	if(length(cluster) > 1) {
 		cluster <- range(cluster)
 	}
-	l <-  width(cluster) + max(2 * minExtend, width(cluster))
+	l <-  width(cluster) + 2 * min(maxExtend, width(cluster))
 	wh <- resize(cluster, l, fix="center")
 	if(titleUse == "pval") {
 		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", signif(regions$pvalues[idx], 4), ", sf=", scalefac)
