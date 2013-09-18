@@ -97,16 +97,6 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullCoveragePrep[[chr]] <- prep
 	}
 
-	## Save Fstats, Nullstats, and time info
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullFstats"))
-	save(fullFstats, file=file.path(prefix, "fullFstats.Rdata"))
-	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullTime"))
-	save(fullTime, file=file.path(prefix, "fullTime.Rdata"))
-	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
-	save(fullCoveragePrep, file=file.path(prefix, "fullCoveragePrep.Rdata"))
-	
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
 	colnames(fullAnnotation)[which(colnames(fullAnnotation) == "strand")] <- "annoStrand"
@@ -149,7 +139,12 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
 	}	
 	## Sort by decreasing area
-	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE)]
+	print(8)
+	save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
+	print(9)
+	idx <- order(fullRegions$area, decreasing=TRUE)
+	print(10)
+	fullRegions <- fullRegions[idx]
 	
 	## save GRanges version
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
@@ -161,6 +156,16 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullAnnotatedRegions"))
 	save(fullAnnotatedRegions, file=file.path(prefix, "fullAnnotatedRegions.Rdata"))		
+	
+	## Save Fstats, Nullstats, and time info
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullFstats"))
+	save(fullFstats, file=file.path(prefix, "fullFstats.Rdata"))
+	
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullTime"))
+	save(fullTime, file=file.path(prefix, "fullTime.Rdata"))
+	
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
+	save(fullCoveragePrep, file=file.path(prefix, "fullCoveragePrep.Rdata"))
 	
 	## Finish
 	return(invisible(NULL))
