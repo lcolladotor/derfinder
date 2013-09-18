@@ -24,7 +24,7 @@
 #' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 #' @export
 #' @importFrom GenomicRanges GRangesList
-#' @importMethodsFrom GenomicRanges unlist "$" "$<-" "[" "[<-" "[[" "[[<-"
+#' @importMethodsFrom GenomicRanges unlist "$" "$<-" "["
 #' @importFrom IRanges DataFrame RleList
 #' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist as.numeric nrow
 #' @importFrom qvalue qvalue
@@ -100,6 +100,11 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
 	colnames(fullAnnotation)[which(colnames(fullAnnotation) == "strand")] <- "annoStrand"
+	rownames(fullAnnotation) <- NULL
+	
+	## For some reason, signature 'AsIs' does not work when assigning the values() <- 
+	fullAnnotation$name <- as.character(fullAnnotation$name)
+	fullAnnotation$annotation <- as.character(fullAnnotation$annotation)
 
 	## Combine regions with annotation
 	fullRegions <- unlist(GRangesList(fullRegs), use.names=FALSE)
@@ -139,12 +144,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
 	}	
 	## Sort by decreasing area
-	print(8)
-	save(fullRegions, file=file.path(prefix, "fullRegions.Rdata"))
-	print(9)
-	idx <- order(fullRegions$area, decreasing=TRUE)
-	print(10)
-	fullRegions <- fullRegions[idx]
+	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE)]
 	
 	## save GRanges version
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
