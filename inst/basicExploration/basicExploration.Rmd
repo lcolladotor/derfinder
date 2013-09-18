@@ -251,10 +251,9 @@ The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in
 ## Plots
 
 ```{r plotCluster, message=FALSE, eval=makeBestClusters, echo=makeBestClusters}
-## Select best clusters by area
-df <- data.frame(area=fullRegions$area, clusterChr=paste0(as.integer(fullRegions$cluster), chr=as.character(seqnames(fullRegions))))
-regionClustAreas <- tapply(df$area, df$clusterChr, sum)
-bestArea <- sapply(names(head(sort(regionClustAreas, decreasing=TRUE), nBestClusters)), function(y) { which(df$clusterChr == y)[[1]]})
+## Select clusters from the top nBestClusters regions
+clusterChr=paste0(as.integer(head(fullRegions$cluster, nBestClusters)), chr=as.character(seqnames(head(fullRegions, nBestClusters))))
+bestArea <- seq_len(nBestClusters)[!duplicated(clusterChr)]
 
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
