@@ -30,6 +30,12 @@ if(hg19) {
 chrs <- levels(seqnames(fullRegions))
 names(chrs) <- gsub("chr", "", chrs)
 
+## Subset the fullCoverage data in case that a subset was used
+colsubset <- optionsStats$colsubset
+if(!is.null(fullCov) & !is.null(colsubset)) {
+	fullCov <- lapply(fullCov, function(x) { x[, colsubset] })
+}
+
 ## Get region coverage for the top regions
 if(nBestRegions > 0) {
 	regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
@@ -152,9 +158,9 @@ for(j in grep("foldChange", colnames(values(fullRegions)))) {
 	
 	ma <- data.frame(mean=ma.mean, foldChange=values(fullRegions)[, j])
 	ma2 <- ma[is.finite(ma$foldChange), ]
-	fold.mean <- mean(ma2$foldChange, na.rm=TRUE)
+	fold.mean <- data.frame(foldMean=mean(ma2$foldChange, na.rm=TRUE))
 	
-	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point(size=1.5, alpha=1/5) + ylab("Fold Change (log2)\nRed dashed line at mean; blue line is loess fit") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot group", groups[1], "vs group", groups[2])) + geom_hline(aes(yintercept=fold.mean), colour="#990000", linetype="dashed") + geom_smooth(aes(y=foldChange, x=log2(mean)), data=subset(ma2, mean > 0), method=loess)
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point(size=1.5, alpha=1/5) + ylab("Fold Change (log2)\nRed dashed line at mean; blue line is loess fit") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot group", groups[1], "vs group", groups[2])) + geom_hline(aes(yintercept=foldMean), data=fold.mean, colour="#990000", linetype="dashed") + geom_smooth(aes(y=foldChange, x=log2(mean)), data=subset(ma2, mean > 0), method=loess)
 	print(p.ma)
 }
 ```
@@ -205,13 +211,7 @@ This genomic overview plot shows the annotation region type for the __candidate_
 Below are the plots for the top `r nBestRegions` regions as ranked by area.
 
 
-```{r plotRegions, fig.width=10, fig.height=10, dev=device, eval=FALSE}
-if(nBestRegions > 0) {
-	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
-}
-```
-
-```{r plotRegionsReal, fig.width=10, fig.height=10, dev=device, echo=FALSE}
+```{r plotRegions, fig.width=10, fig.height=10, dev=device}
 if(nBestRegions > 0) {
 	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
 }
@@ -221,7 +221,7 @@ Below is a table summarizing the number of genomic states per region.
 
 ```{r countTable, results="asis"}
 info <- do.call(rbind, lapply(fullAnnotatedRegions$countTable, function(x) { data.frame(table(x)) }))
-colnames(info) <- c("Overlapping States", "Frequency")
+colnames(info) <- c("Number of Overlapping States", "Frequency")
 info$State <- gsub("\\..*", "", rownames(info))
 rownames(info) <- NULL
 print(xtable(info, align=rep("c", 4)), type="html", include.rownames=FALSE)
@@ -292,7 +292,7 @@ regionClusterPlot <- function(idx, tUse="qval") {
 ```
 
 
-`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "regions ordered by area."), "No plots were generated as requested.")`
+`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "region clusters ordered by area."), "No plots were generated as requested.")`
  
 
 ```{r bestClusters, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}

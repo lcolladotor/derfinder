@@ -13,6 +13,7 @@
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
 #' @param minExtend The minimum number of base-pairs to extend the view before and after the region of interest.
 #' @param scalefac A log transformation is used on the count tables, so zero counts present a problem. Ideally, the same you provided to \link{preprocessCoverage}.
+#' @param colsubset Column subset in case that it was specified in \link{preprocessCoverage}.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
 #'
@@ -77,9 +78,10 @@
 #' plotCluster
 #' }
 
-plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32) {
+plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, minExtend=200, scalefac=32, colsubset=NULL) {
 	stopifnot(titleUse %in% c("pval", "qval", "none"))
 	stopifnot(is.factor(groupInfo))
+	if(is.null(colsubset)) colsubset <- seq_len(length(groupInfo))
 	
 	## Satisfying R CMD check
 	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
@@ -117,7 +119,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 
 	## Construct the coverage plot
 	pos <- start(wh):end(wh)
-	rawData <- as.data.frame(coverageInfo[pos, ])
+	rawData <- as.data.frame(coverageInfo[pos, colsubset])
 	rawData$position <- pos
 	covData <- melt(rawData, id.vars="position")
 	covData$group <- rep(groupInfo, each=nrow(rawData))

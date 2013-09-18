@@ -4,7 +4,8 @@
 \usage{
   plotCluster(idx, regions, annotation, coverageInfo,
     groupInfo, titleUse = "qval", txdb = NULL,
-    p.ideogram = NULL, minExtend = 200, scalefac = 32)
+    p.ideogram = NULL, minExtend = 200, scalefac = 32,
+    colsubset = NULL)
 }
 \arguments{
   \item{idx}{A integer specifying the index number of the
@@ -45,6 +46,9 @@
   \item{scalefac}{A log transformation is used on the count
   tables, so zero counts present a problem. Ideally, the
   same you provided to \link{preprocessCoverage}.}
+
+  \item{colsubset}{Column subset in case that it was
+  specified in \link{preprocessCoverage}.}
 }
 \value{
   A ggplot2 plot that is ready to be printed out.
