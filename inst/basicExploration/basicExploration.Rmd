@@ -168,7 +168,7 @@ for(j in grep("foldChange", colnames(values(fullRegions)))) {
 	
 	ma <- data.frame(mean=ma.mean, foldChange=values(fullRegions)[, j])
 	
-	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot", groups[1], "vs", groups[2])
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot", groups[1], "vs", groups[2]))
 	print(p.ma)
 }
 ```
