@@ -16,7 +16,7 @@ install.packages("devtools")
 ## Pre-requisites from CRAN
 install.packages(c("knitr", "Rcpp", "RcppArmadillo", "ggplot2", "reshape2", "plyr", 
 	"microbenchmark", "gridExtra", "data.table", "knitr", "knitcitations",
-	"xtable", "RColorBrewer"))
+	"xtable", "RColorBrewer", "scales"))
 
 ## Pre-requisites from Bioconductor
 source("http://bioconductor.org/biocLite.R")

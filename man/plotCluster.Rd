@@ -4,8 +4,8 @@
 \usage{
   plotCluster(idx, regions, annotation, coverageInfo,
     groupInfo, titleUse = "qval", txdb = NULL,
-    p.ideogram = NULL, maxExtend = 1000, scalefac = 32,
-    colsubset = NULL)
+    p.ideogram = NULL, maxExtend = 1000, colsubset = NULL,
+    forceLarge = FALSE)
 }
 \arguments{
   \item{idx}{A integer specifying the index number of the
@@ -46,12 +46,14 @@
   the one side extension is equal to the width of the
   region cluster.}
 
-  \item{scalefac}{A log transformation is used on the count
-  tables, so zero counts present a problem. Ideally, the
-  same you provided to \link{preprocessCoverage}.}
-
   \item{colsubset}{Column subset in case that it was
   specified in \link{preprocessCoverage}.}
+
+  \item{forceLarge}{If \code{TRUE} then the data size
+  limitations are ignored. The window size (region cluster
+  width + 2 times \code{maxExtend}) has to be less than 100
+  kb. Note that a single plot at the 300kb range can take
+  around 2 hours to complete.}
 }
 \value{
   A ggplot2 plot that is ready to be printed out.

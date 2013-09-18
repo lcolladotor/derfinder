@@ -251,9 +251,10 @@ The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in
 ## Plots
 
 ```{r plotCluster, message=FALSE, eval=makeBestClusters, echo=makeBestClusters}
-## Select clusters from the top nBestClusters regions
-clusterChr=paste0(as.integer(head(fullRegions$cluster, nBestClusters)), chr=as.character(seqnames(head(fullRegions, nBestClusters))))
-bestArea <- seq_len(nBestClusters)[!duplicated(clusterChr)]
+## Select clusters by cluster area
+df <- data.frame(area=fullRegions$area, clusterChr=paste0(as.integer(fullRegions$cluster), chr=as.character(seqnames(fullRegions))))
+regionClustAreas <- tapply(df$area, df$clusterChr, sum)
+bestArea <- sapply(names(head(sort(regionClustAreas, decreasing=TRUE), nBestClusters)), function(y) { which(df$clusterChr == y)[[1]]})
 
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
@@ -291,7 +292,7 @@ regionClusterPlot <- function(idx, tUse="qval") {
 ```
 
 
-`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "region clusters ordered by area."), "No plots were generated as requested.")`
+`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "region clusters ordered by cluster area."), "No plots were generated as requested.")`
  
 
 ```{r bestClusters, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}
@@ -389,7 +390,7 @@ Wallclock time spent generating the report.
 ```{r reproducibility2, echo=FALSE}
 ## Processing time in seconds
 totalTime <- diff(c(startTime, Sys.time()))
-round(totalTime)
+round(totalTime, digits=3)
 ```
 
 `R` session information.

@@ -35,11 +35,9 @@
   regions by area. Note that these plots take some time to
   make.}
 
-  \item{nBestClusters}{The maximum number of region cluster
-  plots to make by taking the \code{nBestClusters} regions
-  ranked by area. The number of plots is equal to
-  \code{nBestClusters} only if the top regions belong to
-  different clusters.}
+  \item{nBestClusters}{The number of region cluster plots
+  to make by taking the \code{nBestClusters} regions ranked
+  by area of the cluster.}
 
   \item{fullCov}{A list where each element is the result
   from \link{loadCoverage} used with \code{cutoff=NULL}.

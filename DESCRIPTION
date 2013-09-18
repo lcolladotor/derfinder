@@ -26,7 +26,8 @@ Imports:
     plyr,
     qvalue,
     GenomicFeatures,
-    AnnotationDbi
+    AnnotationDbi,
+    scales
 Suggests:
     IRanges,
     GenomicRanges,

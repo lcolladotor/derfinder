@@ -12,8 +12,8 @@
 #' @param txdb A transcript data base such as TxDb.Hsapiens.UCSC.hg19.knownGene If \code{NULL} then no annotation information is used.
 #' @param p.ideogram If \code{NULL}, the ideogram for hg19 is built for the corresponding chromosome. Otherwise an ideogram resuling from \link[ggbio]{plotIdeogram}.
 #' @param maxExtend The maximum number of base-pairs to extend the view (on each side) before and after the region cluster of interest. For small region clusters, the one side extension is equal to the width of the region cluster.
-#' @param scalefac A log transformation is used on the count tables, so zero counts present a problem. Ideally, the same you provided to \link{preprocessCoverage}.
 #' @param colsubset Column subset in case that it was specified in \link{preprocessCoverage}.
+#' @param forceLarge If \code{TRUE} then the data size limitations are ignored. The window size (region cluster width + 2 times \code{maxExtend}) has to be less than 100 kb. Note that a single plot at the 300kb range can take around 2 hours to complete.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a ggbio object.
 #'
@@ -29,8 +29,9 @@
 #' @importFrom ggbio plotIdeogram tracks theme_tracks_sunset
 #' @importMethodsFrom ggbio autoplot
 #' @importFrom reshape2 melt
-#' @importFrom ggplot2 autoplot aes scale_fill_manual ggplot geom_line ylab
+#' @importFrom ggplot2 autoplot aes scale_fill_manual ggplot geom_line ylab guides scale_y_continuous geom_segment
 #' @importFrom plyr ddply summarise
+#' @importFrom scales log2_trans log_trans
 #' @examples
 #' ## Get coverage info without any cutoff
 #' datadir <- system.file("extdata", "genomeData", package="derfinder2")
@@ -78,27 +79,34 @@
 #' plotCluster
 #' }
 
-plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, maxExtend=1000, scalefac=32, colsubset=NULL) {
+plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, titleUse="qval", txdb=NULL, p.ideogram=NULL, maxExtend=1000, colsubset=NULL, forceLarge=FALSE) {
 	stopifnot(titleUse %in% c("pval", "qval", "none"))
 	stopifnot(is.factor(groupInfo))
 	if(is.null(colsubset)) colsubset <- seq_len(length(groupInfo))
+	current <- regions[idx]
 	
 	## Satisfying R CMD check
 	significant <- significantQval <- position <- valueScaled <- variable <- group <- value <- meanScaled <- NULL
 		
 	## Select region and build title
-	cluster <- regions[ seqnames(regions) == seqnames(regions)[idx] & regions$cluster == regions$cluster[idx]]
+	cluster <- regions[ seqnames(regions) == seqnames(current) & regions$cluster == current$cluster]
 	if(length(cluster) > 1) {
 		cluster <- range(cluster)
 	}
 	l <-  width(cluster) + 2 * min(maxExtend, width(cluster))
+	
+	if(l > 1e5 & !forceLarge) {
+		message(paste("No plot will be made because the data is too large. The window size exceeds 100 kb."))
+		return(invisible(NULL))
+	}
+	
 	wh <- resize(cluster, l, fix="center")
 	if(titleUse == "pval") {
-		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", signif(regions$pvalues[idx], 4), ", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx], " with p-value ", signif(regions$pvalues[idx], 4))
 	} else if (titleUse == "qval") {
-		title <- paste0("Annotated name ", annotation$name[idx], " with q-value ", signif(regions$qvalues[idx], 2), ", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx], " with q-value ", signif(regions$qvalues[idx], 2))
 	} else {
-		title <- paste0("Annotated name ", annotation$name[idx], ", sf=", scalefac)
+		title <- paste0("Annotated name ", annotation$name[idx])
 	}
 	
 	## Plot the ideogram if not supplied
@@ -108,12 +116,20 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	}
 	
 	## Regions found (from the view)
+	neighbors <- regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]]
+	neighbors$originalRegion <- neighbors == current
+	ann_line <- data.frame(x=start(current), xend=end(current), y=1)
 	if(titleUse == "pval") {
-		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significant)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
+		p.region <- autoplot(neighbors, aes(fill=significant)) + 
+		scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) + 
+		geom_segment(aes(x=x, xend=xend, y=y, yend=y, size=3), data=ann_line, colour="red") + guides(size=FALSE)
 	} else if (titleUse == "qval" ){
-		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]], aes(fill=significantQval)) + scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE"))
+		p.region <- autoplot(neighbors, aes(fill=significantQval)) +
+		scale_fill_manual(values=c("chartreuse4", "wheat2"), limits=c("TRUE", "FALSE")) +
+		geom_segment(aes(x=x, xend=xend, y=y, yend=y, size=3), data=ann_line, colour="red") + guides(size=FALSE)
 	} else {
-		p.region <- autoplot(regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]])
+		p.region <- autoplot(neighbors) + 
+		geom_segment(aes(x=x, xend=xend, y=y, yend=y, size=3), data=ann_line, colour="red") + guides(size=FALSE)
 	}
 	
 
@@ -123,13 +139,11 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	rawData$position <- pos
 	covData <- melt(rawData, id.vars="position")
 	covData$group <- rep(groupInfo, each=nrow(rawData))
-	covData$valueScaled <- log2(covData$value + scalefac)
-	p.coverage <- ggplot(covData, aes(x=position, y=valueScaled, group=variable, colour=group)) + geom_line(alpha=1/2, size=1.5)
+	p.coverage <- ggplot(covData, aes(x=position, y=value, group=variable, colour=group)) + geom_line(alpha=1/2, size=1.5) + scale_y_continuous(trans=log2_trans())
 	
 	## Construct mean by group coverage plot
-	meanCov <- ddply(covData, c("position", "group"), summarise, meanCov=mean(value))
-	meanCov$meanScaled <- log2(meanCov$meanCov + scalefac)
-	p.meanCov <- ggplot(meanCov, aes(x=position, y=meanScaled, colour=group)) + geom_line(alpha=1/2, size=1.5)
+	meanCoverage <- ddply(covData, c("position", "group"), summarise, meanCov=mean(value))
+	p.meanCov <- ggplot(meanCoverage, aes(x=position, y=meanCov, colour=group)) + geom_line(alpha=1/2, size=1.5) + scale_y_continuous(trans=log2_trans())
 	
 	## Annotation info and final plot
 	if(is.null(txdb)) {
@@ -139,9 +153,9 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 		p.transcripts <- tryCatch(autoplot(txdb, which = wh, names.expr = "tx_name(gene_id)"), warning=function(w) { FALSE })
 	}	
 	if(!is.logical(p.transcripts)) {
-		result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, "Known\ntx_name(gene_id)" = p.transcripts, heights = c(2, 4, 4, 1.5, 3), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()		
+		result <- tracks(p.ideogram, "Coverage" = p.coverage, "Mean coverage" = p.meanCov, "Regions" = p.region, "Known\ntx_name(gene_id)" = p.transcripts, heights = c(2, 4, 4, 1.5, 3), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()		
 	} else {
-		result <- tracks(p.ideogram, "Coverage\nlog2(x + sf)" = p.coverage, "Mean coverage\nlog2(xbar + sf)" = p.meanCov, "Regions" = p.region, heights = c(1.5, 5, 5, 2), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
+		result <- tracks(p.ideogram, "Coverage" = p.coverage, "Mean coverage" = p.meanCov, "Regions" = p.region, heights = c(1.5, 5, 5, 2), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
 	}
 	return(result)	
 }
