@@ -4,7 +4,8 @@
 \usage{
   plotRegionCoverage(regions, regionCoverage, groupInfo,
     nearestAnnotation, annotatedRegions, N = 100,
-    colors = NULL, scalefac = 32, ask = interactive())
+    colors = NULL, scalefac = 32, ask = interactive(),
+    verbose = TRUE)
 }
 \arguments{
   \item{regions}{The \code{$regions} output from
@@ -37,6 +38,9 @@
 
   \item{ask}{If \code{TRUE} then the user is prompted
   before each plot is made.}
+
+  \item{verbose}{If \code{TRUE} basic status updates will
+  be printed along the way.}
 }
 \value{
   A plot for every region showing the coverage of each

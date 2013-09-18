@@ -11,6 +11,7 @@
 #' @param colors If \code{NULL} then \link[RColorBrewer]{brewer.pal} with the \code{"Dark2"} color scheme is used.
 #' @param scalefac The parameter used in \link{preprocessCoverage}.
 #' @param ask If \code{TRUE} then the user is prompted before each plot is made.
+#' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return A plot for every region showing the coverage of each sample at each base of the region as well as the summarized annotation information.
 #'
@@ -88,7 +89,7 @@
 #' dev.off()
 #' }
 
-plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, N = 100, colors=NULL, scalefac = 32, ask = interactive()) {
+plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, N = 100, colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE) {
 	stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 1)
 	stopifnot(length(intersect(names(regionCoverage), c("coverageData"))) == 1)
 	stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, "GRanges"))
@@ -109,7 +110,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	layout(matrix(c(1, 1, 2), ncol = 1))
 	N <- min(N, length(regions))
 	for(i in seq_len(N)) {
-		if(i %% 10 == 0) cat(".")
+		if(i %% 10 == 0 & verbose) print(i)
 		y <- log2(regionCoverage$coverageData[[i]] + scalefac)
 		x <- start(regions[i]):end(regions[i])
 		

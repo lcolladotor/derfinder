@@ -132,22 +132,6 @@ p6a
 This plot shows the density of the region mean coverage for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
 
 
-## Mean coverage vs area
-
-```{r meanCovArea, fig.width=14, fig.height=14, dev=device, eval=hasSig, echo=hasSig}
-xrange <- range(log2(regions.df$meanCoverage))
-p7a <- ggplot(regions.df, aes(x=log2(meanCoverage), y=log10(area), colour=seqnames)) + geom_point() + labs(title="Region mean coverage vs area") + xlab("Region mean coverage (log2)") + ylab("Region area (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange) + theme(legend.title=element_blank())
-p7b <- ggplot(regions.df[idx.sig, ], aes(x=log2(meanCoverage), y=log10(area), colour=seqnames)) + geom_point() + labs(title="Region mean coverage vs area (significant only)") + xlab("Region mean coverage (log2)") + ylab("Region area (log10)") + scale_colour_discrete(limits=chrs) + xlim(xrange) + theme(legend.title=element_blank())
-grid.arrange(p7a, p7b)
-```
-
-```{r meanCovArea2, fig.width=10, fig.height=10, dev=device, eval=!hasSig, echo=!hasSig}
-p7a <- ggplot(regions.df, aes(x=log2(meanCoverage), y=log10(area), colour=seqnames)) + geom_point() + labs(title="Region mean coverage vs area") + xlab("Region mean coverage (log2)") + ylab("Region area (log10)") + scale_colour_discrete(limits=chrs) + theme(legend.title=element_blank())
-p7a
-```
-
-This plot shows the relationship between the region mean coverage and the area for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
-
 ## Mean coverage vs fold change
 
 The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. The mean coverage is calculated using only two groups at a time and is weighted according to the number of samples on each group. Note that the mean coverage and fold change as calculated here do not taking into account the library sizes.
@@ -167,8 +151,10 @@ for(j in grep("foldChange", colnames(values(fullRegions)))) {
 	ma.mean <- drop(ma.mean.mat %*% groups.n) / sum(groups.n)
 	
 	ma <- data.frame(mean=ma.mean, foldChange=values(fullRegions)[, j])
+	ma2 <- ma[is.finite(ma$foldChange), ]
+	fold.mean <- mean(ma2$foldChange, na.rm=TRUE)
 	
-	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot", groups[1], "vs", groups[2]))
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point(size=1.5, alpha=1/5) + ylab("Fold Change (log2)\nRed dashed line at mean; blue line is loess fit") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot group", groups[1], "vs group", groups[2])) + geom_hline(aes(yintercept=fold.mean), colour="#990000", linetype="dashed") + geom_smooth(aes(y=foldChange, x=log2(mean)), data=subset(ma2, mean > 0), method=loess)
 	print(p.ma)
 }
 ```
@@ -219,11 +205,28 @@ This genomic overview plot shows the annotation region type for the __candidate_
 Below are the plots for the top `r nBestRegions` regions as ranked by area.
 
 
-```{r plotRegions, fig.width=10, fig.height=10, dev=device}
+```{r plotRegions, fig.width=10, fig.height=10, dev=device, eval=FALSE}
 if(nBestRegions > 0) {
-	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE) 
+	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
 }
 ```
+
+```{r plotRegionsReal, fig.width=10, fig.height=10, dev=device, echo=FALSE}
+if(nBestRegions > 0) {
+	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
+}
+```
+
+Below is a table summarizing the number of genomic states per region.
+
+```{r countTable, results="asis"}
+info <- do.call(rbind, lapply(fullAnnotatedRegions$countTable, function(x) { data.frame(table(x)) }))
+colnames(info) <- c("Overlapping States", "Frequency")
+info$State <- gsub("\\..*", "", rownames(info))
+rownames(info) <- NULL
+print(xtable(info, align=rep("c", 4)), type="html", include.rownames=FALSE)
+```
+
 
 ## Region information
 
@@ -247,9 +250,11 @@ The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in
 
 ## Plots
 
-```{r plotGenome, message=FALSE, eval=makeBestClusters, echo=makeBestClusters}
-## Select best by area
-bestArea <- head(order(fullRegions$area, decreasing=TRUE), nBestClusters)
+```{r plotCluster, message=FALSE, eval=makeBestClusters, echo=makeBestClusters}
+## Select best clusters by area
+df <- data.frame(area=fullRegions$area, clusterChr=paste0(as.integer(fullRegions$cluster), chr=as.character(seqnames(fullRegions))))
+regionClustAreas <- tapply(df$area, df$clusterChr, sum)
+bestArea <- sapply(names(head(sort(regionClustAreas, decreasing=TRUE), nBestClusters)), function(y) { which(df$clusterChr == y)[[1]]})
 
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
@@ -290,7 +295,7 @@ regionClusterPlot <- function(idx, tUse="qval") {
 `r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "regions ordered by area."), "No plots were generated as requested.")`
  
 
-```{r bestArea, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}
+```{r bestClusters, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}
 
 ## Genome plots
 for(idx in bestArea) {
