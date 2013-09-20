@@ -291,8 +291,7 @@ regionClusterPlot <- function(idx, tUse="qval") {
 }
 ```
 
-
-`r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "region clusters ordered by cluster area."), "No plots were generated as requested.")`
+Below are the best `r nBestClusters` region clusters ordered by cluster area (sum of the area of regions inside a cluster). The region with the highest area in the cluster is shown with a red bar. `r ifelse(makeBestClusters, , "No plots were generated as requested.")`
  
 
 ```{r bestClusters, message=FALSE, fig.width=20, fig.height=10, dev=device, eval=makeBestClusters, echo=makeBestClusters}
@@ -372,14 +371,17 @@ bibliography()
 
 # Reproducibility
 
+## General information
+
+The F-statistic cutoff used was `r optionsStats$cutoffFstat` and type of cutoff used was `r optionsStats$cutoffType`. Furthermore, the maximum region (data) gap was set to `r optionsStats$maxRegionGap` and the maximum cluster gap was set to `r optionsStats$maxClusterGap`.
+
+## Details
+
 This report was generated in path `r tmpdir` using the following call:
 
 ```{r thecall, echo=FALSE}
 theCall
 ```
-
-The F-statistic cutoff used was `r optionsStats$cutoffFstat` and type of cutoff used was `r optionsStats$cutoffType`.
-
 
 Date the report was generated.
 
