@@ -182,10 +182,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)
 		
 	}
-	nullstats <- do.call(c, nullstats)
-	nullwidths <- do.call(c, nullwidths)
-	nullpermutation <- do.call(c, nullpermutation)
-	nullareas <- do.call(c, nullareas)
+	nullstats <- do.call(c, nullstats[!sapply(nullstats, is.null)])
+	nullwidths <- do.call(c, nullwidths[!sapply(nullwidths, is.null)])
+	nullpermutation <- do.call(c, nullpermutation[!sapply(nullpermutation, is.null)])
+	nullareas <- do.call(c, nullareas[!sapply(nullareas, is.null)])
 	rm(coveragePrep, coverageSplit)
 	
 	if(length(nullstats) > 0) {
