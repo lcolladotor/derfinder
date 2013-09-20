@@ -378,6 +378,9 @@ This report was generated in path `r tmpdir` using the following call:
 theCall
 ```
 
+The F-statistic cutoff used was `r optionsStats$cutoffFstat` and type of cutoff used was `r optionsStats$cutoffType`.
+
+
 Date the report was generated.
 
 ```{r reproducibility1, echo=FALSE}
