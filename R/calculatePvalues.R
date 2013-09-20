@@ -168,7 +168,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
-		if(nrow(regs.perm) > 0) {
+		if(!is.null(regs.perm)) {
 		    for (j in 1:2) {
 				nullstats[[last + j]] <- regs.perm$stat
 				nullwidths[[last + j]] <- regs.perm$width
