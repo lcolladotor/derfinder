@@ -5,7 +5,8 @@
   calculatePvalues(coveragePrep, models, fstats,
     nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    chr, maxGap = 300L, cutoff = quantile(fstats, 0.99),
+    chr, maxRegionGap = 0L, maxClusterGap = 300L,
+    cutoff = quantile(fstats, 0.99),
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
     significantCut = c(0.05, 0.1))
 }
@@ -34,8 +35,11 @@
   the chromosome name. This argument is passed to
   \link{findRegions}.}
 
-  \item{maxGap}{This argument is passed to
-  \link{clusterMakerRle}.}
+  \item{maxRegionGap}{This argument is passed to
+  \link{findRegions}.}
+
+  \item{maxClusterGap}{This argument is passed to
+  \link{findRegions}.}
 
   \item{cutoff}{This argument is passed to
   \link{getSegmentsRle}.}

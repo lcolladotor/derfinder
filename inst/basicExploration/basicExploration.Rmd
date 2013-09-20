@@ -295,7 +295,7 @@ regionClusterPlot <- function(idx, tUse="qval") {
 `r ifelse(makeBestClusters, paste("Below are the best", nBestClusters, "region clusters ordered by cluster area."), "No plots were generated as requested.")`
  
 
-```{r bestClusters, message=FALSE, fig.width=11, fig.height=13, dev=device, eval=makeBestClusters, echo=makeBestClusters}
+```{r bestClusters, message=FALSE, fig.width=20, fig.height=10, dev=device, eval=makeBestClusters, echo=makeBestClusters}
 
 ## Genome plots
 for(idx in bestArea) {

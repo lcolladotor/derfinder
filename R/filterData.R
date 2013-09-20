@@ -41,7 +41,7 @@ filterData <- function(data, cutoff=NULL, index=NULL, colnames=NULL, verbose=TRU
 		finalidx <- index
 	} else {
 		## Construct the filtering index
-		for(i in 1:length(data)) {
+		for(i in seq_len(length(data))) {
 			if(i == 1) {
 				newindex <- data[[i]] > cutoff
 			} else {

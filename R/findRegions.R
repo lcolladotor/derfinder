@@ -1,14 +1,17 @@
 #' Find non-zero regions in a Rle
 #'
-#' Find genomic regions for which a numeric vector is above (or below) predefined thresholds. This is similar to \link[bumphunter]{regionFinder} and is a helper function for \link{calculatePvalues}.
+#' Find genomic regions for which a numeric vector is above (or below) predefined thresholds. In other words, this function finds the candidate Differentially Expressed Regions (candidate DERs). This is similar to \link[bumphunter]{regionFinder} and is a helper function for \link{calculatePvalues}.
 #' 
 #' @param position A logical Rle of genomic positions. This is generated in \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage} if \code{colsubset} is not \code{NULL}.
 #' @param fstats A numeric Rle with the F-statistics. Normally obtained using \link{calculateStats}.
 #' @param chr A single element character vector specifying the chromosome name.
-#' @param cluster The clusters of locations that are to be analyzed together, normally given by \link{clusterMakerRle}.
 #' @param oneTable If \code{TRUE} only one results GRanges is returned. Otherwise, a GRangesList with two components is returned: one for the regions with positive values and one for the negative values.
-#' @param maxGap This argument is passed to \link{clusterMakerRle}.
+#' @param maxRegionGap This determines the maximum number of gaps between two genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER).
+#' @param maxClusterGap This determines the maximum gap between candidate DERs. It should be greater than \code{maxRegionGap}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
+#' @param segmentIR An IRanges object with the genomic positions that are potentials DERs, normally given by \link{clusterMakerRle} with \code{maxGap=maxRegionGap} and \code{ranges=TRUE}. This is used in \link{calculatePvalues} to speed up permutation calculations.
+#' @param cluster An integer Rle object with the candidate DER clusters, normally given by \link{clusterMakerRle} with \code{maxGap=maxClusterGap}. This is used in \link{calculatePvalues} to speed up permutation calculations.
+#' @param basic If \code{TRUE} a DataFrame is returned that has only basic information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. Each of them has the following metadata variables.
@@ -27,9 +30,9 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges IRanges start end width Views Rle runLength ranges
+#' @importFrom IRanges IRanges start end width Views Rle runLength ranges DataFrame
 #' @importFrom GenomicRanges GRanges GRangesList
-#' @importMethodsFrom IRanges quantile which length mean
+#' @importMethodsFrom IRanges quantile which length mean rbind
 #' @importMethodsFrom GenomicRanges unlist
 #' @examples
 #' ## Construct the models
@@ -50,13 +53,13 @@
 #' \dontrun{
 #' ## Compare vs bumphunter
 #' library("bumphunter")
-#' regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE)
+#' regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE, maxGap=1)
 #' regs2
 #' ## Note that regs$L can be calculated with width(regs)
 #' identical(width(regs), as.integer(regs2$L))
 #' ## Time comparison
 #' library("microbenchmark")
-#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
+#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
 #' levels(micro$expr) <- c("new", "original")
 #' micro
 #' ## The bumphunter function regionFinder() is faster in small data sets.
@@ -66,56 +69,104 @@
 #' annotation
 #' }
 
-findRegions <- function(position, fstats, chr, cluster=NULL, oneTable = TRUE, maxGap = 300L, cutoff = quantile(fstats, 0.99), verbose = TRUE) {
-	## Identify the clusters
-	if(is.null(cluster)) {
-		if(verbose) message(paste(Sys.time(), "findRegions: identifying clusters"))
-		cluster <- clusterMakerRle(position, maxGap)
+findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGap=0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL, cluster = NULL, basic=FALSE, verbose = TRUE) {
+	if(!basic) {
+		if(is.null(cluster) | is.null(segmentIR)) {
+			stopifnot(!is.null(position))
+		}		
+	} 
+	if(maxClusterGap < maxRegionGap) {
+		warning("'maxClusterGap' is less than 'maxRegionGap' which nullifies it's intended use.")
+	}
+	
+	## Identify the segments
+	if(is.null(segmentIR)) {
+		if(verbose) message(paste(Sys.time(), "findRegions: identifying potential segments"))
+		segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
 	}	
 	
+	## Identify candidate DER clusters
+	if(is.null(cluster)) {
+		if(verbose) message(paste(Sys.time(), "findRegions: identifying potential DER clusters"))
+		cluster <- clusterMakerRle(position, maxClusterGap)
+	}	
+	
+	## Create the F-stats segments
+	if(verbose) message(paste(Sys.time(), "findRegions: segmenting F-stats information"))
 	segments <- getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
 	
+	## Work only with those that have some information
+	hasInfo <- sapply(segments, length) != 0
+	segments <- segments[hasInfo]
+	
+	## Find the actual DERs
+	if(verbose) message(paste(Sys.time(), "findRegions: identifying candidate DERs"))
+	ders <- lapply(segments, function(fcut) {
+		## Merge with segment ranges
+		all <- c(fcut, segmentIR)
+	
+		## Find all the small pieces
+		pieces <- disjoin(all)
+	
+		## Find the actual DERs
+		Views(fstats, pieces[queryHits(findOverlaps(pieces, fcut))])
+	})
+		
 	## Sadly, this is required to map the positions of the index to the chr positions. It's 275 mb in RAM for a length of 72097604 instead of 4.7 Mb in Rle world.
 	## The good thing is that it's temporary and the user will not need to save this
-	pos <- which(position)
-	rm(position)
-	
+	if(!basic) {
+		pos <- which(position)
+	}	
 	
 	## Build the output shell
-	hasInfo <- sapply(segments, length) != 0
     res <- vector("list", sum(hasInfo))
 	names(res) <- names(hasInfo)[hasInfo]
 	
     for (i in names(hasInfo)[hasInfo]) {
-		## Define the chr ranges
-		pos.ir <- IRanges(start=pos[start(segments[[i]])], width = width(segments[[i]]) )
+		if(!basic) {
+			## Define the chr ranges
+			pos.ir <- IRanges(start=pos[start(ders[[i]])], width = width(ders[[i]]) )
 		
-		## Extract info from views
-		clus <- mean(Views(cluster, ranges(segments[[i]])))
+			## Extract info from views
+			clus <- mean(Views(cluster, ranges(ders[[i]])))
 	
-		## Actually build the GRanges
-		res[[i]] <- GRanges(
-			seqnames = Rle(chr, length(segments[[i]])),
-			ranges = pos.ir,
-			value = mean(segments[[i]]),
-			area = abs(sum(segments[[i]])),
-            indexStart = start(segments[[i]]), 
-            indexEnd = end(segments[[i]]),
-			cluster = Rle(as.integer(clus)),
-			clusterL = Rle(runLength(cluster)[clus])
-		)
+			## Actually build the GRanges
+			res[[i]] <- GRanges(
+				seqnames = Rle(chr, length(ders[[i]])),
+				ranges = pos.ir,
+				value = mean(ders[[i]]),
+				area = abs(sum(ders[[i]])),
+	            indexStart = start(ders[[i]]), 
+	            indexEnd = end(ders[[i]]),
+				cluster = Rle(as.integer(clus)),
+				clusterL = Rle(runLength(cluster)[clus])
+			)
+		} else {
+			## Actually build the GRanges
+			res[[i]] <- DataFrame(
+				area = Rle(abs(sum(ders[[i]]))),
+				width = Rle(width(ders[[i]])),
+				stat = Rle(mean(ders[[i]]))
+			)
+		}
+		
     }
-	rm(segments, clus, pos.ir, fstats)
+	  
+	if(!basic) {
+		## Fix names and format
+		names(res) <- gsub("Index", "", names(res))
+		res <- GRangesList(res)
+
+		## Finish up
+		if (oneTable) {
+		    res <- unlist(res)
+		}
+	} else {
+		res <- do.call(rbind, res)
+	}
 	
 	
-	## Fix names and format
-    names(res) <- gsub("Index", "", names(res))
-	res <- GRangesList(res)
 	
-	## Finish up
-    if (oneTable) {
-        res <- unlist(res)
-    }
     return(res)
 	
 }

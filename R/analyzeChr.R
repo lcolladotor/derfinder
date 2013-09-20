@@ -17,7 +17,8 @@
 #' @param cutoffType If set to \code{empirical}, the \code{cutoffFstat} (example: 0.99) quantile is used via \link{quantile}. If set to \code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is passed to \link{calculatePvalues} without any other calculation.
 #' @param nPermute This argument is passed to \link{calculatePvalues}.
 #' @param seeds This argument is passed to \link{calculatePvalues}.
-#' @param maxGap This argument is passed to \link{calculatePvalues}.
+#' @param maxRegionGap This argument is passed to \link{calculatePvalues}.
+#' @param maxClusterGap This argument is passed to \link{calculatePvalues}.
 #' @param groupInfo A factor specifying the group membership of each sample that can later be used with \code{plotRegion}.
 #' @param subject This argument is passed to \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right now.
 #' @param mc.cores This argument is passed to \link{preprocessCoverage} (useful if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.
@@ -48,7 +49,7 @@
 #' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, cutoffFstat=1, cutoffType="manual", mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
+analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
 	chr <- paste0("chr", chrnum)
 	## Begin timing
@@ -57,7 +58,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	timeinfo <- c(timeinfo, list(Sys.time()))
 
 	## Save parameters used for running calculateStats
-	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxGap=maxGap, groupInfo=groupInfo)
+	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo)
 
 	## Setup
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -129,7 +130,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Using the following", cutoffType, "cutoff for the F-statistics", cutoff))
 	
-	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxGap=maxGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose)
+	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose)
 
 	## calculatePValues
 	timeinfo <- c(timeinfo, list(Sys.time()))

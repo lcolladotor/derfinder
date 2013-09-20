@@ -2,7 +2,7 @@
 \alias{clusterMakerRle}
 \title{Make clusters of genomic locations based on distance in Rle() world}
 \usage{
-  clusterMakerRle(position, maxGap = 300L)
+  clusterMakerRle(position, maxGap = 300L, ranges = FALSE)
 }
 \arguments{
   \item{position}{A logical Rle indicating the chromosome
@@ -11,9 +11,14 @@
   \item{maxGap}{An integer. Genomic locations within
   \code{maxGap} from each other are placed into the same
   cluster.}
+
+  \item{ranges}{If \code{TRUE} then an IRanges object is
+  returned instead of the usual integer Rle.}
 }
 \value{
-  An integer Rle with the cluster IDs.
+  An integer Rle with the cluster IDs. If
+  \code{ranges=TRUE} then it is an IRanges object with one
+  range per cluster.
 }
 \description{
   Genomic locations are grouped into clusters based on

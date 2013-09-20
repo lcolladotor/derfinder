@@ -18,8 +18,8 @@
   be printed along the way.}
 }
 \value{
-  A list of IRanges views, one for the up segments and one
-  for the down segments.
+  A list of IRanges objects, one for the up segments and
+  one for the down segments.
 }
 \description{
   Given two cutoffs, L and U, this function slices a
@@ -53,8 +53,7 @@ foo <- function() {
 	})
 	return(segs.ir)
 }
-segs3 <- lapply(segs, ranges)
-identical(foo(), segs3)
+identical(foo(), segs)
 
 ## It's a bit faster
 library("microbenchmark")

@@ -10,14 +10,15 @@
 #' 
 #' @param position A logical Rle indicating the chromosome positions.
 #' @param maxGap An integer. Genomic locations within \code{maxGap} from each other are placed into the same cluster.
+#' @param ranges If \code{TRUE} then an IRanges object is returned instead of the usual integer Rle.
 #'
-#' @return An integer Rle with the cluster IDs.
+#' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it is an IRanges object with one range per cluster.
 #'
 #' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges IRanges start end runValue reduce Views Rle
+#' @importFrom IRanges IRanges start end runValue reduce Views Rle runLength
 #' @importMethodsFrom IRanges length sum
 #' @examples
 #' library("IRanges")
@@ -34,19 +35,26 @@
 #' micro
 #' }
 
-clusterMakerRle <- function(position, maxGap=300L) {
+clusterMakerRle <- function(position, maxGap=300L, ranges=FALSE) {
 	## Instead of using which(), identify the regions of the chr with data
 	ir <- IRanges(start=start(position)[runValue(position)], end=end(position)[runValue(position)])
 	
 	## Apply the gap reduction
 	ir.red <- reduce(ir, min.gapwidth=maxGap + 1)
-	rm(ir)
-	
+	rm(ir)	
 	
 	## Identify the clusters
 	clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position, ir.red)))
 	## Note that sum(Views(pos, ir.red)) is faster than sapply(ir.red, function(x) sum(pos[x]))
 	
+	## Group the information into an IRanges object
+	if(ranges) {
+		csum <- cumsum(runLength(clusterIDs))
+		result <- IRanges(start=c(1, csum[-length(csum)] + 1), end=csum)
+	} else {
+		result <- clusterIDs
+	}
+	
 	## Done
-	return(clusterIDs)
+	return(result)
 }

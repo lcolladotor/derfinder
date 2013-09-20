@@ -8,7 +8,8 @@
     scalefac = 32, chunksize = NULL, cutoffFstat = 1e-08,
     cutoffType = "theoretical", nPermute = 1,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    maxGap = 300L, groupInfo = testvars, subject = "hg19",
+    maxRegionGap = 0L, maxClusterGap = 300L,
+    groupInfo = testvars, subject = "hg19",
     mc.cores = getOption("mc.cores", 2L),
     writeOutput = TRUE, returnOutput = FALSE,
     verbose = TRUE)
@@ -66,7 +67,10 @@
   \item{seeds}{This argument is passed to
   \link{calculatePvalues}.}
 
-  \item{maxGap}{This argument is passed to
+  \item{maxRegionGap}{This argument is passed to
+  \link{calculatePvalues}.}
+
+  \item{maxClusterGap}{This argument is passed to
   \link{calculatePvalues}.}
 
   \item{groupInfo}{A factor specifying the group membership

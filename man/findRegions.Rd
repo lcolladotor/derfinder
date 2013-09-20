@@ -2,9 +2,11 @@
 \alias{findRegions}
 \title{Find non-zero regions in a Rle}
 \usage{
-  findRegions(position, fstats, chr, cluster = NULL,
-    oneTable = TRUE, maxGap = 300L,
-    cutoff = quantile(fstats, 0.99), verbose = TRUE)
+  findRegions(position = NULL, fstats, chr,
+    oneTable = TRUE, maxRegionGap = 0L,
+    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99),
+    segmentIR = NULL, cluster = NULL, basic = FALSE,
+    verbose = TRUE)
 }
 \arguments{
   \item{position}{A logical Rle of genomic positions. This
@@ -18,20 +20,40 @@
   \item{chr}{A single element character vector specifying
   the chromosome name.}
 
-  \item{cluster}{The clusters of locations that are to be
-  analyzed together, normally given by
-  \link{clusterMakerRle}.}
-
   \item{oneTable}{If \code{TRUE} only one results GRanges
   is returned. Otherwise, a GRangesList with two components
   is returned: one for the regions with positive values and
   one for the negative values.}
 
-  \item{maxGap}{This argument is passed to
-  \link{clusterMakerRle}.}
+  \item{maxRegionGap}{This determines the maximum number of
+  gaps between two genomic positions to be considered part
+  of the same candidate Differentially Expressed Region
+  (candidate DER).}
+
+  \item{maxClusterGap}{This determines the maximum gap
+  between candidate DERs. It should be greater than
+  \code{maxRegionGap}.}
 
   \item{cutoff}{This argument is passed to
   \link{getSegmentsRle}.}
+
+  \item{segmentIR}{An IRanges object with the genomic
+  positions that are potentials DERs, normally given by
+  \link{clusterMakerRle} with \code{maxGap=maxRegionGap}
+  and \code{ranges=TRUE}. This is used in
+  \link{calculatePvalues} to speed up permutation
+  calculations.}
+
+  \item{cluster}{An integer Rle object with the candidate
+  DER clusters, normally given by \link{clusterMakerRle}
+  with \code{maxGap=maxClusterGap}. This is used in
+  \link{calculatePvalues} to speed up permutation
+  calculations.}
+
+  \item{basic}{If \code{TRUE} a DataFrame is returned that
+  has only basic information on the candidate DERs. This is
+  used in \link{calculatePvalues} to speed up permutation
+  calculations.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
@@ -51,7 +73,9 @@
 }
 \description{
   Find genomic regions for which a numeric vector is above
-  (or below) predefined thresholds. This is similar to
+  (or below) predefined thresholds. In other words, this
+  function finds the candidate Differentially Expressed
+  Regions (candidate DERs). This is similar to
   \link[bumphunter]{regionFinder} and is a helper function
   for \link{calculatePvalues}.
 }
@@ -77,13 +101,13 @@ regs
 \dontrun{
 ## Compare vs bumphunter
 library("bumphunter")
-regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE)
+regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE, maxGap=1)
 regs2
 ## Note that regs$L can be calculated with width(regs)
 identical(width(regs), as.integer(regs2$L))
 ## Time comparison
 library("microbenchmark")
-micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE))
+micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
 levels(micro$expr) <- c("new", "original")
 micro
 ## The bumphunter function regionFinder() is faster in small data sets.

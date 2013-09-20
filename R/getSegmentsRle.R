@@ -7,7 +7,7 @@
 #' @param cutoff A numeric vector of length either 1 or 2. If length is 1, U will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The function will furthermore always use the minimum of cutoff for L and the maximum for U.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return A list of IRanges views, one for the up segments and one for the down segments.
+#' @return A list of IRanges objects, one for the up segments and one for the down segments.
 #'
 #' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice}, \link{clusterMakerRle}, \link{findRegions}
 #'
@@ -41,8 +41,7 @@
 #' 	})
 #' 	return(segs.ir)
 #' }
-#' segs3 <- lapply(segs, ranges)
-#' identical(foo(), segs3) 
+#' identical(foo(), segs) 
 #'
 #' ## It's a bit faster
 #' library("microbenchmark")
@@ -63,11 +62,11 @@ getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
 	## Find the segments
 	result <- lapply(c("upIndex", "dnIndex"), function(ind) {
 		if(ind == "upIndex") {
-			tmp <- slice(x=x, lower=cutoff[2])
+			fcut <- slice(x=x, lower=cutoff[2], rangesOnly=TRUE)
 		} else {
-			tmp <- slice(x=x, upper=cutoff[1])
+			fcut <- slice(x=x, upper=cutoff[1], rangesOnly=TRUE)
 		}
-		return(tmp)
+		return(fcut)
 	})
 	names(result) <- c("upIndex", "dnIndex")
 

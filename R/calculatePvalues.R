@@ -8,7 +8,8 @@
 #' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient. If set to 0, no permutations are performed and thus no null regions are used, however, the \code{$regions} component is created.
 #' @param seeds An integer vector of length \code{nPermute} specifying the seeds to be used for each permutation. If \code{NULL} no seeds are used.
 #' @param chr A single element character vector specifying the chromosome name. This argument is passed to \link{findRegions}.
-#' @param maxGap This argument is passed to \link{clusterMakerRle}.
+#' @param maxRegionGap This argument is passed to \link{findRegions}.
+#' @param maxClusterGap This argument is passed to \link{findRegions}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
@@ -26,7 +27,7 @@
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, \link{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist as.numeric "$" "$<-" cbind
-#' @importFrom IRanges Views RleList Rle IRanges Views DataFrame values "values<-"
+#' @importFrom IRanges Views RleList Rle IRanges Views DataFrame values "values<-" nrow
 #' @importFrom parallel mclapply
 #' @importFrom qvalue qvalue
 #'
@@ -85,7 +86,7 @@
 #' ## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10)) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10)) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
@@ -100,10 +101,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	position <- coveragePrep$position
 	means <- coveragePrep$meanCoverage
 	groupMeans <- coveragePrep$groupMeans
-	cluster <- clusterMakerRle(position, maxGap)
+	
+	## Avoid re-calculating candidate DERs and cluster DERs for every permutation
+	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
+	cluster <- clusterMakerRle(position, maxClusterGap)
 	
 	## Find the regions
-	regs <- findRegions(position, chr=chr, fstats=fstats, cluster=cluster, cutoff=cutoff, verbose=verbose) 
+	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, verbose=verbose) 
 	
 	## Assign mean coverage (overall)
 	indexIR <- IRanges(start=regs$indexStart, end=regs$indexEnd)
@@ -139,7 +143,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	
 	## Pre-allocate memory
-	nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
+	nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	nSamples <- seq_len(nrow(models$mod))
 	coverageSplit <- coveragePrep$coverageSplit
@@ -161,28 +165,31 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		segments <- getSegmentsRle(x=fstats.output, cutoff=cutoff, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
-	    for (j in 1:2) {
-			nullstats[[last + j]] <- Rle(mean(segments[[j]]))
-			nullwidths[[last + j]] <- Rle(width(segments[[j]]))
-			nullpermutation[[last + j]] <- Rle(i, length(segments[[j]]))
-	    }		
+		if(nrow(regs.perm) > 0) {
+		    for (j in 1:2) {
+				nullstats[[last + j]] <- regs.perm$stat
+				nullwidths[[last + j]] <- regs.perm$width
+				nullareas[[last + j]] <- regs.perm$area
+				nullpermutation[[last + j]] <- Rle(i, nrow(regs.perm))
+		    }
+		}	   		
 		last <- last + 2
 		
 		## Finish loop
-		rm(idx.permute, fstats.output, segments, mod.p, mod0.p)
+		rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)
 		
 	}
 	nullstats <- do.call(c, nullstats)
 	nullwidths <- do.call(c, nullwidths)
 	nullpermutation <- do.call(c, nullpermutation)
+	nullareas <- do.call(c, nullareas)
 	rm(coveragePrep, coverageSplit)
 	
 	if(length(nullstats) > 0) {
 		## Proceed only if there is at least one null stats
-		nullareas <- as.numeric(abs(nullstats) * nullwidths)
 		
 		## Calculate pvalues
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))

@@ -43,11 +43,11 @@ Below is the citation output from using `citation("derfinder2")` in R. Please ru
 
 To cite package __derfinder2__ in publications use:
 
-Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder2: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.21. https://github.com/lcolladotor/derfinder2
+Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder2: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.22. https://github.com/lcolladotor/derfinder2
 
 A BibTeX entry for LaTeX users is
 
-@Manual{, title = {derfinder2: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.21}, url = {https://github.com/lcolladotor/derfinder2}, }
+@Manual{, title = {derfinder2: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.22}, url = {https://github.com/lcolladotor/derfinder2}, }
 
 
 # Origins
