@@ -97,6 +97,14 @@ findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGa
 	
 	## Work only with those that have some information
 	hasInfo <- sapply(segments, length) != 0
+	
+	## Stop if there are no segments
+	if(!any(hasInfo)) {
+		if(verbose) message(paste(Sys.time(), "findRegions: found no segments to work with!!"))
+		return(NULL)
+	}
+	
+	## Proceed of there is some data to work with
 	segments <- segments[hasInfo]
 	
 	## Find the actual DERs

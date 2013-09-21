@@ -145,8 +145,13 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 
 	## Annotate
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Annotating regions"))
-	library("bumphunter")
-	annotation <- annotateNearest(regions$regions, subject)
+	
+	if(!is.null(regions$regions)) {
+		library("bumphunter")
+		annotation <- annotateNearest(regions$regions, subject)
+	} else {
+		annotation <- NULL
+	}	
 
 	## Annotate
 	timeinfo <- c(timeinfo, list(Sys.time()))

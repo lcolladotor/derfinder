@@ -108,6 +108,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	
 	## Find the regions
 	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, verbose=verbose) 
+	if(is.null(regs)) {
+		final <- list(regions=NULL, nullStats=NULL, nullWidths=NULL, nullPermutation=NULL)
+		return(final)
+	}
 	
 	## Assign mean coverage (overall)
 	indexIR <- IRanges(start=regs$indexStart, end=regs$indexEnd)
