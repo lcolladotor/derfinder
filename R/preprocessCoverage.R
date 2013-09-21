@@ -38,7 +38,12 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 	stopifnot(is.factor(groupInfo) | is.null(groupInfo))
 	
 	coverage <- coverageInfo$coverage
-	stopifnot(length(groupInfo) == length(coverage) | is.null(groupInfo))
+	if(is.null(colsubset)) {
+		stopifnot(length(groupInfo) == length(coverage) | is.null(groupInfo))
+	} else {
+		stopifnot(length(groupInfo) == length(colsubset) | is.null(groupInfo))
+	}
+		
 	position <- coverageInfo$position
 		
 	## Subset the DataFrame to use only the columns of interest
