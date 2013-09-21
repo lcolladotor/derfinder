@@ -144,15 +144,12 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Sometimes qvalue() fails due to incorrect pi0 estimates
 		if(is(qvalues, "qvalue")) {
 			qvalues <- qvalue(fullRegions$pvalues)$qvalues
+			sigQval <- factor(qvalues < significantCut[2], levels=c(TRUE, FALSE))
 		} else {
 			qvalues <- rep(NA, length(fullRegions$pvalues))
-		}
-		fullRegions$qvalues <- qvalues		
-		if(is(qvalues, "qvalue")) {
-			sigQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
-		} else {
 			sigQval <- rep(NA, length(fullRegions$pvalues))
 		}
+		fullRegions$qvalues <- qvalues		
 		fullRegions$significantQval <- sigQval
 	}	
 	## Sort by decreasing area

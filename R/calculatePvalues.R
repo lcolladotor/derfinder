@@ -204,15 +204,12 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		## Sometimes qvalue() fails due to incorrect pi0 estimates
 		if(is(qvalues, "qvalue")) {
 			qvalues <- qvalue(regs$pvalues)$qvalues
+			sigQval <- factor(qvalues < significantCut[2], levels=c(TRUE, FALSE))
 		} else {
 			qvalues <- rep(NA, length(regs$pvalues))
-		}
-		regs$qvalues <- qvalues
-		if(is(qvalues, "qvalue")) {
-			sigQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
-		} else {
 			sigQval <- rep(NA, length(regs$pvalues))
 		}
+		regs$qvalues <- qvalues
 		regs$significantQval <- sigQval
 		
 		regs <- regs[order(regs$area, decreasing=TRUE), ]
