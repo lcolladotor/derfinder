@@ -199,9 +199,19 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating the p-values"))
 		pvals <- sapply(regs$area, function(x) { sum(nullareas > x) })
 		regs$pvalues <- (pvals + 1) / (length(nullareas) + 1)
-		regs$qvalues <- qvalue(regs$pvalues)$qvalues
+		qvalues <- qvalue(regs$pvalues)$qvalues
+		## Sometimes qvalue() fails due to incorrect pi0 estimates
+		if(!is(qvalues, "qvalue")) {
+			qvalues <- rep(NA, length(regs$pvalues))
+		}
+		regs$qvalues <- qvalues
 		regs$significant <- factor(regs$pvalues < significantCut[1], levels=c(TRUE, FALSE))
-		regs$significantQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		if(!is(qvalues, "qvalue")) {
+			sigQval <- rep(NA, length(regs$pvalues))
+		} else {
+			sigQval <- factor(regs$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		}
+		regs$significantQval <- sigQval
 		regs <- regs[order(regs$area, decreasing=TRUE), ]
 	} else {
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: no null regions found. Skipping p-value calculation."))

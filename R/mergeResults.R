@@ -139,9 +139,19 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 		## Update info
 		fullRegions$pvalues <- (pvals + 1) / (length(nullareas) + 1)
-		fullRegions$qvalues <- qvalue(fullRegions$pvalues)$qvalues
+		qvalues <- qvalue(fullRegions$pvalues)$qvalues
+		## Sometimes qvalue() fails due to incorrect pi0 estimates
+		if(!is(qvalues, "qvalue")) {
+			qvalues <- rep(NA, length(fullRegions$pvalues))
+		}
+		fullRegions$qvalues <- qvalues
 		fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
-		fullRegions$significantQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		if(!is(qvalues, "qvalue")) {
+			sigQval <- rep(NA, length(fullRegions$pvalues))
+		} else {
+			sigQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		}
+		fullRegions$significantQval <- sigQval
 	}	
 	## Sort by decreasing area
 	fullRegions <- fullRegions[order(fullRegions$area, decreasing=TRUE)]
