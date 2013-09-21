@@ -10,7 +10,7 @@
 #' @param center This argument is passed to \link{makeModels}.
 #' @param testIntercept This argument is passed to \link{makeModels}.
 #' @param cutoffPre This argument is passed to \link{preprocessCoverage} (\code{cutoff}).
-#' @param colsubset This argument is passed to \link{preprocessCoverage}.
+#' @param colsubset This argument is passed to \link{makeModels} and \link{preprocessCoverage}.
 #' @param scalefac This argument is passed to \link{preprocessCoverage}.
 #' @param chunksize This argument is passed to \link{preprocessCoverage}.
 #' @param cutoffFstat This is used to determine the cutoff argument of \link{calculatePvalues} and it's behaviour is determined by \code{cutoffType}.
@@ -72,7 +72,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 
 	## Build the models
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Building mod and mod0"))
-	models <- makeModels(coverageInfo=coverageInfo, testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, verbose=verbose, center=center, testIntercept=testIntercept)
+	models <- makeModels(coverageInfo=coverageInfo, testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, verbose=verbose, center=center, testIntercept=testIntercept, colsubset=colsubset)
 
 	## buildModels
 	timeinfo <- c(timeinfo, list(Sys.time()))

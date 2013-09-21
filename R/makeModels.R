@@ -9,6 +9,7 @@
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #' @param center If \code{TRUE} the column medians are centered by the mean of the column medians. This is helpful for interpretation purposes.
 #' @param testIntercept If \code{TRUE} then \code{testvars} is ignored and mod0 will contain the column medians and any adjusting variables specified, but no intercept.
+#' @param colsubset Which colums of \code{coverageInfo$coverage} to use.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -34,10 +35,14 @@
 #' names(models)
 #' models
 
-makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = FALSE, verbose=FALSE, center=TRUE, testIntercept=FALSE) {
+makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = FALSE, verbose=FALSE, center=TRUE, testIntercept=FALSE, colsubset=NULL) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
 	coverage <- coverageInfo$coverage
+	
+	if(!is.null(colsubset)) {
+		coverage <- coverage[, colsubset]
+	}
 		
 	## Check that the columns match
 	numcol <- ncol(coverage)

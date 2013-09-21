@@ -4,7 +4,7 @@
 \usage{
   makeModels(coverageInfo, testvars, adjustvars = NULL,
     nonzero = FALSE, verbose = FALSE, center = TRUE,
-    testIntercept = FALSE)
+    testIntercept = FALSE, colsubset = NULL)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -39,6 +39,9 @@
   \item{testIntercept}{If \code{TRUE} then \code{testvars}
   is ignored and mod0 will contain the column medians and
   any adjusting variables specified, but no intercept.}
+
+  \item{colsubset}{Which colums of
+  \code{coverageInfo$coverage} to use.}
 }
 \value{
   A list with two components. \describe{ \item{mod }{ The

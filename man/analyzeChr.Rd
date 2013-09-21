@@ -41,7 +41,7 @@
   \link{preprocessCoverage} (\code{cutoff}).}
 
   \item{colsubset}{This argument is passed to
-  \link{preprocessCoverage}.}
+  \link{makeModels} and \link{preprocessCoverage}.}
 
   \item{scalefac}{This argument is passed to
   \link{preprocessCoverage}.}
