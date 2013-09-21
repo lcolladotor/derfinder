@@ -56,6 +56,10 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	timeinfo <- NULL
 	## Init
 	timeinfo <- c(timeinfo, list(Sys.time()))
+	
+	## Drop unused levels in testvars and groupInfo
+	testvars <- droplevels(testvars)
+	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
 	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo)

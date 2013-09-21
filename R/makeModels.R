@@ -35,10 +35,13 @@
 #' names(models)
 #' models
 
-makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = FALSE, verbose=FALSE, center=TRUE, testIntercept=FALSE, colsubset=NULL) {
+makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE, verbose=FALSE, center=TRUE, testIntercept=FALSE, colsubset=NULL) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
 	coverage <- coverageInfo$coverage
+	
+	## Drop unused levels in testvars
+	testvars <- droplevels(testvars)
 	
 	if(!is.null(colsubset)) {
 		coverage <- coverage[, colsubset]

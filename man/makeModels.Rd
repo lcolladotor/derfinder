@@ -3,7 +3,7 @@
 \title{Build model matrices for differential expression}
 \usage{
   makeModels(coverageInfo, testvars, adjustvars = NULL,
-    nonzero = FALSE, verbose = FALSE, center = TRUE,
+    nonzero = TRUE, verbose = FALSE, center = TRUE,
     testIntercept = FALSE, colsubset = NULL)
 }
 \arguments{
