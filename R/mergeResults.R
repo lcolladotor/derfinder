@@ -136,20 +136,22 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Actual calculation
 		nullareas <- as.numeric(fullNullSummary$area)
 		pvals <- sapply(fullRegions$area, function(x) { sum(nullareas > x) })
+		fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
 	
 		## Update info
 		fullRegions$pvalues <- (pvals + 1) / (length(nullareas) + 1)
-		qvalues <- qvalue(fullRegions$pvalues)$qvalues
+
 		## Sometimes qvalue() fails due to incorrect pi0 estimates
-		if(!is(qvalues, "qvalue")) {
+		if(is(qvalues, "qvalue")) {
+			qvalues <- qvalue(fullRegions$pvalues)$qvalues
+		} else {
 			qvalues <- rep(NA, length(fullRegions$pvalues))
 		}
-		fullRegions$qvalues <- qvalues
-		fullRegions$significant <- factor(fullRegions$pvalues < significantCut[1], levels=c(TRUE, FALSE))
-		if(!is(qvalues, "qvalue")) {
-			sigQval <- rep(NA, length(fullRegions$pvalues))
-		} else {
+		fullRegions$qvalues <- qvalues		
+		if(is(qvalues, "qvalue")) {
 			sigQval <- factor(fullRegions$qvalues < significantCut[2], levels=c(TRUE, FALSE))
+		} else {
+			sigQval <- rep(NA, length(fullRegions$pvalues))
 		}
 		fullRegions$significantQval <- sigQval
 	}	
