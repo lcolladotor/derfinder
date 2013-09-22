@@ -7,7 +7,7 @@
 #' @param groupInfo A factor specifying the group membership of each sample. It will be used to color the samples by group.
 #' @param nearestAnnotation The output from \link[bumphunter]{annotateNearest} used on \code{regions}.
 #' @param annotatedRegions The output from \link{annotateRegions} used on \code{regions}.
-#' @param N The maximum number of regions to plot: will only make less than \code{N} plots only if \code{N} is greater than the number of regions.
+#' @param whichRegions An integer vector with the index of the regions to plot.
 #' @param colors If \code{NULL} then \link[RColorBrewer]{brewer.pal} with the \code{"Dark2"} color scheme is used.
 #' @param scalefac The parameter used in \link{preprocessCoverage}.
 #' @param ask If \code{TRUE} then the user is prompted before each plot is made.
@@ -89,7 +89,7 @@
 #' dev.off()
 #' }
 
-plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, N = 100, colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE) {
+plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, whichRegions = seq_len(min(100, length(regions))), colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE) {
 	stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 1)
 	stopifnot(length(intersect(names(regionCoverage), c("coverageData"))) == 1)
 	stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, "GRanges"))
@@ -100,51 +100,72 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	}
 	stopifnot(is.factor(groupInfo))
 	
+	## Make sure that the user is not going beyond the number of regions
+	N <- max(whichRegions)
+	if(N > length(regions)) {
+		warning("'whichRegions' exceeds the number of regions available. Dropping invalid indexes.")
+		whichRegions <- whichRegions[whichRegions <= length(regions)]
+	}
+	
+	## Color setup
 	if(is.null(colors)) {
 		library("RColorBrewer")
 		palette(brewer.pal(length(levels(groupInfo)), "Dark2"))
 	}
 	
+	## Annotation information
 	anno <- annotatedRegions$annotationList
 
 	layout(matrix(c(1, 1, 2), ncol = 1))
-	N <- min(N, length(regions))
-	for(i in seq_len(N)) {
+	for(i in whichRegions) {
+		## Status update
 		if(i %% 10 == 0 & verbose) print(i)
-		y <- log2(regionCoverage$coverageData[[i]] + scalefac)
+		
+		## For subsetting the named lists
+		ichar <- as.character(i)
+		
+		## Obtain data
+		y <- log2(regionCoverage$coverageData[[ichar]] + scalefac)
 		x <- start(regions[i]):end(regions[i])
 		
 		if(ask) {
 			devAskNewPage(TRUE)
 		}
 		
-		par(mar=c(0, 4.5, 0.25, 1.1), oma=c(0,0,2,0))
-
+		## Plot coverage
+		par(mar=c(0, 4.5, 0.25, 1.1), oma=c(0, 0, 2, 0))
 		matplot(x, y, lty=1, col = as.numeric(groupInfo), type="l", yaxt="n", ylab="", xlab="", xaxt = "n", cex.lab = 1.7)
 		m <- ceiling(max(y))
-		axis(2, at = 5:m, labels = 2^(5:m) - scalefac, cex.axis = 1.5)
+		axis(2, at = log2(scalefac):m, labels = 2^(log2(scalefac):m) - scalefac, cex.axis = 1.5)
 		
+		## Coverage legend
 		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), ncol = length(levels(groupInfo)), cex = 1.2, pt.cex = 1.5)
 		mtext("Coverage", side = 2, line = 2.5, cex = 1.3)
 		mtext(paste(nearestAnnotation$name[i], ",", nearestAnnotation$distance[i], "bp from tss:", nearestAnnotation$region[i]), outer = TRUE, cex = 1.3)
-		## annotation
+		
+		## Plot annotation
 		par(mar=c(3.5, 4.5, 0.25, 1.1))
 		plot(0, 0, type="n", xlim=range(x), ylim=c(-1.5, 1.5), yaxt="n", ylab="", xlab="", cex.axis = 1.5, cex.lab = 1.5)
-		a <- as.data.frame(anno[[i]])
-		Strand <- ifelse(a$strand == "+", 1, ifelse(a$strand == "-", -1, 0))
-		Col <- ifelse(a$theRegion == "exon", "blue", ifelse(a$theRegion == "intron", "lightblue", "white"))
-		Lwd <- ifelse(a$theRegion == "exon", 1, ifelse(a$theRegion == "intron", 0.5, 0))
+		gotAnno <- !is.null(anno[[ichar]])
+		if(gotAnno) {
+			a <- as.data.frame(anno[[ichar]])
+			Strand <- ifelse(a$strand == "+", 1, ifelse(a$strand == "-", -1, 0))
+			Col <- ifelse(a$theRegion == "exon", "blue", ifelse(a$theRegion == "intron", "lightblue", "white"))
+			Lwd <- ifelse(a$theRegion == "exon", 1, ifelse(a$theRegion == "intron", 0.5, 0))
+		}		
 		axis(2, c(-1, 1) , c("-", "+"), tick = FALSE, las = 1, cex.axis = 3)
 		abline(h = 0, lty = 3)
-		for(j in seq_len(nrow(a))) {
-			polygon(c(a$start[j], a$end[j], a$end[j], a$start[j]), Strand[j]/2 + c(-0.3, -0.3, 0.3, 0.3) * Lwd[j], col = Col[j])
-		}
-		e <- a[a$theRegion=="exon",]
-		s2 <- Strand[a$theRegion=="exon"]
-		g  <- sapply(e$tx_name, paste, collapse="\n")
-		if(length(g) > 0) text(x = e$start + e$width/2, y = s2 * -1, g, font = 2, pos = s2+2)
+		if(gotAnno) {
+			for(j in seq_len(nrow(a))) {
+				polygon(c(a$start[j], a$end[j], a$end[j], a$start[j]), Strand[j]/2 + c(-0.3, -0.3, 0.3, 0.3) * Lwd[j], col = Col[j])
+			}
+			e <- a[a$theRegion=="exon",]
+			s2 <- Strand[a$theRegion=="exon"]
+			g  <- sapply(e$tx_name, paste, collapse="\n")
+			if(length(g) > 0) text(x = e$start + e$width/2, y = s2 * -1, g, font = 2, pos = s2+2)
+			mtext(unique(a$seqnames), side=1, line = 2.2, cex = 1.1)
+		}		
 		mtext("Genes", side = 2, line = 2.5, cex = 1.3)
-		mtext(unique(a$seqnames), side=1, line = 2.2, cex = 1.1)
 	}
 	return(invisible(NULL))
 }

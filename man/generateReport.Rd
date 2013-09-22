@@ -10,7 +10,7 @@
     txdb = NULL, installMissing = TRUE,
     device = "CairoPNG", fullRegions = NULL,
     fullNullSummary = NULL, fullAnnotatedRegions = NULL,
-    optionsStats = NULL)
+    optionsStats = NULL, optionsMerge = NULL)
 }
 \arguments{
   \item{prefix}{The main data directory path where
@@ -82,6 +82,10 @@
 
   \item{optionsStats}{Part of the output of
   \link{analyzeChr}. Specify it only if you have already
+  loaded it in memory.}
+
+  \item{optionsMerge}{Part of the output of
+  \link{mergeResults}. Specify it only if you have already
   loaded it in memory.}
 }
 \value{

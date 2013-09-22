@@ -20,6 +20,7 @@
 #' @param fullNullSummary Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #' @param fullAnnotatedRegions Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #' @param optionsStats Part of the output of \link{analyzeChr}. Specify it only if you have already loaded it in memory.
+#' @param optionsMerge Part of the output of \link{mergeResults}. Specify it only if you have already loaded it in memory.
 #'
 #' @return An HTML report with a basic exploration of the results.
 #'
@@ -34,7 +35,7 @@
 #' }
 
 
-generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), nBestRegions=100, makeBestClusters=TRUE, nBestClusters=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, fullAnnotatedRegions=NULL, optionsStats=NULL) {
+generateReport <- function(prefix, outdir="basicExploration", output="basicExploration.html", project=prefix, browse=interactive(), nBestRegions=100, makeBestClusters=TRUE, nBestClusters=2, fullCov=NULL, hg19=TRUE, p.ideos=NULL, txdb=NULL, installMissing=TRUE, device="CairoPNG", fullRegions=NULL, fullNullSummary=NULL, fullAnnotatedRegions=NULL, optionsStats=NULL, optionsMerge=NULL) {
 
 	## Save start time for getting the total processing time
 	startTime <- Sys.time()
@@ -166,6 +167,7 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 	if(is.null(fullNullSummary)) load(file.path(prefix, "fullNullSummary.Rdata"))
 	if(is.null(fullAnnotatedRegions)) load(file.path(prefix, "fullAnnotatedRegions.Rdata"))
 	if(is.null(optionsStats)) load(file.path(prefix, dir(prefix, pattern="chr")[1], "optionsStats.Rdata"))
+	if(is.null(optionsMerge)) load(file.path(prefix, "optionsMerge.Rdata"))
 
 	## Require fullCov
 	if(makeBestClusters) {

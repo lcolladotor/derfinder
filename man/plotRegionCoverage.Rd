@@ -3,7 +3,8 @@
 \title{Makes plots for every region while summarizing the annotation}
 \usage{
   plotRegionCoverage(regions, regionCoverage, groupInfo,
-    nearestAnnotation, annotatedRegions, N = 100,
+    nearestAnnotation, annotatedRegions,
+    whichRegions = seq_len(min(100, length(regions))),
     colors = NULL, scalefac = 32, ask = interactive(),
     verbose = TRUE)
 }
@@ -25,9 +26,8 @@
   \item{annotatedRegions}{The output from
   \link{annotateRegions} used on \code{regions}.}
 
-  \item{N}{The maximum number of regions to plot: will only
-  make less than \code{N} plots only if \code{N} is greater
-  than the number of regions.}
+  \item{whichRegions}{An integer vector with the index of
+  the regions to plot.}
 
   \item{colors}{If \code{NULL} then
   \link[RColorBrewer]{brewer.pal} with the \code{"Dark2"}

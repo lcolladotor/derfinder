@@ -10,7 +10,7 @@
 #' @param fullOrCoding This argument is passed to \link{annotateRegions}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return Six Rdata files.
+#' @return Seven Rdata files.
 #' \describe{
 #' \item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list of Rle objects.}
 #' \item{fullTime.Rdata }{ Timing information from all chromosomes.}
@@ -18,6 +18,7 @@
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
 #' \item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data from all chromosomes.}
 #' \item{fullAnnotatedRegions.Rdata}{ A list as constructed in \link{annotateRegions} with the assigned genomic states.}
+#' \item{optionsMerge.Rdata}{ A list with the options used when merging the results. Used in \link{generateReport}.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
@@ -63,6 +64,12 @@
 mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), genomicState, minoverlap=20, fullOrCoding = "full", verbose=TRUE) {	
 	## For R CMD check
 	prep <- fstats <- regions <- annotation <- timeinfo <- NULL
+	
+	
+	## save merging options used
+	optionsMerge <- list(chrnums=chrnums, significantCut=significantCut, minoverlap=minoverlap, mergeCall=match.call())
+	if(verbose) message(paste(Sys.time(), "mergeResults: Saving options used"))
+	save(optionsMerge, file=file.path(prefix, "optionsMerge.Rdata"))
 	
 	## Initialize
 	fullCoveragePrep <- fullTime <- fullNullPermutation <- fullNullWidths <- fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector("list", length(chrnums))

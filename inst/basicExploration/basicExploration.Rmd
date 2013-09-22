@@ -7,7 +7,7 @@ Project: `r project`.
 
 This report is meant to help explore the results of the `derfinder2` `r mycitep(bib[["derfinder2"]])` package. While the report is rich, it is meant to just start the exploration of the results and exemplify some of the code used to do so. You will most likely need a more in-depth analysis for your specific data set.
 
-Most plots are made with using `ggplot2` `r mycitep(bib[["ggplot2"]])`.
+Most plots were made with using `ggplot2` `r mycitep(bib[["ggplot2"]])`.
 
 ## Code setup
 
@@ -78,7 +78,7 @@ qtable <- do.call(rbind, qtable)
 print(xtable(qtable, digits=4, align=rep("c", 3)), type="html", include.rownames=FALSE)
 ```
 
-This table shows the number of candidate regions with q-value less than commonly used cutoff values. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
+This table shows the number of candidate Differentially Expressed Regions (DERs) with q-value less than some commonly used cutoff values. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
 
 ## Region width
 
@@ -94,7 +94,7 @@ p2a <- ggplot(regions.df, aes(x=log10(width), colour=seqnames)) + geom_line(stat
 p2a
 ```
 
-This plot shows the density of the region lengths for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
+This plot shows the density of the region lengths for all regions. `r ifelse(hasSig, paste0("The bottom panel is restricted to significant regions (q-value < ", optionsMerge$significantCut[2], ")"), "")`
 
 ## Region Area
 
@@ -110,7 +110,7 @@ p3a <- ggplot(regions.df, aes(x=log10(area), colour=seqnames)) + geom_line(stat=
 p3a
 ```
 
-This plot shows the density of the region areas for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
+This plot shows the density of the region areas for all regions. `r ifelse(hasSig, paste0("The bottom panel is restricted to significant regions (q-value < ", optionsMerge$significantCut[2], ")"), "")`
 
 ## Null regions: width and area
 
@@ -136,14 +136,14 @@ p6a <- ggplot(regions.df, aes(x=log2(meanCoverage), colour=seqnames)) + geom_lin
 p6a
 ```
 
-This plot shows the density of the region mean coverage for all regions. `r ifelse(hasSig, "The bottom panel is restricted to significant regions (q-value < 0.1)", "")`
+This plot shows the density of the region mean coverage for all regions. `r ifelse(hasSig, paste0("The bottom panel is restricted to significant regions (q-value < ", optionsMerge$significantCut[2], ")"), "")`
 
 
 ## Mean coverage vs fold change
 
 The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. The mean coverage is calculated using only two groups at a time and is weighted according to the number of samples on each group. Note that the mean coverage and fold change as calculated here do not taking into account the library sizes.
 
-These plots are only shown when there are two or more groups. A total of number of groups - 1 plots are made.
+These plots are only shown when there are two or more groups. A total of `r length(grep("foldChange", colnames(values(fullRegions))))` were made.
 
 ```{r MAstyle, fig.width=10, fig.height=10, dev=device}
 for(j in grep("foldChange", colnames(values(fullRegions)))) {
@@ -177,7 +177,7 @@ The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in
 plotOverview(regions=fullRegions, type="qval", base_size=30, areaRel=10, legend.position=c(0.97, 0.12))
 ```
 
-This plot shows the genomic locations of the __candidate__ regions found in the analysis. The significant regions (by default q-value less than 0.10) are highlighted and the area of the regions is shown on top of each chromosome. Note that the area is in a relative scale.
+This plot shows the genomic locations of the __candidate__ regions found in the analysis. The significant regions (q-value less than `r optionsMerge$significantCut[2]`) are highlighted and the area of the regions is shown on top of each chromosome. Note that the area is in a relative scale.
 
 
 ## Annotation
@@ -200,7 +200,7 @@ print(xtable(annoReg.df, align=rep("c", 3)), type="html", include.rownames=FALSE
 plotOverview(regions=fullRegions[idx.sig], annotation=fullRegions[idx.sig], type="annotation", base_size=30, areaRel=10, legend.position=c(0.97, 0.12))
 ```
 
-This genomic overview plot shows the annotation region type for the __candidate__ regions that have a q-value less than 0.10 (default setting). Note that the regions are shown only if the annotation information is available. `r ifelse(hasSig, "", "Plot skipped because there are no significant regions.")`
+This genomic overview plot shows the annotation region type for the __candidate__ regions that have a q-value less than `r optionsMerge$significantCut[2]`. Note that the regions are shown only if the annotation information is available. `r ifelse(hasSig, "", "Plot skipped because there are no significant regions.")`
 
 
 # Best regions
@@ -209,12 +209,16 @@ This genomic overview plot shows the annotation region type for the __candidate_
 
 ## Plots
 
-Below are the plots for the top `r nBestRegions` regions as ranked by area.
+Below are the plots for the top `r nBestRegions` candidate DERs as ranked by area. For each plot, annotation is shown if the candidate DER has a minimum overlap of `r optionsMerge$minoverlap` base pairs with annotation information (strand specific). If present, exons are collapsed and shown in blue. Introns are shown in light blue.
+
+```{r refGenomicState, results="asis"}
+cat(paste0("The annotation depends on the <code>Genomic State<code> used. For details on which one was used for this report check the call to <code>mergeResults<code> <a href='", output, "#Details'>in the reproducibility details.</a>"))
+```
 
 
 ```{r plotRegions, fig.width=10, fig.height=10, dev=device}
 if(nBestRegions > 0) {
-	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, N = nBestRegions, colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
+	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, whichRegions = seq_len(min(nBestRegions, length(fullRegions))), colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
 }
 ```
 
@@ -395,7 +399,23 @@ The F-statistic cutoff used was `r as.character(optionsStats$cutoffFstat)` and t
 
 ## Details
 
-This report was generated in path `r tmpdir` using the following call:
+This analysis was on each chromosome was perfomed with the following call to `analyzeChr()` (shown for one chromosome only):
+
+```{r analysisCall, echo=FALSE}
+if("analyzeCall" %in% names(optionsStats)) {
+	optionsStats$analyzeCall
+} else {
+	"Skipped since this information was not recorded prior to version 0.0.24"
+}
+```
+
+The results were merged using the following call to `mergeResults()`:
+
+```{r mergeCall, echo=FALSE}
+optionsMerge$mergeCall
+```
+
+This report was generated in path `r tmpdir` using the following call to `generateReport()`:
 
 ```{r thecall, echo=FALSE}
 theCall

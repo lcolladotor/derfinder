@@ -62,7 +62,7 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
-	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo)
+	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, analyzeCall=match.call())
 
 	## Setup
 	timeinfo <- c(timeinfo, list(Sys.time()))

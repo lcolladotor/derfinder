@@ -312,7 +312,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	addTxName <- CharacterList(vector("list", length(codingIntraGR)))
 	addTx <- addGene <- IntegerList(vector("list", length(codingIntraGR)))
 	gRegion <- rep("intragenic", length(codingIntraGR))
-	values(codingIntraGR) <- DataFrame(gRegion,	addTx,addTxName, addGene)
+	values(codingIntraGR) <- DataFrame(gRegion,	addTx, addTxName, addGene)
 	names(mcols(codingIntraGR)) <- names(mcols(codingGR))
 
 

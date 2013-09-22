@@ -34,7 +34,7 @@
   be printed along the way.}
 }
 \value{
-  Six Rdata files. \describe{ \item{fullFstats.Rdata }{
+  Seven Rdata files. \describe{ \item{fullFstats.Rdata }{
   Full F-statistics from all chromosomes in a list of Rle
   objects.} \item{fullTime.Rdata }{ Timing information from
   all chromosomes.} \item{fullNullSummary.Rdata}{ A
@@ -50,7 +50,9 @@
   pre-processed coverage data from all chromosomes.}
   \item{fullAnnotatedRegions.Rdata}{ A list as constructed
   in \link{annotateRegions} with the assigned genomic
-  states.} }
+  states.} \item{optionsMerge.Rdata}{ A list with the
+  options used when merging the results. Used in
+  \link{generateReport}.} }
 }
 \description{
   This function merges the results from running
