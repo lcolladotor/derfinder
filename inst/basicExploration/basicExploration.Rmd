@@ -211,9 +211,7 @@ This genomic overview plot shows the annotation region type for the __candidate_
 
 Below are the plots for the top `r nBestRegions` candidate DERs as ranked by area. For each plot, annotation is shown if the candidate DER has a minimum overlap of `r optionsMerge$minoverlap` base pairs with annotation information (strand specific). If present, exons are collapsed and shown in blue. Introns are shown in light blue.
 
-```{r refGenomicState, results="asis"}
-cat(paste0("The annotation depends on the <code>Genomic State<code> used. For details on which one was used for this report check the call to <code>mergeResults<code> <a href='", output, "#Details'>in the reproducibility details.</a>"))
-```
+The annotation depends on the Genomic State used. For details on which one was used for this report check the call to `mergeResults` in the reproducibility details.
 
 
 ```{r plotRegions, fig.width=10, fig.height=10, dev=device}
@@ -399,7 +397,7 @@ The F-statistic cutoff used was `r as.character(optionsStats$cutoffFstat)` and t
 
 ## Details
 
-This analysis was on each chromosome was perfomed with the following call to `analyzeChr()` (shown for one chromosome only):
+This analysis was on each chromosome was performed with the following call to `analyzeChr()` (shown for one chromosome only):
 
 ```{r analysisCall, echo=FALSE}
 if("analyzeCall" %in% names(optionsStats)) {
