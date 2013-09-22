@@ -94,7 +94,7 @@ getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRU
 	out <- list(coverageData = theData)
 	
 	if(sum(unlist(lapply(out$coverageData, nrow))) != sum(width(regions))) {
-		stop("The total width of the regions did not match with the dimensions of the extracted coverage data. Check that 'regions' has seglengths specified correctly.")
+		stop("The total width of the regions did not match with the dimensions of the extracted coverage data. Check that 'regions' has seqlengths specified correctly.")
 	}
 	
 	if(calculateMeans) {

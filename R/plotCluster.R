@@ -23,7 +23,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom IRanges width resize
-#' @importMethodsFrom IRanges "$" "[" as.matrix findOverlaps
+#' @importMethodsFrom IRanges "$" "[" as.matrix findOverlaps queryHits
 #' @importFrom GenomicRanges seqnames
 #' @importMethodsFrom GenomicRanges findOverlaps start end as.data.frame range
 #' @importFrom ggbio plotIdeogram tracks theme_tracks_sunset
@@ -194,7 +194,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	}
 	
 	## Regions found (from the view)
-	neighbors <- regions[as.matrix(findOverlaps(regions, wh))[, "queryHits"]]
+	neighbors <- regions[queryHits(findOverlaps(regions, wh))]
 	neighbors$originalRegion <- neighbors == current
 	ann_line <- data.frame(x=start(current), xend=end(current), y=1)
 	if(titleUse == "pval") {

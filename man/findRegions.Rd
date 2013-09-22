@@ -5,8 +5,7 @@
   findRegions(position = NULL, fstats, chr,
     oneTable = TRUE, maxRegionGap = 0L,
     maxClusterGap = 300L, cutoff = quantile(fstats, 0.99),
-    segmentIR = NULL, cluster = NULL, basic = FALSE,
-    verbose = TRUE)
+    segmentIR = NULL, basic = FALSE, verbose = TRUE)
 }
 \arguments{
   \item{position}{A logical Rle of genomic positions. This
@@ -41,12 +40,6 @@
   positions that are potentials DERs, normally given by
   \link{clusterMakerRle} with \code{maxGap=maxRegionGap}
   and \code{ranges=TRUE}. This is used in
-  \link{calculatePvalues} to speed up permutation
-  calculations.}
-
-  \item{cluster}{An integer Rle object with the candidate
-  DER clusters, normally given by \link{clusterMakerRle}
-  with \code{maxGap=maxClusterGap}. This is used in
   \link{calculatePvalues} to speed up permutation
   calculations.}
 
@@ -107,7 +100,7 @@ regs2
 identical(width(regs), as.integer(regs2$L))
 ## Time comparison
 library("microbenchmark")
-micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
+micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE, basic=TRUE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
 levels(micro$expr) <- c("new", "original")
 micro
 ## The bumphunter function regionFinder() is faster in small data sets.

@@ -142,8 +142,9 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullRegions$pvalues <- (pvals + 1) / (length(nullareas) + 1)
 
 		## Sometimes qvalue() fails due to incorrect pi0 estimates
+		qvalues <- qvalue(fullRegions$pvalues)
 		if(is(qvalues, "qvalue")) {
-			qvalues <- qvalue(fullRegions$pvalues)$qvalues
+			qvalues <- qvalues$qvalues
 			sigQval <- factor(qvalues < significantCut[2], levels=c(TRUE, FALSE))
 		} else {
 			qvalues <- rep(NA, length(fullRegions$pvalues))

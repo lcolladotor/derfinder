@@ -39,6 +39,7 @@ if(!is.null(fullCov) & !is.null(colsubset)) {
 ## Get region coverage for the top regions
 if(nBestRegions > 0) {
 	regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
+	save(regionCoverage, file="regionCoverage.Rdata")
 }
 ```
 
@@ -160,7 +161,7 @@ for(j in grep("foldChange", colnames(values(fullRegions)))) {
 	ma2 <- ma[is.finite(ma$foldChange), ]
 	fold.mean <- data.frame(foldMean=mean(ma2$foldChange, na.rm=TRUE))
 	
-	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point(size=1.5, alpha=1/5) + ylab("Fold Change (log2)\nRed dashed line at mean; blue line is loess fit") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot group", groups[1], "vs group", groups[2])) + geom_hline(aes(yintercept=foldMean), data=fold.mean, colour="#990000", linetype="dashed") + geom_smooth(aes(y=foldChange, x=log2(mean)), data=subset(ma2, mean > 0), method=loess)
+	p.ma <- ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point(size=1.5, alpha=1/5) + ylab("Fold Change (log2)\nRed dashed line at mean; blue line is loess fit") + xlab(paste("Mean coverage (log2) using only groups", groups[1], "and", groups[2])) + labs(title=paste("MA style plot:", groups[1], "vs ", groups[2])) + geom_hline(aes(yintercept=foldMean), data=fold.mean, colour="#990000", linetype="dashed") + geom_smooth(aes(y=foldChange, x=log2(mean)), data=subset(ma2, mean > 0), method=loess)
 	print(p.ma)
 }
 ```
@@ -238,10 +239,27 @@ Below is an interactive table with the top `r nBestRegions` regions as ranked by
 ```{r bestAreaInfo, results="asis"}
 topArea <- head(regions.df, nBestRegions)
 topArea <- data.frame("areaRank"=order(topArea$area, decreasing=TRUE), topArea)
+## Clean up -Inf, Inf if present
+## More details at https://github.com/ramnathv/rCharts/issues/259
+replaceInf <- function(df, colsubset=seq_len(ncol(df))) {
+	for(i in colsubset) {
+		inf.idx <- !is.finite(df[, i])
+		if(any(inf.idx)) {
+			inf.sign <- sign(df[inf.idx, i])
+			df[inf.idx, i] <- inf.sign * 1e100
+		}
+	}
+	return(df)
+}
+topArea <- replaceInf(topArea, grep("foldChange", colnames(topArea)))
+
+## Make the table
 d <- data.table(topArea)
 t1 <- dTable(d, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='100%')
 t1$print("regions", cdn=TRUE)
 ```
+
+`r ifelse(any(inf.idx), "Inf and -Inf are shown as 1e100 and -1e100 respectively.", "")`
 
 
 # Best region clusters
@@ -291,8 +309,8 @@ regionClusterPlot <- function(idx, tUse="qval") {
 }
 ```
 
-Below are the best `r nBestClusters` region clusters ordered by cluster area (sum of the area of regions inside a cluster). The region with the highest area in the cluster is shown with a red bar. `r ifelse(makeBestClusters, , "No plots were generated as requested.")`
- 
+Below are the best `r nBestClusters` region clusters ordered by cluster area (sum of the area of regions inside a cluster). The region with the highest area in the cluster is shown with a red bar. `r ifelse(makeBestClusters, "", "No plots were generated as requested.")`
+
 
 ```{r bestClusters, message=FALSE, fig.width=20, fig.height=10, dev=device, eval=makeBestClusters, echo=makeBestClusters}
 
@@ -373,7 +391,7 @@ bibliography()
 
 ## General information
 
-The F-statistic cutoff used was `r optionsStats$cutoffFstat` and type of cutoff used was `r optionsStats$cutoffType`. Furthermore, the maximum region (data) gap was set to `r optionsStats$maxRegionGap` and the maximum cluster gap was set to `r optionsStats$maxClusterGap`.
+The F-statistic cutoff used was `r as.character(optionsStats$cutoffFstat)` and type of cutoff used was `r optionsStats$cutoffType`. Furthermore, the maximum region (data) gap was set to `r optionsStats$maxRegionGap` and the maximum cluster gap was set to `r optionsStats$maxClusterGap`.
 
 ## Details
 

@@ -1,6 +1,6 @@
 #' Calculate p-values and identify regions
 #'
-#' First, this function clusters the genomic positions and finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The F-statistics are segmented using the original clusters and cutoffs. The area of the statistics from these segments are then used to calculate p-values for the original regions.
+#' First, this function finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The area of the statistics from these segments are then used to calculate p-values for the original regions.
 #' 
 #' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
@@ -96,18 +96,17 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
-	## Identify the clusters
-	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying clusters"))
+	## Identify the data segments
+	if(verbose) message(paste(Sys.time(), "calculatePvalues: identifying data segments"))
 	position <- coveragePrep$position
 	means <- coveragePrep$meanCoverage
 	groupMeans <- coveragePrep$groupMeans
 	
-	## Avoid re-calculating candidate DERs and cluster DERs for every permutation
+	## Avoid re-calculating possible candidate DERs for every permutation
 	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
-	cluster <- clusterMakerRle(position, maxClusterGap)
 	
 	## Find the regions
-	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, verbose=verbose) 
+	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, verbose=verbose) 
 	if(is.null(regs)) {
 		final <- list(regions=NULL, nullStats=NULL, nullWidths=NULL, nullPermutation=NULL)
 		return(final)
@@ -169,7 +168,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, cluster=cluster, basic=TRUE, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
 		if(!is.null(regs.perm)) {
@@ -202,8 +201,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		regs$significant <- factor(regs$pvalues < significantCut[1], levels=c(TRUE, FALSE))
 		
 		## Sometimes qvalue() fails due to incorrect pi0 estimates
+		qvalues <- qvalue(regs$pvalues)
 		if(is(qvalues, "qvalue")) {
-			qvalues <- qvalue(regs$pvalues)$qvalues
+			qvalues <- qvalues$qvalues
 			sigQval <- factor(qvalues < significantCut[2], levels=c(TRUE, FALSE))
 		} else {
 			qvalues <- rep(NA, length(regs$pvalues))

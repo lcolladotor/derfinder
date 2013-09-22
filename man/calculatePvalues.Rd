@@ -81,13 +81,11 @@
   number from which the null region originated from.} }
 }
 \description{
-  First, this function clusters the genomic positions and
-  finds the regions of interest according to specified
-  cutoffs. Then it permutes the samples and re-calculates
-  the F-statistics. The F-statistics are segmented using
-  the original clusters and cutoffs. The area of the
-  statistics from these segments are then used to calculate
-  p-values for the original regions.
+  First, this function finds the regions of interest
+  according to specified cutoffs. Then it permutes the
+  samples and re-calculates the F-statistics. The area of
+  the statistics from these segments are then used to
+  calculate p-values for the original regions.
 }
 \examples{
 ## Construct the models

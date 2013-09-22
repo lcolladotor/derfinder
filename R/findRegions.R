@@ -10,7 +10,6 @@
 #' @param maxClusterGap This determines the maximum gap between candidate DERs. It should be greater than \code{maxRegionGap}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param segmentIR An IRanges object with the genomic positions that are potentials DERs, normally given by \link{clusterMakerRle} with \code{maxGap=maxRegionGap} and \code{ranges=TRUE}. This is used in \link{calculatePvalues} to speed up permutation calculations.
-#' @param cluster An integer Rle object with the candidate DER clusters, normally given by \link{clusterMakerRle} with \code{maxGap=maxClusterGap}. This is used in \link{calculatePvalues} to speed up permutation calculations.
 #' @param basic If \code{TRUE} a DataFrame is returned that has only basic information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
@@ -30,7 +29,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges IRanges start end width Views Rle runLength ranges DataFrame
+#' @importFrom IRanges IRanges start end width Views Rle runLength ranges DataFrame runValue "runValue<-"
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importMethodsFrom IRanges quantile which length mean rbind
 #' @importMethodsFrom GenomicRanges unlist
@@ -59,7 +58,7 @@
 #' identical(width(regs), as.integer(regs2$L))
 #' ## Time comparison
 #' library("microbenchmark")
-#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
+#' micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE, basic=TRUE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
 #' levels(micro$expr) <- c("new", "original")
 #' micro
 #' ## The bumphunter function regionFinder() is faster in small data sets.
@@ -69,9 +68,9 @@
 #' annotation
 #' }
 
-findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGap=0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL, cluster = NULL, basic=FALSE, verbose = TRUE) {
+findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGap=0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL, basic=FALSE, verbose = TRUE) {
 	if(!basic) {
-		if(is.null(cluster) | is.null(segmentIR)) {
+		if(is.null(segmentIR)) {
 			stopifnot(!is.null(position))
 		}		
 	} 
@@ -84,13 +83,7 @@ findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGa
 		if(verbose) message(paste(Sys.time(), "findRegions: identifying potential segments"))
 		segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
 	}	
-	
-	## Identify candidate DER clusters
-	if(is.null(cluster)) {
-		if(verbose) message(paste(Sys.time(), "findRegions: identifying potential DER clusters"))
-		cluster <- clusterMakerRle(position, maxClusterGap)
-	}	
-	
+
 	## Create the F-stats segments
 	if(verbose) message(paste(Sys.time(), "findRegions: segmenting F-stats information"))
 	segments <- getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
@@ -135,9 +128,6 @@ findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGa
 			## Define the chr ranges
 			pos.ir <- IRanges(start=pos[start(ders[[i]])], width = width(ders[[i]]) )
 		
-			## Extract info from views
-			clus <- mean(Views(cluster, ranges(ders[[i]])))
-	
 			## Actually build the GRanges
 			res[[i]] <- GRanges(
 				seqnames = Rle(chr, length(ders[[i]])),
@@ -146,9 +136,27 @@ findRegions <- function(position=NULL, fstats, chr, oneTable = TRUE, maxRegionGa
 				area = abs(sum(ders[[i]])),
 	            indexStart = start(ders[[i]]), 
 	            indexEnd = end(ders[[i]]),
-				cluster = Rle(as.integer(clus)),
-				clusterL = Rle(runLength(cluster)[clus])
+				
 			)
+			
+			## Identify clusters
+			if(verbose) message(paste(Sys.time(), "findRegions: identifying DER clusters"))
+			regionPos <- coverage(res[[i]])[[chr]]
+			runValue(regionPos) <- as.logical(runValue(regionPos))
+			cluster <- clusterMakerRle(regionPos, maxClusterGap)	
+			
+			## Extract DERs ranges and shift the IR to the cluster' scale
+			derCWs <- cumsum(width(ranges(ders[[i]])))
+			derIR <- IRanges(start=c(1, derCWs[-length(derCWs)] + 1), end=derCWs)
+			clus <- Views(cluster, derIR)		
+			
+			## Finally, identify the clusters	
+			clusterFinal <- as.integer(mean(clus))
+			clusterWidth <- tapply(pos.ir, clusterFinal, function(x) { max(end(x)) - min(start(x)) + 1})
+			
+			res[[i]]$cluster <- Rle(clusterFinal)
+			res[[i]]$clusterL <- Rle(clusterWidth[clusterFinal])
+			
 		} else {
 			## Actually build the GRanges
 			res[[i]] <- DataFrame(
