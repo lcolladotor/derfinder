@@ -209,7 +209,7 @@ This genomic overview plot shows the annotation region type for the __candidate_
 
 ## Plots
 
-Below are the plots for the top `r nBestRegions` candidate DERs as ranked by area. For each plot, annotation is shown if the candidate DER has a minimum overlap of `r optionsMerge$minoverlap` base pairs with annotation information (strand specific). If present, exons are collapsed and shown in blue. Introns are shown in light blue.
+Below are the plots for the top `r nBestRegions` candidate DERs as ranked by area. For each plot, annotation is shown if the candidate DER has a minimum overlap of `r optionsMerge$minoverlap` base pairs with annotation information (strand specific). If present, exons are collapsed and shown in blue. Introns are shown in light blue. The title of each plot is composed of the name of the nearest annotation element, the distance to it, and whether the region of the genome the DER falls into; all three pieces of information are based on `bumphunter::annotateNearest()`.
 
 The annotation depends on the Genomic State used. For details on which one was used for this report check the call to `mergeResults` in the reproducibility details.
 
