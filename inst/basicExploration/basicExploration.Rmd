@@ -39,7 +39,7 @@ if(!is.null(fullCov) & !is.null(colsubset)) {
 ## Get region coverage for the top regions
 if(nBestRegions > 0) {
 	regionCoverage <- getRegionCoverage(fullCov=fullCov, regions=fullRegions[seq_len(nBestRegions)], calculateMeans=FALSE, verbose=FALSE)
-	save(regionCoverage, file="regionCoverage.Rdata")
+	save(regionCoverage, file=file.path(workingDir, "regionCoverage.Rdata"))
 }
 ```
 

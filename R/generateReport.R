@@ -136,6 +136,7 @@ generateReport <- function(prefix, outdir="basicExploration", output="basicExplo
 	
 	## Create outdir
 	dir.create(file.path(prefix, outdir), showWarnings = FALSE, recursive = TRUE)
+	workingDir <- file.path(getwd(), prefix)
 	
 	## Locate Rmd
 	template <- system.file(file.path("basicExploration", "basicExploration.Rmd"), package="derfinder2")
