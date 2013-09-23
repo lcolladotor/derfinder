@@ -233,7 +233,7 @@ print(xtable(info, align=rep("c", 4)), type="html", include.rownames=FALSE)
 
 ## Region information
 
-Below is an interactive table with the top `r nBestRegions` regions as ranked by area. This table was generated using `rCharts` `r mycitep(bib[["rCharts"]])`.
+Below is an interactive table with the top `r nBestRegions` regions as ranked by area. This table was generated using `rCharts` `r mycitep(bib[["rCharts"]])`. Inf and -Inf are shown as 1e100 and -1e100 respectively.
 
 <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
@@ -261,7 +261,7 @@ t1 <- dTable(d, sPaginationType=  'full_numbers', iDisplayLength=10, sScrollX='1
 t1$print("regions", cdn=TRUE)
 ```
 
-`r ifelse(any(inf.idx), "Inf and -Inf are shown as 1e100 and -1e100 respectively.", "")`
+
 
 
 # Best region clusters

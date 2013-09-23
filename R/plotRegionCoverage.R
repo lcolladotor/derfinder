@@ -136,7 +136,8 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		par(mar=c(0, 4.5, 0.25, 1.1), oma=c(0, 0, 2, 0))
 		matplot(x, y, lty=1, col = as.numeric(groupInfo), type="l", yaxt="n", ylab="", xlab="", xaxt = "n", cex.lab = 1.7)
 		m <- ceiling(max(y))
-		axis(2, at = log2(scalefac):m, labels = 2^(log2(scalefac):m) - scalefac, cex.axis = 1.5)
+		y.labs <- seq(from=0, to=log2(2^m - scalefac), by=1)
+		axis(2, at = log2(scalefac + c(0, 2^y.labs)), labels = c(0, 2^y.labs), cex.axis = 1.5)
 		
 		## Coverage legend
 		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), ncol = length(levels(groupInfo)), cex = 1.2, pt.cex = 1.5)
