@@ -235,7 +235,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	if(!is.logical(p.transcripts)) {
 		result <- tracks(p.ideogram, "Coverage" = p.coverage, "Mean coverage" = p.meanCov, "Regions" = p.region, "tx_name\n(gene_id)" = p.transcripts, heights = c(2, 4, 4, 1.5, 3), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()		
 	} else {
-		result <- tracks(p.ideogram, "Coverage" = p.coverage, "Mean coverage" = p.meanCov, "Regions" = p.region, heights = c(1.5, 5, 5, 2), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
+		result <- tracks(p.ideogram, "Coverage" = p.coverage, "Mean coverage" = p.meanCov, "Regions" = p.region, heights = c(2, 5, 5, 2), xlim=wh, title=title) + ylab("") + theme_tracks_sunset()
 	}
 	return(result)	
 }

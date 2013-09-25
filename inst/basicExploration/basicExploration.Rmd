@@ -216,7 +216,7 @@ The annotation depends on the Genomic State used. For details on which one was u
 
 ```{r plotRegions, fig.width=10, fig.height=10, dev=device}
 if(nBestRegions > 0) {
-	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, whichRegions = seq_len(min(nBestRegions, length(fullRegions))), colors=NULL, scalefac = 32, ask = FALSE, verbose = FALSE) 
+	plotRegionCoverage(regions=fullRegions, regionCoverage=regionCoverage, groupInfo=optionsStats$groupInfo, nearestAnnotation=regions.df, annotatedRegions=fullAnnotatedRegions, whichRegions = seq_len(min(nBestRegions, length(fullRegions))), colors=NULL, scalefac = 32, ask = FALSE, verbose = TRUE) 
 }
 ```
 
@@ -233,13 +233,13 @@ print(xtable(info, align=rep("c", 4)), type="html", include.rownames=FALSE)
 
 ## Region information
 
-Below is an interactive table with the top `r nBestRegions` regions as ranked by area. This table was generated using `rCharts` `r mycitep(bib[["rCharts"]])`. Inf and -Inf are shown as 1e100 and -1e100 respectively.
+Below is an interactive table with the top `r min(nrow(regions.df), 2000)` regions as ranked by area. This table was generated using `rCharts` `r mycitep(bib[["rCharts"]])`. Inf and -Inf are shown as 1e100 and -1e100 respectively.
 
 <link rel="stylesheet" href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css" />
 <script src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
 
 ```{r bestAreaInfo, results="asis"}
-topArea <- head(regions.df, nBestRegions)
+topArea <- head(regions.df, 2000)
 topArea <- data.frame("areaRank"=order(topArea$area, decreasing=TRUE), topArea)
 ## Clean up -Inf, Inf if present
 ## More details at https://github.com/ramnathv/rCharts/issues/259

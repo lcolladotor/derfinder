@@ -110,7 +110,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	## Color setup
 	if(is.null(colors)) {
 		library("RColorBrewer")
-		palette(brewer.pal(length(levels(groupInfo)), "Dark2"))
+		palette(brewer.pal(min(3, length(levels(groupInfo))), "Dark2"))
 	}
 	
 	## Annotation information
@@ -119,7 +119,10 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	layout(matrix(c(1, 1, 2), ncol = 1))
 	for(i in whichRegions) {
 		## Status update
-		if(i %% 10 == 0 & verbose) print(i)
+		if((i - 1) %% 10 == 0 & verbose) {
+			plot.new()
+			text(0.5, 0.5, text=i)
+		}
 		
 		## For subsetting the named lists
 		ichar <- as.character(i)

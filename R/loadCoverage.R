@@ -58,6 +58,7 @@ loadCoverage <- function(dirs, chr, cutoff=NULL, chrlen=NULL, output=NULL, verbo
 	## Determine the chromosome length
 	if(is.null(chrlen)) {
 		## This assumes that all the BAM files are from the same organism.
+		if(verbose) message(paste(Sys.time(), "loadCoverage: finding chromosome lengths"))
 		clengths <- scanBamHeader(bList[[1]])$targets
 		if(!chr %in% names(clengths)) {
 			stop(paste("'chr' is not correctly specified. Valid options are:", paste(names(clengths), collapse=", ")))
