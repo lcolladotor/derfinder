@@ -143,7 +143,7 @@ This plot shows the density of the region mean coverage for all regions. `r ifel
 
 The following plots are [MA](http://en.wikipedia.org/wiki/MA_plot)-style plots comparing each group vs the first one. The mean coverage is calculated using only two groups at a time and is weighted according to the number of samples on each group. Note that the mean coverage and fold change as calculated here do not taking into account the library sizes.
 
-These plots are only shown when there are two or more groups. A total of `r length(grep("foldChange", colnames(values(fullRegions))))` were made.
+These plots are only shown when there are two or more groups. A total of `r length(grep("foldChange", colnames(values(fullRegions))))` plot(s) were made.
 
 ```{r MAstyle, fig.width=10, fig.height=10, dev=device}
 for(j in grep("foldChange", colnames(values(fullRegions)))) {
