@@ -50,7 +50,7 @@ calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 
 			
 	## Fit a model to each row (chunk) of database:
 	if(verbose) message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
-	fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod, mod0=mod0, mc.cores=mc.cores, mc.preschedule=FALSE)
+	fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod, mod0=mod0, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0
 	result <- unlist(RleList(fstats.output), use.names=FALSE)

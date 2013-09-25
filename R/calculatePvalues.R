@@ -164,7 +164,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores, mc.preschedule=FALSE)
+		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments

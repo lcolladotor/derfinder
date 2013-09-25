@@ -56,7 +56,7 @@ fullCov
 ## You can then use filterData to filter the data if you want to.
 ## Use mclapply if you want to do so with multiple cores.
 library("parallel")
-mclapply(fullCov, filterData, cutoff=0, mc.cores=2, mc.preschedule=FALSE)
+mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 }
 \author{
   Leonardo Collado-Torres

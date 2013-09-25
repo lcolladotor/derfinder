@@ -32,7 +32,7 @@
 #' ## You can then use filterData to filter the data if you want to. 
 #' ## Use mclapply if you want to do so with multiple cores.
 #' library("parallel")
-#' mclapply(fullCov, filterData, cutoff=0, mc.cores=2, mc.preschedule=FALSE)
+#' mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 
 
 fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
@@ -49,7 +49,7 @@ fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=get
 		if(verbose) message(paste(Sys.time(), "fullCoverage: processing chromosome", chrnums[idx]))
 		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, chrlen=chrlens[idx], output=outputs[idx], verbose=verbose)$coverage
 	}
-	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores, mc.preschedule=FALSE)
+	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores)
 	names(result) <- chrnums
 	
 	## Done
