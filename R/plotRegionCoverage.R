@@ -120,8 +120,9 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	for(i in whichRegions) {
 		## Status update
 		if((i - 1) %% 10 == 0 & verbose) {
+			par(mar=c(5, 4, 4, 2) + 0.1, oma=c(0, 0, 0, 0))
 			plot.new()
-			text(0.5, 0.5, text=i)
+			text(0.5, 0.5, i, cex=20)
 		}
 		
 		## For subsetting the named lists
