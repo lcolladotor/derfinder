@@ -40,8 +40,11 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
 	coverage <- coverageInfo$coverage
 	
-	## Drop unused levels in testvars
-	testvars <- droplevels(testvars)
+	## Drop unused levels in testvars if it is a factor
+	if(is.factor(testvars)) {
+		testvars <- droplevels(testvars)
+	}
+	
 	
 	if(!is.null(colsubset)) {
 		coverage <- coverage[, colsubset]
