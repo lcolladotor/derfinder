@@ -73,7 +73,7 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	
 	if(any(is.na(colmedians))) {
 		col.na <- is.na(colmedians)
-		warning(paste0("Sample columns ", paste(which(col.na), collapse=", "), " median coverage (nonzero =", nonzero, ") are NA. Setting them to 0 (before centering if center=", center, "). Check for possible issues with this sample!"))
+		warning(paste0("Sample columns ", paste(which(col.na), collapse=", "), " median coverage (nonzero=", nonzero, ") are NA. Setting them to 0 (before centering if center=TRUE). Check for possible issues with this sample!"))
 		colmedians[col.na] <- 0
 	}
 	
