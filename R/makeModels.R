@@ -73,7 +73,7 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	
 	if(any(is.na(colmedians))) {
 		col.na <- is.na(colmedians)
-		warning(paste0("Sample columns ", paste(which(col.na), collapse=", "), " median coverage (nonzero=", nonzero, ") are NA. Setting them to 0 (before centering if center=TRUE). Check for possible issues with this sample!"))
+		warning(paste0("Sample column(s) ", paste(which(col.na), collapse=", "), " median coverage (nonzero=", nonzero, ") are NA. Setting them to 0 (before centering if center=TRUE). Check for possible issues with this sample!"))
 		colmedians[col.na] <- 0
 	}
 	
@@ -108,8 +108,18 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	}	
 	
 	## Check that the matrices are full rank
-	stopifnot(qr(mod)$rank == ncol(mod))
-	stopifnot(qr(mod0)$rank == ncol(mod0))
+	if(qr(mod)$rank == ncol(mod)) {
+		r <- qr(mod$rank)
+		warning(paste("Dropping from the alternative model matrix (mod) the columns", paste(colnames(mod)[(r+1):ncol(mod)], collapse=", "), "as the matrix is not full rank."))
+		mod <- mod[, seq_len(r), drop=FALSE]
+		stopifnot(ncol(mod) > 0)
+	}
+	if(qr(mod0)$rank == ncol(mod0)) {
+		r <- qr(mod0$rank)
+		warning(paste("Dropping from the null model matrix (mod0) the columns", paste(colnames(mod0)[(r+1):ncol(mod0)], collapse=", "), "as the matrix is not full rank."))
+		mod0 <- mod0[, seq_len(r), drop=FALSE]
+		stopifnot(ncol(mod0) > 0)
+	}
 		
 	## Finish
 	result <- list(mod=mod, mod0=mod0)
