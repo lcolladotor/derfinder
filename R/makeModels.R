@@ -70,6 +70,13 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	} else {
 		colmedians <- sapply(coverage, median)
 	}
+	
+	if(any(is.na(colmedians))) {
+		col.na <- is.na(colmedians)
+		warning(paste0("Sample columns ", paste(which(col.na), collapse=", "), " median coverage (nonzero =", nonzero, ") are NA. Setting them to 0 (before centering if center=", center, "). Check for possible issues with this sample!"))
+		colmedians[col.na] <- 0
+	}
+	
 	if(center) {
 		colmedians <- colmedians - mean(colmedians, na.rm=TRUE)
 	}
