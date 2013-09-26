@@ -110,7 +110,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 	## Color setup
 	if(is.null(colors)) {
 		library("RColorBrewer")
-		palette(brewer.pal(min(3, length(levels(groupInfo))), "Dark2"))
+		palette(brewer.pal(max(3, length(levels(groupInfo))), "Dark2"))
 	}
 	
 	## Annotation information
