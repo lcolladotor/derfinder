@@ -71,14 +71,14 @@ summary(fullRegions$qvalues)
 This is the numerical summary of the distribution of the q-values. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
 
 ```{r qsummary, eval=nullExist, echo=nullExist, results="asis"}
-qtable <- lapply(c(1e-04, 0.001, 0.01, 0.025, 0.05, 0.1, 1), function(x) {
-	data.frame("Cut" = x, "Count" = sum(fullRegions$qvalues < x))
+qtable <- lapply(c(1e-04, 0.001, 0.01, 0.025, 0.05, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1), function(x) {
+	data.frame("Cut" = x, "Count" = sum(fullRegions$qvalues <= x))
 })
 qtable <- do.call(rbind, qtable)
 print(xtable(qtable, digits=4, align=rep("c", 3)), type="html", include.rownames=FALSE)
 ```
 
-This table shows the number of candidate Differentially Expressed Regions (DERs) with q-value less than some commonly used cutoff values. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
+This table shows the number of candidate Differentially Expressed Regions (DERs) with q-value less or equal than some commonly used cutoff values. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
 
 ## Region width
 
@@ -120,7 +120,8 @@ p5 <- ggplot(nulls.df, aes(x=log10(area), colour=chr)) + geom_line(stat="density
 grid.arrange(p4, p5)
 ```
 
-This plot shows the density of the null region lengths and areas. `r ifelse(nullExist, "", "Skipped because there are no null regions.")`
+This plot shows the density of the null region lengths and areas. `r ifelse(nullExist, "", "Skipped because there are no null regions.")` There were a total of `r nrow(nulls.df)` null regions.
+
 
 ## Mean coverage
 
