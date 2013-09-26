@@ -110,16 +110,21 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 	## Check that the matrices are full rank
 	if(qr(mod)$rank != ncol(mod)) {
 		r <- qr(mod)$rank
-		warning(paste("Dropping from the alternative model matrix (mod) the column(s)", paste(colnames(mod)[(r+1):ncol(mod)], collapse=", "), "as the matrix is not full rank."))
+		drop.mod.col <- colnames(mod)[(r+1):ncol(mod)]
+		warning(paste("Dropping from the alternative model matrix (mod) the column(s)", paste(drop.mod.col, collapse=", "), "as the matrix is not full rank."))
 		mod <- mod[, seq_len(r), drop=FALSE]
 		stopifnot(ncol(mod) > 0)
-	}
-	if(qr(mod0)$rank != ncol(mod0)) {
-		r <- qr(mod0)$rank
-		warning(paste("Dropping from the null model matrix (mod0) the column(s)", paste(colnames(mod0)[(r+1):ncol(mod0)], collapse=", "), "as the matrix is not full rank."))
-		mod0 <- mod0[, seq_len(r), drop=FALSE]
+		
+		## Drop the same columns from mod0 if present in mod0
+		if(any(colnames(mod0) %in% drop.mod.col)) {
+			drop.mod0.col <- colnames(mod0)[colnames(mod0) %in% drop.mod.col]
+			mod0 <- mod0[ , !colnames(mod0) %in% drop.mod0.col]
+			warning(paste("Dropping from the null model matrix (mod0) the column(s)", drop.mod0.col, collapse=", "), "as they were dropped in the alternative model matrix (mod)."))
+		}
 		stopifnot(ncol(mod0) > 0)
 	}
+	## This should not happen, since mod0 is a subset of mod and mod has been truncated to be full rank.
+	stopifnot(qr(mod0)$rank == ncol(mod0))
 		
 	## Finish
 	result <- list(mod=mod, mod0=mod0)
