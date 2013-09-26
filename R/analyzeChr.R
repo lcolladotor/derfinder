@@ -51,6 +51,7 @@
 
 analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
+	stopifnot(is.factor(groupInfo))
 	chr <- paste0("chr", chrnum)
 	## Begin timing
 	timeinfo <- NULL
@@ -58,7 +59,9 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	timeinfo <- c(timeinfo, list(Sys.time()))
 	
 	## Drop unused levels in testvars and groupInfo
-	testvars <- droplevels(testvars)
+	if(is.factor(testvars)) {
+		testvars <- droplevels(testvars)
+	}		
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
