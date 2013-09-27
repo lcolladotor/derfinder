@@ -69,7 +69,7 @@
 #' seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 #'
 #' ## Obtain fullCov object
-#' datadir <- system.file("extdata", "genomeData", package="derfinder2")
+#' datadir <- system.file("extdata", "genomeData", package="derfinder")
 #' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 #' ## Shorten the column names
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))

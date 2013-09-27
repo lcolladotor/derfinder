@@ -1,11 +1,11 @@
-[derfinder2](https://github.com/lcolladotor/derfinder2) basic results exploration
+[derfinder](https://github.com/lcolladotor/derfinder) basic results exploration
 =================================================================================
 
 Project: `r project`.
 
 # Introduction
 
-This report is meant to help explore the results of the `derfinder2` `r mycitep(bib[["derfinder2"]])` package. While the report is rich, it is meant to just start the exploration of the results and exemplify some of the code used to do so. You will most likely need a more in-depth analysis for your specific data set.
+This report is meant to help explore the results of the `derfinder` `r mycitep(bib[["derfinder"]])` package. While the report is rich, it is meant to just start the exploration of the results and exemplify some of the code used to do so. You will most likely need a more in-depth analysis for your specific data set.
 
 Most plots were made with using `ggplot2` `r mycitep(bib[["ggplot2"]])`.
 
@@ -170,7 +170,7 @@ for(j in grep("foldChange", colnames(values(fullRegions)))) {
 
 # Genomic overview
 
-The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotOverview` in `derfinder2` `r mycitep(bib[["derfinder2"]])`.
+The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotOverview` in `derfinder` `r mycitep(bib[["derfinder"]])`.
 
 ## Q-values
 
@@ -267,7 +267,7 @@ t1$print("regions", cdn=TRUE)
 
 # Best region clusters
 
-The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotRegion` in `derfinder2` `r mycitep(bib[["derfinder2"]])`. 
+The following plots were made using `ggbio` `r mycitep(bib[["ggbio"]])` which in turn uses `ggplot2` `r mycitep(bib[["ggplot2"]])`. For more details check `plotRegion` in `derfinder` `r mycitep(bib[["derfinder"]])`. 
 
 ## Plots
 
@@ -280,7 +280,6 @@ bestArea <- sapply(names(head(sort(regionClustAreas, decreasing=TRUE), nBestClus
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
 	## Load ideogram info
-	library(biovizBase)
 	data(hg19IdeogramCyto, package = "biovizBase")
 	ideos.set <- as.character(unique(seqnames(fullRegions[bestArea])))
 	p.ideos <- lapply(ideos.set, function(xx) { 
@@ -367,7 +366,7 @@ summary(permuteDetail[, m])
 
 This table shows the summary per group of and can be used for fast detection of anomalies. `r ifelse(usedPermutations, "", "Skipped because no permutations were used.")`
 
-Note that in `derfinder2` `r mycitep(bib[["derfinder2"]])` the re-sampling of the samples is done without replacement. This is done in an effort to avoid singular model matrices. While the sample balance is the same across the permutations, what changes are the adjusted variables (including the column medians).
+Note that in `derfinder` `r mycitep(bib[["derfinder"]])` the re-sampling of the samples is done without replacement. This is done in an effort to avoid singular model matrices. While the sample balance is the same across the permutations, what changes are the adjusted variables (including the column medians).
 
 ## Interactive
 
@@ -384,7 +383,7 @@ t2$print("permutation")
 
 # Bibliography
 
-This report is part of `derfinder2` `r mycitep(bib[["derfinder2"]])` and was generated using `knitr` `r mycitep(bib[["knitr"]])` and styled via `knitrBootstrap` `r mycitep(bib[["knitrBootstrap"]])`.
+This report is part of `derfinder` `r mycitep(bib[["derfinder"]])` and was generated using `knitr` `r mycitep(bib[["knitr"]])` and styled via `knitrBootstrap` `r mycitep(bib[["knitrBootstrap"]])`.
 
 Citations made with `knitcitations` `r mycitep(bib[["knitcitations"]])`.
 

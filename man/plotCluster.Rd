@@ -75,7 +75,7 @@
 }
 \examples{
 ## Get coverage info without any cutoff
-datadir <- system.file("extdata", "genomeData", package="derfinder2")
+datadir <- system.file("extdata", "genomeData", package="derfinder")
 dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)

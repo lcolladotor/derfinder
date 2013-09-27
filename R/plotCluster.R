@@ -34,7 +34,7 @@
 #' @importFrom scales log2_trans log_trans
 #' @examples
 #' ## Get coverage info without any cutoff
-#' datadir <- system.file("extdata", "genomeData", package="derfinder2")
+#' datadir <- system.file("extdata", "genomeData", package="derfinder")
 #' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 #' covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
@@ -190,12 +190,9 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	## Plot the ideogram if not supplied
 	if(is.null(p.ideogram)) {
 		chr <- as.character(seqnames(wh))
-		## Pleasing R CMD check
-		hg19IdeogramCyto <- NULL
-		
 		## Now load the ideogram info
-		library("biovizBase")
-		data(hg19IdeogramCyto, package = "biovizBase")
+		hg19IdeogramCyto <- NULL
+		load(system.file("data", "hg19IdeogramCyto.rda", package="biovizBase", mustWork=TRUE))
 		p.ideogram <- plotIdeogram(hg19IdeogramCyto, chr)
 	}
 	

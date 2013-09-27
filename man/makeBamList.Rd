@@ -36,7 +36,7 @@
   \link{loadCoverage}.
 }
 \examples{
-datadir <- system.file("extdata", "genomeData", package="derfinder2")
+datadir <- system.file("extdata", "genomeData", package="derfinder")
 dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 dirs
 }

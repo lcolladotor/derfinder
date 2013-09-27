@@ -11,7 +11,7 @@
 #' @author Jeff Leek, Leonardo Collado-Torres
 #' @export
 #' @importMethodsFrom IRanges as.data.frame as.matrix
-#' @useDynLib derfinder2
+#' @useDynLib derfinder
 #' @seealso \link{calculateStats}, \link{calculatePvalues}
 #' @examples
 #' ## Create the model matrices
@@ -30,7 +30,7 @@ fstats.apply <- function(data, mod, mod0) {
 	# A function for calculating F-statistics
 	# on the rows of dat, comparing the models
 	# mod (alternative) and mod0 (null). 	
-	fstats <- Rle(drop(.Call("rcppFstats", t(dat), mod, mod0, package="derfinder2")))
+	fstats <- Rle(drop(.Call("rcppFstats", t(dat), mod, mod0, package="derfinder")))
 	
 	## Done
 	return(fstats)

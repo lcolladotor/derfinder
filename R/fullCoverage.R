@@ -20,7 +20,7 @@
 #' @importFrom parallel mclapply
 #'
 #' @examples
-#' datadir <- system.file("extdata", "genomeData", package="derfinder2")
+#' datadir <- system.file("extdata", "genomeData", package="derfinder")
 #' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 #' ## Shorten the column names
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))

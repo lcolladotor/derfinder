@@ -70,7 +70,7 @@ cutoff <- 1
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
 
 ## Obtain fullCov object
-datadir <- system.file("extdata", "genomeData", package="derfinder2")
+datadir <- system.file("extdata", "genomeData", package="derfinder")
 dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 ## Shorten the column names
 names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))

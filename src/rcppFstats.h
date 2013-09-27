@@ -1,5 +1,5 @@
-#ifndef _derfinder2_RCPPFSTATS_H
-#define _derfinder2_RCPPFSTATS_H
+#ifndef _derfinder_RCPPFSTATS_H
+#define _derfinder_RCPPFSTATS_H
 
 #include <RcppArmadillo.h>
 
