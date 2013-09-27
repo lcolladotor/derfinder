@@ -117,9 +117,6 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	fullRegions <- unlist(GRangesList(fullRegs), use.names=FALSE)
     values(fullRegions) <- cbind( values(fullRegions), DataFrame(fullAnnotation))	
 	
-	## Re-calculate p-values and q-values
-	if(verbose) message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
-		
 	## Summarize the null regions
 	nulls <- unlist(RleList(fullNullStats), use.names=FALSE)
 	widths <- unlist(RleList(fullNullWidths), use.names=FALSE)
@@ -138,6 +135,9 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
 	save(fullNullSummary, file=file.path(prefix, "fullNullSummary.Rdata"))
+		
+	## Re-calculate p-values and q-values
+	if(verbose) message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
 		
 	if(nrow(fullNullSummary) > 0) {
 		## Actual calculation
