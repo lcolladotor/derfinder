@@ -279,9 +279,12 @@ bestArea <- sapply(names(head(sort(regionClustAreas, decreasing=TRUE), nBestClus
 
 ## Graphical setup: ideograms 
 if(hg19 & is.null(p.ideos)) {
+	## Load ideogram info
+	library(biovizBase)
+	data(hg19IdeogramCyto, package = "biovizBase")
 	ideos.set <- as.character(unique(seqnames(fullRegions[bestArea])))
 	p.ideos <- lapply(ideos.set, function(xx) { 
-		plotIdeogram(genome = "hg19", subchr=xx)
+		plotIdeogram(hg19IdeogramCyto, xx)
 	})
 	names(p.ideos) <- ideos.set
 } else {

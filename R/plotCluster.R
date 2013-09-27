@@ -190,7 +190,9 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	## Plot the ideogram if not supplied
 	if(is.null(p.ideogram)) {
 		chr <- as.character(seqnames(wh))
-		p.ideogram <- plotIdeogram(genome = "hg19", subchr=chr)
+		library("biovizBase")
+		data(hg19IdeogramCyto, package = "biovizBase")
+		p.ideogram <- plotIdeogram(hg19IdeogramCyto, chr)
 	}
 	
 	## Regions found (from the view)
