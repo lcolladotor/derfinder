@@ -118,7 +118,7 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 		## Drop the same columns from mod0 if present in mod0
 		if(any(colnames(mod0) %in% drop.mod.col)) {
 			drop.mod0.col <- colnames(mod0)[colnames(mod0) %in% drop.mod.col]
-			mod0 <- mod0[ , !colnames(mod0) %in% drop.mod0.col]
+			mod0 <- mod0[ , !colnames(mod0) %in% drop.mod0.col, drop=FALSE]
 			warning(paste("Dropping from the null model matrix (mod0) the column(s)", paste(drop.mod0.col, collapse=", "), "as they were dropped in the alternative model matrix (mod)."))
 		}
 		stopifnot(ncol(mod0) > 0)
