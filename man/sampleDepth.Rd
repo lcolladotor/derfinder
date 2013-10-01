@@ -3,7 +3,7 @@
 \title{Calculate adjustments for library size}
 \usage{
   sampleDepth(fullCov, prob = 0.9, nonzero = TRUE,
-    center = TRUE, colsubset = NULL, verbose = FALSE)
+    center = FALSE, colsubset = NULL, verbose = FALSE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -20,7 +20,8 @@
 
   \item{center}{If \code{TRUE} the sample quantiles are
   centered by the mean of the sample quantiles across
-  sampls. This can be helpful for interpretation purposes.}
+  samples. This can be helpful for interpretation
+  purposes.}
 
   \item{colsubset}{Which colums of
   \code{coverageInfo$coverage} to use.}

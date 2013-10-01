@@ -179,7 +179,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo, groupInfo, title
 	
 	if(l > 1e5 & !forceLarge) {
 		message(paste("No plot will be made because the data is too large. The window size exceeds 100 kb."))
-		return(invisible(NULL))
+		return(invisible(l))
 	}
 	
 	wh <- resize(cluster, l, fix="center")

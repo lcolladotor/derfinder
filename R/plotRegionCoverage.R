@@ -142,7 +142,11 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		
 		## Plot coverage
 		par(mar=c(0, 4.5, 0.25, 1.1), oma=c(0, 0, 2, 0))
-		matplot(x, y, lty=1, col = as.numeric(groupInfo), type="l", yaxt="n", ylab="", xlab="", xaxt = "n", cex.lab = 1.7)
+		if(length(x) > 1) {
+			matplot(x, y, lty=1, col = as.numeric(groupInfo), type="l", yaxt="n", ylab="", xlab="", xaxt = "n", cex.lab = 1.7)
+		} else {
+			matplot(x, y, lty=1, col = as.numeric(groupInfo), type="p", yaxt="n", ylab="", xlab="", xaxt = "n", cex.lab = 1.7)
+		}
 		m <- ceiling(max(y))
 		y.labs <- seq(from=0, to=log2(2^m - scalefac), by=1)
 		axis(2, at = log2(scalefac + c(0, 2^y.labs)), labels = c(0, 2^y.labs), cex.axis = 1.5)
@@ -154,7 +158,11 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		
 		## Plot annotation
 		par(mar=c(3.5, 4.5, 0.25, 1.1))
-		plot(0, 0, type="n", xlim=range(x), ylim=c(-1.5, 1.5), yaxt="n", ylab="", xlab="", cex.axis = 1.5, cex.lab = 1.5)
+		xrange <- range(x)
+		if(length(x) == 1) {
+			xrange <- xrange + c(-1, 1)
+		}
+		plot(0, 0, type="n", xlim=xrange, ylim=c(-1.5, 1.5), yaxt="n", ylab="", xlab="", cex.axis = 1.5, cex.lab = 1.5)
 		gotAnno <- !is.null(anno[[ichar]])
 		if(gotAnno) {
 			a <- as.data.frame(anno[[ichar]])
