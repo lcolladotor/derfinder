@@ -1,7 +1,7 @@
 derfinder
 ==========
 
-Fast differential expression analysis of RNA-seq data at base-pair resolution.
+Fast differential expression analysis of RNA-seq data at base-pair resolution. You can generate HTML reports from the results using __derfinderReport__ available at https://github.com/lcolladotor/derfinderReport.
 
 For a full example on how to use __derfinder__ check https://github.com/lcolladotor/derfinderExample.
 
@@ -14,19 +14,13 @@ Get R 3.0.1 or newer from [CRAN](http://cran.r-project.org/).
 install.packages("devtools")
 
 ## Pre-requisites from CRAN
-install.packages(c("knitr", "Rcpp", "RcppArmadillo", "ggplot2", "reshape2", "plyr", 
-	"microbenchmark", "gridExtra", "data.table", "knitr", "knitcitations",
-	"xtable", "RColorBrewer", "scales"))
+install.packages(c("Rcpp", "RcppArmadillo", "ggplot2", "reshape2", "plyr", "microbenchmark",
+	 "RColorBrewer", "scales"))
 
 ## Pre-requisites from Bioconductor
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "ggbio", "qvalue",
 	 "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures"))
-
-## GitHub dependencies
-library(devtools)
-install_github("rCharts", "ramnathv", ref="dev")
-install_github(username="jimhester", repo="knitrBootstrap")
 
 ## derfinder itself
 library(devtools)
@@ -43,11 +37,11 @@ Below is the citation output from using `citation("derfinder")` in R. Please run
 
 To cite package __derfinder__ in publications use:
 
-Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.26. https://github.com/lcolladotor/derfinder
+Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.27. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
-@Manual{, title = {derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.26}, url = {https://github.com/lcolladotor/derfinder}, }
+@Manual{, title = {derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.27}, url = {https://github.com/lcolladotor/derfinder}, }
 
 
 # Origins

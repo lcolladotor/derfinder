@@ -2,15 +2,13 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-  analyzeChr(chrnum, coverageInfo, testvars,
-    adjustvars = NULL, nonzero = TRUE, center = TRUE,
-    testIntercept = FALSE, cutoffPre = 5, colsubset = NULL,
-    scalefac = 32, chunksize = NULL, cutoffFstat = 1e-08,
-    cutoffType = "theoretical", nPermute = 1,
+  analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5,
+    colsubset = NULL, scalefac = 32, chunksize = NULL,
+    cutoffFstat = 1e-08, cutoffType = "theoretical",
+    nPermute = 1,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    maxRegionGap = 0L, maxClusterGap = 300L,
-    groupInfo = testvars, subject = "hg19",
-    mc.cores = getOption("mc.cores", 2L),
+    maxRegionGap = 0L, maxClusterGap = 300L, groupInfo,
+    subject = "hg19", mc.cores = getOption("mc.cores", 2L),
     writeOutput = TRUE, returnOutput = FALSE,
     verbose = TRUE)
 }
@@ -22,26 +20,13 @@
 
   \item{coverageInfo}{The output from \link{loadCoverage}.}
 
-  \item{testvars}{This argument is passed to
-  \link{makeModels}.}
-
-  \item{adjustvars}{This argument is passed to
-  \link{makeModels}.}
-
-  \item{nonzero}{This argument is passed to
-  \link{makeModels}.}
-
-  \item{center}{This argument is passed to
-  \link{makeModels}.}
-
-  \item{testIntercept}{This argument is passed to
-  \link{makeModels}.}
+  \item{models}{The output from \link{makeModels}.}
 
   \item{cutoffPre}{This argument is passed to
   \link{preprocessCoverage} (\code{cutoff}).}
 
   \item{colsubset}{This argument is passed to
-  \link{makeModels} and \link{preprocessCoverage}.}
+  \link{preprocessCoverage}.}
 
   \item{scalefac}{This argument is passed to
   \link{preprocessCoverage}.}
@@ -100,11 +85,10 @@
   be printed along the way.}
 }
 \value{
-  If \code{returnOutput=TRUE}, a list with seven
-  components: \describe{ \item{timeinfo }{ The wallclock
-  timing information for each step.} \item{optionsStats }{
-  The main options used when running this function.}
-  \item{models }{ The models used in the analysis.}
+  If \code{returnOutput=TRUE}, a list with six components:
+  \describe{ \item{timeinfo }{ The wallclock timing
+  information for each step.} \item{optionsStats }{ The
+  main options used when running this function.}
   \item{coveragePrep }{ The output from
   \link{preprocessCoverage}.} \item{fstats}{ The output
   from \link{calculateStats}.} \item{regions}{ The output
@@ -123,9 +107,17 @@
   \link[bumphunter]{annotateNearest}.
 }
 \examples{
+## Calculate library size adjustments
+sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+sampleDepths
+
+## Build the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-results <- analyzeChr(chrnum="21", coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, cutoffFstat=1, cutoffType="manual", mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
+models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+
+## Analyze the chromosome
+results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutoffFstat=1, cutoffType="manual", groupInfo=group, mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 names(results)
 }
 \author{

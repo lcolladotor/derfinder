@@ -1,6 +1,6 @@
 #' Merge results from different chromosomes
 #'
-#' This function merges the results from running \link{analyzeChr} on several chromosomes and assigns genomic states using \link{annotateRegions}. It re-calculates the p-values and q-values using the pooled areas from the null regions from all chromosomes.
+#' This function merges the results from running \link{analyzeChr} on several chromosomes and assigns genomic states using \link{annotateRegions}. It re-calculates the p-values and q-values using the pooled areas from the null regions from all chromosomes. Once the results have been merged, \link[derfinderReport]{generateReport} can be used to generate an HTML report of the results. The \code{derfinderReport} package is available at https://github.com/lcolladotor/derfinderReport.
 #' 
 #' @param chrnums The chromosome numbers of the files to be merged.
 #' @param prefix The main data directory path, which can be useful if \link{analyzeChr} is used for several parameters and the results are saved in different directories.
@@ -18,7 +18,7 @@
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full annotation from \link[bumphunter]{annotateNearest}. Note that the column \code{strand} from \link[bumphunter]{annotateNearest} is renamed to \code{annoStrand} to comply with GRanges specifications. }
 #' \item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data from all chromosomes.}
 #' \item{fullAnnotatedRegions.Rdata}{ A list as constructed in \link{annotateRegions} with the assigned genomic states.}
-#' \item{optionsMerge.Rdata}{ A list with the options used when merging the results. Used in \link{generateReport}.}
+#' \item{optionsMerge.Rdata}{ A list with the options used when merging the results. Used in \link[derfinderReport]{generateReport}.}
 #' }
 #'
 #' @author Leonardo Collado-Torres

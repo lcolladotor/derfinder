@@ -80,10 +80,14 @@ dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=N
 names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
 
-## Construct the models
+## Calculate library size adjustments
+sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+sampleDepths
+
+## Build the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
+models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 
 ## Preprocess the data
 prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)

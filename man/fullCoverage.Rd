@@ -53,16 +53,18 @@ names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 system.time(fullCov <- fullCoverage(dirs=dirs, chrnums=c("21", "22"), mc.cores=2))
 fullCov
 
+\dontrun{
 ## You can then use filterData to filter the data if you want to.
 ## Use mclapply if you want to do so with multiple cores.
 library("parallel")
 mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
+}
 }
 \author{
   Leonardo Collado-Torres
 }
 \seealso{
   \link{loadCoverage}, \link{filterData},
-  \link{generateReport}
+  \link[derfinderReport]{generateReport}
 }
 

@@ -2,16 +2,12 @@
 \alias{makeModels}
 \title{Build model matrices for differential expression}
 \usage{
-  makeModels(coverageInfo, testvars, adjustvars = NULL,
-    nonzero = TRUE, verbose = FALSE, center = TRUE,
-    testIntercept = FALSE, colsubset = NULL)
+  makeModels(sampleDepths, testvars, adjustvars = NULL,
+    testIntercept = FALSE)
 }
 \arguments{
-  \item{coverageInfo}{A list containing a DataFrame
-  --\code{$coverage}-- with the coverage data and a logical
-  Rle --\code{$position}-- with the positions that passed
-  the cutoff. This object is generated using
-  \link{loadCoverage}.}
+  \item{sampleDepths}{Per sample library size adjustments
+  calculated with \link{sampleDepth}.}
 
   \item{testvars}{A vector or matrix specifying the
   variables to test. For example, a factor with the group
@@ -26,22 +22,9 @@
   of rows must match the number of columns used. It will
   also work if it is a vector of the correct length.}
 
-  \item{nonzero}{If \code{TRUE}, use the median of only the
-  nonzero counts as the library size adjustment.}
-
-  \item{verbose}{If \code{TRUE} basic status updates will
-  be printed along the way.}
-
-  \item{center}{If \code{TRUE} the column medians are
-  centered by the mean of the column medians. This is
-  helpful for interpretation purposes.}
-
   \item{testIntercept}{If \code{TRUE} then \code{testvars}
   is ignored and mod0 will contain the column medians and
   any adjusting variables specified, but no intercept.}
-
-  \item{colsubset}{Which colums of
-  \code{coverageInfo$coverage} to use.}
 }
 \value{
   A list with two components. \describe{ \item{mod }{ The
@@ -56,16 +39,14 @@
   resulting models can be used in \link{calculateStats}.
 }
 \examples{
-## Choose the adjusting variables and define all the parameters for makeModels()
-coverageInfo <- genomeData
-testvars <- genomeInfo$pop
-colsubset <- NULL
-adjustvars <- data.frame(genomeInfo$gender)
-nonzero <- TRUE
-verbose <- TRUE
+## Calculate library size adjustments
+sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+sampleDepths
 
-## Run the function
-models <- makeModels(coverageInfo, testvars, adjustvars, nonzero, verbose)
+## Build the models
+group <- genomeInfo$pop
+adjustvars <- data.frame(genomeInfo$gender)
+models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 names(models)
 models
 }
@@ -73,6 +54,6 @@ models
   Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculateStats}
+  \link{sampleDepth}, \link{calculateStats}
 }
 

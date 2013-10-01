@@ -13,7 +13,7 @@
 #' \describe{ Each element is a DataFrame with the coverage information produced by \link{loadCoverage}.
 #' }
 #'
-#' @seealso \link{loadCoverage}, \link{filterData}, \link{generateReport}
+#' @seealso \link{loadCoverage}, \link{filterData}, \link[derfinderReport]{generateReport}
 #'
 #' @author Leonardo Collado-Torres
 #' @export
@@ -29,10 +29,12 @@
 #' system.time(fullCov <- fullCoverage(dirs=dirs, chrnums=c("21", "22"), mc.cores=2))
 #' fullCov
 #'
+#' \dontrun{
 #' ## You can then use filterData to filter the data if you want to. 
 #' ## Use mclapply if you want to do so with multiple cores.
 #' library("parallel")
 #' mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
+#' }
 
 
 fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {

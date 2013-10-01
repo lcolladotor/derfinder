@@ -4,13 +4,9 @@
 #' 
 #' @param chrnum Used for naming the output files when \code{writeOutput=TRUE} and for \link[bumphunter]{annotateNearest}. Use '21' instead of 'chr21'.
 #' @param coverageInfo The output from \link{loadCoverage}.
-#' @param testvars This argument is passed to \link{makeModels}.
-#' @param adjustvars This argument is passed to \link{makeModels}.
-#' @param nonzero This argument is passed to \link{makeModels}.
-#' @param center This argument is passed to \link{makeModels}.
-#' @param testIntercept This argument is passed to \link{makeModels}.
+#' @param models The output from \link{makeModels}.
 #' @param cutoffPre This argument is passed to \link{preprocessCoverage} (\code{cutoff}).
-#' @param colsubset This argument is passed to \link{makeModels} and \link{preprocessCoverage}.
+#' @param colsubset This argument is passed to \link{preprocessCoverage}.
 #' @param scalefac This argument is passed to \link{preprocessCoverage}.
 #' @param chunksize This argument is passed to \link{preprocessCoverage}.
 #' @param cutoffFstat This is used to determine the cutoff argument of \link{calculatePvalues} and it's behaviour is determined by \code{cutoffType}.
@@ -26,11 +22,10 @@
 #' @param returnOutput If \code{TRUE}, it returns a list with the results from each step. Otherwise, it returns \code{NULL}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return If \code{returnOutput=TRUE}, a list with seven components:
+#' @return If \code{returnOutput=TRUE}, a list with six components:
 #' \describe{
 #' \item{timeinfo }{ The wallclock timing information for each step.}
 #' \item{optionsStats }{ The main options used when running this function.}
-#' \item{models }{ The models used in the analysis.}
 #' \item{coveragePrep }{ The output from \link{preprocessCoverage}.}
 #' \item{fstats}{ The output from \link{calculateStats}.}
 #' \item{regions}{ The output from \link{calculatePvalues}.}
@@ -44,12 +39,20 @@
 #' @importMethodsFrom IRanges as.numeric
 #'
 #' @examples
+#' ## Calculate library size adjustments
+#' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+#' sampleDepths
+#' 
+#' ## Build the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, cutoffFstat=1, cutoffType="manual", mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
+#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+#'
+#' ## Analyze the chromosome
+#' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutoffFstat=1, cutoffType="manual", groupInfo=group, mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=TRUE, center=TRUE, testIntercept=FALSE, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo=testvars, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
+analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
 	stopifnot(is.factor(groupInfo))
 	chr <- paste0("chr", chrnum)
@@ -59,13 +62,10 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 	timeinfo <- c(timeinfo, list(Sys.time()))
 	
 	## Drop unused levels in testvars and groupInfo
-	if(is.factor(testvars)) {
-		testvars <- droplevels(testvars)
-	}		
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
-	optionsStats <- list(testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, analyzeCall=match.call())
+	optionsStats <- list(models=models, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, analyzeCall=match.call())
 
 	## Setup
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -75,20 +75,6 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 		save(optionsStats, file=file.path(chr, "optionsStats.Rdata"))
 	}	
 	## saveStatsOpts
-	timeinfo <- c(timeinfo, list(Sys.time()))
-
-	## Build the models
-	if(verbose) message(paste(Sys.time(), "analyzeChr: Building mod and mod0"))
-	models <- makeModels(coverageInfo=coverageInfo, testvars=testvars, adjustvars=adjustvars, nonzero=nonzero, verbose=verbose, center=center, testIntercept=testIntercept, colsubset=colsubset)
-
-	## buildModels
-	timeinfo <- c(timeinfo, list(Sys.time()))
-
-	## Save the model matrices
-	if(writeOutput) {
-		save(models, file=file.path(chr, "models.Rdata"))
-	}
-	## saveModels
 	timeinfo <- c(timeinfo, list(Sys.time()))
 
 	## pre-process the coverage data with automatic chunks depending on the number of cores
@@ -172,13 +158,13 @@ analyzeChr <- function(chrnum, coverageInfo, testvars, adjustvars=NULL, nonzero=
 
 	## Save timing information
 	timeinfo <- do.call(c, timeinfo)
-	names(timeinfo) <- c("init", "setup", "saveStatsOpts", "buildModels", "saveModels", "prepData", "savePrep", "calculateStats", "saveStats", "calculatePvalues", "saveRegs", "annotate", "saveAnno")
+	names(timeinfo) <- c("init", "setup", "saveStatsOpts", "prepData", "savePrep", "calculateStats", "saveStats", "calculatePvalues", "saveRegs", "annotate", "saveAnno")
 	if(writeOutput) {
 		save(timeinfo, file=file.path(chr, "timeinfo.Rdata"))
 	}
 
 	if(returnOutput) {
-		result <- list(timeinfo=timeinfo, optionsStats=optionsStats, models=models, coveragePrep=prep, fstats=fstats, regions=regions, annotation=annotation)
+		result <- list(timeinfo=timeinfo, optionsStats=optionsStats, coveragePrep=prep, fstats=fstats, regions=regions, annotation=annotation)
 	} else {
 		result <- NULL
 	}

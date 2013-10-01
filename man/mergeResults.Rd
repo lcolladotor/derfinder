@@ -52,14 +52,19 @@
   in \link{annotateRegions} with the assigned genomic
   states.} \item{optionsMerge.Rdata}{ A list with the
   options used when merging the results. Used in
-  \link{generateReport}.} }
+  \link[derfinderReport]{generateReport}.} }
 }
 \description{
   This function merges the results from running
   \link{analyzeChr} on several chromosomes and assigns
   genomic states using \link{annotateRegions}. It
   re-calculates the p-values and q-values using the pooled
-  areas from the null regions from all chromosomes.
+  areas from the null regions from all chromosomes. Once
+  the results have been merged,
+  \link[derfinderReport]{generateReport} can be used to
+  generate an HTML report of the results. The
+  \code{derfinderReport} package is available at
+  https://github.com/lcolladotor/derfinderReport.
 }
 \examples{
 \dontrun{

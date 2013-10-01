@@ -2,14 +2,10 @@
 #'
 #' Builds the model matrices for testing for differential expression by comparing a model with a grouping factor versus one without it. It adjusts for the confounders specified and the median coverage of each sample. The resulting models can be used in \link{calculateStats}.
 #' 
-#' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with the coverage data and a logical Rle --\code{$position}-- with the positions that passed the cutoff. This object is generated using \link{loadCoverage}.
+#' @param sampleDepths Per sample library size adjustments calculated with \link{sampleDepth}.
 #' @param testvars A vector or matrix specifying the variables to test. For example, a factor with the group memberships when testing for differences across groups. It's length should match the number of columns used from \code{coverageInfo$coverage}.
 #' @param adjustvars Optional matrix of adjustment variables (e.g. measured confounders, output from SVA, etc.) to use in fitting linear models to each nucleotide. These variables have to be specified by sample and the number of rows must match the number of columns used. It will also work if it is a vector of the correct length.
-#' @param nonzero If \code{TRUE}, use the median of only the nonzero counts as the library size adjustment.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the way.
-#' @param center If \code{TRUE} the column medians are centered by the mean of the column medians. This is helpful for interpretation purposes.
 #' @param testIntercept If \code{TRUE} then \code{testvars} is ignored and mod0 will contain the column medians and any adjusting variables specified, but no intercept.
-#' @param colsubset Which colums of \code{coverageInfo$coverage} to use.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -18,71 +14,35 @@
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{calculateStats}
+#' @seealso \link{sampleDepth}, \link{calculateStats}
 #' @export
 #' @importMethodsFrom IRanges ncol sapply median "["
 #' @examples
-#' ## Choose the adjusting variables and define all the parameters for makeModels()
-#' coverageInfo <- genomeData
-#' testvars <- genomeInfo$pop
-#' colsubset <- NULL
-#' adjustvars <- data.frame(genomeInfo$gender)
-#' nonzero <- TRUE
-#' verbose <- TRUE
+#' ## Calculate library size adjustments
+#' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+#' sampleDepths
 #' 
-#' ## Run the function
-#' models <- makeModels(coverageInfo, testvars, adjustvars, nonzero, verbose)
+#' ## Build the models
+#' group <- genomeInfo$pop
+#' adjustvars <- data.frame(genomeInfo$gender)
+#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 #' names(models)
 #' models
 
-makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE, verbose=FALSE, center=TRUE, testIntercept=FALSE, colsubset=NULL) {
-	## Check that the input is from loadCoverage()
-	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
-	coverage <- coverageInfo$coverage
-	
+makeModels <- function(sampleDepths, testvars, adjustvars = NULL, testIntercept=FALSE) {
 	## Drop unused levels in testvars if it is a factor
 	if(is.factor(testvars)) {
 		testvars <- droplevels(testvars)
 	}
-	
-	
-	if(!is.null(colsubset)) {
-		coverage <- coverage[, colsubset]
-	}
 		
 	## Check that the columns match
-	numcol <- ncol(coverage)
+	numcol <- length(sampleDepths)
 	if(!testIntercept & numcol != NROW(testvars)) {
-		stop("The length of 'testvars' and the number of columns in 'coverageInfo$coverage' do not match.")
+		stop("The length of 'testvars' and the number of sample library size adjustments do not match.")
 	} 
 	if (!is.null(adjustvars) & NROW(adjustvars) != numcol) {
-		stop("The dimensions of 'adjustvars' should match with the number of columns in 'coverageInfo$coverage'.")
+		stop("The dimensions of 'adjustvars' should match with the number of library size adjustments.")
 	}
-			
-	## Get the medians of the columns
-	if(nonzero) {
-		colmedians <- sapply(coverage, function(y) { 
-			## Catch cases where the is no data points greater than 0
-			tmp <- try(median(y[y > 0]), silent=TRUE)
-			res <- ifelse(inherits(tmp, "try-error"), 0, tmp)
-			return(res)
-		})
-	} else {
-		colmedians <- sapply(coverage, median)
-	}
-	
-	if(any(is.na(colmedians))) {
-		col.na <- is.na(colmedians)
-		warning(paste0("Sample column(s) ", paste(which(col.na), collapse=", "), " median coverage (nonzero=", nonzero, ") are NA. Setting them to 0 (before centering if center=TRUE). Check for possible issues with this sample!"))
-		colmedians[col.na] <- 0
-	}
-	
-	if(center) {
-		colmedians <- colmedians - mean(colmedians, na.rm=TRUE)
-	}
-	rm(coverage)
-	## Info for the user
-	if(verbose) message(paste0(Sys.time(), " makeModels: these are the column medians used: ", paste(colmedians, collapse=", "), "."))
 		
 	## To avoid a warning in R CMD check
 	mod <- mod0 <- NULL
@@ -100,11 +60,11 @@ makeModels <- function(coverageInfo, testvars, adjustvars = NULL, nonzero = TRUE
 		}		
 	} 
 	if(!testIntercept) {
-		eval(parse(text=paste0("mod = model.matrix(~ testvars + colmedians", string1, ")")))
-		eval(parse(text=paste0("mod0 = model.matrix(~ + colmedians", string1, ")")))	
+		eval(parse(text=paste0("mod = model.matrix(~ testvars + sampleDepths", string1, ")")))
+		eval(parse(text=paste0("mod0 = model.matrix(~ + sampleDepths", string1, ")")))	
 	} else {
-		eval(parse(text=paste0("mod = model.matrix(~ colmedians", string1, ")")))
-		eval(parse(text=paste0("mod0 = model.matrix(~ 0 + colmedians", string1, ")")))	
+		eval(parse(text=paste0("mod = model.matrix(~ sampleDepths", string1, ")")))
+		eval(parse(text=paste0("mod0 = model.matrix(~ 0 + sampleDepths", string1, ")")))	
 	}	
 	
 	## Check that the matrices are full rank

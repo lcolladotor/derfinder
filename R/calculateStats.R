@@ -16,10 +16,14 @@
 #' @importMethodsFrom IRanges ncol "[[" length unlist
 #' @importFrom IRanges RleList
 #' @examples
-#' ## Construct the models
+#' ## Calculate library size adjustments
+#' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+#' sampleDepths
+#' 
+#' ## Build the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(coverageInfo=genomeData, testvars=group, adjustvars=adjustvars, nonzero=TRUE)
+#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 #'
 #' ## Preprocess the data
 #' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
