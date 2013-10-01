@@ -61,7 +61,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	## Init
 	timeinfo <- c(timeinfo, list(Sys.time()))
 	
-	## Drop unused levels in testvars and groupInfo
+	## Drop unused levels in groupInfo
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
