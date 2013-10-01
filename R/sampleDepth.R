@@ -5,7 +5,7 @@
 #' @param fullCov A list where each element is the result from \link[derfinder]{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param prob A number between 0 and 1 representing the quantile of interest. For example, 0.5 is the median.
 #' @param nonzero If \code{TRUE} only the nonzero counts are used to calculate the library size adjustment.
-#' @param center If \code{TRUE} the sample quantiles are centered by the mean of the sample quantiles across sampls. This can be helpful for interpretation purposes.
+#' @param center If \code{TRUE} the sample quantiles are centered by the mean of the sample quantiles across samples. This can be helpful for interpretation purposes.
 #' @param colsubset Which colums of \code{coverageInfo$coverage} to use.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
@@ -24,7 +24,7 @@
 #' sampleDepths <- sampleDepth(list(coverageInfo$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
 #' sampleDepths
 
-sampleDepth <- function(fullCov, prob = 0.9, nonzero = TRUE, center=TRUE, colsubset=NULL, verbose=FALSE) {
+sampleDepth <- function(fullCov, prob = 0.9, nonzero = TRUE, center=FALSE, colsubset=NULL, verbose=FALSE) {
 	stopifnot(prob >= 0 & prob <= 1 & length(prob) == 1)
 	## Remove un-used columns
 	if(!is.null(colsubset)) {
