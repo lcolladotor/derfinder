@@ -30,7 +30,7 @@ sampleDepth <- function(fullCov, prob = 0.9, nonzero = TRUE, center=TRUE, colsub
 	if(!is.null(colsubset)) {
 		fullCov <- lapply(fullCov, function(x) {
 			if("coverage" %in% names(x)) {
-				## Extract coverage info if fullCov is the result from using lapply on the output of fullCoverage()
+				## Extract coverage info if fullCov is the result from using lapply filterData() on the output of fullCoverage()
 				res <- x$coverage[, colsubset]
 			} else {
 				res <- x[, colsubset]
@@ -38,7 +38,7 @@ sampleDepth <- function(fullCov, prob = 0.9, nonzero = TRUE, center=TRUE, colsub
 			return(res)
 		})
 	} else if("coverage" %in% names(fullCov[[1]])) {
-		## Extract coverage info if fullCov is the result from using lapply on the output of fullCoverage()
+		## Extract coverage info if fullCov is the result from using lapply filterData() on the output of fullCoverage()
 		fullCov <- lapply(fullCov, function(x) x$coverage )
 	}
 	## Append the information from all chrs
