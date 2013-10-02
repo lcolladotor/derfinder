@@ -103,19 +103,24 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		load(file.path(prefix, chr, "coveragePrep.Rdata"))
 		fullCoveragePrep[[chr]] <- prep
 	}
+	
+	## Merge regions
+	fullRegions <- unlist(GRangesList(fullRegs), use.names=FALSE)
 
 	## Process the annotation 
 	fullAnnotation <- do.call(rbind, fullAnno)
-	colnames(fullAnnotation)[which(colnames(fullAnnotation) == "strand")] <- "annoStrand"
-	rownames(fullAnnotation) <- NULL
+	if(!is.null(fullAnnotation)) {
+		colnames(fullAnnotation)[which(colnames(fullAnnotation) == "strand")] <- "annoStrand"
+		rownames(fullAnnotation) <- NULL
 	
-	## For some reason, signature 'AsIs' does not work when assigning the values() <- 
-	fullAnnotation$name <- as.character(fullAnnotation$name)
-	fullAnnotation$annotation <- as.character(fullAnnotation$annotation)
+		## For some reason, signature 'AsIs' does not work when assigning the values() <- 
+		fullAnnotation$name <- as.character(fullAnnotation$name)
+		fullAnnotation$annotation <- as.character(fullAnnotation$annotation)
 
-	## Combine regions with annotation
-	fullRegions <- unlist(GRangesList(fullRegs), use.names=FALSE)
-    values(fullRegions) <- cbind( values(fullRegions), DataFrame(fullAnnotation))	
+		## Combine regions with annotation
+	    values(fullRegions) <- cbind( values(fullRegions), DataFrame(fullAnnotation))	
+	}
+	
 	
 	## Summarize the null regions
 	nulls <- unlist(RleList(fullNullStats), use.names=FALSE)
