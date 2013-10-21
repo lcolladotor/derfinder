@@ -5,6 +5,7 @@
 #' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}.
 #' @param chr Chromosome to read. Should be in simple format. For example, use X and not chrX.
 #' @param cutoff This argument is passed to \link{filterData}.
+#' @param bai The full path to the BAM index files. If \code{NULL} it is assumed that the BAM index files are in the same location as the BAM files and that they have the .bai extension.
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} then an automatic name is constructed (chrXCovInfo.Rdata for example). If another character is specified, then that name is used for the output file.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
@@ -46,9 +47,11 @@
 #' print(object.size(data2), units="Kb")
 #' }
 
-loadCoverage <- function(dirs, chr, cutoff=NULL, chrlen=NULL, output=NULL, verbose=TRUE) {
+loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=NULL, verbose=TRUE) {
 	## Do the indexes exist?
-	bai <- paste0(dirs, ".bai")
+	if(is.null(bai)) {
+		bai <- paste0(dirs, ".bai")
+	}	
 	if(all(file.exists(bai))) {
 		bList <- BamFileList(dirs, bai)
 	} else {

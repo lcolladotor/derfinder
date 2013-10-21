@@ -2,8 +2,8 @@
 \alias{loadCoverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-  loadCoverage(dirs, chr, cutoff = NULL, chrlen = NULL,
-    output = NULL, verbose = TRUE)
+  loadCoverage(dirs, chr, cutoff = NULL, bai = NULL,
+    chrlen = NULL, output = NULL, verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
@@ -16,6 +16,11 @@
 
   \item{cutoff}{This argument is passed to
   \link{filterData}.}
+
+  \item{bai}{The full path to the BAM index files. If
+  \code{NULL} it is assumed that the BAM index files are in
+  the same location as the BAM files and that they have the
+  .bai extension.}
 
   \item{chrlen}{The chromosome length in base pairs. If
   it's \code{NULL}, the chromosome length is extracted from

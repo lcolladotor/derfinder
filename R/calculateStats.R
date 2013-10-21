@@ -5,6 +5,7 @@
 #' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
+#' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return A numeric Rle with the F-statistics per base pair that passed the cutoff.
@@ -32,7 +33,7 @@
 #' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 #' fstats
 
-calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 2L), adjustF=0, verbose=TRUE) {
 	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position"))) == 2)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	
@@ -54,7 +55,7 @@ calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 
 			
 	## Fit a model to each row (chunk) of database:
 	if(verbose) message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
-	fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod, mod0=mod0, mc.cores=mc.cores)
+	fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod, mod0=mod0, adjustF=adjustF, mc.cores=mc.cores)
 	## Using mclapply is as fast as using lapply if mc.cores=1, so there is no damage in setting the default mc.cores=1. Specially since parallel is included in R 3.0.x
 	## More at http://stackoverflow.com/questions/16825072/deprecation-of-multicore-mclapply-in-r-3-0
 	result <- unlist(RleList(fstats.output), use.names=FALSE)

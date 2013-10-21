@@ -14,6 +14,6 @@
  * by .Call. See the thread http://thread.gmane.org/gmane.comp.lang.r.rcpp/649/focus=672
  * on Rcpp-devel for a misuse of RcppExport
  */
-RcppExport SEXP rcppFstats(SEXP dat, SEXP mod, SEXP mod0) ;
+RcppExport SEXP rcppFstats(SEXP dat, SEXP mod, SEXP mod0, SEXP adjust) ;
 
 #endif

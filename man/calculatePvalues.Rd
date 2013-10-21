@@ -8,7 +8,7 @@
     chr, maxRegionGap = 0L, maxClusterGap = 300L,
     cutoff = quantile(fstats, 0.99),
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
-    significantCut = c(0.05, 0.1))
+    significantCut = c(0.05, 0.1), adjustF = 0)
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -55,6 +55,11 @@
   element is used to determine significance for the
   p-values and the second element is used for the
   q-values.}
+
+  \item{adjustF}{A single value to adjust that is added in
+  the denominator of the F-stat calculation. Useful when
+  the Residual Sum of Squares of the alternative model is
+  very small.}
 }
 \value{
   A list with four components: \describe{ \item{regions }{

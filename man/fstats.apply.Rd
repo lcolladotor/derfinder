@@ -2,7 +2,7 @@
 \alias{fstats.apply}
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
-  fstats.apply(data, mod, mod0)
+  fstats.apply(data, mod, mod0, adjustF = 0)
 }
 \arguments{
   \item{data}{The DataFrame containing the coverage
@@ -17,6 +17,11 @@
 
   \item{mod0}{The design matrix for the null model. Should
   be m by p_0.}
+
+  \item{adjustF}{A single value to adjust that is added in
+  the denominator of the F-stat calculation. Useful when
+  the Residual Sum of Squares of the alternative model is
+  very small.}
 }
 \value{
   A numeric Rle with the F-statistics per base for the

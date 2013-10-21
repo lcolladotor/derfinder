@@ -2,15 +2,15 @@ Package: derfinder
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.28
-Date: 2013-09-30
+Version: 0.0.29
+Date: 2013-10-21
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
     "andrew.jaffe@libd.org"), person("Jeffrey", "Leek", role = c("aut", "ths"),
     email = "jtleek@gmail.com"))
 Depends:
-    R(>= 3.0.1),
+    R(>= 3.0.2),
     Rcpp (>= 0.10.4),
     RcppArmadillo
 LinkingTo: Rcpp, RcppArmadillo
@@ -19,7 +19,6 @@ Imports:
     GenomicRanges,
     Rsamtools,
     parallel,
-    bumphunter (>= 1.1.10),
     ggbio,
     ggplot2,
     reshape2,
@@ -29,15 +28,10 @@ Imports:
     AnnotationDbi,
     scales
 Suggests:
-    IRanges,
-    GenomicRanges,
     bumphunter (>= 1.1.10),
-    parallel,
     microbenchmark,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
     biovizBase,
-    ggplot2,
-    GenomicFeatures,
     RColorBrewer
 Description: Fast differential expression analysis of RNA-seq data at base-pair
     resolution

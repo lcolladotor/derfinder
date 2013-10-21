@@ -9,6 +9,7 @@
 #' @param colsubset This argument is passed to \link{preprocessCoverage}.
 #' @param scalefac This argument is passed to \link{preprocessCoverage}.
 #' @param chunksize This argument is passed to \link{preprocessCoverage}.
+#' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
 #' @param cutoffFstat This is used to determine the cutoff argument of \link{calculatePvalues} and it's behaviour is determined by \code{cutoffType}.
 #' @param cutoffType If set to \code{empirical}, the \code{cutoffFstat} (example: 0.99) quantile is used via \link{quantile}. If set to \code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is passed to \link{calculatePvalues} without any other calculation.
 #' @param nPermute This argument is passed to \link{calculatePvalues}.
@@ -53,7 +54,7 @@
 #' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutoffFstat=1, cutoffType="manual", groupInfo=group, mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, runAnnotation=TRUE, verbose=TRUE) {
+analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, adjustF=0, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, runAnnotation=TRUE, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
 	stopifnot(is.factor(groupInfo))
 	chr <- paste0("chr", chrnum)
@@ -66,7 +67,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
-	optionsStats <- list(models=models, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, analyzeCall=match.call())
+	optionsStats <- list(models=models, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, adjustF=adjustF, analyzeCall=match.call())
 
 	## Setup
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -94,7 +95,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 
 	## Run calculateStats
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
-	fstats <- calculateStats(coveragePrep=prep, models=models, mc.cores=mc.cores, verbose=verbose)
+	fstats <- calculateStats(coveragePrep=prep, models=models, mc.cores=mc.cores, adjustF=adjustF, verbose=verbose)
 
 	## calculateStats
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -124,7 +125,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Using the following", cutoffType, "cutoff for the F-statistics", cutoff))
 	
-	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose)
+	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose, adjustF=adjustF)
 
 	## calculatePValues
 	timeinfo <- c(timeinfo, list(Sys.time()))

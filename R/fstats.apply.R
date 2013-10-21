@@ -5,6 +5,7 @@
 #' @param data The DataFrame containing the coverage information. Normally stored in \code{coveragePrep$coverageSplit} from \link{preprocessCoverage}. Could also be the full data from \link{loadCoverage}.
 #' @param mod The design matrix for the alternative model. Should be m by p where p is the number of covariates (normally also including the intercept).
 #' @param mod0 The design matrix for the null model. Should be m by p_0.
+#' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
 #'
 #' @return A numeric Rle with the F-statistics per base for the chunk in question.
 #'
@@ -12,6 +13,8 @@
 #' @export
 #' @importMethodsFrom IRanges as.data.frame as.matrix
 #' @useDynLib derfinder
+#' @import Rcpp
+#' @import RcppArmadillo
 #' @seealso \link{calculateStats}, \link{calculatePvalues}
 #' @examples
 #' ## Create the model matrices
@@ -22,7 +25,7 @@
 #' fstats.output
 #' 
 
-fstats.apply <- function(data, mod, mod0) {
+fstats.apply <- function(data, mod, mod0, adjustF=0) {
 	##  Subset the DataFrame to the current chunk and transform to a regular matrix
 	dat <- as.matrix(as.data.frame(data))
 	rm(data)
@@ -30,7 +33,7 @@ fstats.apply <- function(data, mod, mod0) {
 	# A function for calculating F-statistics
 	# on the rows of dat, comparing the models
 	# mod (alternative) and mod0 (null). 	
-	fstats <- Rle(drop(.Call("rcppFstats", t(dat), mod, mod0, package="derfinder")))
+	fstats <- Rle(drop(.Call("rcppFstats", t(dat), mod, mod0, adjustF, package="derfinder")))
 	
 	## Done
 	return(fstats)

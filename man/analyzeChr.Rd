@@ -4,13 +4,13 @@
 \usage{
   analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5,
     colsubset = NULL, scalefac = 32, chunksize = NULL,
-    cutoffFstat = 1e-08, cutoffType = "theoretical",
-    nPermute = 1,
+    adjustF = 0, cutoffFstat = 1e-08,
+    cutoffType = "theoretical", nPermute = 1,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo,
     subject = "hg19", mc.cores = getOption("mc.cores", 2L),
     writeOutput = TRUE, returnOutput = FALSE,
-    verbose = TRUE)
+    runAnnotation = TRUE, verbose = TRUE)
 }
 \arguments{
   \item{chrnum}{Used for naming the output files when
@@ -33,6 +33,11 @@
 
   \item{chunksize}{This argument is passed to
   \link{preprocessCoverage}.}
+
+  \item{adjustF}{A single value to adjust that is added in
+  the denominator of the F-stat calculation. Useful when
+  the Residual Sum of Squares of the alternative model is
+  very small.}
 
   \item{cutoffFstat}{This is used to determine the cutoff
   argument of \link{calculatePvalues} and it's behaviour is
@@ -80,6 +85,10 @@
   \item{returnOutput}{If \code{TRUE}, it returns a list
   with the results from each step. Otherwise, it returns
   \code{NULL}.}
+
+  \item{runAnnotation}{If \code{TRUE}
+  \link[bumphunter]{annotateNearest} is run. Otherwise this
+  step is skipped.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

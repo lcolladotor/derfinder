@@ -3,7 +3,8 @@
 \title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
   calculateStats(coveragePrep, models,
-    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+    mc.cores = getOption("mc.cores", 2L), adjustF = 0,
+    verbose = TRUE)
 }
 \arguments{
   \item{coveragePrep}{A list with \code{$coverageSplit} and
@@ -15,6 +16,11 @@
 
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
+
+  \item{adjustF}{A single value to adjust that is added in
+  the denominator of the F-stat calculation. Useful when
+  the Residual Sum of Squares of the alternative model is
+  very small.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
