@@ -2,10 +2,10 @@
 #'
 #' For a group of samples this function reads the coverage information for a specific chromosome directly from the BAM files. It then merges them into a DataFrame and removes the bases that do not pass the cutoff.
 #' 
-#' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}.
+#' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}. \code{dirs} can also be a \code{BamFileList} object created with \link[Rsamtools]{BamFileList}.
 #' @param chr Chromosome to read. Should be in simple format. For example, use X and not chrX.
 #' @param cutoff This argument is passed to \link{filterData}.
-#' @param bai The full path to the BAM index files. If \code{NULL} it is assumed that the BAM index files are in the same location as the BAM files and that they have the .bai extension.
+#' @param bai The full path to the BAM index files. If \code{NULL} it is assumed that the BAM index files are in the same location as the BAM files and that they have the .bai extension. Ignored if \code{dirs} is a \code{BamFileList} object.
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} then an automatic name is constructed (chrXCovInfo.Rdata for example). If another character is specified, then that name is used for the output file.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
@@ -49,14 +49,19 @@
 
 loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=NULL, verbose=TRUE) {
 	## Do the indexes exist?
-	if(is.null(bai)) {
-		bai <- paste0(dirs, ".bai")
-	}	
-	if(all(file.exists(bai))) {
-		bList <- BamFileList(dirs, bai)
+	if(is(dirs, "BamFileList")) {
+		bList <- dirs
 	} else {
-		bList <- BamFileList(dirs)
+		if(is.null(bai)) {
+			bai <- paste0(dirs, ".bai")
+		}	
+		if(all(file.exists(bai))) {
+			bList <- BamFileList(dirs, bai)
+		} else {
+			stop("Not all BAM files have a BAM index. If the BAM index files are in a separate directory from the BAM files or are not named as 'bamFile.bam.bai' then consider using the 'bai' argument.")
+		}
 	}
+	
 		
 	## Determine the chromosome length
 	if(is.null(chrlen)) {

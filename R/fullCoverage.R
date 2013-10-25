@@ -2,8 +2,9 @@
 #'
 #' For a group of samples this function reads the coverage information for several chromosomes directly from the BAM files. Per chromosome, it merges the unfiltered coverage by sample into a DataFrame. The end result is a list with one such DataFrame objects per chromosome.
 #' 
-#' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}.
+#' @param dirs A character vector with the full path to the sample BAM files. The names are used for the column names of the DataFrame. Check \link{makeBamList} for constructing \code{dirs}. \code{dirs} can also be a \code{BamFileList} object created with \link[Rsamtools]{BamFileList}.
 #' @param chrnums The chromosome numbers of the files to read.
+#' @param bai The full path to the BAM index files. If \code{NULL} it is assumed that the BAM index files are in the same location as the BAM files and that they have the .bai extension. Ignored if \code{dirs} is a \code{BamFileList} object.
 #' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files. Otherwise, it should have the same length as \code{chrnums}.
 #' @param outputs This argument is passed to the \code{output} argument of \link{loadCoverage}. If \code{NULL} or \code{"auto"} it is then recycled.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply}. You should use at most one core per chromosome.
@@ -37,7 +38,7 @@
 #' }
 
 
-fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+fullCoverage <- function(dirs, chrnums, bai=NULL, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	stopifnot(length(chrlens) == length(chrnums) | is.null(chrlens))
 	if(!is.null(outputs)) {
 		stopifnot(length(outputs) == length(chrnums) | outputs == "auto")
@@ -47,11 +48,11 @@ fullCoverage <- function(dirs, chrnums, chrlens=NULL, outputs=NULL, mc.cores=get
 	}	
 		
 	## Subsetting function that runs loadCoverage
-	loadChr <- function(idx, dirs, chrnums, chrlens, outputs, verbose) {
+	loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, verbose) {
 		if(verbose) message(paste(Sys.time(), "fullCoverage: processing chromosome", chrnums[idx]))
-		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, chrlen=chrlens[idx], output=outputs[idx], verbose=verbose)$coverage
+		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, bai=bai, chrlen=chrlens[idx], output=outputs[idx], verbose=verbose)$coverage
 	}
-	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores)
+	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, bai=bai, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores)
 	names(result) <- chrnums
 	
 	## Done

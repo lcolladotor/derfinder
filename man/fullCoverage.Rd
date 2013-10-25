@@ -2,7 +2,7 @@
 \alias{fullCoverage}
 \title{Load the unfiltered coverage information from a group of BAM files and a list of chromosomes}
 \usage{
-  fullCoverage(dirs, chrnums, chrlens = NULL,
+  fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL,
     outputs = NULL, mc.cores = getOption("mc.cores", 2L),
     verbose = TRUE)
 }
@@ -10,10 +10,18 @@
   \item{dirs}{A character vector with the full path to the
   sample BAM files. The names are used for the column names
   of the DataFrame. Check \link{makeBamList} for
-  constructing \code{dirs}.}
+  constructing \code{dirs}. \code{dirs} can also be a
+  \code{BamFileList} object created with
+  \link[Rsamtools]{BamFileList}.}
 
   \item{chrnums}{The chromosome numbers of the files to
   read.}
+
+  \item{bai}{The full path to the BAM index files. If
+  \code{NULL} it is assumed that the BAM index files are in
+  the same location as the BAM files and that they have the
+  .bai extension. Ignored if \code{dirs} is a
+  \code{BamFileList} object.}
 
   \item{chrlens}{The chromosome lengths in base pairs. If
   it's \code{NULL}, the chromosome length is extracted from

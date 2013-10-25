@@ -9,7 +9,9 @@
   \item{dirs}{A character vector with the full path to the
   sample BAM files. The names are used for the column names
   of the DataFrame. Check \link{makeBamList} for
-  constructing \code{dirs}.}
+  constructing \code{dirs}. \code{dirs} can also be a
+  \code{BamFileList} object created with
+  \link[Rsamtools]{BamFileList}.}
 
   \item{chr}{Chromosome to read. Should be in simple
   format. For example, use X and not chrX.}
@@ -20,7 +22,8 @@
   \item{bai}{The full path to the BAM index files. If
   \code{NULL} it is assumed that the BAM index files are in
   the same location as the BAM files and that they have the
-  .bai extension.}
+  .bai extension. Ignored if \code{dirs} is a
+  \code{BamFileList} object.}
 
   \item{chrlen}{The chromosome length in base pairs. If
   it's \code{NULL}, the chromosome length is extracted from
