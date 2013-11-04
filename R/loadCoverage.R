@@ -18,7 +18,7 @@
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
-#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path readBamGappedAlignments
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
@@ -85,7 +85,8 @@ loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=N
 	
 		## Read the BAM file and get the coverage. Extract only the one for the chr in question.
 ## In R-devel, readBamGappedAlignments is deprecated! Check ?readGAlignmentsFromBam
-		output <- coverage(readBamGappedAlignments(x, param=param))[[chr]]
+		#output <- coverage(readBamGappedAlignments(x, param=param))[[chr]]
+		output <- coverage(readGAlignmentsFromBam(x, param=param))[[chr]]
 		
 		
 		## Done
