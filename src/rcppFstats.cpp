@@ -25,7 +25,7 @@ SEXP rcppFstats(SEXP dat, SEXP mod, SEXP mod0, SEXP adjust){
 		for(int i=0; i < m; i++){
 		  res = datc.col(i) - modc*arma::solve(modc,datc.col(i));
 		  res0 = datc.col(i) - mod0c*arma::solve(mod0c,datc.col(i));
-		  ss = arma::as_scalar( arma::trans(res)*res0);
+		  ss = arma::as_scalar( arma::trans(res)*res);
 		  ss0 = arma::as_scalar( arma::trans(res0)*res0);
 		  fstats(i) = ((ss0 - ss)/(df-df0))/(adjustc + ss/(n-df));
 		}
