@@ -131,8 +131,8 @@ hist(regsWithP$regions$pvalues, main="Distribution permutted p-values by region"
 
 ## MA style plot
 library("ggplot2")
-ma <- data.frame(mean=regsWithP$regions$meanCoverage, foldChange=regsWithP$regions$foldChangeYRIvsCEU)
-ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
+ma <- data.frame(mean=regsWithP$regions$meanCoverage, log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
+ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
 
 \dontrun{
 ## Annotate the results

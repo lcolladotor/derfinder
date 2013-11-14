@@ -39,7 +39,8 @@
 #' @seealso \link{makeModels}, \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}, \link[bumphunter]{annotateNearest}
 #' @export
 #' @importMethodsFrom IRanges as.numeric
-#'
+#' @importFrom bumphunter annotateNearest
+#' 
 #' @examples
 #' ## Calculate library size adjustments
 #' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
@@ -142,7 +143,6 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Annotating regions"))
 	
 	if(!is.null(regions$regions) & runAnnotation) {
-		library("bumphunter")
 		annotation <- annotateNearest(regions$regions, subject)
 	} else {
 		annotation <- NULL

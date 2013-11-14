@@ -71,8 +71,8 @@
 #'
 #' ## MA style plot
 #' library("ggplot2")
-#' ma <- data.frame(mean=regsWithP$regions$meanCoverage, foldChange=regsWithP$regions$foldChangeYRIvsCEU)
-#' ggplot(ma, aes(x=log2(mean), y=foldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
+#' ma <- data.frame(mean=regsWithP$regions$meanCoverage, log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
+#' ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
 #'
 #' \dontrun{
 #' ## Annotate the results
@@ -111,7 +111,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
 	
 	## Find the regions
-	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, verbose=verbose) 
+	regs <- findRegions(position=position, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
+                            fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, verbose=verbose) 
 	if(is.null(regs)) {
 		final <- list(regions=NULL, nullStats=NULL, nullWidths=NULL, nullPermutation=NULL)
 		return(final)
@@ -129,10 +130,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 			
 		## Calculate fold coverage vs group 1
 		if(length(regionGroupMean) > 1){
-			foldChange <- vector("list", length(regionGroupMean) - 1)
-			names(foldChange) <- names(regionGroupMean)[-1]
-			for(group in names(foldChange)) {
-				foldChange[[group]] <- log2(regionGroupMean[[group]] / regionGroupMean[[1]])
+			log2FoldChange <- vector("list", length(regionGroupMean) - 1)
+			names(log2FoldChange) <- names(regionGroupMean)[-1]
+			for(group in names(log2FoldChange)) {
+				log2FoldChange[[group]] <- log2(regionGroupMean[[group]] / regionGroupMean[[1]])
 			}
 		}
 		
@@ -140,9 +141,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		names(regionGroupMean) <- paste0("mean", names(regionGroupMean))
 		values(regs) <- cbind(values(regs), DataFrame(regionGroupMean))
 		if(length(regionGroupMean) > 1) {
-			names(foldChange) <- paste0("foldChange", names(foldChange), "vs", names(groupMeans)[1])
-			values(regs) <- cbind(values(regs), DataFrame(foldChange))
-			rm(foldChange)
+			names(log2FoldChange) <- paste0("log2FoldChange", names(log2FoldChange), "vs", names(groupMeans)[1])
+			values(regs) <- cbind(values(regs), DataFrame(log2FoldChange))
+			rm(log2FoldChange)
 		}
 		rm(regionGroupMean)
 	}
@@ -173,7 +174,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
+                                         fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
 		if(!is.null(regs.perm)) {
