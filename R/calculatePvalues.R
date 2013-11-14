@@ -111,7 +111,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
 	
 	## Find the regions
-	regs <- findRegions(position=position, chr=chr, fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, verbose=verbose) 
+	regs <- findRegions(position=position, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
+                            fstats=fstats, cutoff=cutoff, segmentIR=segmentIR, verbose=verbose) 
 	if(is.null(regs)) {
 		final <- list(regions=NULL, nullStats=NULL, nullWidths=NULL, nullPermutation=NULL)
 		return(final)
@@ -173,7 +174,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		regs.perm <- findRegions(chr=chr, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
+                                         fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
 		if(!is.null(regs.perm)) {
