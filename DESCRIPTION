@@ -2,7 +2,7 @@ Package: derfinder
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.31
+Version: 0.0.32
 Date: 2013-11-04
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
@@ -26,9 +26,9 @@ Imports:
     qvalue,
     GenomicFeatures,
     AnnotationDbi,
-    scales
-Suggests:
+    scales,
     bumphunter (>= 1.1.10),
+Suggests:
     microbenchmark,
     TxDb.Hsapiens.UCSC.hg19.knownGene,
     biovizBase,
