@@ -39,9 +39,11 @@
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 #' covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
 #' 
+#' ## Collapse the coverage information
+#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+#' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
-#' sampleDepths
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
 #' 
 #' ## Build the models
 #' group <- genomeInfo$pop
@@ -72,10 +74,13 @@
 #' suppressMessages(library("bumphunter"))
 #' annotation <- annotateNearest(regsWithP$regions, "hg19")
 #'
+#' \dontrun{
 #' ## Make the plot
 #' suppressMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
 #' plotCluster(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' ## Resize the plot window and the labels will look good.
+#' }
+#' ## Will remove the dontrun once ggbio 1.10.8 is in BioC
 #'
 #' \dontrun{
 #' ## For a custom plot, check the ggbio and ggplot2 packages.
