@@ -33,6 +33,8 @@ Note that the current Bioconductor release version of __bumphunter__ for R 3.0.1
 
 This software is in development, so we highly recommend 'watching' the repository: Click on the top right under `Watch`. You will then receive notifications for issues, comments, and pull requests as described [here](https://help.github.com/articles/notifications).
 
+You will need a GitHub account to be able to `Watch` the repository.
+
 # Citation
 
 Below is the citation output from using `citation("derfinder")` in R. Please run this yourself to check for any updates on how to cite __derfinder__.

@@ -38,9 +38,8 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{makeModels}, \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}, \link[bumphunter]{annotateNearest}
 #' @export
-#' @importMethodsFrom IRanges as.numeric distance
+#' @importMethodsFrom IRanges as.numeric
 #' @importFrom bumphunter annotateNearest
-#' @importFrom IRanges distance
 #' 
 #' @examples
 #' ## Calculate library size adjustments
