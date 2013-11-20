@@ -29,6 +29,10 @@ install_github("derfinder", "lcolladotor")
 
 Note that the current Bioconductor release version of __bumphunter__ for R 3.0.1 is a few versions before the one required by __derfinder__. The version needed can be installed manually from http://bioconductor.org/packages/2.13/bioc/html/bumphunter.html You can download the source or other binaries.
 
+# 'Watch' for updates
+
+This software is in development, so we highly recommend 'watching' the repository: Click on the top right under `Watch`. You will then receive notifications for issues, comments, and pull requests as described [here](https://help.github.com/articles/notifications).
+
 # Citation
 
 Below is the citation output from using `citation("derfinder")` in R. Please run this yourself to check for any updates on how to cite __derfinder__.
@@ -37,11 +41,11 @@ Below is the citation output from using `citation("derfinder")` in R. Please run
 
 To cite package __derfinder__ in publications use:
 
-Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.28. https://github.com/lcolladotor/derfinder
+Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2013). derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution. R package version 0.0.34. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
-@Manual{, title = {derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.28}, url = {https://github.com/lcolladotor/derfinder}, }
+@Manual{, title = {derfinder: Fast differential expression analysis of RNA-seq data at base-pair resolution}, author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe and Jeffrey Leek}, year = {2013}, note = {R package version 0.0.34}, url = {https://github.com/lcolladotor/derfinder}, }
 
 
 # Origins

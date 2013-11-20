@@ -38,8 +38,9 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{makeModels}, \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}, \link[bumphunter]{annotateNearest}
 #' @export
-#' @importMethodsFrom IRanges as.numeric
+#' @importMethodsFrom IRanges as.numeric distance
 #' @importFrom bumphunter annotateNearest
+#' @importFrom IRanges distance
 #' 
 #' @examples
 #' ## Calculate library size adjustments
@@ -143,6 +144,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Annotating regions"))
 	
 	if(!is.null(regions$regions) & runAnnotation) {
+		library("bumphunter") ## Will remove after getting help via https://stat.ethz.ch/pipermail/bioc-devel/2013-November/004958.html
 		annotation <- annotateNearest(regions$regions, subject)
 	} else {
 		annotation <- NULL
