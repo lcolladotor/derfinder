@@ -42,9 +42,11 @@
 #' @importFrom bumphunter annotateNearest
 #' 
 #' @examples
+#' ## Collapse the coverage information
+#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+#' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
-#' sampleDepths
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
 #' 
 #' ## Build the models
 #' group <- genomeInfo$pop
@@ -143,7 +145,6 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Annotating regions"))
 	
 	if(!is.null(regions$regions) & runAnnotation) {
-		library("bumphunter") ## Will remove after getting help via https://stat.ethz.ch/pipermail/bioc-devel/2013-November/004958.html
 		annotation <- annotateNearest(regions$regions, subject)
 	} else {
 		annotation <- NULL

@@ -39,9 +39,11 @@
   resulting models can be used in \link{calculateStats}.
 }
 \examples{
+## Collapse the coverage information
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
-sampleDepths
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
 
 ## Build the models
 group <- genomeInfo$pop

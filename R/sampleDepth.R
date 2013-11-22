@@ -1,78 +1,66 @@
 #' Calculate adjustments for library size
 #'
-#' For a given data set  calculate the per-sample Q quantile of the base coverage. The data set can loaded to R using (see \link{fullCoverage} and optionally filtered using \link{filterData}. One the per-sample Q quantile has been calculated, you could be interested in centering them accross samples for interpretability concerns. This information is then used in \link{makeModels} for construcing the null and alternative models.
+#' For a given data set calculate the per-sample coverage adjustments. Hector Corrada's group proposed calculating the sum of the coverage for genes below a given sample quantile. In this function, we calculate the sample quantiles of interest by sample, and then the sum of the coverage for bases below or equal to quantiles of interest. The resulting values are transformed {log2(x + scalefac)} to avoid very large numbers that could potentially affect the stability of the F-statistics calculation. The sample coverage adjustments are then used in \link{makeModels} for construcing the null and alternative models.
 #' 
-#' @param fullCov A list where each element is the result from \link[derfinder]{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
-#' @param prob A number between 0 and 1 representing the quantile of interest. For example, 0.5 is the median.
+#' @param collapsedFull The full coverage data collapsed by sample as produced by \link{collapseFullCoverage}.
+#' @param probs Number(s) between 0 and 1 representing the quantile(s) of interest. For example, 0.5 is the median.
 #' @param nonzero If \code{TRUE} only the nonzero counts are used to calculate the library size adjustment.
-#' @param center If \code{TRUE} the sample quantiles are centered by the mean of the sample quantiles across samples. This can be helpful for interpretation purposes.
-#' @param colsubset Which colums of \code{coverageInfo$coverage} to use.
+#' @param scalefac Number added to the sample coverage adjustments before the log2 transformation.
+#' @param center If \code{TRUE} the sample coverage adjustements are centered. In some cases, this could be helpful for interpretation purposes.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return 
-#' A vector with the library size depth adjustments per sample to be used in \link{makeModels}.
+#' A matrix (vector of \code{length(probs) == 1}) with the library size depth adjustments per sample to be used in \link{makeModels}. The number of rows corresponds to the number of quantiles used for the sample adjustments. 
+#'
+#' @references
+#' Paulson, J. N., Stine, O. C., Bravo, H. C. & Pop, M. Differential abundance analysis for microbial marker-gene surveys. Nat. Methods (2013). doi:10.1038/nmeth.2658
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{fullCoverage}, \link{makeModels}
+#' @seealso \link{collapseFullCoverage}, \link{makeModels}
 #' @export
-#' @importMethodsFrom IRanges sapply "[" rbind quantile
+#' @importFrom Hmisc wtd.quantile
 #' @examples
-#' ## Choose the adjusting variables and define all the parameters for makeModels()
-#' coverageInfo <- genomeData
+#' ## Collapse the coverage information
+#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
 #' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(list(coverageInfo$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), nonzero=TRUE, verbose=TRUE)
 #' sampleDepths
 
-sampleDepth <- function(fullCov, prob = 0.9, nonzero = TRUE, center=FALSE, colsubset=NULL, verbose=FALSE) {
-	stopifnot(prob >= 0 & prob <= 1 & length(prob) == 1)
-	## Remove un-used columns
-	if(!is.null(colsubset)) {
-		fullCov <- lapply(fullCov, function(x) {
-			if("coverage" %in% names(x)) {
-				## Extract coverage info if fullCov is the result from using lapply filterData() on the output of fullCoverage()
-				res <- x$coverage[, colsubset]
-			} else {
-				res <- x[, colsubset]
-			}
-			return(res)
-		})
-	} else if("coverage" %in% names(fullCov[[1]])) {
-		## Extract coverage info if fullCov is the result from using lapply filterData() on the output of fullCoverage()
-		fullCov <- lapply(fullCov, function(x) x$coverage )
-	}
-	## Append the information from all chrs
-	coverage <- do.call(rbind, fullCov)
-	
-	## Get the medians of the columns
-	if(nonzero) {
-		sampleDepths <- sapply(coverage, function(y) { 
-			## Catch cases where the is no data points greater than 0
-			tmp <- try(quantile(y[y > 0], prob), silent=TRUE)
-			res <- ifelse(inherits(tmp, "try-error"), 0, tmp)
-			return(res)
-		})
-	} else {
-		sampleDepths <- sapply(coverage, function(y) {
-			quantile(y, prob)
-		})
-	}
-	
-	if(any(is.na(sampleDepths))) {
-		col.na <- is.na(sampleDepths)
-		warning(paste0("Sample column(s) ", paste(which(col.na), collapse=", "), " have sample depth coverage (nonzero=", nonzero, ") as NA. Setting them to 0 (before centering if center=TRUE). Check for possible issues with this sample!"))
-		sampleDepths[col.na] <- 0
-	}
-	
-	if(verbose) message(paste0(Sys.time(), " sampleDepth: sample depth by sample (before centering): ", paste(sampleDepths, collapse=", "), "."))
-	
-	if(center) {
-		sampleDepths <- sampleDepths - mean(sampleDepths)
-		if(verbose) message(paste0(Sys.time(), " sampleDepth: sample depth by sample (after centering): ", paste(sampleDepths, collapse=", "), "."))
-	}
-	
-	
+sampleDepth <- function(collapsedFull=NULL, probs = c(0.5, 1), nonzero = TRUE, scalefac = 32, center=FALSE, verbose=FALSE) {
+	stopifnot(all(probs >= 0) & all(probs <= 1))
+
+	if(verbose) message(paste(Sys.time(), "sampleDepth: Calculating sample quantiles"))
+	sampleQuant <- lapply(collapsedFull, .calcQuantile, nonzero=nonzero, probs=probs)
+
+	if(verbose) message(paste(Sys.time(), "sampleDepth: Calculating sample adjustments"))
+	sampleDepths <- mapply(.sampleCorradaAdj, collapsedFull, sampleQuant, MoreArgs=list(scalefac=scalefac, center=center))
 		
 	## Done =)
 	return(sampleDepths)	
+}
+
+## Function for calculating the quantiles
+.calcQuantile <- function(x, nonzero, probs) {
+	values <- x$values
+	weights <- x$weights
+	if(nonzero) {
+		idx <- which(values == 0)
+		values <- values[-idx]
+		weights <- weights[-idx]
+	}
+	wtd.quantile(values, weights=weights, probs=probs)
+}
+
+## Function for calculating the Hector Corrada-type sample depth adjustments
+.sampleCorradaAdj <- function(collapsedF, quants, scalefac, center) {
+	sapply(quants, function(z) { 
+		idx <- which(collapsedF$values <= z)
+		adj <- sum(collapsedF$weights[idx] * collapsedF$values[idx])
+		res <- log2(adj + scalefac)
+		if(center) {
+			res <- res - mean(res)
+		}
+		return(res)
+	})
 }

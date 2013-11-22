@@ -80,9 +80,11 @@ dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=N
 names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
 
+## Collapse the coverage information
+collapsedFull <- collapseFullCoverage(list(covInfo), verbose=TRUE)
+
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(list(genomeData$coverage), prob=0.5, nonzero=TRUE, center=TRUE, verbose=TRUE)
-sampleDepths
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -127,7 +129,7 @@ plotCluster
 ## The purpose is to illustrate how data filtering (and availability),
 ## F-stat cutoff, cluster cutoff interact into determing the actual DERs.
 
-## Using as example cluster #7
+## Using as example region #7
 ## Note how despite having data and using a very small F-stat cutoff, some regions with data are split into different DERs
 plotCluster(idx=7, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 
@@ -165,41 +167,39 @@ plotRanges <- function(x, xlim = x, main = deparse(substitute(x)), col = "black"
 
 ## Visualize the different DER clusters
 plotRanges(clusters)
-## Note that region 7 is part of cluster #4.
+## Note that region 7 is part of cluster #5.
 regsWithP$regions$cluster[7]
+
+clus.range <- c(min(regsWithP$regions[ regsWithP$regions$cluster == 5]$indexStart), max(regsWithP$regions[ regsWithP$regions$cluster == 5]$indexEnd))
 
 ## Plot the different segmentation steps, the final DERs, and the fstats with the cutoff
 par(mfrow=c(5, 1))
-plotRanges(dataRegions, xlim=c(200, 617))
-plotRanges(segs, xlim=c(200, 617))
-plotRanges(pieces, xlim=c(200, 617))
-plotRanges(ders, xlim=c(200, 617))
+plotRanges(dataRegions, xlim=clus.range)
+plotRanges(segs, xlim=clus.range)
+plotRanges(pieces, xlim=clus.range)
+plotRanges(ders, xlim=clus.range)
 f <- as.numeric(fstats)
-plot(f, type="l", xlim=c(200, 617))
+plot(f, type="l", xlim=clus.range)
 abline(h=1, col="red")
 
-## We can see that the 10 different data regions match with how
+## We can see that the different data regions match with how
 ## many sections of the genome have data in plotCluster(idx=7, ...)
 
-## The F-stat cutoff applied to F-stats leads to 6 different segments passing the cutoff.
+## The F-stat cutoff applied to F-stats leads to 5 different segments passing the cutoff.
 ## We can see this both in the F-stat panel as well as in the segs panel.
 
 ## Between the regions with data and the segments, we have lots
 ## of different pieces to take into account.
 
-## From the pieces, only 12 of them correspond to unique regions in
+## From the pieces, only 6 of them correspond to unique regions in
 ## the genome that passed the F-stat cutoff.
 
-## They are the 12 different DERs we see in cluster 4 as shown in plotCluster(idx=7, ...)
+## They are the 6 different DERs we see in cluster 5 as shown in plotCluster(idx=7, ...)
 
 ## So despite using a very low F-stat cutoff, with the intention of getting
 ## anything that had data (for illustrative purposes, in reality you will want
 ## to use a higher cutoff), some regions were not considered to be candidate DERs.
 
-## From plotCluster(idx=7, ...) we see that the 4th and 5th region with data
-## had sections (or none for the 4th one) that were considered DERs but others were not.
-## This is due to the higher variability in the CEU samples, and of course, the low
-## F-stat cutoff used.
 }
 }
 \author{
