@@ -74,13 +74,10 @@
 #' suppressMessages(library("bumphunter"))
 #' annotation <- annotateNearest(regsWithP$regions, "hg19")
 #'
-#' \dontrun{
 #' ## Make the plot
 #' suppressMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
 #' plotCluster(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' ## Resize the plot window and the labels will look good.
-#' }
-#' ## Will remove the dontrun once ggbio 1.10.8 is in BioC
 #'
 #' \dontrun{
 #' ## For a custom plot, check the ggbio and ggplot2 packages.
