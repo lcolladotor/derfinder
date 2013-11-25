@@ -24,7 +24,7 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
-#' @importMethodsFrom IRanges ncol nrow sapply "[" "[[" "[[<-" c split
+#' @importMethodsFrom IRanges ncol nrow sapply "[" "[[" "[[<-" c split Reduce
 #' @importFrom IRanges Rle
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()
@@ -74,7 +74,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 	}
 	
 	## Find the overall mean coverage
-	means <- .rowMeansDF(coverage)
+	means <- Reduce("+", coverage) / length(coverage)
 	
 	## Find the by group mean coverage
 	if(is.null(groupInfo)) {
@@ -83,11 +83,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 		groupMeans <- vector("list", length(levels(groupInfo)))
 		names(groupMeans) <- levels(groupInfo)
 		for(group in levels(groupInfo)) {
-			groupMeans[[group]] <- .rowMeansDF(coverage[groupInfo == group])
+			groupMeans[[group]] <- Reduce("+", coverage[groupInfo == group]) / sum(groupInfo == group)
 		}
 	}
 	
-		
 	## Log2 transform and scale
 	numcol <- ncol(coverage)
 	for(i in seq_len(numcol)) {
@@ -112,14 +111,4 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 	result <- list("coverageSplit"=coverage.split, "position"=position, "meanCoverage"=means, "groupMeans"=groupMeans)
 	return(result)	
 	
-}
-
-## Auxiliary function that calculates the rowMeans of a DataFrame
-.rowMeansDF <- function(coverage) {
-	means <- Rle(0, nrow(coverage))
-	for(i in seq_len(length(coverage))) {
-		means <- means + coverage[[i]]
-	}
-	means <- means / length(coverage)
-	return(means)
 }
