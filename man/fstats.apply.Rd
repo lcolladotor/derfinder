@@ -2,12 +2,16 @@
 \alias{fstats.apply}
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
-  fstats.apply(data, mod, mod0, adjustF = 0)
+  fstats.apply(index = Rle(TRUE, nrow(data)), data, mod,
+    mod0, adjustF = 0)
 }
 \arguments{
+  \item{index}{An index (logical Rle is the best for saving
+  memory) indicating which rows of the DataFrame to use.}
+
   \item{data}{The DataFrame containing the coverage
   information. Normally stored in
-  \code{coveragePrep$coverageSplit} from
+  \code{coveragePrep$coverageProcessed} from
   \link{preprocessCoverage}. Could also be the full data
   from \link{loadCoverage}.}
 
@@ -39,7 +43,7 @@
 mod <- model.matrix(~ genomeInfo$pop)
 mod0 <- model.matrix(~ 0 + rep(1, nrow(genomeInfo)))
 ## Run the function
-fstats.output <- fstats.apply(genomeData$coverage, mod, mod0)
+fstats.output <- fstats.apply(data=genomeData$coverage, mod=mod, mod0=mod0)
 fstats.output
 }
 \author{

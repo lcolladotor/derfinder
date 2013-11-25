@@ -2,7 +2,7 @@
 #'
 #' First, this function finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The area of the statistics from these segments are then used to calculate p-values for the original regions.
 #' 
-#' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
+#' @param coveragePrep A list with \code{$coverageProcessed}, \code{mclapplyIndeex}, and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
 #' @param fstats A numerical Rle with the F-statistics normally generated using \link{calculateStats}.
 #' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient. If set to 0, no permutations are performed and thus no null regions are used, however, the \code{$regions} component is created.
@@ -53,7 +53,7 @@
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' n <- dim(prep$coverageSplit[[1]])[2]
+#' n <- dim(prep$coverageProcessed)[2]
 #' df1 <- dim(models$mod)[2]
 #' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
@@ -99,7 +99,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		seeds <- rep(NA, nPermute)
 	}
 	stopifnot(nPermute == length(seeds))
-	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position", "meanCoverage", "groupMeans"))) == 4)
+	stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", "mclapplyIndex", "position", "meanCoverage", "groupMeans"))) == 5)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
@@ -156,7 +156,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	nSamples <- seq_len(nrow(models$mod))
-	coverageSplit <- coveragePrep$coverageSplit
 		
 	for(i in seq_along(seeds)) {
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i))		
@@ -171,12 +170,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
+		fstats.output <- mclapply(coveragePrep$mclapplyIndex, fstats.apply, data=coveragePrep$coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
-                                         fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
 		if(!is.null(regs.perm)) {
@@ -197,7 +195,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	nullwidths <- do.call(c, nullwidths[!sapply(nullwidths, is.null)])
 	nullpermutation <- do.call(c, nullpermutation[!sapply(nullpermutation, is.null)])
 	nullareas <- do.call(c, nullareas[!sapply(nullareas, is.null)])
-	rm(coveragePrep, coverageSplit)
 	
 	if(length(nullstats) > 0) {
 		## Proceed only if there is at least one null stats

@@ -7,7 +7,8 @@
     verbose = TRUE)
 }
 \arguments{
-  \item{coveragePrep}{A list with \code{$coverageSplit} and
+  \item{coveragePrep}{A list with
+  \code{$coverageProcessed}, \code{$mclapplyIndex}, and
   \code{$position} normally generated using
   \link{preprocessCoverage}.}
 

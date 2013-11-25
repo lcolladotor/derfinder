@@ -13,9 +13,12 @@
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to determine the \code{chunksize}. This is useful if you want to split the data so each core gets the same amount of data (up to rounding).
 #'
-#' @return A list with four components.
+#' Computing the indexes and using those for \link[parallel]{mclapply} reduces memory copying as described by Ryan Thompson and illustrated in approach #4 at \url{http://bit.ly/mclapplyMem}
+#'
+#' @return A list with five components.
 #' \describe{
-#' \item{coverageSplit }{ is a list of DataFrames. Each DataFrame column represents a sample and the data is partioned according to \code{chunksize}. The coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
+#' \item{coverageProcessed }{ contains the processed coverage information in a DataFrame object. Each column represents a sample and the coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
+#' \item{mclapplyIndex }{ is a list of logical Rle objects. They contain the partioning information according to \code{chunksize}.}
 #' \item{position }{  is a logical Rle with the positions of the chromosome that passed the cutoff.}
 #' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each filtered base.}
 #' \item{groupMeans }{ is a list of Rle objects containing the mean coverage at each filtered base calculated by group. This list has length 0 if \code{groupInfo=NULL}.}
@@ -105,10 +108,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 		}
 	}
 	split.idx <- Rle(seq_len(lastloop + 1), split.len)
-	coverage.split <- as.list(split(coverage, split.idx))
+	coverage.split <- lapply( seq_len(lastloop + 1), function(x) { split.idx == x })
 	
 	## Done =)
-	result <- list("coverageSplit"=coverage.split, "position"=position, "meanCoverage"=means, "groupMeans"=groupMeans)
+	result <- list("coverageProcessed"=coverage, "mclapplyIndex"=coverage.split, "position"=position, "meanCoverage"=means, "groupMeans"=groupMeans)
 	return(result)	
 	
 }

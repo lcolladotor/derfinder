@@ -64,7 +64,7 @@ fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
-n <- dim(prep$coverageSplit[[1]])[2]
+n <- dim(prep$coverageProcessed)[2]
 df1 <- dim(models$mod)[2]
 df0 <- dim(models$mod0)[2]
 cutoff <- qf(0.95, df1-df0, n-df1)
