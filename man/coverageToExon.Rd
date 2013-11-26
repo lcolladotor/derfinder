@@ -4,7 +4,7 @@
 \usage{
   coverageToExon(fullCov, genomicState,
     fullOrCoding = "full", L = 100, returnType = "raw",
-    verbose = TRUE)
+    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -27,6 +27,13 @@
   \item{returnType}{If \code{raw}, then the raw coverage
   information per exon is returned. If \code{rpkm}, RPKM
   values are calculated for each exon.}
+
+  \item{mc.cores}{This argument is passed to
+  \link[parallel]{mclapply} twice. First, it's is used by
+  strand. Secondly, for processing the exons by chromosome.
+  So there is no gain in using \code{mc.cores} greater than
+  the maximum of the number of strands and number of
+  chromosomes.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
