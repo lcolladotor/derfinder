@@ -16,6 +16,8 @@
 #'
 #' Computing the indexes and using those for \link[parallel]{mclapply} reduces memory copying as described by Ryan Thompson and illustrated in approach #4 at \url{http://bit.ly/mclapplyMem}
 #'
+#' If \code{lowMemDir} is specified then \code{$coverageProcessed} is NULL and \code{$mclapplyIndex} is a vector with the chunk identifiers.
+#'
 #' @return A list with five components.
 #' \describe{
 #' \item{coverageProcessed }{ contains the processed coverage information in a DataFrame object. Each column represents a sample and the coverage information is scaled and log2 transformed. Note that if \code{colsubset} is not \code{NULL} the number of columns will be less than those in \code{coverageInfo$coverage}. The total number of rows depends on the number of base pairs that passed the \code{cutoff} and the information stored is the coverage at that given base. Further note that \link{filterData} is re-applied if \code{colsubset} is not \code{NULL} and could thus lead to fewer rows compared to \code{coverageInfo$coverage}. }
@@ -110,7 +112,6 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 		}
 	}
 	split.idx <- Rle(seq_len(lastloop + 1), split.len)
-	coverage.split <- lapply( seq_len(lastloop + 1), function(x) { split.idx == x })
 	if(!is.null(lowMemDir)) {
 		chunks <- split(coverage, split.idx)
 		create.dir(lowMemDir)
@@ -122,6 +123,9 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 		rm(chunkProcessed)
 		coverage <- NULL
 		gc()
+		coverage.split <- seq_len(lastloop + 1)
+	} else {
+		coverage.split <- lapply( seq_len(lastloop + 1), function(x) { split.idx == x })
 	}
 	
 	## Done =)

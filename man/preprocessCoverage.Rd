@@ -90,6 +90,11 @@
   \link[parallel]{mclapply} reduces memory copying as
   described by Ryan Thompson and illustrated in approach #4
   at \url{http://bit.ly/mclapplyMem}
+
+  If \code{lowMemDir} is specified then
+  \code{$coverageProcessed} is NULL and
+  \code{$mclapplyIndex} is a vector with the chunk
+  identifiers.
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()

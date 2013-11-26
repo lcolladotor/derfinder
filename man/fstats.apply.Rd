@@ -42,6 +42,10 @@
   a helper function for \link{calculateStats} and
   \link{calculatePvalues}.
 }
+\details{
+  If \code{lowMemDir} is specified then \code{index} is
+  expected to specify the chunk number.
+}
 \examples{
 ## Create the model matrices
 mod <- model.matrix(~ genomeInfo$pop)

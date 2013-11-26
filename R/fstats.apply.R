@@ -9,6 +9,8 @@
 #' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when using \link{preprocessCoverage} with a specified \code{lowMemDir}.
 #'
+#' @details If \code{lowMemDir} is specified then \code{index} is expected to specify the chunk number.
+#'
 #' @return A numeric Rle with the F-statistics per base for the chunk in question.
 #'
 #' @author Jeff Leek, Leonardo Collado-Torres
@@ -31,12 +33,15 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0
 	## Load the chunk file
 	if(!is.null(lowMemDir)) {
 		chunkProcessed <- NULL
-		load(file.path(lowMemDir, paste0("chunk", i, ".Rdata")))
+		load(file.path(lowMemDir, paste0("chunk", index, ".Rdata")))
 		data <- chunkProcessed
+		
+		##  Transform to a regular matrix
+		dat <- t(as.matrix(as.data.frame(data)))
+	} else{
+		##  Subset the DataFrame to the current chunk and transform to a regular matrix
+		dat <- t(as.matrix(as.data.frame(data[index, ])))
 	}
-	
-	##  Subset the DataFrame to the current chunk and transform to a regular matrix
-	dat <- t(as.matrix(as.data.frame(data[index, ])))
 	rm(data)
 	gc()
 	
