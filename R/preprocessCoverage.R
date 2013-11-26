@@ -114,7 +114,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 	split.idx <- Rle(seq_len(lastloop + 1), split.len)
 	if(!is.null(lowMemDir)) {
 		chunks <- split(coverage, split.idx)
-		create.dir(lowMemDir)
+		dir.create(lowMemDir)
 		
 		for(i in seq_len(length(chunks))) {
 			chunkProcessed <- chunks[[i]]
