@@ -29,11 +29,14 @@
 fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0) {
 	##  Subset the DataFrame to the current chunk and transform to a regular matrix
 	dat <- as.matrix(as.data.frame(data[index, ]))
+	rm(data)
+	gc()
 	
 	# A function for calculating F-statistics
 	# on the rows of dat, comparing the models
 	# mod (alternative) and mod0 (null). 	
 	fstats <- Rle(drop(.Call("rcppFstats", t(dat), mod, mod0, adjustF, package="derfinder")))
+	gc()
 	
 	## Done
 	return(fstats)
