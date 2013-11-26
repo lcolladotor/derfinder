@@ -58,6 +58,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 		position <- coverageInfo$position
 	}
 	rm(coverageInfo)
+	gc()
 	
 	## Get the positions and shorter variables
 	numrow <- nrow(coverage)

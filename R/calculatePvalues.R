@@ -108,6 +108,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	position <- coveragePrep$position
 	means <- coveragePrep$meanCoverage
 	groupMeans <- coveragePrep$groupMeans
+	mclapplyIndex <- coveragePrep$mclapplyIndex
+	coverageProcessed <- coveragePrep$coverageProcessed
+	rm(coveragePrep)
+	gc()
 	
 	## Avoid re-calculating possible candidate DERs for every permutation
 	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
@@ -145,12 +149,14 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 			names(log2FoldChange) <- paste0("log2FoldChange", names(log2FoldChange), "vs", names(groupMeans)[1])
 			values(regs) <- cbind(values(regs), DataFrame(log2FoldChange))
 			rm(log2FoldChange)
+			gc()
 		}
 		rm(regionGroupMean)
+		gc()
 	}
 	
 	rm(fstats, position, means, groupMeans)
-	
+	gc()
 	
 	## Pre-allocate memory
 	nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
@@ -170,7 +176,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(coveragePrep$mclapplyIndex, fstats.apply, data=coveragePrep$coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
+		fstats.output <- mclapply(mclapplyIndex, fstats.apply, data=coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
@@ -189,6 +195,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		
 		## Finish loop
 		rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)
+		gc()
 		
 	}
 	nullstats <- do.call(c, nullstats[!sapply(nullstats, is.null)])

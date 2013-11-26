@@ -135,6 +135,7 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		## Proceed only if there are null regions to work with
 		fullNullSummary <- DataFrame(stat=nulls, width=widths, chr=Rle(names(fullNullStats), howMany), permutation=permutations)
 		rm(nulls, widths, howMany, permutations)
+		gc()
 		fullNullSummary$area <- abs(fullNullSummary$stat) * fullNullSummary$width
 		fullNullSummary <- fullNullSummary[order(fullNullSummary$area, decreasing=TRUE), ]
 	} else {
