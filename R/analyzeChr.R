@@ -85,6 +85,8 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	## pre-process the coverage data with automatic chunks depending on the number of cores
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Pre-processing the coverage data"))
 	prep <- preprocessCoverage(coverageInfo=coverageInfo, groupInfo=groupInfo, cutoff=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, mc.cores=mc.cores, verbose=verbose)
+	rm(coverageInfo)
+	gc()
 
 	## prepData
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -129,6 +131,10 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Using the following", cutoffType, "cutoff for the F-statistics", cutoff))
 	
 	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose, adjustF=adjustF)
+	if(!returnOutput) {
+		rm(prep)
+		gc()
+	}
 
 	## calculatePValues
 	timeinfo <- c(timeinfo, list(Sys.time()))

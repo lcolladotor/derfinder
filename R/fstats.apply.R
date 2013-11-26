@@ -29,7 +29,6 @@
 fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0) {
 	##  Subset the DataFrame to the current chunk and transform to a regular matrix
 	dat <- as.matrix(as.data.frame(data[index, ]))
-	rm(data)
 	
 	# A function for calculating F-statistics
 	# on the rows of dat, comparing the models
