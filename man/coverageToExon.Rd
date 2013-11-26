@@ -3,7 +3,7 @@
 \title{Extract coverage information for exons}
 \usage{
   coverageToExon(fullCov, genomicState,
-    fullOrCoding = "full", L = 100, returnType = "raw",
+    fullOrCoding = "full", L, returnType = "raw",
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{

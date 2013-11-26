@@ -3,7 +3,7 @@
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
   fstats.apply(index = Rle(TRUE, nrow(data)), data, mod,
-    mod0, adjustF = 0)
+    mod0, adjustF = 0, lowMemDir = NULL)
 }
 \arguments{
   \item{index}{An index (logical Rle is the best for saving
@@ -26,6 +26,10 @@
   the denominator of the F-stat calculation. Useful when
   the Residual Sum of Squares of the alternative model is
   very small.}
+
+  \item{lowMemDir}{The directory where the processed chunks
+  are saved when using \link{preprocessCoverage} with a
+  specified \code{lowMemDir}.}
 }
 \value{
   A numeric Rle with the F-statistics per base for the

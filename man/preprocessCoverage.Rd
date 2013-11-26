@@ -5,7 +5,7 @@
   preprocessCoverage(coverageInfo, groupInfo = NULL,
     cutoff = 5, scalefac = 32, chunksize = 5e+06,
     colsubset = NULL, mc.cores = getOption("mc.cores", 1L),
-    verbose = FALSE)
+    lowMemDir = NULL, verbose = FALSE)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -37,6 +37,15 @@
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
+
+  \item{lowMemDir}{If specified, each chunk is saved into a
+  separate Rdata file under \code{lowMemDir} and later
+  loaded in \link{fstats.apply} when running
+  \link{calculateStats} and \link{calculatePvalues}. Using
+  this option helps reduce the memory load as each fork in
+  \link[parallel]{mclapply} loads only the data needed for
+  the chunk processing. The downside is a bit longer
+  computation time due to input/output.}
 
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply} to run \link{fstats.apply}.}

@@ -8,7 +8,8 @@
     chr, maxRegionGap = 0L, maxClusterGap = 300L,
     cutoff = quantile(fstats, 0.99),
     mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
-    significantCut = c(0.05, 0.1), adjustF = 0)
+    significantCut = c(0.05, 0.1), adjustF = 0,
+    lowMemDir = NULL)
 }
 \arguments{
   \item{coveragePrep}{A list with
@@ -61,6 +62,10 @@
   the denominator of the F-stat calculation. Useful when
   the Residual Sum of Squares of the alternative model is
   very small.}
+
+  \item{lowMemDir}{The directory where the processed chunks
+  are saved when using \link{preprocessCoverage} with a
+  specified \code{lowMemDir}.}
 }
 \value{
   A list with four components: \describe{ \item{regions }{

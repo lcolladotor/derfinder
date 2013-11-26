@@ -15,6 +15,7 @@
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
+#' @param lowMemDir The directory where the processed chunks are saved when using \link{preprocessCoverage} with a specified \code{lowMemDir}.
 #'
 #' @return A list with four components:
 #' \describe{
@@ -93,7 +94,7 @@
 #' ## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10), adjustF=0) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10), adjustF=0, lowMemDir=NULL) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
@@ -110,6 +111,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	groupMeans <- coveragePrep$groupMeans
 	mclapplyIndex <- coveragePrep$mclapplyIndex
 	coverageProcessed <- coveragePrep$coverageProcessed
+	if(is.null(lowMemDir) & is.null(coverageProcessed)) stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
 	rm(coveragePrep)
 	gc()
 	
@@ -176,7 +178,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(mclapplyIndex, fstats.apply, data=coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
+		fstats.output <- mclapply(mclapplyIndex, fstats.apply, data=coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, lowMemDir=lowMemDir, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments

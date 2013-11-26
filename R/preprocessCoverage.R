@@ -9,6 +9,7 @@
 #' @param scalefac A log transformation is used on the count tables, so zero counts present a problem.  What number should we add to the entire matrix?
 #' @param chunksize How many rows of \code{coverageInfo$coverage} should be processed at a time?
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
+#' @param lowMemDir If specified, each chunk is saved into a separate Rdata file under \code{lowMemDir} and later loaded in \link{fstats.apply} when running \link{calculateStats} and \link{calculatePvalues}. Using this option helps reduce the memory load as each fork in \link[parallel]{mclapply} loads only the data needed for the chunk processing. The downside is a bit longer computation time due to input/output. 
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run \link{fstats.apply}.
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to determine the \code{chunksize}. This is useful if you want to split the data so each core gets the same amount of data (up to rounding).
@@ -35,7 +36,7 @@
 #' names(dataReady)
 #' dataReady
 
-preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefac = 32, chunksize = 5e6, colsubset = NULL, mc.cores=getOption("mc.cores", 1L), verbose=FALSE) {
+preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefac = 32, chunksize = 5e6, colsubset = NULL, mc.cores=getOption("mc.cores", 1L), lowMemDir=NULL, verbose=FALSE) {
 	## Check that the input is from loadCoverage()
 	stopifnot(length(intersect(names(coverageInfo), c("coverage", "position"))) == 2)
 	stopifnot(is.factor(groupInfo) | is.null(groupInfo))
@@ -110,6 +111,18 @@ preprocessCoverage <- function(coverageInfo, groupInfo=NULL, cutoff = 5, scalefa
 	}
 	split.idx <- Rle(seq_len(lastloop + 1), split.len)
 	coverage.split <- lapply( seq_len(lastloop + 1), function(x) { split.idx == x })
+	if(!is.null(lowMemDir)) {
+		chunks <- split(coverage, split.idx)
+		create.dir(lowMemDir)
+		
+		for(i in seq_len(length(chunks))) {
+			chunkProcessed <- chunks[[i]]
+			save(chunkProcessed, file=file.path(lowMemDir, paste0("chunk", i, ".Rdata")))
+		}		
+		rm(chunkProcessed)
+		coverage <- NULL
+		gc()
+	}
 	
 	## Done =)
 	result <- list("coverageProcessed"=coverage, "mclapplyIndex"=coverage.split, "position"=position, "meanCoverage"=means, "groupMeans"=groupMeans)

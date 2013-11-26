@@ -4,7 +4,7 @@
 \usage{
   calculateStats(coveragePrep, models,
     mc.cores = getOption("mc.cores", 2L), adjustF = 0,
-    verbose = TRUE)
+    lowMemDir = NULL, verbose = TRUE)
 }
 \arguments{
   \item{coveragePrep}{A list with
@@ -22,6 +22,10 @@
   the denominator of the F-stat calculation. Useful when
   the Residual Sum of Squares of the alternative model is
   very small.}
+
+  \item{lowMemDir}{The directory where the processed chunks
+  are saved when using \link{preprocessCoverage} with a
+  specified \code{lowMemDir}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

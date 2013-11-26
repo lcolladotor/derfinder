@@ -10,7 +10,7 @@
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo,
     subject = "hg19", mc.cores = getOption("mc.cores", 2L),
     writeOutput = TRUE, returnOutput = FALSE,
-    runAnnotation = TRUE, verbose = TRUE)
+    runAnnotation = TRUE, lowMemDir = NULL, verbose = TRUE)
 }
 \arguments{
   \item{chrnum}{Used for naming the output files when
@@ -89,6 +89,10 @@
   \item{runAnnotation}{If \code{TRUE}
   \link[bumphunter]{annotateNearest} is run. Otherwise this
   step is skipped.}
+
+  \item{lowMemDir}{The directory where the processed chunks
+  are saved when using \link{preprocessCoverage} with a
+  specified \code{lowMemDir}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
