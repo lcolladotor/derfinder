@@ -4,7 +4,8 @@
 \usage{
   mergeResults(chrnums = c(1:22, "X", "Y"), prefix = ".",
     significantCut = c(0.05, 0.1), genomicState,
-    minoverlap = 20, fullOrCoding = "full", verbose = TRUE)
+    minoverlap = 20, fullOrCoding = "full",
+    mergePrep = FALSE, verbose = TRUE)
 }
 \arguments{
   \item{chrnums}{The chromosome numbers of the files to be
@@ -29,6 +30,9 @@
 
   \item{fullOrCoding}{This argument is passed to
   \link{annotateRegions}.}
+
+  \item{mergePrep}{If \code{TRUE} the output from
+  \link{preprocessCoverage} is merged.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

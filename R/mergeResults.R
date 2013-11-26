@@ -8,6 +8,7 @@
 #' @param genomicState This argument is passed to \link{annotateRegions}.
 #' @param minoverlap This argument is passed to \link{annotateRegions}.
 #' @param fullOrCoding This argument is passed to \link{annotateRegions}.
+#' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is merged. 
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return Seven Rdata files.
@@ -61,7 +62,7 @@
 #' ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() + labs(title="Wallclock time by step") + scale_colour_discrete(limits=chrs) + scale_x_discrete(limits=names(fullTime[[1]])[-1]) + ylab("Time (min)") + xlab("Step")
 #' }
 
-mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), genomicState, minoverlap=20, fullOrCoding = "full", verbose=TRUE) {	
+mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c(0.05, 0.10), genomicState, minoverlap=20, fullOrCoding = "full", mergePrep=FALSE, verbose=TRUE) {	
 	## For R CMD check
 	prep <- fstats <- regions <- annotation <- timeinfo <- NULL
 	
@@ -100,8 +101,10 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 		fullTime[[chr]] <- timeinfo
 		
 		## Process the covPrep data
-		load(file.path(prefix, chr, "coveragePrep.Rdata"))
-		fullCoveragePrep[[chr]] <- prep
+		if(mergePrep) {
+			load(file.path(prefix, chr, "coveragePrep.Rdata"))
+			fullCoveragePrep[[chr]] <- prep
+		}		
 	}
 	
 	## Merge regions
@@ -186,8 +189,10 @@ mergeResults <- function(chrnums=c(1:22, "X", "Y"), prefix=".", significantCut=c
 	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullTime"))
 	save(fullTime, file=file.path(prefix, "fullTime.Rdata"))
 	
-	if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
-	save(fullCoveragePrep, file=file.path(prefix, "fullCoveragePrep.Rdata"))
+	if(mergePrep) {
+		if(verbose) message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
+		save(fullCoveragePrep, file=file.path(prefix, "fullCoveragePrep.Rdata"))
+	}
 	
 	## Finish
 	return(invisible(NULL))
