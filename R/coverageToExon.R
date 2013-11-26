@@ -78,7 +78,7 @@
 #' }
 
 
-coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L = 100, returnType = "raw", mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, returnType = "raw", mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	stopifnot(length(intersect(names(genomicState), c("fullGenome", "codingGenome"))) == 2)
 	stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 1)
 	stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 1)
