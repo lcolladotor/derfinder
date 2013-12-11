@@ -2,8 +2,8 @@
 \alias{filterData}
 \title{Filter the positions of interest}
 \usage{
-  filterData(data, cutoff = NULL, index = NULL,
-    colnames = NULL, verbose = TRUE)
+filterData(data, cutoff = NULL, index = NULL, colnames = NULL,
+  verbose = TRUE)
 }
 \arguments{
   \item{data}{Either a list of Rle objects or a DataFrame
@@ -26,31 +26,31 @@
   rows are remaining out of the original ones.}
 }
 \value{
-  A list with two components. \describe{ \item{coverage }{
-  is a DataFrame object where each column represents a
-  sample. The number of rows depends on the number of base
-  pairs that passed the cutoff and the information stored
-  is the coverage at that given base.} \item{position }{ is
-  a logical Rle with the positions of the chromosome that
-  passed the cutoff.} }
+A list with two components. \describe{ \item{coverage }{ is
+a DataFrame object where each column represents a sample.
+The number of rows depends on the number of base pairs that
+passed the cutoff and the information stored is the
+coverage at that given base.} \item{position }{ is a
+logical Rle with the positions of the chromosome that
+passed the cutoff.} }
 }
 \description{
-  For a group of samples this function reads the coverage
-  information for a specific chromosome directly from the
-  BAM files. It then merges them into a DataFrame and
-  removes the bases that do not pass the cutoff. This is a
-  helper function for \link{loadCoverage} and
-  \link{preprocessCoverage}.
+For a group of samples this function reads the coverage
+information for a specific chromosome directly from the BAM
+files. It then merges them into a DataFrame and removes the
+bases that do not pass the cutoff. This is a helper
+function for \link{loadCoverage} and
+\link{preprocessCoverage}.
 }
 \details{
-  If \code{cutoff} is \code{NULL} then the data is grouped
-  into DataFrame without applying any cutoffs. This can be
-  useful if you want to use \link{loadCoverage} to build
-  the coverage DataFrame without applying any cutoffs for
-  other downstream purposes like plotting the coverage
-  values of a given region. You can always specify the
-  \code{colsubset} argument in \link{preprocessCoverage} to
-  filter the data before calculating the F statistics.
+If \code{cutoff} is \code{NULL} then the data is grouped
+into DataFrame without applying any cutoffs. This can be
+useful if you want to use \link{loadCoverage} to build the
+coverage DataFrame without applying any cutoffs for other
+downstream purposes like plotting the coverage values of a
+given region. You can always specify the \code{colsubset}
+argument in \link{preprocessCoverage} to filter the data
+before calculating the F statistics.
 }
 \examples{
 library("IRanges")
@@ -66,9 +66,9 @@ filt2
 identical(sum(filt2$pos), nrow(filt2$cov))
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}, \link{preprocessCoverage}
+\link{loadCoverage}, \link{preprocessCoverage}
 }
 

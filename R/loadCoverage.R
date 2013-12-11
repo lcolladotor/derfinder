@@ -98,6 +98,7 @@ loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=N
 	
 	res <- filterData(data=data, cutoff=cutoff, index=NULL, colnames=names(dirs), verbose=verbose)
 	rm(data)
+	gc()
 	
 	
 	## Save if output is specified

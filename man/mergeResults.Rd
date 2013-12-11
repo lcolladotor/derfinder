@@ -2,9 +2,9 @@
 \alias{mergeResults}
 \title{Merge results from different chromosomes}
 \usage{
-  mergeResults(chrnums = c(1:22, "X", "Y"), prefix = ".",
-    significantCut = c(0.05, 0.1), genomicState,
-    minoverlap = 20, fullOrCoding = "full", verbose = TRUE)
+mergeResults(chrnums = c(1:22, "X", "Y"), prefix = ".",
+  significantCut = c(0.05, 0.1), genomicState, minoverlap = 20,
+  fullOrCoding = "full", mergePrep = FALSE, verbose = TRUE)
 }
 \arguments{
   \item{chrnums}{The chromosome numbers of the files to be
@@ -30,41 +30,43 @@
   \item{fullOrCoding}{This argument is passed to
   \link{annotateRegions}.}
 
+  \item{mergePrep}{If \code{TRUE} the output from
+  \link{preprocessCoverage} is merged.}
+
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
 \value{
-  Seven Rdata files. \describe{ \item{fullFstats.Rdata }{
-  Full F-statistics from all chromosomes in a list of Rle
-  objects.} \item{fullTime.Rdata }{ Timing information from
-  all chromosomes.} \item{fullNullSummary.Rdata}{ A
-  DataFrame with the null region information: statistic,
-  width, chromosome and permutation identifier. It's
-  ordered by the statistics} \item{fullRegions.Rdata}{
-  GRanges object with regions found and with full
-  annotation from \link[bumphunter]{annotateNearest}. Note
-  that the column \code{strand} from
-  \link[bumphunter]{annotateNearest} is renamed to
-  \code{annoStrand} to comply with GRanges specifications.
-  } \item{fullCoveragePrep.Rdata}{ A list with the
-  pre-processed coverage data from all chromosomes.}
-  \item{fullAnnotatedRegions.Rdata}{ A list as constructed
-  in \link{annotateRegions} with the assigned genomic
-  states.} \item{optionsMerge.Rdata}{ A list with the
-  options used when merging the results. Used in
-  \link[derfinderReport]{generateReport}.} }
+Seven Rdata files. \describe{ \item{fullFstats.Rdata }{
+Full F-statistics from all chromosomes in a list of Rle
+objects.} \item{fullTime.Rdata }{ Timing information from
+all chromosomes.} \item{fullNullSummary.Rdata}{ A DataFrame
+with the null region information: statistic, width,
+chromosome and permutation identifier. It's ordered by the
+statistics} \item{fullRegions.Rdata}{ GRanges object with
+regions found and with full annotation from
+\link[bumphunter]{annotateNearest}. Note that the column
+\code{strand} from \link[bumphunter]{annotateNearest} is
+renamed to \code{annoStrand} to comply with GRanges
+specifications. } \item{fullCoveragePrep.Rdata}{ A list
+with the pre-processed coverage data from all chromosomes.}
+\item{fullAnnotatedRegions.Rdata}{ A list as constructed in
+\link{annotateRegions} with the assigned genomic states.}
+\item{optionsMerge.Rdata}{ A list with the options used
+when merging the results. Used in
+\link[derfinderReport]{generateReport}.} }
 }
 \description{
-  This function merges the results from running
-  \link{analyzeChr} on several chromosomes and assigns
-  genomic states using \link{annotateRegions}. It
-  re-calculates the p-values and q-values using the pooled
-  areas from the null regions from all chromosomes. Once
-  the results have been merged,
-  \link[derfinderReport]{generateReport} can be used to
-  generate an HTML report of the results. The
-  \code{derfinderReport} package is available at
-  https://github.com/lcolladotor/derfinderReport.
+This function merges the results from running
+\link{analyzeChr} on several chromosomes and assigns
+genomic states using \link{annotateRegions}. It
+re-calculates the p-values and q-values using the pooled
+areas from the null regions from all chromosomes. Once the
+results have been merged,
+\link[derfinderReport]{generateReport} can be used to
+generate an HTML report of the results. The
+\code{derfinderReport} package is available at
+https://github.com/lcolladotor/derfinderReport.
 }
 \examples{
 \dontrun{
@@ -98,10 +100,10 @@ ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() + labs(title="Wallcl
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{analyzeChr}, \link{calculatePvalues},
-  \link{annotateRegions}
+\link{analyzeChr}, \link{calculatePvalues},
+\link{annotateRegions}
 }
 

@@ -11,33 +11,33 @@
 \item{pop }{ The population the person belongs to.}
 }}
 \description{
-  Information for the 31 samples downloaded from the Short
-  Read Archive from studies comparing CEU and YRI
-  populations. This data is used to specify the adjustment
-  variables in \link{calculateStats}. The data is sorted
-  according to the BAM files identifiers.
+Information for the 31 samples downloaded from the Short
+Read Archive from studies comparing CEU and YRI
+populations. This data is used to specify the adjustment
+variables in \link{calculateStats}. The data is sorted
+according to the BAM files identifiers.
 }
 \details{
-  The samples are from: \describe{ \item{10 }{ unrelated
-  females from the YRI population.} \item{5 }{ unrelated
-  females from the CEU population.} \item{5 }{ unrelated
-  males (unrelated to the females too) from the CEU
-  population.} }
+The samples are from: \describe{ \item{10 }{ unrelated
+females from the YRI population.} \item{5 }{ unrelated
+females from the CEU population.} \item{5 }{ unrelated
+males (unrelated to the females too) from the CEU
+population.} }
 }
 \references{
-  1. Pickrell JK, Marioni JC, Pai AA, Degner JF, Engelhardt
-  BE, Nkadori E, Veyrieras J-B, Stephens M, Gilad Y,
-  Pritchard JK. Understanding mechanisms underlying human
-  gene expression variation with RNA sequencing. Nature
-  2010 Apr.
+1. Pickrell JK, Marioni JC, Pai AA, Degner JF, Engelhardt
+BE, Nkadori E, Veyrieras J-B, Stephens M, Gilad Y,
+Pritchard JK. Understanding mechanisms underlying human
+gene expression variation with RNA sequencing. Nature 2010
+Apr.
 
-  2. Montgomery SB, Sammeth M, Gutierrez-Arcelus M, Lach
-  RP, Ingle C, Nisbett J, Guigo R, Dermitzakis ET.
-  Transcriptome genetics using second generation sequencing
-  in a Caucasian population. Nature 2010 Mar.
+2. Montgomery SB, Sammeth M, Gutierrez-Arcelus M, Lach RP,
+Ingle C, Nisbett J, Guigo R, Dermitzakis ET. Transcriptome
+genetics using second generation sequencing in a Caucasian
+population. Nature 2010 Mar.
 }
 \seealso{
-  \link{genomeData}, \link{calculateStats}
+\link{genomeData}, \link{calculateStats}
 }
 \keyword{datasets}
 

@@ -2,15 +2,14 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-  analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5,
-    colsubset = NULL, scalefac = 32, chunksize = NULL,
-    adjustF = 0, cutoffFstat = 1e-08,
-    cutoffType = "theoretical", nPermute = 1,
-    seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    maxRegionGap = 0L, maxClusterGap = 300L, groupInfo,
-    subject = "hg19", mc.cores = getOption("mc.cores", 2L),
-    writeOutput = TRUE, returnOutput = FALSE,
-    runAnnotation = TRUE, verbose = TRUE)
+analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
+  scalefac = 32, chunksize = NULL, adjustF = 0, cutoffFstat = 1e-08,
+  cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
+  "", Sys.Date())) + seq_len(nPermute), maxRegionGap = 0L,
+  maxClusterGap = 300L, groupInfo, subject = "hg19",
+  mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE,
+  returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
+  verbose = TRUE)
 }
 \arguments{
   \item{chrnum}{Used for naming the output files when
@@ -90,30 +89,34 @@
   \link[bumphunter]{annotateNearest} is run. Otherwise this
   step is skipped.}
 
+  \item{lowMemDir}{The directory where the processed chunks
+  are saved when using \link{preprocessCoverage} with a
+  specified \code{lowMemDir}.}
+
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
 \value{
-  If \code{returnOutput=TRUE}, a list with six components:
-  \describe{ \item{timeinfo }{ The wallclock timing
-  information for each step.} \item{optionsStats }{ The
-  main options used when running this function.}
-  \item{coveragePrep }{ The output from
-  \link{preprocessCoverage}.} \item{fstats}{ The output
-  from \link{calculateStats}.} \item{regions}{ The output
-  from \link{calculatePvalues}.} \item{annotation}{ The
-  output from \link[bumphunter]{annotateNearest}.} } These
-  are the same components that are written to Rdata files
-  if \code{writeOutput=TRUE}.
+If \code{returnOutput=TRUE}, a list with six components:
+\describe{ \item{timeinfo }{ The wallclock timing
+information for each step.} \item{optionsStats }{ The main
+options used when running this function.}
+\item{coveragePrep }{ The output from
+\link{preprocessCoverage}.} \item{fstats}{ The output from
+\link{calculateStats}.} \item{regions}{ The output from
+\link{calculatePvalues}.} \item{annotation}{ The output
+from \link[bumphunter]{annotateNearest}.} } These are the
+same components that are written to Rdata files if
+\code{writeOutput=TRUE}.
 }
 \description{
-  This is a major wrapper for running several key functions
-  from this package. It is meant to be used after
-  \link{loadCoverage} has been used for a specific
-  chromosome. The steps run include \link{makeModels},
-  \link{preprocessCoverage}, \link{calculateStats},
-  \link{calculatePvalues} and
-  \link[bumphunter]{annotateNearest}.
+This is a major wrapper for running several key functions
+from this package. It is meant to be used after
+\link{loadCoverage} has been used for a specific
+chromosome. The steps run include \link{makeModels},
+\link{preprocessCoverage}, \link{calculateStats},
+\link{calculatePvalues} and
+\link[bumphunter]{annotateNearest}.
 }
 \examples{
 ## Collapse the coverage information
@@ -132,11 +135,11 @@ results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutof
 names(results)
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{makeModels}, \link{preprocessCoverage},
-  \link{calculateStats}, \link{calculatePvalues},
-  \link[bumphunter]{annotateNearest}
+\link{makeModels}, \link{preprocessCoverage},
+\link{calculateStats}, \link{calculatePvalues},
+\link[bumphunter]{annotateNearest}
 }
 

@@ -2,7 +2,7 @@
 #'
 #' First, this function finds the regions of interest according to specified cutoffs. Then it permutes the samples and re-calculates the F-statistics. The area of the statistics from these segments are then used to calculate p-values for the original regions.
 #' 
-#' @param coveragePrep A list with \code{$coverageSplit} and \code{$position} normally generated using \link{preprocessCoverage}.
+#' @param coveragePrep A list with \code{$coverageProcessed}, \code{mclapplyIndeex}, and \code{$position} normally generated using \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated using \link{makeModels}.
 #' @param fstats A numerical Rle with the F-statistics normally generated using \link{calculateStats}.
 #' @param nPermute The number of permutations. Note that for a full chromosome, a small amount (10) of permutations is sufficient. If set to 0, no permutations are performed and thus no null regions are used, however, the \code{$regions} component is created.
@@ -15,6 +15,7 @@
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #' @param significantCut A vector of length two specifiying the cutoffs used to determine significance. The first element is used to determine significance for the p-values and the second element is used for the q-values.
 #' @param adjustF A single value to adjust that is added in the denominator of the F-stat calculation. Useful when the Residual Sum of Squares of the alternative model is very small.
+#' @param lowMemDir The directory where the processed chunks are saved when using \link{preprocessCoverage} with a specified \code{lowMemDir}.
 #'
 #' @return A list with four components:
 #' \describe{
@@ -53,7 +54,7 @@
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' n <- dim(prep$coverageSplit[[1]])[2]
+#' n <- dim(prep$coverageProcessed)[2]
 #' df1 <- dim(models$mod)[2]
 #' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
@@ -93,13 +94,13 @@
 #' ## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
 #' }
 
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10), adjustF=0) {
+calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), mc.cores=getOption("mc.cores", 2L), verbose=TRUE, significantCut=c(0.05, 0.10), adjustF=0, lowMemDir=NULL) {
 	## Setup
 	if(is.null(seeds)) {
 		seeds <- rep(NA, nPermute)
 	}
 	stopifnot(nPermute == length(seeds))
-	stopifnot(length(intersect(names(coveragePrep), c("coverageSplit", "position", "meanCoverage", "groupMeans"))) == 4)
+	stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", "mclapplyIndex", "position", "meanCoverage", "groupMeans"))) == 5)
 	stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 2)
 	stopifnot(length(significantCut) == 2 & all(significantCut >=0 & significantCut <=1))
 	
@@ -108,6 +109,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	position <- coveragePrep$position
 	means <- coveragePrep$meanCoverage
 	groupMeans <- coveragePrep$groupMeans
+	mclapplyIndex <- coveragePrep$mclapplyIndex
+	coverageProcessed <- coveragePrep$coverageProcessed
+	if(is.null(lowMemDir) & is.null(coverageProcessed)) stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
+	rm(coveragePrep)
+	gc()
 	
 	## Avoid re-calculating possible candidate DERs for every permutation
 	segmentIR <- clusterMakerRle(position, maxRegionGap, ranges=TRUE)
@@ -145,18 +151,19 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 			names(log2FoldChange) <- paste0("log2FoldChange", names(log2FoldChange), "vs", names(groupMeans)[1])
 			values(regs) <- cbind(values(regs), DataFrame(log2FoldChange))
 			rm(log2FoldChange)
+			gc()
 		}
 		rm(regionGroupMean)
+		gc()
 	}
 	
 	rm(fstats, position, means, groupMeans)
-	
+	gc()
 	
 	## Pre-allocate memory
 	nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", length(seeds) * 2)
 	last <- 0
 	nSamples <- seq_len(nrow(models$mod))
-	coverageSplit <- coveragePrep$coverageSplit
 		
 	for(i in seq_along(seeds)) {
 		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i))		
@@ -171,12 +178,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		mod0.p <- models$mod0[idx.permute, , drop=FALSE]
 		
 		## Get the F-statistics
-		fstats.output <- mclapply(coverageSplit, fstats.apply, mod=mod.p, mod0=mod0.p, adjustF=adjustF, mc.cores=mc.cores)
+		fstats.output <- mclapply(mclapplyIndex, fstats.apply, data=coverageProcessed, mod=mod.p, mod0=mod0.p, adjustF=adjustF, lowMemDir=lowMemDir, mc.cores=mc.cores)
 		fstats.output <- unlist(RleList(fstats.output), use.names=FALSE)	
 			
 		## Find the segments
-		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap,
-                                         fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
+		regs.perm <- findRegions(chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, fstats=fstats.output, cutoff=cutoff, segmentIR=segmentIR, basic=TRUE, verbose=verbose)
 		
 		## Calculate mean statistics
 		if(!is.null(regs.perm)) {
@@ -191,13 +197,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 		
 		## Finish loop
 		rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)
+		gc()
 		
 	}
 	nullstats <- do.call(c, nullstats[!sapply(nullstats, is.null)])
 	nullwidths <- do.call(c, nullwidths[!sapply(nullwidths, is.null)])
 	nullpermutation <- do.call(c, nullpermutation[!sapply(nullpermutation, is.null)])
 	nullareas <- do.call(c, nullareas[!sapply(nullareas, is.null)])
-	rm(coveragePrep, coverageSplit)
 	
 	if(length(nullstats) > 0) {
 		## Proceed only if there is at least one null stats

@@ -2,9 +2,9 @@
 \alias{coverageToExon}
 \title{Extract coverage information for exons}
 \usage{
-  coverageToExon(fullCov, genomicState,
-    fullOrCoding = "full", L = 100, returnType = "raw",
-    verbose = TRUE)
+coverageToExon(fullCov, genomicState, fullOrCoding = "full", L,
+  returnType = "raw", mc.cores = getOption("mc.cores", 2L),
+  verbose = TRUE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -28,25 +28,32 @@
   information per exon is returned. If \code{rpkm}, RPKM
   values are calculated for each exon.}
 
+  \item{mc.cores}{This argument is passed to
+  \link[parallel]{mclapply} twice. First, it's is used by
+  strand. Secondly, for processing the exons by chromosome.
+  So there is no gain in using \code{mc.cores} greater than
+  the maximum of the number of strands and number of
+  chromosomes.}
+
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
 }
 \value{
-  A matrix (nrow = number of exons in \code{genomicState}
-  corresponding to the chromosomes in \code{fullCov}, ncol
-  = number of samples) with the number of reads (or RPKM)
-  per exon. The row names correspond to the row indexes of
-  \code{genomicState$fullGenome} (if
-  \code{fullOrCoding="full"}) or
-  \code{genomicState$codingGenome} (if
-  \code{fullOrCoding="coding"}).
+A matrix (nrow = number of exons in \code{genomicState}
+corresponding to the chromosomes in \code{fullCov}, ncol =
+number of samples) with the number of reads (or RPKM) per
+exon. The row names correspond to the row indexes of
+\code{genomicState$fullGenome} (if
+\code{fullOrCoding="full"}) or
+\code{genomicState$codingGenome} (if
+\code{fullOrCoding="coding"}).
 }
 \description{
-  This function extracts the coverage information
-  calculated by \link{fullCoverage} for a set of exons
-  determined by \link{makeGenomicState}. The underlying
-  code is similar to \link{getRegionCoverage} with
-  additional tweaks for calculating RPKM values.
+This function extracts the coverage information calculated
+by \link{fullCoverage} for a set of exons determined by
+\link{makeGenomicState}. The underlying code is similar to
+\link{getRegionCoverage} with additional tweaks for
+calculating RPKM values.
 }
 \examples{
 \dontrun{
@@ -70,7 +77,7 @@ fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
-n <- dim(prep$coverageSplit[[1]])[2]
+n <- dim(prep$coverageProcessed)[2]
 df1 <- dim(models$mod)[2]
 df0 <- dim(models$mod0)[2]
 cutoff <- qf(0.95, df1-df0, n-df1)
@@ -106,9 +113,9 @@ exonCov <- coverageToExon(fullCov=fullCov, genomicState=GenomicState.Hsapiens.UC
 }
 }
 \author{
-  Andrew Jaffe, Leonardo Collado-Torres
+Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-  \link{fullCoverage}, \link{getRegionCoverage}
+\link{fullCoverage}, \link{getRegionCoverage}
 }
 

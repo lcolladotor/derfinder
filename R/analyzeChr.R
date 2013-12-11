@@ -22,6 +22,7 @@
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each step inside a directory with the chromosome name (example: 'chr21' if \code{chrnum="21"}). One Rdata files is created for each component described in the return section.
 #' @param returnOutput If \code{TRUE}, it returns a list with the results from each step. Otherwise, it returns \code{NULL}.
 #' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateNearest} is run. Otherwise this step is skipped.
+#' @param lowMemDir The directory where the processed chunks are saved when using \link{preprocessCoverage} with a specified \code{lowMemDir}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:
@@ -57,7 +58,7 @@
 #' results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutoffFstat=1, cutoffType="manual", groupInfo=group, mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, adjustF=0, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, runAnnotation=TRUE, verbose=TRUE) {
+analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NULL, scalefac=32, chunksize=NULL, adjustF=0, cutoffFstat=1e-08, cutoffType="theoretical", nPermute=1, seeds=as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), maxRegionGap=0L, maxClusterGap=300L, groupInfo, subject="hg19", mc.cores=getOption("mc.cores", 2L), writeOutput=TRUE, returnOutput=FALSE, runAnnotation=TRUE, lowMemDir=NULL, verbose=TRUE) {
 	stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", "manual"))) == 1)
 	stopifnot(is.factor(groupInfo))
 	chr <- paste0("chr", chrnum)
@@ -70,7 +71,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	groupInfo <- droplevels(groupInfo)
 
 	## Save parameters used for running calculateStats
-	optionsStats <- list(models=models, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, adjustF=adjustF, analyzeCall=match.call())
+	optionsStats <- list(models=models, cutoffPre=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, cutoffFstat=cutoffFstat, cutoffType=cutoffType, nPermute=nPermute, seeds=seeds, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, groupInfo=groupInfo, adjustF=adjustF, lowMemDir=lowMemDir, analyzeCall=match.call())
 
 	## Setup
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -84,7 +85,9 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 
 	## pre-process the coverage data with automatic chunks depending on the number of cores
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Pre-processing the coverage data"))
-	prep <- preprocessCoverage(coverageInfo=coverageInfo, groupInfo=groupInfo, cutoff=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, mc.cores=mc.cores, verbose=verbose)
+	prep <- preprocessCoverage(coverageInfo=coverageInfo, groupInfo=groupInfo, cutoff=cutoffPre, colsubset=colsubset, scalefac=scalefac, chunksize=chunksize, mc.cores=mc.cores, lowMemDir=lowMemDir, verbose=verbose)
+	rm(coverageInfo)
+	gc()
 
 	## prepData
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -98,7 +101,7 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 
 	## Run calculateStats
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
-	fstats <- calculateStats(coveragePrep=prep, models=models, mc.cores=mc.cores, adjustF=adjustF, verbose=verbose)
+	fstats <- calculateStats(coveragePrep=prep, models=models, mc.cores=mc.cores, adjustF=adjustF, lowMemDir=lowMemDir, verbose=verbose)
 
 	## calculateStats
 	timeinfo <- c(timeinfo, list(Sys.time()))
@@ -128,7 +131,11 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, colsubset=NU
 	
 	if(verbose) message(paste(Sys.time(), "analyzeChr: Using the following", cutoffType, "cutoff for the F-statistics", cutoff))
 	
-	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose, adjustF=adjustF)
+	regions <- calculatePvalues(coveragePrep=prep, models=models, fstats=fstats, nPermute=nPermute, seeds=seeds, chr=chr, maxRegionGap=maxRegionGap, maxClusterGap=maxClusterGap, cutoff=cutoff, mc.cores=mc.cores, verbose=verbose, adjustF=adjustF, lowMemDir=lowMemDir)
+	if(!returnOutput) {
+		rm(prep)
+		gc()
+	}
 
 	## calculatePValues
 	timeinfo <- c(timeinfo, list(Sys.time()))

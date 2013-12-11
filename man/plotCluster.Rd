@@ -2,10 +2,9 @@
 \alias{plotCluster}
 \title{Plot the coverage information surrounding a region cluster}
 \usage{
-  plotCluster(idx, regions, annotation, coverageInfo,
-    groupInfo, titleUse = "qval", txdb = NULL,
-    p.ideogram = NULL, maxExtend = 300L, colsubset = NULL,
-    forceLarge = FALSE)
+plotCluster(idx, regions, annotation, coverageInfo, groupInfo,
+  titleUse = "qval", txdb = NULL, p.ideogram = NULL, maxExtend = 300L,
+  colsubset = NULL, forceLarge = FALSE)
 }
 \arguments{
   \item{idx}{A integer specifying the index number of the
@@ -56,22 +55,22 @@
   around 2 hours to complete.}
 }
 \value{
-  A ggplot2 plot that is ready to be printed out.
-  Tecnically it is a ggbio object. The region with the red
-  bar is the one whose information is shown in the title.
+A ggplot2 plot that is ready to be printed out. Tecnically
+it is a ggbio object. The region with the red bar is the
+one whose information is shown in the title.
 }
 \description{
-  For a given region found in \link{calculatePvalues}, plot
-  the coverage for the cluster this region belongs to as
-  well as some padding. The mean by group is shown to
-  facilitate comparisons between groups. If annotation
-  exists, you can plot the trancripts and exons (if any)
-  overlapping in the vicinity of the region of interest.
+For a given region found in \link{calculatePvalues}, plot
+the coverage for the cluster this region belongs to as well
+as some padding. The mean by group is shown to facilitate
+comparisons between groups. If annotation exists, you can
+plot the trancripts and exons (if any) overlapping in the
+vicinity of the region of interest.
 }
 \details{
-  See the parameter \code{significantCut} in
-  \link{calculatePvalues} for how the significance cutoffs
-  are determined.
+See the parameter \code{significantCut} in
+\link{calculatePvalues} for how the significance cutoffs
+are determined.
 }
 \examples{
 ## Get coverage info without any cutoff
@@ -100,7 +99,7 @@ fstats <- calculateStats(prep, models, mc.cores=1, verbose=FALSE)
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
 \dontrun{
-n <- dim(prep$coverageSplit[[1]])[2]
+n <- dim(prep$coverageProcessed)[2]
 df1 <- dim(models$mod)[2]
 df0 <- dim(models$mod0)[2]
 cutoff <- qf(0.95, df1-df0, n-df1)
@@ -203,11 +202,11 @@ abline(h=1, col="red")
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}, \link{calculatePvalues},
-  \link[bumphunter]{annotateNearest},
-  \link[ggbio]{plotIdeogram}
+\link{loadCoverage}, \link{calculatePvalues},
+\link[bumphunter]{annotateNearest},
+\link[ggbio]{plotIdeogram}
 }
 

@@ -2,8 +2,8 @@
 \alias{loadCoverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-  loadCoverage(dirs, chr, cutoff = NULL, bai = NULL,
-    chrlen = NULL, output = NULL, verbose = TRUE)
+loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
+  output = NULL, verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
@@ -39,19 +39,19 @@
   be printed along the way.}
 }
 \value{
-  A list with two components. \describe{ \item{coverage }{
-  is a DataFrame object where each column represents a
-  sample. The number of rows depends on the number of base
-  pairs that passed the cutoff and the information stored
-  is the coverage at that given base.} \item{position }{ is
-  a logical Rle with the positions of the chromosome that
-  passed the cutoff.} }
+A list with two components. \describe{ \item{coverage }{ is
+a DataFrame object where each column represents a sample.
+The number of rows depends on the number of base pairs that
+passed the cutoff and the information stored is the
+coverage at that given base.} \item{position }{ is a
+logical Rle with the positions of the chromosome that
+passed the cutoff.} }
 }
 \description{
-  For a group of samples this function reads the coverage
-  information for a specific chromosome directly from the
-  BAM files. It then merges them into a DataFrame and
-  removes the bases that do not pass the cutoff.
+For a group of samples this function reads the coverage
+information for a specific chromosome directly from the BAM
+files. It then merges them into a DataFrame and removes the
+bases that do not pass the cutoff.
 }
 \examples{
 datadir <- system.file("extdata", "genomeData", package="derfinder")
@@ -79,6 +79,6 @@ print(object.size(data2), units="Kb")
 }
 }
 \author{
-  Leonardo Collado-Torres, Andrew Jaffe
+Leonardo Collado-Torres, Andrew Jaffe
 }
 

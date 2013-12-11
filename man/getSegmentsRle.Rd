@@ -2,8 +2,7 @@
 \alias{getSegmentsRle}
 \title{Segment a Rle into positive, zero, and negative regions}
 \usage{
-  getSegmentsRle(x, cutoff = quantile(x, 0.99),
-    verbose = FALSE)
+getSegmentsRle(x, cutoff = quantile(x, 0.99), verbose = FALSE)
 }
 \arguments{
   \item{x}{A numeric Rle.}
@@ -18,14 +17,14 @@
   be printed along the way.}
 }
 \value{
-  A list of IRanges objects, one for the up segments and
-  one for the down segments.
+A list of IRanges objects, one for the up segments and one
+for the down segments.
 }
 \description{
-  Given two cutoffs, L and U, this function slices a
-  numerical Rle into up and down sections. It is a wrapper
-  for \link[IRanges]{slice} with functionality inspired
-  from \link[bumphunter]{getSegments}.
+Given two cutoffs, L and U, this function slices a
+numerical Rle into up and down sections. It is a wrapper
+for \link[IRanges]{slice} with functionality inspired from
+\link[bumphunter]{getSegments}.
 }
 \examples{
 library("IRanges")
@@ -62,10 +61,10 @@ micro
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link[bumphunter]{getSegments}, \link[IRanges]{slice},
-  \link{clusterMakerRle}, \link{findRegions}
+\link[bumphunter]{getSegments}, \link[IRanges]{slice},
+\link{clusterMakerRle}, \link{findRegions}
 }
 

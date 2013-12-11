@@ -7,6 +7,7 @@
 #' @param fullOrCoding If \code{full} then the \code{genomicState$fullGenome} genomic state information is used. If \code{coding}, then the \code{genomicState$codingGenome} genomic state information is used.
 #' @param L The width of the reads used.
 #' @param returnType If \code{raw}, then the raw coverage information per exon is returned. If \code{rpkm}, RPKM values are calculated for each exon.
+#' @param mc.cores This argument is passed to \link[parallel]{mclapply} twice. First, it's is used by strand. Secondly, for processing the exons by chromosome. So there is no gain in using \code{mc.cores} greater than the maximum of the number of strands and number of chromosomes.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return A matrix (nrow = number of exons in \code{genomicState} corresponding to the chromosomes in \code{fullCov}, ncol = number of samples) with the number of reads (or RPKM) per exon. The row names correspond to the row indexes of \code{genomicState$fullGenome}  (if \code{fullOrCoding="full"}) or \code{genomicState$codingGenome} (if \code{fullOrCoding="coding"}).
@@ -17,6 +18,7 @@
 #' @importFrom GenomicRanges seqlevels seqnames
 #' @importMethodsFrom GenomicRanges names "names<-" length "[" coverage sort width c strand "%in%"
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue "%in%"
+#' @importFrom parallel mclapply
 #'
 #' @examples
 #' \dontrun{
@@ -40,7 +42,7 @@
 #'
 #' ## Determine a cutoff from the F-distribution.
 #' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' n <- dim(prep$coverageSplit[[1]])[2]
+#' n <- dim(prep$coverageProcessed)[2]
 #' df1 <- dim(models$mod)[2]
 #' df0 <- dim(models$mod0)[2]
 #' cutoff <- qf(0.95, df1-df0, n-df1)
@@ -76,7 +78,7 @@
 #' }
 
 
-coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L = 100, returnType = "raw", verbose=TRUE) {
+coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, returnType = "raw", mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	stopifnot(length(intersect(names(genomicState), c("fullGenome", "codingGenome"))) == 2)
 	stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 1)
 	stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 1)
@@ -97,7 +99,7 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L = 100
 	strandIndexes <- split(seq_len(length(etab)), as.character(strand(etab)))
 	
 	# count reads covering exon on each strand
-	exonByStrand <- lapply(strandIndexes, function(ii) {
+	exonByStrand <- mclapply(strandIndexes, function(ii) {
 		e <- etab[ii] # subset
 		
 		## use logical rle to subset large coverage matrix
@@ -107,8 +109,7 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L = 100
 		}
 
 		# now count exons
-		exonList <- list() # blank list
-		for(i in seq(along=fullCov)) { # by chromosome
+		exonList <- mclapply(seq(along=fullCov), function(i) {
 			chrnum <- names(fullCov)[i]
 			chr <- paste0("chr", chrnum)
 			if(verbose) message(paste(Sys.time(), "coverageToExon: processing chromosome", chrnum))
@@ -120,10 +121,20 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L = 100
 			g <- e[seqnames(e) == chr]
 			ind <- rep(names(g), width(g)) # to split
 			tmpList <- split(z, ind) # split
-			exonList[[i]] <- t(sapply(tmpList, colSums)/L) # get # reads
-		}
+			res <- t(sapply(tmpList, colSums)/L) # get # reads
+			
+			## Clean up
+			rm(z, g, ind, tmpList)
+			gc()
+			return(res)
+		}, mc.cores=mc.cores)
 		out <- do.call("rbind", exonList) # combine
-	})
+		
+		## Clean up
+		rm(e, cc, exonList)
+		gc()
+		return(out)
+	}, mc.cores=min(mc.cores, length(unique(runValue(strand(etab))))) ) # Use at most n cores where n is the number of unique strands
 
 	# combine two strands
 	exons <- do.call("rbind", exonByStrand)

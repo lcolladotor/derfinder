@@ -57,6 +57,7 @@ filterData <- function(data, cutoff=NULL, index=NULL, colnames=NULL, verbose=TRU
 			finalidx <- newindex
 		}
 		rm(index)
+		gc()
 	}
 			
 	## Keep only bases that pass the cutoff
@@ -76,6 +77,7 @@ filterData <- function(data, cutoff=NULL, index=NULL, colnames=NULL, verbose=TRU
 		
 	}	
 	rm(newindex)
+	gc()
 	
 	
 	## Info for the user
@@ -83,6 +85,7 @@ filterData <- function(data, cutoff=NULL, index=NULL, colnames=NULL, verbose=TRU
 		message(paste(Sys.time(), "filterData: originally there were", length(data[[1]]), "rows, now there are", nrow(DF), "rows. Meaning that", 100 - round(nrow(DF) / length(data[[1]]) * 100, 2), "percent was filtered."))
 	}
 	rm(data)
+	gc()
 		
 	
 	## Assign column names

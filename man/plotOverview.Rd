@@ -2,10 +2,9 @@
 \alias{plotOverview}
 \title{Plot a karyotype overview of the genome with the identified regions}
 \usage{
-  plotOverview(regions, annotation = NULL, type = "pval",
-    base_size = 12, areaRel = 4,
-    legend.position = c(0.85, 0.12),
-    significantCut = c(0.05, 0.1))
+plotOverview(regions, annotation = NULL, type = "pval", base_size = 12,
+  areaRel = 4, legend.position = c(0.85, 0.12), significantCut = c(0.05,
+  0.1))
 }
 \arguments{
   \item{regions}{The \code{$regions} output from
@@ -43,16 +42,16 @@
   q-values.}
 }
 \value{
-  A ggplot2 plot that is ready to be printed out.
-  Tecnically it is a ggbio object.
+A ggplot2 plot that is ready to be printed out. Tecnically
+it is a ggbio object.
 }
 \description{
-  Plots an overview of the genomic locations of the
-  identified regions (see \link{calculatePvalues}) in a
-  karyotype view. The coloring can be done either by
-  significant regions according to their p-values,
-  significant by adjusted p-values, or by annotated region
-  if using \link[bumphunter]{annotateNearest}.
+Plots an overview of the genomic locations of the
+identified regions (see \link{calculatePvalues}) in a
+karyotype view. The coloring can be done either by
+significant regions according to their p-values,
+significant by adjusted p-values, or by annotated region if
+using \link[bumphunter]{annotateNearest}.
 }
 \examples{
 ## Construct toy data
@@ -91,10 +90,9 @@ plotOverview
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculatePvalues},
-  \link[bumphunter]{annotateNearest}
+\link{calculatePvalues}, \link[bumphunter]{annotateNearest}
 }
 
