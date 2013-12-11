@@ -2,7 +2,7 @@
 \alias{clusterMakerRle}
 \title{Make clusters of genomic locations based on distance in Rle() world}
 \usage{
-  clusterMakerRle(position, maxGap = 300L, ranges = FALSE)
+clusterMakerRle(position, maxGap = 300L, ranges = FALSE)
 }
 \arguments{
   \item{position}{A logical Rle indicating the chromosome
@@ -16,25 +16,24 @@
   returned instead of the usual integer Rle.}
 }
 \value{
-  An integer Rle with the cluster IDs. If
-  \code{ranges=TRUE} then it is an IRanges object with one
-  range per cluster.
+An integer Rle with the cluster IDs. If \code{ranges=TRUE}
+then it is an IRanges object with one range per cluster.
 }
 \description{
-  Genomic locations are grouped into clusters based on
-  distance: locations that are close to each other are
-  assigned to the same cluster. The operation is performed
-  on each chromosome independently. This is very similar to
-  \link[bumphunter]{clusterMaker}.
+Genomic locations are grouped into clusters based on
+distance: locations that are close to each other are
+assigned to the same cluster. The operation is performed on
+each chromosome independently. This is very similar to
+\link[bumphunter]{clusterMaker}.
 }
 \details{
-  \link[bumphunter]{clusterMaker} adapted to Rle world.
-  Assumes that the data is sorted and that everything is in
-  a single chromosome. It is also almost as fast as the
-  original version with the advantage that everything is in
-  Rle() world.
+\link[bumphunter]{clusterMaker} adapted to Rle world.
+Assumes that the data is sorted and that everything is in a
+single chromosome. It is also almost as fast as the
+original version with the advantage that everything is in
+Rle() world.
 
-  It is a a helper function for \link{findRegions}.
+It is a a helper function for \link{findRegions}.
 }
 \examples{
 library("IRanges")
@@ -52,14 +51,14 @@ micro
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \references{
-  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
-  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
-  Hunter. R package version 1.1.10.
+Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
+Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
+Hunter. R package version 1.1.10.
 }
 \seealso{
-  \link[bumphunter]{clusterMaker}, \link{findRegions}
+\link[bumphunter]{clusterMaker}, \link{findRegions}
 }
 

@@ -121,9 +121,19 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, retu
 			g <- e[seqnames(e) == chr]
 			ind <- rep(names(g), width(g)) # to split
 			tmpList <- split(z, ind) # split
-			t(sapply(tmpList, colSums)/L) # get # reads
+			res <- t(sapply(tmpList, colSums)/L) # get # reads
+			
+			## Clean up
+			rm(z, g, ind, tmpList)
+			gc()
+			return(res)
 		}, mc.cores=mc.cores)
 		out <- do.call("rbind", exonList) # combine
+		
+		## Clean up
+		rm(e, cc, exonList)
+		gc()
+		return(out)
 	}, mc.cores=min(mc.cores, length(unique(runValue(strand(etab))))) ) # Use at most n cores where n is the number of unique strands
 
 	# combine two strands

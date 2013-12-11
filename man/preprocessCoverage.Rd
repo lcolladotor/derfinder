@@ -2,10 +2,9 @@
 \alias{preprocessCoverage}
 \title{Transform and split the data}
 \usage{
-  preprocessCoverage(coverageInfo, groupInfo = NULL,
-    cutoff = 5, scalefac = 32, chunksize = 5e+06,
-    colsubset = NULL, mc.cores = getOption("mc.cores", 1L),
-    lowMemDir = NULL, verbose = FALSE)
+preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
+  scalefac = 32, chunksize = 5e+06, colsubset = NULL,
+  mc.cores = getOption("mc.cores", 1L), lowMemDir = NULL, verbose = FALSE)
 }
 \arguments{
   \item{coverageInfo}{A list containing a DataFrame
@@ -51,50 +50,48 @@
   \link[parallel]{mclapply} to run \link{fstats.apply}.}
 }
 \value{
-  A list with five components. \describe{
-  \item{coverageProcessed }{ contains the processed
-  coverage information in a DataFrame object. Each column
-  represents a sample and the coverage information is
-  scaled and log2 transformed. Note that if
-  \code{colsubset} is not \code{NULL} the number of columns
-  will be less than those in \code{coverageInfo$coverage}.
-  The total number of rows depends on the number of base
-  pairs that passed the \code{cutoff} and the information
-  stored is the coverage at that given base. Further note
-  that \link{filterData} is re-applied if \code{colsubset}
-  is not \code{NULL} and could thus lead to fewer rows
-  compared to \code{coverageInfo$coverage}. }
-  \item{mclapplyIndex }{ is a list of logical Rle objects.
-  They contain the partioning information according to
-  \code{chunksize}.} \item{position }{ is a logical Rle
-  with the positions of the chromosome that passed the
-  cutoff.} \item{meanCoverage }{ is a numeric Rle with the
-  mean coverage at each filtered base.} \item{groupMeans }{
-  is a list of Rle objects containing the mean coverage at
-  each filtered base calculated by group. This list has
-  length 0 if \code{groupInfo=NULL}.} }
+A list with five components. \describe{
+\item{coverageProcessed }{ contains the processed coverage
+information in a DataFrame object. Each column represents a
+sample and the coverage information is scaled and log2
+transformed. Note that if \code{colsubset} is not
+\code{NULL} the number of columns will be less than those
+in \code{coverageInfo$coverage}. The total number of rows
+depends on the number of base pairs that passed the
+\code{cutoff} and the information stored is the coverage at
+that given base. Further note that \link{filterData} is
+re-applied if \code{colsubset} is not \code{NULL} and could
+thus lead to fewer rows compared to
+\code{coverageInfo$coverage}. } \item{mclapplyIndex }{ is a
+list of logical Rle objects. They contain the partioning
+information according to \code{chunksize}.} \item{position
+}{ is a logical Rle with the positions of the chromosome
+that passed the cutoff.} \item{meanCoverage }{ is a numeric
+Rle with the mean coverage at each filtered base.}
+\item{groupMeans }{ is a list of Rle objects containing the
+mean coverage at each filtered base calculated by group.
+This list has length 0 if \code{groupInfo=NULL}.} }
 }
 \description{
-  This function takes the coverage data from
-  \link{loadCoverage}, scales the data, does the log2
-  transformation, and splits it into appropriate chunks for
-  using \link{calculateStats}.
+This function takes the coverage data from
+\link{loadCoverage}, scales the data, does the log2
+transformation, and splits it into appropriate chunks for
+using \link{calculateStats}.
 }
 \details{
-  If \code{chunksize} is \code{NULL}, then \code{mc.cores}
-  is used to determine the \code{chunksize}. This is useful
-  if you want to split the data so each core gets the same
-  amount of data (up to rounding).
+If \code{chunksize} is \code{NULL}, then \code{mc.cores} is
+used to determine the \code{chunksize}. This is useful if
+you want to split the data so each core gets the same
+amount of data (up to rounding).
 
-  Computing the indexes and using those for
-  \link[parallel]{mclapply} reduces memory copying as
-  described by Ryan Thompson and illustrated in approach #4
-  at \url{http://bit.ly/mclapplyMem}
+Computing the indexes and using those for
+\link[parallel]{mclapply} reduces memory copying as
+described by Ryan Thompson and illustrated in approach #4
+at \url{http://bit.ly/mclapplyMem}
 
-  If \code{lowMemDir} is specified then
-  \code{$coverageProcessed} is NULL and
-  \code{$mclapplyIndex} is a vector with the chunk
-  identifiers.
+If \code{lowMemDir} is specified then
+\code{$coverageProcessed} is NULL and \code{$mclapplyIndex}
+is a vector with the chunk identifiers.
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()
@@ -103,10 +100,10 @@ names(dataReady)
 dataReady
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{filterData}, \link{loadCoverage},
-  \link{calculateStats}
+\link{filterData}, \link{loadCoverage},
+\link{calculateStats}
 }
 

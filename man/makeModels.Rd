@@ -2,8 +2,7 @@
 \alias{makeModels}
 \title{Build model matrices for differential expression}
 \usage{
-  makeModels(sampleDepths, testvars, adjustvars = NULL,
-    testIntercept = FALSE)
+makeModels(sampleDepths, testvars, adjustvars = NULL, testIntercept = FALSE)
 }
 \arguments{
   \item{sampleDepths}{Per sample library size adjustments
@@ -27,16 +26,16 @@
   any adjusting variables specified, but no intercept.}
 }
 \value{
-  A list with two components. \describe{ \item{mod }{ The
-  alternative model matrix.} \item{mod0 }{ The null model
-  matrix.} }
+A list with two components. \describe{ \item{mod }{ The
+alternative model matrix.} \item{mod0 }{ The null model
+matrix.} }
 }
 \description{
-  Builds the model matrices for testing for differential
-  expression by comparing a model with a grouping factor
-  versus one without it. It adjusts for the confounders
-  specified and the median coverage of each sample. The
-  resulting models can be used in \link{calculateStats}.
+Builds the model matrices for testing for differential
+expression by comparing a model with a grouping factor
+versus one without it. It adjusts for the confounders
+specified and the median coverage of each sample. The
+resulting models can be used in \link{calculateStats}.
 }
 \examples{
 ## Collapse the coverage information
@@ -53,9 +52,9 @@ names(models)
 models
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{sampleDepth}, \link{calculateStats}
+\link{sampleDepth}, \link{calculateStats}
 }
 

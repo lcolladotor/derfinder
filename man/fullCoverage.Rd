@@ -2,9 +2,8 @@
 \alias{fullCoverage}
 \title{Load the unfiltered coverage information from a group of BAM files and a list of chromosomes}
 \usage{
-  fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL,
-    outputs = NULL, mc.cores = getOption("mc.cores", 2L),
-    verbose = TRUE)
+fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
+  mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
@@ -40,16 +39,16 @@
   be printed along the way.}
 }
 \value{
-  A list with one element per chromosome. \describe{ Each
-  element is a DataFrame with the coverage information
-  produced by \link{loadCoverage}. }
+A list with one element per chromosome. \describe{ Each
+element is a DataFrame with the coverage information
+produced by \link{loadCoverage}. }
 }
 \description{
-  For a group of samples this function reads the coverage
-  information for several chromosomes directly from the BAM
-  files. Per chromosome, it merges the unfiltered coverage
-  by sample into a DataFrame. The end result is a list with
-  one such DataFrame objects per chromosome.
+For a group of samples this function reads the coverage
+information for several chromosomes directly from the BAM
+files. Per chromosome, it merges the unfiltered coverage by
+sample into a DataFrame. The end result is a list with one
+such DataFrame objects per chromosome.
 }
 \examples{
 datadir <- system.file("extdata", "genomeData", package="derfinder")
@@ -69,10 +68,10 @@ mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}, \link{filterData},
-  \link[derfinderReport]{generateReport}
+\link{loadCoverage}, \link{filterData},
+\link[derfinderReport]{generateReport}
 }
 

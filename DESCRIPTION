@@ -2,8 +2,8 @@ Package: derfinder
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.41
-Date: 2013-11-25
+Version: 0.0.42
+Date: 2013-12-10
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -41,30 +41,3 @@ LazyData: true
 URL: https://github.com/lcolladotor/derfinder
 biocViews: DifferentialExpression, HighThroughputSequencing, RNAseq,
     MultipleComparisons, Software
-Collate:
-    'derfinder-package.R'
-    'filterData.R'
-    'calculateStats.R'
-    'fstats.apply.R'
-    'loadCoverage.R'
-    'findRegions.R'
-    'getSegmentsRle.R'
-    'clusterMakerRle.R'
-    'calculatePvalues.R'
-    'genomeData-data.R'
-    'genomeInfo-data.R'
-    'makeBamList.R'
-    'makeModels.R'
-    'preprocessCoverage.R'
-    'plotOverview.R'
-    'analyzeChr.R'
-    'mergeResults.R'
-    'fullCoverage.R'
-    'makeGenomicState.R'
-    'annotateRegions.R'
-    'getRegionCoverage.R'
-    'coverageToExon.R'
-    'plotRegionCoverage.R'
-    'plotCluster.R'
-    'sampleDepth.R'
-    'collapseFullCoverage.R'

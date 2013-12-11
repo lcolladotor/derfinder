@@ -2,11 +2,9 @@
 \alias{plotRegionCoverage}
 \title{Makes plots for every region while summarizing the annotation}
 \usage{
-  plotRegionCoverage(regions, regionCoverage, groupInfo,
-    nearestAnnotation, annotatedRegions,
-    whichRegions = seq_len(min(100, length(regions))),
-    colors = NULL, scalefac = 32, ask = interactive(),
-    verbose = TRUE)
+plotRegionCoverage(regions, regionCoverage, groupInfo, nearestAnnotation,
+  annotatedRegions, whichRegions = seq_len(min(100, length(regions))),
+  colors = NULL, scalefac = 32, ask = interactive(), verbose = TRUE)
 }
 \arguments{
   \item{regions}{The \code{$regions} output from
@@ -43,19 +41,19 @@
   be printed along the way.}
 }
 \value{
-  A plot for every region showing the coverage of each
-  sample at each base of the region as well as the
-  summarized annotation information.
+A plot for every region showing the coverage of each sample
+at each base of the region as well as the summarized
+annotation information.
 }
 \description{
-  This function takes the regions found in
-  \link{calculatePvalues} and assigns them genomic states
-  contructed with \link{makeGenomicState}. The main
-  workhorse functions are \link[IRanges]{countOverlaps} and
-  \link[IRanges]{findOverlaps}. For an alternative plot
-  check \link{plotCluster} which is much slower and we
-  recommend it's use only after quickly checking the
-  results with this function.
+This function takes the regions found in
+\link{calculatePvalues} and assigns them genomic states
+contructed with \link{makeGenomicState}. The main workhorse
+functions are \link[IRanges]{countOverlaps} and
+\link[IRanges]{findOverlaps}. For an alternative plot check
+\link{plotCluster} which is much slower and we recommend
+it's use only after quickly checking the results with this
+function.
 }
 \examples{
 \dontrun{
@@ -133,11 +131,11 @@ dev.off()
 }
 }
 \author{
-  Andrew Jaffe, Leonardo Collado-Torres
+Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculatePvalues}, \link{getRegionCoverage},
-  \link[bumphunter]{annotateNearest},
-  \link{annotateRegions}, \link{plotCluster}
+\link{calculatePvalues}, \link{getRegionCoverage},
+\link[bumphunter]{annotateNearest}, \link{annotateRegions},
+\link{plotCluster}
 }
 

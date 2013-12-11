@@ -2,9 +2,8 @@
 \alias{calculateStats}
 \title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
-  calculateStats(coveragePrep, models,
-    mc.cores = getOption("mc.cores", 2L), adjustF = 0,
-    lowMemDir = NULL, verbose = TRUE)
+calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 2L),
+  adjustF = 0, lowMemDir = NULL, verbose = TRUE)
 }
 \arguments{
   \item{coveragePrep}{A list with
@@ -31,14 +30,14 @@
   be printed along the way.}
 }
 \value{
-  A numeric Rle with the F-statistics per base pair that
-  passed the cutoff.
+A numeric Rle with the F-statistics per base pair that
+passed the cutoff.
 }
 \description{
-  After defining the models of interest (see
-  \link{makeModels}) and pre-processing the data (see
-  \link{preprocessCoverage}), use \link{calculateStats} to
-  calculate the F-statistics at base-pair resolution.
+After defining the models of interest (see
+\link{makeModels}) and pre-processing the data (see
+\link{preprocessCoverage}), use \link{calculateStats} to
+calculate the F-statistics at base-pair resolution.
 }
 \examples{
 ## Collapse the coverage information
@@ -60,9 +59,9 @@ fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 fstats
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{makeModels}, \link{preprocessCoverage}
+\link{makeModels}, \link{preprocessCoverage}
 }
 

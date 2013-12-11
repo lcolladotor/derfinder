@@ -2,8 +2,8 @@
 \alias{annotateRegions}
 \title{Assign genomic states to regions}
 \usage{
-  annotateRegions(regions, genomicState, minoverlap = 20,
-    fullOrCoding = "full", annotate = TRUE, verbose = TRUE)
+annotateRegions(regions, genomicState, minoverlap = 20,
+  fullOrCoding = "full", annotate = TRUE, verbose = TRUE)
 }
 \arguments{
   \item{regions}{The \code{$regions} output from
@@ -33,25 +33,25 @@
   be printed along the way.}
 }
 \value{
-  A list with elements \code{countTable} and
-  \code{annotationList} (only if \code{annotate=TRUE}).
-  \describe{ \item{countTable }{This is a data.frame with
-  the number of overlaps from the regions vs the genomic
-  states with one type per column. For example, if
-  \code{fullOrCoding="full"} then the columns are
-  \code{exon}, \code{intragenic} and \code{intron}.}
-  \item{annotationList }{This is a \code{GRangesList} with
-  the genomic states that overlapped with the regions (if
-  any, depends on \code{minoverlap}). The names of this
-  \code{GRangesList} correspond to the region index in
-  \code{regions}.} }
+A list with elements \code{countTable} and
+\code{annotationList} (only if \code{annotate=TRUE}).
+\describe{ \item{countTable }{This is a data.frame with the
+number of overlaps from the regions vs the genomic states
+with one type per column. For example, if
+\code{fullOrCoding="full"} then the columns are
+\code{exon}, \code{intragenic} and \code{intron}.}
+\item{annotationList }{This is a \code{GRangesList} with
+the genomic states that overlapped with the regions (if
+any, depends on \code{minoverlap}). The names of this
+\code{GRangesList} correspond to the region index in
+\code{regions}.} }
 }
 \description{
-  This function takes the regions found in
-  \link{calculatePvalues} and assigns them genomic states
-  contructed with \link{makeGenomicState}. The main
-  workhorse functions are \link[IRanges]{countOverlaps} and
-  \link[IRanges]{findOverlaps}.
+This function takes the regions found in
+\link{calculatePvalues} and assigns them genomic states
+contructed with \link{makeGenomicState}. The main workhorse
+functions are \link[IRanges]{countOverlaps} and
+\link[IRanges]{findOverlaps}.
 }
 \examples{
 \dontrun{
@@ -99,9 +99,9 @@ annotatedRegions <- annotateRegions(regions=regsWithP$regions, genomicState=Geno
 }
 }
 \author{
-  Andrew Jaffe, Leonardo Collado-Torres
+Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-  \link{makeGenomicState}, \link{calculatePvalues}
+\link{makeGenomicState}, \link{calculatePvalues}
 }
 

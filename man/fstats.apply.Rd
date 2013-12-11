@@ -2,8 +2,8 @@
 \alias{fstats.apply}
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
-  fstats.apply(index = Rle(TRUE, nrow(data)), data, mod,
-    mod0, adjustF = 0, lowMemDir = NULL)
+fstats.apply(index = Rle(TRUE, nrow(data)), data, mod, mod0, adjustF = 0,
+  lowMemDir = NULL)
 }
 \arguments{
   \item{index}{An index (logical Rle is the best for saving
@@ -32,19 +32,19 @@
   specified \code{lowMemDir}.}
 }
 \value{
-  A numeric Rle with the F-statistics per base for the
-  chunk in question.
+A numeric Rle with the F-statistics per base for the chunk
+in question.
 }
 \description{
-  Extract chunks from a DataFrame and get the F-statistics
-  on the rows of \code{data}, comparing the models
-  \code{mod} (alternative) and \code{mod0} (null). This is
-  a helper function for \link{calculateStats} and
-  \link{calculatePvalues}.
+Extract chunks from a DataFrame and get the F-statistics on
+the rows of \code{data}, comparing the models \code{mod}
+(alternative) and \code{mod0} (null). This is a helper
+function for \link{calculateStats} and
+\link{calculatePvalues}.
 }
 \details{
-  If \code{lowMemDir} is specified then \code{index} is
-  expected to specify the chunk number.
+If \code{lowMemDir} is specified then \code{index} is
+expected to specify the chunk number.
 }
 \examples{
 ## Create the model matrices
@@ -55,9 +55,9 @@ fstats.output <- fstats.apply(data=genomeData$coverage, mod=mod, mod0=mod0)
 fstats.output
 }
 \author{
-  Jeff Leek, Leonardo Collado-Torres
+Jeff Leek, Leonardo Collado-Torres
 }
 \seealso{
-  \link{calculateStats}, \link{calculatePvalues}
+\link{calculateStats}, \link{calculatePvalues}
 }
 

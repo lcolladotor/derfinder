@@ -2,9 +2,9 @@
 \alias{coverageToExon}
 \title{Extract coverage information for exons}
 \usage{
-  coverageToExon(fullCov, genomicState,
-    fullOrCoding = "full", L, returnType = "raw",
-    mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+coverageToExon(fullCov, genomicState, fullOrCoding = "full", L,
+  returnType = "raw", mc.cores = getOption("mc.cores", 2L),
+  verbose = TRUE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -39,21 +39,21 @@
   be printed along the way.}
 }
 \value{
-  A matrix (nrow = number of exons in \code{genomicState}
-  corresponding to the chromosomes in \code{fullCov}, ncol
-  = number of samples) with the number of reads (or RPKM)
-  per exon. The row names correspond to the row indexes of
-  \code{genomicState$fullGenome} (if
-  \code{fullOrCoding="full"}) or
-  \code{genomicState$codingGenome} (if
-  \code{fullOrCoding="coding"}).
+A matrix (nrow = number of exons in \code{genomicState}
+corresponding to the chromosomes in \code{fullCov}, ncol =
+number of samples) with the number of reads (or RPKM) per
+exon. The row names correspond to the row indexes of
+\code{genomicState$fullGenome} (if
+\code{fullOrCoding="full"}) or
+\code{genomicState$codingGenome} (if
+\code{fullOrCoding="coding"}).
 }
 \description{
-  This function extracts the coverage information
-  calculated by \link{fullCoverage} for a set of exons
-  determined by \link{makeGenomicState}. The underlying
-  code is similar to \link{getRegionCoverage} with
-  additional tweaks for calculating RPKM values.
+This function extracts the coverage information calculated
+by \link{fullCoverage} for a set of exons determined by
+\link{makeGenomicState}. The underlying code is similar to
+\link{getRegionCoverage} with additional tweaks for
+calculating RPKM values.
 }
 \examples{
 \dontrun{
@@ -113,9 +113,9 @@ exonCov <- coverageToExon(fullCov=fullCov, genomicState=GenomicState.Hsapiens.UC
 }
 }
 \author{
-  Andrew Jaffe, Leonardo Collado-Torres
+Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-  \link{fullCoverage}, \link{getRegionCoverage}
+\link{fullCoverage}, \link{getRegionCoverage}
 }
 

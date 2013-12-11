@@ -2,8 +2,8 @@
 \alias{makeBamList}
 \title{Construct full paths to a group of BAM files}
 \usage{
-  makeBamList(datadir = NULL, sampledirs = NULL,
-    samplepatt = NULL, bamterm = "accepted_hits.bam")
+makeBamList(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
+  bamterm = "accepted_hits.bam")
 }
 \arguments{
   \item{datadir}{The main directory where each of the
@@ -27,13 +27,13 @@
   are stored in a single directory.}
 }
 \value{
-  A vector with the full paths to the BAM files and sample
-  names stored as the vector names.
+A vector with the full paths to the BAM files and sample
+names stored as the vector names.
 }
 \description{
-  For a group of samples this function creates the list of
-  paths to the BAM files which can then be used in
-  \link{loadCoverage}.
+For a group of samples this function creates the list of
+paths to the BAM files which can then be used in
+\link{loadCoverage}.
 }
 \examples{
 datadir <- system.file("extdata", "genomeData", package="derfinder")
@@ -41,9 +41,9 @@ dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=N
 dirs
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \seealso{
-  \link{loadCoverage}
+\link{loadCoverage}
 }
 

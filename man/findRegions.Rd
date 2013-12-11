@@ -2,10 +2,9 @@
 \alias{findRegions}
 \title{Find non-zero regions in a Rle}
 \usage{
-  findRegions(position = NULL, fstats, chr,
-    oneTable = TRUE, maxRegionGap = 0L,
-    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99),
-    segmentIR = NULL, basic = FALSE, verbose = TRUE)
+findRegions(position = NULL, fstats, chr, oneTable = TRUE,
+  maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
+  0.99), segmentIR = NULL, basic = FALSE, verbose = TRUE)
 }
 \arguments{
   \item{position}{A logical Rle of genomic positions. This
@@ -52,28 +51,27 @@
   be printed along the way.}
 }
 \value{
-  Either a GRanges or a GRangesList as determined by
-  \code{oneTable}. Each of them has the following metadata
-  variables. \describe{ \item{value }{ The mean of the
-  values of \code{y} for the given region.} \item{area }{
-  The absolute value of the sum of the values of \code{y}
-  for the given region.} \item{indexStart }{ The start
-  position of the region in terms of the index for
-  \code{y}.} \item{indexEnd }{ The end position of the
-  region in terms of the index for \code{y}.} \item{cluster
-  }{ The cluser ID.} \item{clusterL }{ The total length of
-  the cluster.} }
+Either a GRanges or a GRangesList as determined by
+\code{oneTable}. Each of them has the following metadata
+variables. \describe{ \item{value }{ The mean of the values
+of \code{y} for the given region.} \item{area }{ The
+absolute value of the sum of the values of \code{y} for the
+given region.} \item{indexStart }{ The start position of
+the region in terms of the index for \code{y}.}
+\item{indexEnd }{ The end position of the region in terms
+of the index for \code{y}.} \item{cluster }{ The cluser
+ID.} \item{clusterL }{ The total length of the cluster.} }
 }
 \description{
-  Find genomic regions for which a numeric vector is above
-  (or below) predefined thresholds. In other words, this
-  function finds the candidate Differentially Expressed
-  Regions (candidate DERs). This is similar to
-  \link[bumphunter]{regionFinder} and is a helper function
-  for \link{calculatePvalues}.
+Find genomic regions for which a numeric vector is above
+(or below) predefined thresholds. In other words, this
+function finds the candidate Differentially Expressed
+Regions (candidate DERs). This is similar to
+\link[bumphunter]{regionFinder} and is a helper function
+for \link{calculatePvalues}.
 }
 \details{
-  \link[bumphunter]{regionFinder} adapted to Rle world.
+\link[bumphunter]{regionFinder} adapted to Rle world.
 }
 \examples{
 ## Collapse the coverage information
@@ -117,14 +115,14 @@ annotation
 }
 }
 \author{
-  Leonardo Collado-Torres
+Leonardo Collado-Torres
 }
 \references{
-  Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
-  Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
-  Hunter. R package version 1.1.10.
+Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
+Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump
+Hunter. R package version 1.1.10.
 }
 \seealso{
-  \link[bumphunter]{regionFinder}, \link{calculatePvalues}
+\link[bumphunter]{regionFinder}, \link{calculatePvalues}
 }
 

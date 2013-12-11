@@ -2,8 +2,7 @@
 \alias{getRegionCoverage}
 \title{Extract coverage information for a set of regions}
 \usage{
-  getRegionCoverage(fullCov, regions,
-    calculateMeans = TRUE, verbose = TRUE)
+getRegionCoverage(fullCov, regions, calculateMeans = TRUE, verbose = TRUE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -23,24 +22,22 @@
   be printed along the way.}
 }
 \value{
-  A list with elements \code{coverageData} and
-  \code{coverageMeans} (only if
-  \code{calculateMeans=TRUE}). \describe{
-  \item{coverageData }{This is a list of data.frame where
-  each data.frame has the coverage information (nrow =
-  width of region, ncol = number of samples) for a given
-  region. The names of the list correspond to the region
-  indexes in \code{regions}.} \item{coverageMeans }{This is
-  a matrix (nrow = number of regions, ncol = number of
-  samples) with the mean coverage per sample for all the
-  regions.} }
+A list with elements \code{coverageData} and
+\code{coverageMeans} (only if \code{calculateMeans=TRUE}).
+\describe{ \item{coverageData }{This is a list of
+data.frame where each data.frame has the coverage
+information (nrow = width of region, ncol = number of
+samples) for a given region. The names of the list
+correspond to the region indexes in \code{regions}.}
+\item{coverageMeans }{This is a matrix (nrow = number of
+regions, ncol = number of samples) with the mean coverage
+per sample for all the regions.} }
 }
 \description{
-  This function extracts the raw coverage information
-  calculated by \link{fullCoverage} at each base for a set
-  of regions found with \link{calculatePvalues}. It can
-  further calculate the mean coverage per sample for each
-  region.
+This function extracts the raw coverage information
+calculated by \link{fullCoverage} at each base for a set of
+regions found with \link{calculatePvalues}. It can further
+calculate the mean coverage per sample for each region.
 }
 \examples{
 \dontrun{
@@ -95,9 +92,9 @@ regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 }
 }
 \author{
-  Andrew Jaffe, Leonardo Collado-Torres
+Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-  \link{fullCoverage}, \link{calculatePvalues}
+\link{fullCoverage}, \link{calculatePvalues}
 }
 
