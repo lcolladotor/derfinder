@@ -166,7 +166,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, seeds 
 	nSamples <- seq_len(nrow(models$mod))
 		
 	for(i in seq_along(seeds)) {
-		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i))		
+		if(verbose) message(paste(Sys.time(), "calculatePvalues: calculating F-statistics for permutation", i, "and seed", seeds[i]))		
 		
 		if(!is.na(seeds[i])) {
 			set.seed(seeds[i])
