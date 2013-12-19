@@ -4,15 +4,11 @@
 #' 
 #' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param regions The \code{$regions} output from \link{calculatePvalues}. It is important that the seqlengths information is provided.
-#' @param calculateMeans If \code{TRUE} the mean coverage per sample for each region is calculated.
+#' @param mc.cores The number of cores to use for computing coverage. Default=1
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return A list with elements \code{coverageData} and \code{coverageMeans} (only if \code{calculateMeans=TRUE}). 
-#' \describe{
-#' \item{coverageData }{This is a list of data.frame where each data.frame has the coverage information (nrow = width of region, ncol = number of samples) for a given region. The names of the list correspond to the region indexes in \code{regions}.}
-#' \item{coverageMeans }{This is a matrix (nrow = number of regions, ncol = number of samples) with the mean coverage per sample for all the regions.}
-#' }
-#'
+#' @return a list of data.frame where each data.frame has the coverage information (nrow = width of region, ncol = number of samples) for a given region. The names of the list correspond to the region indexes in \code{regions}
+#' #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{calculatePvalues}
 #' @export
