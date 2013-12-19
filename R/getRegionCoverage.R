@@ -73,40 +73,33 @@
 #' }
 
 
-getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRUE) {
+getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	names(regions) <- seq_len(length(regions)) # add names
 	fullCov <- fullCov[gsub("chr", "", seqlevels(regions))] ## added
 	
 	## Warning when seqlengths are not specified
 	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
-	## use logical rle to subset large coverage matrix
-	cc <- coverage(regions) ## The output of coverage() differs on whether seqlenths are provided or not. If absent, it assumes that the last base is the end of the chromosome.
-	for(i in seq(along=cc)) {
-		cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
-	}
-
-	fullCovList <- list()
-	for(i in seq(along=fullCov)) {
-		if(verbose) message(paste(Sys.time(), "getRegionCoverage: processing chromosome", names(fullCov)[i]))
-		z <- as.data.frame(subset(fullCov[[i]], cc[[i]]))
-		g <- sort(regions[seqnames(regions) == seqlevels(regions)[i]])
-		ind <- rep(names(g), width(g))
-		tmpList <- split(z, ind)
-		fullCovList[[i]] <- tmpList
-	}
-	tmp <- do.call(c, fullCovList)
-	theData <- tmp[order(as.numeric(names(tmp)), decreasing=FALSE)]
-	out <- list(coverageData = theData)
+	grl = split(regions, seqnames(regions)) # split by chromosome
+	counts = mclapply(grl, function(g) { # now can be parallel
+		cat(".")
+		thechr = as.character(unique(seqnames(g)))
+		yy = y[[thechr]][ranges(g),] # better subset
+		ind = rep(names(g), width(g)) # to split along
+		ind = factor(ind, levels = unique(ind)) # make factor in order
+		# split(yy,ind) # "CompressedSplitDataFrameList", faster but less clear
+						#   how to unlist below, so leave out
+		split(as.data.frame(yy),ind) 
+	}, mc.cores=mc.cores)
+	covList = do.call("c",counts) # collect list elements into one large list
 	
-	if(sum(unlist(lapply(out$coverageData, nrow))) != sum(width(regions))) {
+	# put in original order
+	names(covList) = sapply(strsplit(names(covList), "\\."), "[", 2)
+	theData = covList[order(as.numeric(names(covList)))]	
+	
+	if(sum(sapply(theData, nrow)) != sum(width(regions))) {
 		stop("The total width of the regions did not match with the dimensions of the extracted coverage data. Check that 'regions' has seqlengths specified correctly.")
 	}
 	
-	if(calculateMeans) {
-		theMeans <- t(sapply(theData, colMeans))
-		out$coverageMeans <- theMeans
-	}
-
-	return(out)
+	return(theData)
 }
