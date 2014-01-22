@@ -76,22 +76,22 @@ getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	## Warning when seqlengths are not specified
 	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
-	grl = split(regions, seqnames(regions)) # split by chromosome
-	counts = mclapply(grl, function(g) { # now can be parallel
+	grl <- split(regions, seqnames(regions)) # split by chromosome
+	counts <- mclapply(grl, function(g) { # now can be parallel
 		cat(".")
-		thechr = as.character(unique(seqnames(g)))
-		yy = y[[thechr]][ranges(g),] # better subset
-		ind = rep(names(g), width(g)) # to split along
-		ind = factor(ind, levels = unique(ind)) # make factor in order
+		thechr <- as.character(unique(seqnames(g)))
+		yy <- fullCov[[thechr]][ranges(g),] # better subset
+		ind <- rep(names(g), width(g)) # to split along
+		ind <- factor(ind, levels = unique(ind)) # make factor in order
 		# split(yy,ind) # "CompressedSplitDataFrameList", faster but less clear
 						#   how to unlist below, so leave out
-		split(as.data.frame(yy),ind) 
+		split(as.data.frame(yy), ind) 
 	}, mc.cores=mc.cores)
-	covList = do.call("c",counts) # collect list elements into one large list
+	covList <- do.call("c", counts) # collect list elements into one large list
 	
 	# put in original order
-	names(covList) = sapply(strsplit(names(covList), "\\."), "[", 2)
-	theData = covList[order(as.numeric(names(covList)))]	
+	names(covList) <- sapply(strsplit(names(covList), "\\."), "[", 2)
+	theData <- covList[order(as.numeric(names(covList)))]	
 	
 	if(sum(sapply(theData, nrow)) != sum(width(regions))) {
 		stop("The total width of the regions did not match with the dimensions of the extracted coverage data. Check that 'regions' has seqlengths specified correctly.")
