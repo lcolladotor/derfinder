@@ -4,15 +4,11 @@
 #' 
 #' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param regions The \code{$regions} output from \link{calculatePvalues}. It is important that the seqlengths information is provided.
-#' @param calculateMeans If \code{TRUE} the mean coverage per sample for each region is calculated.
+#' @param mc.cores The number of cores to use for computing coverage. Default=1
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
-#' @return A list with elements \code{coverageData} and \code{coverageMeans} (only if \code{calculateMeans=TRUE}). 
-#' \describe{
-#' \item{coverageData }{This is a list of data.frame where each data.frame has the coverage information (nrow = width of region, ncol = number of samples) for a given region. The names of the list correspond to the region indexes in \code{regions}.}
-#' \item{coverageMeans }{This is a matrix (nrow = number of regions, ncol = number of samples) with the mean coverage per sample for all the regions.}
-#' }
-#'
+#' @return a list of data.frame where each data.frame has the coverage information (nrow = width of region, ncol = number of samples) for a given region. The names of the list correspond to the region indexes in \code{regions}
+#' #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{calculatePvalues}
 #' @export
@@ -73,40 +69,33 @@
 #' }
 
 
-getRegionCoverage <- function(fullCov, regions, calculateMeans=TRUE, verbose=TRUE) {
+getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	names(regions) <- seq_len(length(regions)) # add names
 	fullCov <- fullCov[gsub("chr", "", seqlevels(regions))] ## added
 	
 	## Warning when seqlengths are not specified
 	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
-	## use logical rle to subset large coverage matrix
-	cc <- coverage(regions) ## The output of coverage() differs on whether seqlenths are provided or not. If absent, it assumes that the last base is the end of the chromosome.
-	for(i in seq(along=cc)) {
-		cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
-	}
-
-	fullCovList <- list()
-	for(i in seq(along=fullCov)) {
-		if(verbose) message(paste(Sys.time(), "getRegionCoverage: processing chromosome", names(fullCov)[i]))
-		z <- as.data.frame(subset(fullCov[[i]], cc[[i]]))
-		g <- sort(regions[seqnames(regions) == seqlevels(regions)[i]])
-		ind <- rep(names(g), width(g))
-		tmpList <- split(z, ind)
-		fullCovList[[i]] <- tmpList
-	}
-	tmp <- do.call(c, fullCovList)
-	theData <- tmp[order(as.numeric(names(tmp)), decreasing=FALSE)]
-	out <- list(coverageData = theData)
+	grl = split(regions, seqnames(regions)) # split by chromosome
+	counts = mclapply(grl, function(g) { # now can be parallel
+		cat(".")
+		thechr = as.character(unique(seqnames(g)))
+		yy = y[[thechr]][ranges(g),] # better subset
+		ind = rep(names(g), width(g)) # to split along
+		ind = factor(ind, levels = unique(ind)) # make factor in order
+		# split(yy,ind) # "CompressedSplitDataFrameList", faster but less clear
+						#   how to unlist below, so leave out
+		split(as.data.frame(yy),ind) 
+	}, mc.cores=mc.cores)
+	covList = do.call("c",counts) # collect list elements into one large list
 	
-	if(sum(unlist(lapply(out$coverageData, nrow))) != sum(width(regions))) {
+	# put in original order
+	names(covList) = sapply(strsplit(names(covList), "\\."), "[", 2)
+	theData = covList[order(as.numeric(names(covList)))]	
+	
+	if(sum(sapply(theData, nrow)) != sum(width(regions))) {
 		stop("The total width of the regions did not match with the dimensions of the extracted coverage data. Check that 'regions' has seqlengths specified correctly.")
 	}
 	
-	if(calculateMeans) {
-		theMeans <- t(sapply(theData, colMeans))
-		out$coverageMeans <- theMeans
-	}
-
-	return(out)
+	return(theData)
 }
