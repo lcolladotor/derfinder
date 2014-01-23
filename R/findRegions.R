@@ -32,7 +32,6 @@
 #' @importFrom IRanges IRanges start end width Views Rle runLength ranges DataFrame runValue "runValue<-"
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importMethodsFrom IRanges quantile which length mean rbind
-#' @importMethodsFrom GenomicRanges unlist
 #' @examples
 #' ## Collapse the coverage information
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)

@@ -16,7 +16,7 @@
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
 #' @importFrom GenomicRanges seqlevels seqnames
-#' @importMethodsFrom GenomicRanges names "names<-" length "[" coverage sort width c strand "%in%"
+#' @importMethodsFrom GenomicRanges names "names<-" length "[" coverage sort width c strand
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue "%in%"
 #' @importFrom parallel mclapply
 #'

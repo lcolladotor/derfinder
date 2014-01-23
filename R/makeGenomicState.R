@@ -15,7 +15,7 @@
 #' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList queryHits subjectHits Rle
 #' @importFrom GenomicRanges GRangesList seqnames seqlengths seqlevels "seqlevels<-"
 #' @importMethodsFrom AnnotationDbi select
-#' @importMethodsFrom GenomicRanges names "names<-" reduce mcols "mcols<-" "$" "$<-" "[" "[<-" values "values<-" sort disjoin length findOverlaps split unlist strand "strand<-" gaps width
+#' @importMethodsFrom GenomicRanges names "names<-" reduce mcols "mcols<-" "$" "$<-" "[" "[<-" values "values<-" sort disjoin length findOverlaps split strand "strand<-" gaps width
 #' @importMethodsFrom IRanges names unlist relist length lapply sapply as.character
 #' @importMethodsFrom GenomicFeatures promoters
 #'

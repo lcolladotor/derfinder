@@ -26,7 +26,7 @@
 #' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 #' @export
 #' @importFrom GenomicRanges GRangesList
-#' @importMethodsFrom GenomicRanges unlist "$" "$<-" "["
+#' @importMethodsFrom GenomicRanges "$" "$<-" "["
 #' @importFrom IRanges DataFrame RleList
 #' @importMethodsFrom IRanges cbind values "values<-" "[" "$" "$<-" length order unlist as.numeric nrow
 #' @importFrom qvalue qvalue
