@@ -57,7 +57,6 @@ A BibTeX entry for LaTeX users is
 * __BioC-2.14__ Version working with BioC 2.14
 * __devel__ Developer's corner for testing ideas. Any useful ideas will be added to the version corresponding to the latest BioC-devel.
 
-##
 
 # Origins
 
