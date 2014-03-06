@@ -52,11 +52,8 @@ A BibTeX entry for LaTeX users is
 
 # Branches
 
-* [__master__](https://github.com/lcolladotor/derfinder/tree/master) This branch corresponds to the one that works with the latest [Bioc-release](http://master.bioconductor.org/packages/release).
+* [__master__](https://github.com/lcolladotor/derfinder/tree/master) This branch corresponds to the one that works with the latest [Bioc-devel](http://master.bioconductor.org/packages/devel).
 * [__BioC-2.13__](https://github.com/lcolladotor/derfinder/tree/BioC-2.13) Version working with [BioC 2.13](http://master.bioconductor.org/packages/2.13)
-* [__BioC-2.14__](https://github.com/lcolladotor/derfinder/tree/BioC-2.14) Version working with [BioC 2.14](http://master.bioconductor.org/packages/2.14)
-* [__devel__](https://github.com/lcolladotor/derfinder/tree/devel) Developer's corner for testing ideas. Any useful ideas will be added to the version corresponding to the latest [BioC-devel](http://master.bioconductor.org/packages/devel).
-
 
 # Origins
 
