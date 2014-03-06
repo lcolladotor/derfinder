@@ -16,9 +16,6 @@
 #' @author Jeff Leek, Leonardo Collado-Torres
 #' @export
 #' @importMethodsFrom IRanges as.data.frame as.matrix
-#' @useDynLib derfinder
-#' @import Rcpp
-#' @import RcppArmadillo
 #' @seealso \link{calculateStats}, \link{calculatePvalues}
 #' @examples
 #' ## Create the model matrices
@@ -37,10 +34,10 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0
 		data <- chunkProcessed
 		
 		##  Transform to a regular matrix
-		dat <- t(as.matrix(as.data.frame(data)))
+		dat <- as.matrix(as.data.frame(data))
 	} else{
 		##  Subset the DataFrame to the current chunk and transform to a regular matrix
-		dat <- t(as.matrix(as.data.frame(data[index, ])))
+		dat <- as.matrix(as.data.frame(data[index, ]))
 	}
 	rm(data)
 	gc()
@@ -48,7 +45,28 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0
 	# A function for calculating F-statistics
 	# on the rows of dat, comparing the models
 	# mod (alternative) and mod0 (null). 	
-	fstats <- Rle(drop(.Call("rcppFstats", dat, mod, mod0, adjustF, package="derfinder")))
+	n <- dim(dat)[2]
+	m <- dim(dat)[1]
+	p <- rep(0, m)
+	Id <- diag(n)
+	nVec <- rep(1, n)
+
+	## Calculate rss1
+	resid <- dat %*% (Id - mod %*% solve(t(mod) %*% mod) %*% t(mod))
+	rss1 <- (resid*resid) %*% nVec
+	rm(resid)
+
+
+	## Calculate rss2
+	resid0 <- dat %*% (Id - mod0 %*% solve(t(mod0) %*% mod0) %*% t(mod0))
+	rss0 <- (resid0*resid0) %*% nVec
+	rm(resid0, nVec, Id)
+
+
+	## Get the F-stats
+	df1 <- dim(mod)[2]
+	df0 <- dim(mod0)[2]
+	fstats <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (rss1 / (n - df1))))
 	gc()
 	
 	## Done

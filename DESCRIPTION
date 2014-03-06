@@ -10,10 +10,7 @@ Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     "andrew.jaffe@libd.org"), person("Jeffrey", "Leek", role = c("aut", "ths"),
     email = "jtleek@gmail.com"))
 Depends:
-    R(>= 3.1),
-    Rcpp (>= 0.10.4),
-    RcppArmadillo
-LinkingTo: Rcpp, RcppArmadillo
+    R(>= 3.1)
 Imports:
     IRanges,
     GenomicRanges,

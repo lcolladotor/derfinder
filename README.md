@@ -14,13 +14,13 @@ Get R 3.1 or newer from [CRAN](http://cran.r-project.org/).
 install.packages("devtools")
 
 ## Pre-requisites from CRAN
-install.packages(c("Rcpp", "RcppArmadillo", "ggplot2", "reshape2", "plyr", "microbenchmark",
-	 "RColorBrewer", "scales", "Hmisc"))
+install.packages(c("ggplot2", "reshape2", "plyr", "microbenchmark", "RColorBrewer", "scales",
+	"Hmisc"))
 
 ## Pre-requisites from Bioconductor
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "ggbio", "qvalue",
-	 "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures"))
+	"TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures"))
 
 ## derfinder itself
 library(devtools)
