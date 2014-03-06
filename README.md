@@ -7,7 +7,7 @@ For a full example on how to use __derfinder__ check https://github.com/lcollado
 
 # Installation instructions
 
-Get R 3.0.2 or newer from [CRAN](http://cran.r-project.org/).
+Get R 3.1 or newer from [CRAN](http://cran.r-project.org/).
 
 ```S
 ## If needed
@@ -26,8 +26,6 @@ biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", 
 library(devtools)
 install_github("derfinder", "lcolladotor")
 ```
-
-Note that the current Bioconductor release version of __bumphunter__ for R 3.0.2 is a few versions before the one required by __derfinder__. The version needed can be installed manually from http://bioconductor.org/packages/devel/bioc/html/bumphunter.html You can download the source or other binaries.
 
 # 'Watch' for updates
 
@@ -56,7 +54,6 @@ A BibTeX entry for LaTeX users is
 * [__BioC-2.13__](https://github.com/lcolladotor/derfinder/tree/BioC-2.13) Version working with [BioC 2.13](http://master.bioconductor.org/packages/2.13)
 * [__BioC-2.14__](https://github.com/lcolladotor/derfinder/tree/BioC-2.14) Version working with [BioC 2.14](http://master.bioconductor.org/packages/2.14)
 * [__devel__](https://github.com/lcolladotor/derfinder/tree/devel) Developer's corner for testing ideas. Any useful ideas will be added to the version corresponding to the latest [BioC-devel](http://master.bioconductor.org/packages/devel).
-
 
 # Origins
 
