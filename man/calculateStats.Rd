@@ -57,6 +57,11 @@ prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, col
 ## Run the function
 fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 fstats
+
+\dontrun{
+## Compare vs pre-packaged F-statistics
+summary(fstats - genomeFstats)
+}
 }
 \author{
 Leonardo Collado-Torres

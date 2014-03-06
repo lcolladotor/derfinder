@@ -35,37 +35,6 @@ calculate the mean coverage per sample for each region.
 }
 \examples{
 \dontrun{
-## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
-
-## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
-
-## Build the models
-group <- genomeInfo$pop
-adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-
-## Preprocess the data
-## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
-prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
-
-## Get the F statistics
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
-
-## Determine a cutoff from the F-distribution.
-## This step is very important and you should consider using quantiles from the observed F statistics
-n <- dim(prep$coverageProcessed)[2]
-df1 <- dim(models$mod)[2]
-df0 <- dim(models$mod0)[2]
-cutoff <- qf(0.95, df1-df0, n-df1)
-
-## Low cutoff used for illustrative purposes
-cutoff <- 1
-
-## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
-
 ## Obtain fullCov object
 datadir <- system.file("extdata", "genomeData", package="derfinder")
 dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
@@ -78,7 +47,7 @@ fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
 ## Assign chr lengths using hg19 information
 library("GenomicRanges")
 data(hg19Ideogram, package = "biovizBase", envir = environment())
-regions <- regsWithP$regions
+regions <- genomeRegions$regions
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 
 ## Finally, get the region coverage

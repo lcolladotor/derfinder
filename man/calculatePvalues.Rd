@@ -112,7 +112,7 @@ models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 
 ## Get the F statistics
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
+fstats <- genomeFstats
 
 ## Determine a cutoff from the F-distribution.
 ## This step is very important and you should consider using quantiles from the observed F statistics
@@ -125,8 +125,11 @@ cutoff <- qf(0.95, df1-df0, n-df1)
 cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
+regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, chr="chr21", cutoff=cutoff, mc.cores=1)
 regsWithP
+
+## Check that they are the same as the previously calculated regions
+identical(regsWithP, genomeRegions)
 
 ## Histogram of the theoretical p-values by region
 hist(pf(regsWithP$regions$value, df1-df0, n-df1), main="Distribution original p-values by region", freq=FALSE)

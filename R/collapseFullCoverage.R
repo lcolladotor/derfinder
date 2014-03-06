@@ -16,12 +16,14 @@
 #' @importMethodsFrom IRanges names "[" sort
 #' @importFrom IRanges runValue runLength
 #' @examples
-#' ## Choose the adjusting variables and define all the parameters for makeModels()
-#' coverageInfo <- genomeData
-#' 
-#' ## Collapse the coverage information
-#' collapsedFull <- collapseFullCoverage(list(coverageInfo$coverage), verbose=TRUE)
+#' ## Collapse the coverage information for the filtered data
+#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
 #' collapsedFull
+#' 
+#' \dontrun{
+#' ## You can also collapsed the raw data
+#' collapsedFullRaw <- collapseFullCoverage(list(genomeDataRaw), verbose=TRUE)
+#' }
 
 collapseFullCoverage <- function(fullCov, colsubset=NULL, save=FALSE, verbose=FALSE) {
 	## Remove un-used columns

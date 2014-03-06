@@ -33,50 +33,13 @@
 #' @importFrom plyr ddply summarise
 #' @importFrom scales log2_trans log_trans
 #' @examples
-#' ## Get coverage info without any cutoff
-#' datadir <- system.file("extdata", "genomeData", package="derfinder")
-#' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
-#' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
-#' covInfo <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL, verbose=FALSE)
-#' 
-#' ## Collapse the coverage information
-#' collapsedFull <- collapseFullCoverage(list(covInfo), verbose=TRUE)
-#' 
-#' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
-#' 
-#' ## Build the models
-#' group <- genomeInfo$pop
-#' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-#'
-#' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
-#' 
-#' ## Get the F statistics
-#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=FALSE)
-#'
-#' ## Determine a cutoff from the F-distribution.
-#' ## This step is very important and you should consider using quantiles from the observed F statistics
-#' \dontrun{
-#' n <- dim(prep$coverageProcessed)[2]
-#' df1 <- dim(models$mod)[2]
-#' df0 <- dim(models$mod0)[2]
-#' cutoff <- qf(0.95, df1-df0, n-df1)
-#' }
-#' ## Low cutoff used for illustrative purposes
-#' cutoff <- 1
-#'
-#' ## Calculate the p-values and define the regions of interest.
-#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1, verbose=FALSE)
-#'
 #' ## Annotate the results
 #' suppressMessages(library("bumphunter"))
-#' annotation <- annotateNearest(regsWithP$regions, "hg19")
+#' annotation <- annotateNearest(genomeRegions$regions, "hg19")
 #'
 #' ## Make the plot
 #' suppressMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
-#' plotCluster(idx=1, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' plotCluster(idx=1, regions=genomeRegions$regions, annotation=annotation, coverageInfo=genomeDataRaw$coverage, groupInfo=genomeInfo$pop, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' ## Resize the plot window and the labels will look good.
 #'
 #' \dontrun{
@@ -84,13 +47,29 @@
 #' ## Also feel free to look at the code for this function:
 #' plotCluster
 #' 
-#' #### This is a detailed example for a specific cluster
+#' #### This is a detailed example for a specific cluster of candidate DERs
 #' ## The purpose is to illustrate how data filtering (and availability), 
-#' ## F-stat cutoff, cluster cutoff interact into determing the actual DERs.
+#' ## F-stat cutoff, cluster cutoff interact into determing the candidate DERs.
+#' 
+#' ## Collapse the coverage information
+#' collapsedFull <- collapseFullCoverage(list(genomeDataRaw), verbose=TRUE)
+#' 
+#' ## Calculate library size adjustments
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
+#' 
+#' ## Build the models
+#' adjustvars <- data.frame(genomeInfo$gender)
+#' models <- makeModels(sampleDepths, testvars=genomeInfo$pop, adjustvars=adjustvars)
 #'
-#' ## Using as example region #7
+#' ## Preprocess the data
+#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+#' 
+#' ## Get the F statistics
+#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=FALSE)
+#'
+#' ## Using as example candidate DER #7
 #' ## Note how despite having data and using a very small F-stat cutoff, some regions with data are split into different DERs
-#' plotCluster(idx=7, regions=regsWithP$regions, annotation=annotation, coverageInfo=covInfo$coverage, groupInfo=group, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' plotCluster(idx=7, regions=genomeRegions$regions, annotation=annotation, coverageInfo=genomeDataRaw$coverage, groupInfo=genomeInfo$pop, txdb=TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' 
 #' ## Identify DERs clusters and regions of the genome where we have data
 #' clusters <- clusterMakerRle(prep$position, ranges=TRUE)
@@ -106,7 +85,7 @@
 #' ## The DERs are actually the following ones:
 #' ders <- pieces[queryHits(findOverlaps(pieces, segs))]
 #' ## You can very that this is the case:
-#' identical(width(ders), width(sort(ranges(regsWithP$regions))))
+#' identical(width(ders), width(sort(ranges(genomeRegions$regions))))
 #' 
 #' ## Ranges plotting function (from IRanges documentation)
 #' plotRanges <- function(x, xlim = x, main = deparse(substitute(x)), col = "black", 
@@ -127,9 +106,9 @@
 #' ## Visualize the different DER clusters
 #' plotRanges(clusters)
 #' ## Note that region 7 is part of cluster #5.
-#' regsWithP$regions$cluster[7]
+#' genomeRegions$regions$cluster[7]
 #'
-#' clus.range <- c(min(regsWithP$regions[ regsWithP$regions$cluster == 5]$indexStart), max(regsWithP$regions[ regsWithP$regions$cluster == 5]$indexEnd))
+#' clus.range <- c(min(genomeRegions$regions[ genomeRegions$regions$cluster == 5]$indexStart), max(genomeRegions$regions[ genomeRegions$regions$cluster == 5]$indexEnd))
 #' 
 #' ## Plot the different segmentation steps, the final DERs, and the fstats with the cutoff
 #' par(mfrow=c(5, 1))

@@ -35,6 +35,11 @@
 #' ## Run the function
 #' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
 #' fstats
+#'
+#' \dontrun{
+#' ## Compare vs pre-packaged F-statistics
+#' summary(fstats - genomeFstats)
+#' }
 
 calculateStats <- function(coveragePrep, models, mc.cores=getOption("mc.cores", 2L), adjustF=0, lowMemDir=NULL, verbose=TRUE) {
 	stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", "mclapplyIndex", "position"))) == 3)

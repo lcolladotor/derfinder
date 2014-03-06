@@ -43,6 +43,9 @@
 #' ## Read the coverage without applying any cutoff.
 #' ## This can be useful for downstream analysis including coverage plots.
 #' system.time(data2 <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL))
+#'
+#' ## Compare vs raw data provided in the package
+#' identical(data2, genomeDataRaw)
 #' 
 #' ## Note that the object size is pretty much the same due to the Rle compression
 #' print(object.size(data2), units="Kb")

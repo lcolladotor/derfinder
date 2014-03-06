@@ -74,22 +74,11 @@ for \link{calculatePvalues}.
 \link[bumphunter]{regionFinder} adapted to Rle world.
 }
 \examples{
-## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
-
-## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
-
-## Build the models
-group <- genomeInfo$pop
-adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-
 ## Preprocess the data
 prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
 
 ## Get the F statistics
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
+fstats <- genomeFstats
 
 ## Find the regions
 regs <- findRegions(prep$position, fstats, "chr21", verbose=TRUE)

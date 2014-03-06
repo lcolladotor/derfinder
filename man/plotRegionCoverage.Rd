@@ -57,37 +57,6 @@ function.
 }
 \examples{
 \dontrun{
-## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
-
-## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
-
-## Build the models
-group <- genomeInfo$pop
-adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-
-## Preprocess the data
-## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
-prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
-
-## Get the F statistics
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
-
-## Determine a cutoff from the F-distribution.
-## This step is very important and you should consider using quantiles from the observed F statistics
-n <- dim(prep$coverageProcessed)[2]
-df1 <- dim(models$mod)[2]
-df0 <- dim(models$mod0)[2]
-cutoff <- qf(0.95, df1-df0, n-df1)
-
-## Low cutoff used for illustrative purposes
-cutoff <- 1
-
-## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=cutoff, mc.cores=1)
-
 ## Create GenomicState object:
 ## Hsapiens.UCSC.hg19.knownGene GenomicState
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
@@ -97,16 +66,16 @@ txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
 
 ## Annotate regions
-annotatedRegions <- annotateRegions(regions=regsWithP$regions, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene, minoverlap=1)
+annotatedRegions <- annotateRegions(regions=genomeRegions$regions, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene, minoverlap=1)
 
 ## Find nearest annotation
 library("bumphunter")
-nearestAnnotation <- annotateNearest(regsWithP$regions, "hg19")
+nearestAnnotation <- annotateNearest(genomeRegions$regions, "hg19")
 
 ## Assign chr lengths using hg19 information
 library("GenomicRanges")
 data(hg19Ideogram, package = "biovizBase", envir = environment())
-regions <- regsWithP$regions
+regions <- genomeRegions$regions
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 
 ## Obtain fullCov object
@@ -122,11 +91,11 @@ fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
 regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 ## Make plots for the regions
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=group, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, N=2, ask=TRUE)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, N=2, ask=TRUE)
 
 ## If you prefer, you can save the plots to a pdf file
 pdf("ders.pdf", h = 6, w = 9)
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=group, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions)
 dev.off()
 }
 }
