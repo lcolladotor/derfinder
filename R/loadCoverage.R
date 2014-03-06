@@ -18,7 +18,8 @@
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
-#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path readGAlignmentsFromBam
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path
+#' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
