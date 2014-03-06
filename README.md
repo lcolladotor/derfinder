@@ -24,7 +24,7 @@ biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", 
 
 ## derfinder itself
 library(devtools)
-install_github("derfinder", "lcolladotor")
+install_github("derfinder", "lcolladotor", ref="BioC-2.13")
 ```
 
 Note that the current Bioconductor release version of __bumphunter__ for R 3.0.2 is a few versions before the one required by __derfinder__. The version needed can be installed manually from http://bioconductor.org/packages/devel/bioc/html/bumphunter.html You can download the source or other binaries.
