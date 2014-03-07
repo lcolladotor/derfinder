@@ -66,7 +66,7 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0, adjustF=0
 	## Get the F-stats
 	df1 <- dim(mod)[2]
 	df0 <- dim(mod0)[2]
-	fstats <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (rss1 / (n - df1))))
+	fstats <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (adjustF + rss1 / (n - df1))))
 	gc()
 	
 	## Done
