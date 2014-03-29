@@ -66,7 +66,6 @@
 
 plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, whichRegions = seq_len(min(100, length(regions))), colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE) {
 	stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 1)
-	stopifnot(length(intersect(names(regionCoverage), c("coverageData"))) == 1)
 	stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, "GRanges"))
 	if(is.data.frame(nearestAnnotation)) {
 		stopifnot(length(intersect(colnames(nearestAnnotation), c("name", "distance", "region"))) == 3)
@@ -104,7 +103,7 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		ichar <- as.character(i)
 		
 		## Obtain data
-		y <- log2(regionCoverage$coverageData[[ichar]] + scalefac)
+		y <- log2(regionCoverage[[ichar]] + scalefac)
 		x <- start(regions[i]):end(regions[i])
 		
 		if(ask) {
