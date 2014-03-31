@@ -40,7 +40,10 @@
 
 getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	names(regions) <- seq_len(length(regions)) # add names
-	fullCov <- fullCov[gsub("chr", "", seqlevels(regions))] ## added
+	
+	if(sum(grepl("chr", names(fullCov))) == 0) {
+		names(fullCov) = paste0("chr",names(fullCov))
+	}
 	
 	## Warning when seqlengths are not specified
 	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
