@@ -51,7 +51,7 @@ getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	grl <- split(regions, seqnames(regions)) # split by chromosome
 	counts <- mclapply(grl, function(g) { # now can be parallel
 		if(verbose) cat(".")
-		thechr <- gsub("chr", "", as.character(unique(seqnames(g))))
+		thechr <- as.character(unique(seqnames(g)))
 		yy <- fullCov[[thechr]][ranges(g),] # better subset
 		ind <- rep(names(g), width(g)) # to split along
 		ind <- factor(ind, levels = unique(ind)) # make factor in order
