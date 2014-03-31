@@ -48,7 +48,7 @@ getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 	## Warning when seqlengths are not specified
 	if(any(is.na(seqlengths(regions)))) warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
 	
-	grl <- split(regions, seqnames(regions)) # split by chromosome
+	grl <- split(regions, as.character(seqnames(regions))) # split by chromosome
 	counts <- mclapply(grl, function(g) { # now can be parallel
 		if(verbose) cat(".")
 		thechr <- as.character(unique(seqnames(g)))
