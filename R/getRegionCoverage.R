@@ -4,6 +4,7 @@
 #' 
 #' @param fullCov A list where each element is the result from \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list should be named according to the chromosome number. Can be generated using \link{fullCoverage}.
 #' @param regions The \code{$regions} output from \link{calculatePvalues}. It is important that the seqlengths information is provided.
+#' @param totalMapped The total number of reads mapped for each sample. Providing this data returns coverage adjusted totalMapped per million at each base.
 #' @param mc.cores The number of cores to use for computing coverage. Default=1
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
@@ -38,7 +39,9 @@
 #' }
 
 
-getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
+getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
+	mc.cores=1, verbose=TRUE) {
+
 	names(regions) <- seq_len(length(regions)) # add names
 	
 	if(sum(grepl("chr", names(fullCov))) == 0) {
@@ -53,6 +56,10 @@ getRegionCoverage <- function(fullCov, regions, mc.cores=1, verbose=TRUE) {
 		if(verbose) cat(".")
 		thechr <- as.character(unique(seqnames(g)))
 		yy <- fullCov[[thechr]][ranges(g),] # better subset
+		# depth-adjust, like for plotting
+		if(!is.null(totalMapped)) {
+			yy <- DataFrame(mapply(function(x,d) x/(d/1e6), yy, totalMapped))
+		}
 		ind <- rep(names(g), width(g)) # to split along
 		ind <- factor(ind, levels = unique(ind)) # make factor in order
 		# split(yy,ind) # "CompressedSplitDataFrameList", faster but less clear
