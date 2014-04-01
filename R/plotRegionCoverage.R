@@ -64,7 +64,7 @@
 #' dev.off()
 #' }
 
-plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, whichRegions = seq_len(min(100, length(regions))), colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE) {
+plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnotation, annotatedRegions, whichRegions = seq_len(min(100, length(regions))), colors=NULL, scalefac = 32, ask = interactive(), verbose=TRUE,ylab="Coverage") {
 	stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 1)
 	stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, "GRanges"))
 	if(is.data.frame(nearestAnnotation)) {
@@ -122,8 +122,8 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 		axis(2, at = log2(scalefac + c(0, 2^y.labs)), labels = c(0, 2^y.labs), cex.axis = 1.5)
 		
 		## Coverage legend
-		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), ncol = length(levels(groupInfo)), cex = 1.2, pt.cex = 1.5)
-		mtext("Coverage", side = 2, line = 2.5, cex = 1.3)
+		legend("topleft", levels(groupInfo), pch = 15, col=seq(along=levels(groupInfo)), ncol = length(levels(groupInfo)), cex = 1.5, pt.cex = 1.5)
+		mtext(ylab, side = 2, line = 2.5, cex = 1.3)
 		mtext(paste(nearestAnnotation$name[i], ",", nearestAnnotation$distance[i], "bp from tss:", nearestAnnotation$region[i]), outer = TRUE, cex = 1.3)
 		
 		## Plot annotation
@@ -148,11 +148,14 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 			}
 			e <- a[a$theRegion=="exon",]
 			s2 <- Strand[a$theRegion=="exon"]
-			g  <- sapply(e$tx_name, paste, collapse="\n")
-			if(length(g) > 0) text(x = e$start + e$width/2, y = s2 * -1, g, font = 2, pos = s2+2)
-			mtext(unique(a$seqnames), side=1, line = 2.2, cex = 1.1)
+			g = unlist(e$symbol)
+			g[is.na(g)] = ""
+			if(length(g) > 0) text(x=e$start + e$width/2,
+				y=s2*0.9, g,font=2,pos=s2+2,cex=2)
 		}		
 		mtext("Genes", side = 2, line = 2.5, cex = 1.3)
+		mtext(as.character(seqnames(regions)[i]), side=1, line = 2.2, cex = 1.1)
+
 	}
 	return(invisible(NULL))
 }
