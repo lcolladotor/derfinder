@@ -39,13 +39,12 @@
 #' }
 
 
-getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
-	mc.cores=1, verbose=TRUE) {
+getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,	mc.cores=1, verbose=TRUE) {
 
 	names(regions) <- seq_len(length(regions)) # add names
 	
-	if(sum(grepl("chr", names(fullCov))) == 0) {
-		names(fullCov) = paste0("chr",names(fullCov))
+	if(!any(grepl("chr", names(fullCov)))) {
+		names(fullCov) <- paste0("chr", names(fullCov))
 	}
 	
 	## Warning when seqlengths are not specified
