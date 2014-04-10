@@ -8,6 +8,7 @@
 #' @param bai The full path to the BAM index files. If \code{NULL} it is assumed that the BAM index files are in the same location as the BAM files and that they have the .bai extension. Ignored if \code{dirs} is a \code{BamFileList} object.
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} then an automatic name is constructed (chrXCovInfo.Rdata for example). If another character is specified, then that name is used for the output file.
+#' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, \code{FALSE} for positive strands and \code{NA} for both. This argument is passed to \link[Rsamtools]{scanBamFlag}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return A list with two components.
@@ -18,7 +19,7 @@
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
-#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path scanBamFlag
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importMethodsFrom GenomicRanges coverage
@@ -51,7 +52,7 @@
 #' print(object.size(data2), units="Kb")
 #' }
 
-loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=NULL, verbose=TRUE) {
+loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=NULL, isMinusStrand=NA, verbose=TRUE) {
 	## Do the indexes exist?
 	if(is(dirs, "BamFileList")) {
 		bList <- dirs
@@ -81,7 +82,7 @@ loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=N
 	## Construct the objects so only the chr of interest is read from the BAM file
 	which <- RangesList(IRanges(1, chrlen))
 	names(which) <- chr
-	param <- ScanBamParam(which=which)
+	param <- ScanBamParam(which=which, flag=scanBamFlag(isMinusStrand=isMinusStrand))
 	
 	## Read in the data for all the chrs
 	data <- lapply(bList, function(x) {

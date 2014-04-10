@@ -3,7 +3,8 @@
 \title{Load the unfiltered coverage information from a group of BAM files and a list of chromosomes}
 \usage{
 fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
-  mc.cores = getOption("mc.cores", 2L), verbose = TRUE)
+  mc.cores = getOption("mc.cores", 2L), isMinusStrand = NA,
+  verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
@@ -34,6 +35,11 @@ fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply}. You should use at most one
   core per chromosome.}
+
+  \item{isMinusStrand}{Use \code{TRUE} for negative strand
+  alignments only, \code{FALSE} for positive strands and
+  \code{NA} for both. This argument is passed to
+  \link[Rsamtools]{scanBamFlag}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

@@ -3,7 +3,7 @@
 \title{Load the coverage information from a group of BAM files}
 \usage{
 loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
-  output = NULL, verbose = TRUE)
+  output = NULL, isMinusStrand = NA, verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
@@ -34,6 +34,11 @@ loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
   constructed (chrXCovInfo.Rdata for example). If another
   character is specified, then that name is used for the
   output file.}
+
+  \item{isMinusStrand}{Use \code{TRUE} for negative strand
+  alignments only, \code{FALSE} for positive strands and
+  \code{NA} for both. This argument is passed to
+  \link[Rsamtools]{scanBamFlag}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

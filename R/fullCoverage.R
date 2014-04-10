@@ -8,6 +8,7 @@
 #' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, the chromosome length is extracted from the BAM files. Otherwise, it should have the same length as \code{chrnums}.
 #' @param outputs This argument is passed to the \code{output} argument of \link{loadCoverage}. If \code{NULL} or \code{"auto"} it is then recycled.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply}. You should use at most one core per chromosome.
+#' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, \code{FALSE} for positive strands and \code{NA} for both. This argument is passed to \link[Rsamtools]{scanBamFlag}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.
 #'
 #' @return A list with one element per chromosome.
@@ -38,7 +39,7 @@
 #' }
 
 
-fullCoverage <- function(dirs, chrnums, bai=NULL, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+fullCoverage <- function(dirs, chrnums, bai=NULL, chrlens=NULL, outputs=NULL, mc.cores=getOption("mc.cores", 2L), isMinusStrand=NA, verbose=TRUE) {
 	stopifnot(length(chrlens) == length(chrnums) | is.null(chrlens))
 	if(!is.null(outputs)) {
 		stopifnot(length(outputs) == length(chrnums) | outputs == "auto")
@@ -48,11 +49,11 @@ fullCoverage <- function(dirs, chrnums, bai=NULL, chrlens=NULL, outputs=NULL, mc
 	}	
 		
 	## Subsetting function that runs loadCoverage
-	loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, verbose) {
+	loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, isMinusStrand, verbose) {
 		if(verbose) message(paste(Sys.time(), "fullCoverage: processing chromosome", chrnums[idx]))
-		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, bai=bai, chrlen=chrlens[idx], output=outputs[idx], verbose=verbose)$coverage
+		loadCoverage(dirs=dirs, chr=chrnums[idx], cutoff=NULL, bai=bai, chrlen=chrlens[idx], output=outputs[idx], isMinusStrand=isMinusStrand, verbose=verbose)$coverage
 	}
-	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, bai=bai, chrlens=chrlens, outputs=outputs, verbose=verbose, mc.cores=mc.cores)
+	result <- mclapply(seq_len(length(chrnums)), loadChr, dirs=dirs, chrnums=chrnums, bai=bai, chrlens=chrlens, outputs=outputs, verbose=verbose, isMinusStrand=isMinusStrand, mc.cores=mc.cores)
 	names(result) <- chrnums
 	
 	## Done
