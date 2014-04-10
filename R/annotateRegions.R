@@ -4,7 +4,7 @@
 #' 
 #' @param regions The \code{$regions} output from \link{calculatePvalues}.
 #' @param genomicState The output from \link{makeGenomicState}.
-#' @param minoverlap This parameter is passed to \link[IRanges]{findOverlaps} and determines the minimum overlap of a region to be assined a genomic state. Set to 1 if you want all the genomic states that overlap the regions.
+#' @param minoverlap This parameter is passed to \link[IRanges]{countOverlaps} and determines the minimum overlap of a region to be assined a genomic state. Set to 1 if you want all the genomic states that overlap the regions.
 #' @param fullOrCoding If \code{full} then the \code{genomicState$fullGenome} genomic state information is used. If \code{coding}, then the \code{genomicState$codingGenome} genomic state information is used.
 #' @param annotate If \code{TRUE} then the regions are annotated by the genomic state. Othewise, only the overlaps between the regions and the genomic states are computed.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the way.

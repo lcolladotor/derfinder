@@ -13,7 +13,7 @@ annotateRegions(regions, genomicState, minoverlap = 20,
   \link{makeGenomicState}.}
 
   \item{minoverlap}{This parameter is passed to
-  \link[IRanges]{findOverlaps} and determines the minimum
+  \link[IRanges]{countOverlaps} and determines the minimum
   overlap of a region to be assined a genomic state. Set to
   1 if you want all the genomic states that overlap the
   regions.}

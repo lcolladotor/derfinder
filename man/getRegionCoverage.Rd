@@ -2,7 +2,8 @@
 \alias{getRegionCoverage}
 \title{Extract coverage information for a set of regions}
 \usage{
-getRegionCoverage(fullCov, regions, mc.cores = 1, verbose = TRUE)
+getRegionCoverage(fullCov, regions, totalMapped = NULL, mc.cores = 1,
+  verbose = TRUE)
 }
 \arguments{
   \item{fullCov}{A list where each element is the result
@@ -14,6 +15,10 @@ getRegionCoverage(fullCov, regions, mc.cores = 1, verbose = TRUE)
   \item{regions}{The \code{$regions} output from
   \link{calculatePvalues}. It is important that the
   seqlengths information is provided.}
+
+  \item{totalMapped}{The total number of reads mapped for
+  each sample. Providing this data returns coverage
+  adjusted totalMapped per million at each base.}
 
   \item{mc.cores}{The number of cores to use for computing
   coverage. Default=1}
