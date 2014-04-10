@@ -57,11 +57,11 @@
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 #'
 #' ## Make plots for the regions
-#' plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, N=2, ask=TRUE)
+#' plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2, ask=TRUE)
 #' 
 #' ## If you prefer, you can save the plots to a pdf file
 #' pdf("ders.pdf", h = 6, w = 9)
-#' plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions)
+#' plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2)
 #' dev.off()
 #' }
 
@@ -149,10 +149,12 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo, nearestAnnota
 			}
 			e <- a[a$theRegion=="exon",]
 			s2 <- Strand[a$theRegion=="exon"]
-			g = unlist(e$symbol)
-			g[is.na(g)] = ""
-			if(length(g) > 0) text(x=e$start + e$width/2,
-				y=s2*0.9, g,font=2,pos=s2+2,cex=2)
+			g <- unlist(e$symbol)
+			if(!is.null(g)) {
+				g[is.na(g)] <- ""
+				if(length(g) > 0) text(x=e$start + e$width/2, y=s2*0.9, g,font=2,pos=s2+2,cex=2)
+			}
+			
 		}		
 		mtext("Genes", side = 2, line = 2.5, cex = 1.3)
 		mtext(as.character(seqnames(regions)[i]), side=1, line = 2.2, cex = 1.1)

@@ -94,11 +94,11 @@ fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
 regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 ## Make plots for the regions
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, N=2, ask=TRUE)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2, ask=TRUE)
 
 ## If you prefer, you can save the plots to a pdf file
 pdf("ders.pdf", h = 6, w = 9)
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2)
 dev.off()
 }
 }
