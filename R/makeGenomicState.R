@@ -16,7 +16,7 @@
 #' @importFrom GenomicRanges GRangesList seqnames seqlengths seqlevels "seqlevels<-"
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names "names<-" reduce mcols "mcols<-" "$" "$<-" "[" "[<-" values "values<-" sort disjoin length findOverlaps split strand "strand<-" gaps width
-#' @importMethodsFrom IRanges names unlist relist length lapply sapply as.character
+#' @importMethodsFrom IRanges names unlist relist length lapply sapply as.character "["
 #' @importMethodsFrom GenomicFeatures promoters
 #'
 #' @examples
@@ -167,14 +167,14 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	## promoters
 	ooPromoters <- findOverlaps(dGR, promotersRed, type="within")
-	theRegion[unique(queryHits(ooPromoters))]<- "promoter" 
+	theRegion[unique(queryHits(ooPromoters))]<- "promoter"
 	theTx[unique(queryHits(ooPromoters))] <- promotersRed$TxID[subjectHits(ooPromoters)]
 	theTxName[unique(queryHits(ooPromoters))] <- promotersRed$TxName[subjectHits(ooPromoters)]
 	theGene[unique(queryHits(ooPromoters))] <- promotersRed$Gene[subjectHits(ooPromoters)]
 
 	## Exons
 	ooExons <- findOverlaps(dGR, exonsRed, type="within")
-	theRegion[unique(queryHits(ooExons))]<- "exon" 
+	theRegion[unique(queryHits(ooExons))]<- "exon"
 	theTx[unique(queryHits(ooExons))] <- exonsRed$TxID[subjectHits(ooExons)]
 	theTxName[unique(queryHits(ooExons))] <- exonsRed$TxName[subjectHits(ooExons)]
 	theGene[unique(queryHits(ooExons))] <- exonsRed$Gene[subjectHits(ooExons)]
@@ -182,14 +182,14 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	## 5' UTRs
 	oo5UTR <- findOverlaps(dGR, utr5red, type="within")
-	theRegion[unique(queryHits(oo5UTR))]<- "5UTR" 
+	theRegion[unique(queryHits(oo5UTR))]<- "5UTR"
 	theTx[unique(queryHits(oo5UTR))] <- utr5red$TxID[subjectHits(oo5UTR)]
 	theTxName[unique(queryHits(oo5UTR))] <- utr5red$TxName[subjectHits(oo5UTR)]
 	theGene[unique(queryHits(oo5UTR))] <- utr5red$Gene[subjectHits(oo5UTR)]
 
 	## 3' UTRs
 	oo3UTR <- findOverlaps(dGR, utr3red, type="within")
-	theRegion[unique(queryHits(oo3UTR))] <- "3UTR" 
+	theRegion[unique(queryHits(oo3UTR))] <- "3UTR"
 	theTx[unique(queryHits(oo3UTR))] <- utr3red$TxID[subjectHits(oo3UTR)]
 	theTxName[unique(queryHits(oo3UTR))] <- utr3red$TxName[subjectHits(oo3UTR)]
 	theGene[unique(queryHits(oo3UTR))] <- utr3red$Gene[subjectHits(oo3UTR)]
@@ -216,14 +216,14 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	## introns
 	ooIntrons <- findOverlaps(dGR, intronsRed, type="within")
-	theRegion[unique(queryHits(ooIntrons))]<- "intron" 
+	theRegion[unique(queryHits(ooIntrons))]<- "intron"
 	theTx[unique(queryHits(ooIntrons))] <- intronsRed$TxID[subjectHits(ooIntrons)]
 	theTxName[unique(queryHits(ooIntrons))] <- intronsRed$TxName[subjectHits(ooIntrons)]
 	theGene[unique(queryHits(ooIntrons))] <- intronsRed$Gene[subjectHits(ooIntrons)]
 
 	## Exons
 	ooExons <- findOverlaps(dGR, exonsRed, type="within")
-	theRegion[unique(queryHits(ooExons))] <- "exon" 
+	theRegion[unique(queryHits(ooExons))] <- "exon"
 	theTx[unique(queryHits(ooExons))] <- exonsRed$TxID[subjectHits(ooExons)]
 	theTxName[unique(queryHits(ooExons))] <- exonsRed$TxName[subjectHits(ooExons)]
 	theGene[unique(queryHits(ooExons))] <- exonsRed$Gene[subjectHits(ooExons)]
@@ -244,7 +244,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 		r <- fullGR[i]
 		rr <- reduce(r, with.revmap=TRUE)
 	
-		mapping <- sapply(mcols(rr)$mapping, "[", 1)
+		mapping <- sapply(mcols(rr)$revmap, "[", 1)
 		values(rr) <- mcols(r)[mapping,]
 		return(rr)
 	})
@@ -256,7 +256,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 		r <- codingGR[i]
 		rr <- reduce(r, with.revmap=TRUE)
 	
-		mapping <- sapply(mcols(rr)$mapping, "[", 1)
+		mapping <- sapply(mcols(rr)$revmap, "[", 1)
 		values(rr) <- mcols(r)[mapping,]
 		return(rr)
 	})
@@ -288,7 +288,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 
 	fullGenome <- c(fullIntraGR,fullGR)
-	fullGenome<- sort(fullGenome) 
+	fullGenome<- sort(fullGenome)
 	names(fullGenome) <- seq(along = fullGenome)
 
 	## coding
@@ -314,7 +314,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 
 	codingGenome <- c(codingIntraGR, codingGR)
-	codingGenome <- sort(codingGenome) 
+	codingGenome <- sort(codingGenome)
 	names(codingGenome) <- seq(along = codingGenome)
 	
 	## Add chr prefix
