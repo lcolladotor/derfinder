@@ -39,11 +39,8 @@ regions.
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
-## Creating this GenomicState object takes around 8 min
-GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
-
-## Save for later use
-save(GenomicState.Hsapiens.UCSC.hg19.knownGene, file="GenomicState.Hsapiens.UCSC.hg19.knownGene.Rdata")
+## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
+GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
 
 ## Hsapiens ENSEMBL GRCh37
 library("GenomicFeatures")

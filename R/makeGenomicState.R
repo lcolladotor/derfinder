@@ -65,11 +65,11 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 
 	#### reduce introns
-	intronsRed<- reduce(introns@unlistData, with.revmap=TRUE) 
+	intronsRed<- reduce(introns@unlistData, with.revmap=TRUE)
 	introns2 <- introns@unlistData
 	mcols(introns2) <- DataFrame(txidRep, txnameRep, geneRep)
 
-	mapping <- mcols(intronsRed)$mapping
+	mapping <- mcols(intronsRed)$revmap
 	addTx <- relist(mcols(introns2)[unlist(mapping), "txidRep"], mapping)
 	addTxName <- relist(mcols(introns2)[unlist(mapping), "txnameRep"], mapping)
 	addGene <- relist(mcols(introns2)[unlist(mapping), "geneRep"], mapping)
@@ -82,7 +82,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	mcols(promoters)$Gene <- tx2gene$gene[match(mcols(promoters)$tx_id, tx2gene$tx)]
 
 	promotersRed <- reduce(promoters, with.revmap=TRUE)
-	mapping <- mcols(promotersRed)$mapping
+	mapping <- mcols(promotersRed)$revmap
 
 	addTx <- relist(mcols(promoters)[unlist(mapping), "tx_id"], mapping)
 	addTxName <- relist(mcols(promoters)[unlist(mapping), "tx_name"], mapping)
@@ -103,7 +103,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	utr5red <- reduce(utr5a, with.revmap=TRUE)
 
-	mapping <- mcols(utr5red)$mapping
+	mapping <- mcols(utr5red)$revmap
 	addTx <- relist(mcols(utr5a)[unlist(mapping), "txidRep5"], mapping)
 	addTxName <- relist(mcols(utr5a)[unlist(mapping), "txnameRep5"], mapping)
 	addGene <- relist(mcols(utr5a)[unlist(mapping), "geneRep5"], mapping)
@@ -121,7 +121,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	utr3red <- reduce(utr3a, with.revmap=TRUE)
 
-	mapping <- mcols(utr3red)$mapping
+	mapping <- mcols(utr3red)$revmap
 	addTx <- relist(mcols(utr3a)[unlist(mapping), "txidRep3"], mapping)
 	addTxName <- relist(mcols(utr3a)[unlist(mapping), "txnameRep3"], mapping)
 	addGene <- relist(mcols(utr3a)[unlist(mapping), "geneRep3"], mapping)
@@ -139,7 +139,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	exonsRed <- reduce(exonsa, with.revmap=TRUE)
 
-	mapping <- mcols(exonsRed)$mapping
+	mapping <- mcols(exonsRed)$revmap
 	addTx <- relist(mcols(exonsa)[unlist(mapping), "txidRep"], mapping)
 	addTxName <- relist(mcols(exonsa)[unlist(mapping), "txnameRep"], mapping)
 	addGene <- relist(mcols(exonsa)[unlist(mapping), "geneRep"], mapping)
@@ -160,7 +160,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 	## introns
 	ooIntrons <- findOverlaps(dGR, intronsRed, type="within")
-	theRegion[unique(queryHits(ooIntrons))]<- "intron" 
+	theRegion[unique(queryHits(ooIntrons))]<- "intron"
 	theTx[unique(queryHits(ooIntrons))] <- intronsRed$TxID[subjectHits(ooIntrons)]
 	theTxName[unique(queryHits(ooIntrons))] <- intronsRed$TxName[subjectHits(ooIntrons)]
 	theGene[unique(queryHits(ooIntrons))] <- intronsRed$Gene[subjectHits(ooIntrons)]
