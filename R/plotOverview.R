@@ -31,6 +31,7 @@
 #' ## Type pval
 #' plotOverview(regs)
 #'
+#' \dontrun{
 #' ## Type qval
 #' plotOverview(regs, type="qval")
 #'
@@ -39,7 +40,6 @@
 #' 
 #' ## Resize the plots if needed.
 #'
-#' \dontrun{
 #' ## You might prefer to leave the legend at ggplot2's default option: right
 #' plotOverview(regs, legend.position="right")
 #' 

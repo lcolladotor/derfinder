@@ -25,11 +25,8 @@
 #' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 #' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 #'
-#' ## Creating this GenomicState object takes around 8 min
-#' GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
-#'
-#' ## Save for later use
-#' save(GenomicState.Hsapiens.UCSC.hg19.knownGene, file="GenomicState.Hsapiens.UCSC.hg19.knownGene.Rdata")
+#' ## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
+#' GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
 #'
 #' ## Hsapiens ENSEMBL GRCh37
 #' library("GenomicFeatures")
@@ -53,7 +50,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	introns <- intronsByTranscript(txdb)
 
 	## Get gene_id and tx_name associated with tx_id
-	map <- select(txdb, keys=names(introns), keytype="TXID", cols=c("TXID", "TXNAME", "GENEID")) # for both R and R-devel
+	map <- select(txdb, keys=names(introns), keytype="TXID", columns=c("TXID", "TXNAME", "GENEID")) # for both R and R-devel
 
 	## Subset on transcripts that have a GENEID
 	map <- map[!is.na(map$GENEID),]
@@ -68,7 +65,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 
 
 	#### reduce introns
-	intronsRed<- reduce(introns@unlistData, with.mapping=TRUE) 
+	intronsRed<- reduce(introns@unlistData, with.revmap=TRUE) 
 	introns2 <- introns@unlistData
 	mcols(introns2) <- DataFrame(txidRep, txnameRep, geneRep)
 
@@ -84,7 +81,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	promoters <- promoters(txdb)
 	mcols(promoters)$Gene <- tx2gene$gene[match(mcols(promoters)$tx_id, tx2gene$tx)]
 
-	promotersRed <- reduce(promoters, with.mapping=TRUE)
+	promotersRed <- reduce(promoters, with.revmap=TRUE)
 	mapping <- mcols(promotersRed)$mapping
 
 	addTx <- relist(mcols(promoters)[unlist(mapping), "tx_id"], mapping)
@@ -104,7 +101,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	utr5a <- utr5@unlistData
 	mcols(utr5a) <- DataFrame(txidRep5, txnameRep5, geneRep5)
 
-	utr5red <- reduce(utr5a, with.mapping=TRUE)
+	utr5red <- reduce(utr5a, with.revmap=TRUE)
 
 	mapping <- mcols(utr5red)$mapping
 	addTx <- relist(mcols(utr5a)[unlist(mapping), "txidRep5"], mapping)
@@ -122,7 +119,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	utr3a <- utr3@unlistData
 	mcols(utr3a) <- DataFrame(txidRep3, txnameRep3, geneRep3)
 
-	utr3red <- reduce(utr3a, with.mapping=TRUE)
+	utr3red <- reduce(utr3a, with.revmap=TRUE)
 
 	mapping <- mcols(utr3red)$mapping
 	addTx <- relist(mcols(utr3a)[unlist(mapping), "txidRep3"], mapping)
@@ -140,7 +137,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	exonsa <- exons@unlistData
 	mcols(exonsa) <- DataFrame(txidRep, txnameRep, geneRep)
 
-	exonsRed <- reduce(exonsa, with.mapping=TRUE)
+	exonsRed <- reduce(exonsa, with.revmap=TRUE)
 
 	mapping <- mcols(exonsRed)$mapping
 	addTx <- relist(mcols(exonsa)[unlist(mapping), "txidRep"], mapping)
@@ -245,7 +242,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	rIndexes <- split(seq_len(length(fullGR)), fullGR$theRegion)
 	grList <- lapply(rIndexes, function(i) {
 		r <- fullGR[i]
-		rr <- reduce(r, with.mapping=TRUE)
+		rr <- reduce(r, with.revmap=TRUE)
 	
 		mapping <- sapply(mcols(rr)$mapping, "[", 1)
 		values(rr) <- mcols(r)[mapping,]
@@ -257,7 +254,7 @@ makeGenomicState <- function(txdb, chrs=paste0("chr", c(1:22, "X", "Y")), addChr
 	rIndexes2 <- split(seq_len(length(codingGR)), codingGR$theRegion)
 	grList2 <- lapply(rIndexes2, function(i) {
 		r <- codingGR[i]
-		rr <- reduce(r, with.mapping=TRUE)
+		rr <- reduce(r, with.revmap=TRUE)
 	
 		mapping <- sapply(mcols(rr)$mapping, "[", 1)
 		values(rr) <- mcols(r)[mapping,]

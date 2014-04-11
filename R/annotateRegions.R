@@ -29,11 +29,11 @@
 #' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 #' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 #'
-#' ## Creating this GenomicState object takes around 8 min
-#' GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
+#' ## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
+#' GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
 #' 
 #' ## Annotate regions
-#' annotatedRegions <- annotateRegions(regions=genomeRegions$regions, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene, minoverlap=1)
+#' annotatedRegions <- annotateRegions(regions=genomeRegions$regions, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, minoverlap=1)
 #' }
 
 annotateRegions <- function(regions, genomicState, minoverlap=20, fullOrCoding = "full", annotate=TRUE, verbose=TRUE) {
