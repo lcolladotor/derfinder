@@ -59,46 +59,32 @@ it's use only after quickly checking the results with this
 function.
 }
 \examples{
-\dontrun{
-## Create GenomicState object:
-## Hsapiens.UCSC.hg19.knownGene GenomicState
-library("TxDb.Hsapiens.UCSC.hg19.knownGene")
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
-
-## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
-GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
-
-## Annotate regions
-annotatedRegions <- annotateRegions(regions=genomeRegions$regions, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, minoverlap=1)
+## Annotate regions, first two regions only
+regions <- genomeRegions$regions[1:2]
+annotatedRegions <- annotateRegions(regions=regions, genomicState=genomicState, minoverlap=1)
 
 ## Find nearest annotation
 library("bumphunter")
-nearestAnnotation <- annotateNearest(genomeRegions$regions, "hg19")
+nearestAnnotation <- annotateNearest(regions, "hg19")
+
+## Obtain fullCov object
+fullCov <- list("21"=genomeDataRaw$coverage)
 
 ## Assign chr lengths using hg19 information
 library("GenomicRanges")
 data(hg19Ideogram, package = "biovizBase", envir = environment())
-regions <- genomeRegions$regions
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
-
-## Obtain fullCov object
-datadir <- system.file("extdata", "genomeData", package="derfinder")
-dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
-## Shorten the column names
-names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
-
-## Reading the data and filtering it is quite fast.
-fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
 
 ## Get the region coverage
 regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 ## Make plots for the regions
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2, ask=TRUE)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2)
 
+\dontrun{
 ## If you prefer, you can save the plots to a pdf file
 pdf("ders.pdf", h = 6, w = 9)
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2, ask=FALSE)
 dev.off()
 }
 }

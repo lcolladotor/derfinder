@@ -16,38 +16,27 @@
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
 #' @importFrom GenomicRanges seqlevels seqnames
-#' @importMethodsFrom GenomicRanges names "names<-" length "[" coverage sort width c strand
+#' @importMethodsFrom GenomicRanges names "names<-" length "[" coverage sort width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue "%in%"
 #' @importFrom parallel mclapply
 #'
 #' @examples
-#' \dontrun{
 #' ## Obtain fullCov object
-#' datadir <- system.file("extdata", "genomeData", package="derfinder")
-#' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
-#' ## Shorten the column names
-#' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
-#' 
-#' ## Reading the data and filtering it is quite fast.
-#' fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
-#' 
-#' ## Create GenomicState object:
-#' ## Hsapiens.UCSC.hg19.knownGene GenomicState
-#' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
-#' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+#' fullCov <- list("21"=genomeDataRaw$coverage)
 #'
-#' ## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
-#' GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
+#' ## Use only the first two exons
+#' smallGenomicState <- genomicState
+#' smallGenomicState$fullGenome <- smallGenomicState$fullGenome[ which(smallGenomicState$fullGenome$theRegion == "exon")[1:2] ]
 #' 
 #' ## Finally, get the coverage information for each exon
-#' exonCov <- coverageToExon(fullCov=fullCov, genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21)
-#' }
+#' exonCov <- coverageToExon(fullCov=fullCov, genomicState=smallGenomicState, L=100)
 
 
-coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, returnType = "raw", mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
+coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L=NULL, returnType = "raw", mc.cores=getOption("mc.cores", 2L), verbose=TRUE) {
 	stopifnot(length(intersect(names(genomicState), c("fullGenome", "codingGenome"))) == 2)
 	stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 1)
 	stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 1)
+	if(is.null(L)) stop("'L' has to be specified")
 	
 	if(fullOrCoding == "full") {
 		gs <- genomicState$fullGenome
@@ -65,42 +54,8 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, retu
 	strandIndexes <- split(seq_len(length(etab)), as.character(strand(etab)))
 	
 	# count reads covering exon on each strand
-	exonByStrand <- mclapply(strandIndexes, function(ii) {
-		e <- etab[ii] # subset
-		
-		## use logical rle to subset large coverage matrix
-		cc <- coverage(e) # first coverage
-		for(i in seq(along=cc)) { # then convert to logical
-			cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
-		}
-
-		# now count exons
-		exonList <- mclapply(seq(along=fullCov), function(i) {
-			chrnum <- names(fullCov)[i]
-			chr <- paste0("chr", chrnum)
-			if(verbose) message(paste(Sys.time(), "coverageToExon: processing chromosome", chrnum))
-
-			# subset using logical rle (fastest way)
-			z <- as.data.frame(subset(fullCov[[chrnum]], cc[[chr]]))
-			
-			# only exons from this chr
-			g <- e[seqnames(e) == chr]
-			ind <- rep(names(g), width(g)) # to split
-			tmpList <- split(z, ind) # split
-			res <- t(sapply(tmpList, colSums)/L) # get # reads
-			
-			## Clean up
-			rm(z, g, ind, tmpList)
-			gc()
-			return(res)
-		}, mc.cores=mc.cores)
-		out <- do.call("rbind", exonList) # combine
-		
-		## Clean up
-		rm(e, cc, exonList)
-		gc()
-		return(out)
-	}, mc.cores=min(mc.cores, length(unique(runValue(strand(etab))))) ) # Use at most n cores where n is the number of unique strands
+	nCores <- min(mc.cores, length(unique(runValue(strand(etab))))) # Use at most n cores where n is the number of unique strands
+	exonByStrand <- mclapply(strandIndexes, .coverageToExonStrandStep, fullCov=fullCov, etab=etab, L=L, nCores=nCores, verbose=verbose, mc.cores=nCores) 
 
 	# combine two strands
 	exons <- do.call("rbind", exonByStrand)
@@ -115,3 +70,47 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", L, retu
 	} 
 	return(theExons)
 }
+
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, verbose) {
+	e <- etab[ii] # subset
+
+	## use logical rle to subset large coverage matrix
+	cc <- coverage(e) # first coverage
+	for(i in seq(along=cc)) { # then convert to logical
+		cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
+	}
+
+	# now count exons
+	exonList <- mclapply(seq(along=fullCov), .coverageToExonChrStep, fullCov=fullCov, cc=cc, e=e, L=L, verbose=verbose, mc.cores=nCores)
+
+	out <- do.call("rbind", exonList) # combine
+
+	## Clean up
+	rm(e, cc, exonList)
+	gc()
+	return(out)
+}
+		
+
+.coverageToExonChrStep <- function(i, fullCov, cc, e, L, verbose=verbose) {
+	chrnum <- names(fullCov)[i]
+	chr <- paste0("chr", chrnum)
+	if(verbose) message(paste(Sys.time(), "coverageToExon: processing chromosome", chrnum))
+
+	# subset using logical rle (fastest way)
+	z.tmp <- subset(fullCov[[chrnum]], cc[[chr]])
+	z <- as.data.frame(z.tmp)
+
+	# only exons from this chr
+	g <- e[seqnames(e) == chr]
+	ind <- rep(names(g), width(g)) # to split
+	tmpList <- split(z, ind) # split
+	res <- t(sapply(tmpList, colSums)/L) # get # reads
+
+	## Clean up
+	rm(z, g, ind, tmpList)
+	gc()
+	return(res)
+}
+	
+	

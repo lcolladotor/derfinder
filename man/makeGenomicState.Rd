@@ -40,14 +40,17 @@ samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="Ge
 txdb <- loadDb(samplefile)
 
 ## Generate genomic state object, only for chr21
-genomicState <- makeGenomicState(txdb, chrs="chr21")
+sampleGenomicState <- makeGenomicState(txdb, chrs="chr21")
 \dontrun{
-## Hsapiens.UCSC.hg19.knownGene GenomicState
+## Create the GenomicState object for Hsapiens.UCSC.hg19.knownGene
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 ## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
 GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
+
+## For convinience, this object is already included in derfinder
+identical(GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, genomicState)
 
 ## Hsapiens ENSEMBL GRCh37
 library("GenomicFeatures")

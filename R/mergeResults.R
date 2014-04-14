@@ -33,15 +33,8 @@
 #'
 #' @examples
 #' \dontrun{
-#' ## Hsapiens.UCSC.hg19.knownGene GenomicState
-#' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
-#' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
-#'
-#' ## Creating this GenomicState object takes around 8 min
-#' GenomicState.Hsapiens.UCSC.hg19.knownGene <- makeGenomicState(txdb=txdb)
-#'
 #' ## Merge the results
-#' mergeResults(prefix="run1", genomicState=GenomicState.Hsapiens.UCSC.hg19.knownGene)
+#' mergeResults(prefix="run1", genomicState=genomicState)
 #'
 #' ## You can then explore the wallclock time spent on each step
 #' prefix <- "." ## Set to the same prefix you used in mergeResults()

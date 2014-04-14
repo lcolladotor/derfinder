@@ -13,6 +13,7 @@
 #' @export
 #' @seealso \link{loadCoverage}
 #' @examples
+#' ## Get list of BAM files included in derfinder
 #' datadir <- system.file("extdata", "genomeData", package="derfinder")
 #' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 #' dirs

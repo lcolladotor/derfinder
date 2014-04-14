@@ -18,26 +18,17 @@
 #' @importMethodsFrom IRanges subset as.data.frame
 #'
 #' @examples
-#' \dontrun{
 #' ## Obtain fullCov object
-#' datadir <- system.file("extdata", "genomeData", package="derfinder")
-#' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
-#' ## Shorten the column names
-#' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
+#' fullCov <- list("21"=genomeDataRaw$coverage)
 #' 
-#' ## Reading the data and filtering it is quite fast.
-#' fullCov <- fullCoverage(dirs=dirs, chrnums="21", mc.cores=1)
-#' 
-#' ## Assign chr lengths using hg19 information
+#' ## Assign chr lengths using hg19 information, use only first two regions
 #' library("GenomicRanges")
 #' data(hg19Ideogram, package = "biovizBase", envir = environment())
-#' regions <- genomeRegions$regions
+#' regions <- genomeRegions$regions[1:2]
 #' seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 #'
 #' ## Finally, get the region coverage
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
-#' }
-
 
 getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,	mc.cores=1, verbose=TRUE) {
 
