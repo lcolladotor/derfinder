@@ -29,27 +29,26 @@
 #' dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
 #' ## Shorten the column names
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
-#' 
-#' ## Reading the data and filtering it is quite fast.
-#' system.time(data <- loadCoverage(dirs=dirs, chr="21", cutoff=0))
-#' data
-#'
-#' ## For other examples this data is included in the package
-#' identical(data, genomeData)
-#'
-#' ## The data is compact enough to be loaded in memory
-#' print(object.size(data), units="Kb")
+#'  
+#' ## Read and filter the data, only for 2 files
+#' dataSmall <- loadCoverage(dirs=dirs[1:2], chr="21", cutoff=0)
 #'
 #' \dontrun{
+#' ## Read all the data
+#' dataAll <- loadCoverage(dirs=dirs, chr="21", cutoff=0)
+#'
+#' ## For other examples this data is included in the package
+#' identical(dataAll, genomeData)
+#'
 #' ## Read the coverage without applying any cutoff.
 #' ## This can be useful for downstream analysis including coverage plots.
-#' system.time(data2 <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL))
+#' dataRaw <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL)
 #'
 #' ## Compare vs raw data provided in the package
-#' identical(data2, genomeDataRaw)
+#' identical(dataRaw, genomeDataRaw)
 #' 
 #' ## Note that the object size is pretty much the same due to the Rle compression
-#' print(object.size(data2), units="Kb")
+#' print(object.size(dataRaw), units="Kb")
 #' }
 
 loadCoverage <- function(dirs, chr, cutoff=NULL, bai=NULL, chrlen=NULL, output=NULL, isMinusStrand=NA, verbose=TRUE) {

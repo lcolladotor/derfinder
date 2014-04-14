@@ -27,8 +27,8 @@
 #' ## Shorten the column names
 #' names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
 #' 
-#' ## Reading the data and filtering it is quite fast.
-#' system.time(fullCov <- fullCoverage(dirs=dirs, chrnums=c("21", "22"), mc.cores=2))
+#' ## Read and filter the data, only for 2 files
+#' fullCov <- fullCoverage(dirs=dirs[1:2], chrnums=c("21", "22"), mc.cores=2)
 #' fullCov
 #'
 #' \dontrun{

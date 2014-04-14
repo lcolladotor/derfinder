@@ -24,8 +24,8 @@
 #' ## Construct toy data
 #' chrs <- paste0("chr", c(1:22, "X", "Y"))
 #' chrs <- factor(chrs, levels=chrs)
-#' suppressMessages(library("GenomicRanges"))
-#' regs <- GRanges(rep(chrs, 10), ranges=IRanges(runif(240, 1, 4e7), width=1e3), significant=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), significantQval=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), area=rnorm(240))
+#' library("GenomicRanges")
+#' regs <- GRanges(rep(chrs, 10), ranges=IRanges(runif(240, 1, 4e7), width=1e3), significant=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), significantQval=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.1, 0.9)), area=rnorm(240))
 #' annotation <- data.frame(region=sample(c("upstream", "promoter", "overlaps 5'", "inside", "overlaps 3'", "close to 3'", "downstream"), 240, TRUE))
 #'
 #' ## Type pval

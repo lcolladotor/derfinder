@@ -63,9 +63,13 @@
 #' cutoff <- 1
 #'
 #' ## Calculate the p-values and define the regions of interest.
-#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, chr="chr21", cutoff=cutoff, mc.cores=1)
+#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1, chr="chr21", cutoff=cutoff, mc.cores=1)
 #' regsWithP
 #'
+#' \dontrun{
+#' ## Calculate again, but with 10 permutations instead of just 1
+#' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, chr="chr21", cutoff=cutoff, mc.cores=2)
+#' 
 #' ## Check that they are the same as the previously calculated regions
 #' identical(regsWithP, genomeRegions)
 #'
@@ -80,7 +84,6 @@
 #' ma <- data.frame(mean=regsWithP$regions$meanCoverage, log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
 #' ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
 #'
-#' \dontrun{
 #' ## Annotate the results
 #' library("bumphunter")
 #' annotation <- annotateNearest(regsWithP$regions, "hg19")
