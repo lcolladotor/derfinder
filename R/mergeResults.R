@@ -33,8 +33,11 @@
 #'
 #' @examples
 #' \dontrun{
+#' ## For a full example, check generateReport() in derfinderReport
+#' help("generateReport", "derfinderReport")
+#'
 #' ## Merge the results
-#' mergeResults(prefix="run1", genomicState=genomicState)
+#' mergeResults(chrnums="21", prefix="run1", genomicState=genomicState)
 #'
 #' ## You can then explore the wallclock time spent on each step
 #' prefix <- "." ## Set to the same prefix you used in mergeResults()
