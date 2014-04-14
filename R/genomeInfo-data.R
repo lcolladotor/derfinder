@@ -1,6 +1,6 @@
 #' Genome samples information
 #'
-#' Information for the 31 samples downloaded from the Short Read Archive from studies comparing CEU and YRI populations. This data is used to specify the adjustment variables in \link{calculateStats}. The data is sorted according to the BAM files identifiers.
+#' Information for the 31 samples downloaded from the Short Read Archive from studies comparing CEU and YRI populations. This data is used to specify the adjustment variables in \link{calculateStats}. The data is sorted according to the BAM files identifiers. Reads were 36bp long.
 #'
 #' @details The samples are from:
 #' \describe{
