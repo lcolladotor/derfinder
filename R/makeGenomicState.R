@@ -20,6 +20,14 @@
 #' @importMethodsFrom GenomicFeatures promoters
 #'
 #' @examples
+#' ## Load the example data base from the GenomicFeatures vignette
+#' library("GenomicFeatures")
+#' samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
+#' txdb <- loadDb(samplefile)
+#'
+#' ## Generate genomic state object, only for chr21
+#' genomicState <- makeGenomicState(txdb, chrs="chr21")
+#
 #' \dontrun{
 #' ## Hsapiens.UCSC.hg19.knownGene GenomicState
 #' library("TxDb.Hsapiens.UCSC.hg19.knownGene")
