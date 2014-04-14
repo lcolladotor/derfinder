@@ -74,7 +74,7 @@ https://github.com/lcolladotor/derfinderReport.
 help("generateReport", "derfinderReport")
 
 ## Merge the results
-mergeResults(chrnums="21", prefix="run1", genomicState=genomicState)
+mergeResults(chrnums="21", prefix="generateReport-example", genomicState=genomicState)
 
 ## You can then explore the wallclock time spent on each step
 prefix <- "." ## Set to the same prefix you used in mergeResults()
