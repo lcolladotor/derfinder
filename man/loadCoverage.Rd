@@ -59,30 +59,32 @@ files. It then merges them into a DataFrame and removes the
 bases that do not pass the cutoff.
 }
 \examples{
-datadir <- system.file("extdata", "genomeData", package="derfinder")
-dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
+datadir <- system.file('extdata', 'genomeData', package='derfinder')
+dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$',
+    bamterm=NULL)
 ## Shorten the column names
-names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
+names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
 ## Read and filter the data, only for 2 files
-dataSmall <- loadCoverage(dirs=dirs[1:2], chr="21", cutoff=0)
+dataSmall <- loadCoverage(dirs=dirs[1:2], chr='21', cutoff=0)
 
 \dontrun{
 ## Read all the data
-dataAll <- loadCoverage(dirs=dirs, chr="21", cutoff=0)
+dataAll <- loadCoverage(dirs=dirs, chr='21', cutoff=0)
 
 ## For other examples this data is included in the package
 identical(dataAll, genomeData)
 
 ## Read the coverage without applying any cutoff.
 ## This can be useful for downstream analysis including coverage plots.
-dataRaw <- loadCoverage(dirs=dirs, chr="21", cutoff=NULL)
+dataRaw <- loadCoverage(dirs=dirs, chr='21', cutoff=NULL)
 
 ## Compare vs raw data provided in the package
 identical(dataRaw, genomeDataRaw)
 
-## Note that the object size is pretty much the same due to the Rle compression
-print(object.size(dataRaw), units="Kb")
+## Note that the object size is pretty much the same due to the Rle
+## compression
+print(object.size(dataRaw), units='Kb')
 }
 }
 \author{

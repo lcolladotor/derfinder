@@ -38,7 +38,7 @@ A list with elements \code{countTable} and
 \describe{ \item{countTable }{This is a data.frame with the
 number of overlaps from the regions vs the genomic states
 with one type per column. For example, if
-\code{fullOrCoding="full"} then the columns are
+\code{fullOrCoding='full'} then the columns are
 \code{exon}, \code{intragenic} and \code{intron}.}
 \item{annotationList }{This is a \code{GRangesList} with
 the genomic states that overlapped with the regions (if
@@ -55,7 +55,8 @@ functions are \link[IRanges]{countOverlaps} and
 }
 \examples{
 ## Annotate regions, first two only
-annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2], genomicState=genomicState, minoverlap=1)
+annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2],
+    genomicState=genomicState, minoverlap=1)
 annotatedRegions
 }
 \author{

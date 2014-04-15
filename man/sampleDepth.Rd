@@ -46,10 +46,12 @@ construcing the null and alternative models.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose=TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), nonzero=TRUE, verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), nonzero=TRUE,
+    verbose=TRUE)
 sampleDepths
 }
 \author{

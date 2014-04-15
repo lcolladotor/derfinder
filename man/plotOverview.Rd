@@ -13,7 +13,7 @@ plotOverview(regions, annotation = NULL, type = "pval", base_size = 12,
   \item{annotation}{The output from running
   \link[bumphunter]{annotateNearest} on the output from
   \link{calculatePvalues}. It is only required if
-  \code{type="annotation"}.}
+  \code{type='annotation'}.}
 
   \item{type}{Must be either \code{pval}, \code{qval} or
   \code{annotation}. It determines whether the plot
@@ -26,13 +26,13 @@ plotOverview(regions, annotation = NULL, type = "pval", base_size = 12,
   (\code{size} argument).}
 
   \item{areaRel}{The relative size for the area label when
-  \code{type="pval"} or \code{type="qval"}. Can be useful
+  \code{type='pval'} or \code{type='qval'}. Can be useful
   when making high resolution versions of these plots in
   devices like CairoPNG.}
 
   \item{legend.position}{This argument is passed to
   \link[ggplot2]{theme}. From ggplot2: the position of
-  legends. ("left", "right", "bottom", "top", or
+  legends. ('left', 'right', 'bottom', 'top', or
   two-element numeric vector).}
 
   \item{significantCut}{A vector of length two specifiying
@@ -55,32 +55,37 @@ using \link[bumphunter]{annotateNearest}.
 }
 \examples{
 ## Construct toy data
-chrs <- paste0("chr", c(1:22, "X", "Y"))
+chrs <- paste0('chr', c(1:22, 'X', 'Y'))
 chrs <- factor(chrs, levels=chrs)
-library("GenomicRanges")
-regs <- GRanges(rep(chrs, 10), ranges=IRanges(runif(240, 1, 4e7), width=1e3), significant=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05, 0.95)), significantQval=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.1, 0.9)), area=rnorm(240))
-annotation <- data.frame(region=sample(c("upstream", "promoter", "overlaps 5'", "inside", "overlaps 3'", "close to 3'", "downstream"), 240, TRUE))
+library('GenomicRanges')
+regs <- GRanges(rep(chrs, 10), ranges=IRanges(runif(240, 1, 4e7),
+    width=1e3), significant=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.05,
+    0.95)), significantQval=sample(c(TRUE, FALSE), 240, TRUE, p=c(0.1,
+    0.9)), area=rnorm(240))
+annotation <- data.frame(region=sample(c('upstream', 'promoter',
+    "overlaps 5'", 'inside', "overlaps 3'", "close to 3'", 'downstream'),
+    240, TRUE))
 
 ## Type pval
 plotOverview(regs)
 
 \dontrun{
 ## Type qval
-plotOverview(regs, type="qval")
+plotOverview(regs, type='qval')
 
 ## Annotation
-plotOverview(regs, annotation, type="annotation")
+plotOverview(regs, annotation, type='annotation')
 
 ## Resize the plots if needed.
 
 ## You might prefer to leave the legend at ggplot2's default option: right
-plotOverview(regs, legend.position="right")
+plotOverview(regs, legend.position='right')
 
 ## Although the legend looks better on the bottom
-plotOverview(regs, legend.position="bottom")
+plotOverview(regs, legend.position='bottom')
 
 ## Example knitr chunk for higher res plot using the CairoPNG device
-```{r overview, message=FALSE, fig.width=7, fig.height=9, dev="CairoPNG", dpi=300}
+```{r overview, message=FALSE, fig.width=7, fig.height=9, dev='CairoPNG', dpi=300}
 plotOverview(regs, base_size=30, areaRel=10, legend.position=c(0.95, 0.12))
 ```
 

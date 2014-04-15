@@ -77,7 +77,7 @@ analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
 
   \item{writeOutput}{If \code{TRUE}, output Rdata files are
   created at each step inside a directory with the
-  chromosome name (example: 'chr21' if \code{chrnum="21"}).
+  chromosome name (example: 'chr21' if \code{chrnum='21'}).
   One Rdata files is created for each component described
   in the return section.}
 
@@ -113,17 +113,19 @@ same components that are written to Rdata files if
 This is a major wrapper for running several key functions
 from this package. It is meant to be used after
 \link{loadCoverage} has been used for a specific
-chromosome. The steps run include \link{makeModels},
+chromosome. The steps run include \link{makeModels}, #'
 \link{preprocessCoverage}, \link{calculateStats},
 \link{calculatePvalues} and
 \link[bumphunter]{annotateNearest}.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose=TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
+    verbose=TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -131,7 +133,9 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 
 ## Analyze the chromosome
-results <- analyzeChr(chrnum="21", coverageInfo=genomeData, models=models, cutoffFstat=1, cutoffType="manual", groupInfo=group, mc.cores=1, writeOutput=FALSE, returnOutput=TRUE)
+results <- analyzeChr(chrnum='21', coverageInfo=genomeData, models=models,
+    cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1,
+    writeOutput=FALSE, returnOutput=TRUE)
 names(results)
 }
 \author{

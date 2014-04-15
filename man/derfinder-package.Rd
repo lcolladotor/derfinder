@@ -19,7 +19,10 @@ from the bumphunter package.
 Leonardo Collado-Torres <lcollado@jhsph.edu>
 }
 \references{
-Frazee et al. Biostatistics in review.
+Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R.
+A. & Leek, J. T. Differential expression analysis of
+RNA-seq data at single-base resolution. Biostatistics
+(2014). doi:10.1093/biostatistics/kxt053
 
 Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo,
 Kasper D. Hansen and Harris A. Jaffee. bumphunter: Bump

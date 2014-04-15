@@ -75,31 +75,37 @@ for \link{calculatePvalues}.
 }
 \examples{
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
+    colsubset=NULL)
 
 ## Get the F statistics
 fstats <- genomeFstats
 
 ## Find the regions
-regs <- findRegions(prep$position, fstats, "chr21", verbose=TRUE)
+regs <- findRegions(prep$position, fstats, 'chr21', verbose=TRUE)
 regs
 
 \dontrun{
 ## Compare vs bumphunter
-library("bumphunter")
-regs2 <- regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, order=FALSE, maxGap=1)
+library('bumphunter')
+regs2 <- regionFinder(as.numeric(fstats), rep('chr21', length(fstats)),
+    which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE,
+    order=FALSE, maxGap=1)
 regs2
 ## Note that regs$L can be calculated with width(regs)
 identical(width(regs), as.integer(regs2$L))
 ## Time comparison
-library("microbenchmark")
-micro <- microbenchmark(findRegions(prep$position, fstats, "chr21", verbose=FALSE, basic=TRUE), regionFinder(as.numeric(fstats), rep("chr21", length(fstats)), which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
-levels(micro$expr) <- c("new", "original")
+library('microbenchmark')
+micro <- microbenchmark(findRegions(prep$position, fstats, 'chr21',
+    verbose=FALSE, basic=TRUE), regionFinder(as.numeric(fstats),
+    rep('chr21', length(fstats)), which(prep$position), cluster=NULL,
+    assumeSorted=TRUE, verbose=FALSE, order=FALSE, maxGap=1))
+levels(micro$expr) <- c('new', 'original')
 micro
 ## The bumphunter function regionFinder() is faster in small data sets.
 
 ## Once you have the regions you can proceed to annotate them
-annotation <- annotateNearest(regs, "hg19")
+annotation <- annotateNearest(regs, 'hg19')
 annotation
 }
 }

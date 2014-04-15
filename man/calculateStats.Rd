@@ -41,10 +41,12 @@ calculate the F-statistics at base-pair resolution.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose=TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
+    verbose=TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -52,7 +54,8 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL)
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
+    colsubset=NULL)
 
 ## Run the function
 fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)

@@ -1,6 +1,7 @@
 \name{fullCoverage}
 \alias{fullCoverage}
-\title{Load the unfiltered coverage information from a group of BAM files and a list of chromosomes}
+\title{Load the unfiltered coverage information from a group of BAM files and a
+list of chromosomes}
 \usage{
 fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
   mc.cores = getOption("mc.cores", 2L), isMinusStrand = NA,
@@ -30,7 +31,7 @@ fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
 
   \item{outputs}{This argument is passed to the
   \code{output} argument of \link{loadCoverage}. If
-  \code{NULL} or \code{"auto"} it is then recycled.}
+  \code{NULL} or \code{'auto'} it is then recycled.}
 
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply}. You should use at most one
@@ -57,19 +58,20 @@ sample into a DataFrame. The end result is a list with one
 such DataFrame objects per chromosome.
 }
 \examples{
-datadir <- system.file("extdata", "genomeData", package="derfinder")
-dirs <- makeBamList(datadir=datadir, samplepatt="*accepted_hits.bam$", bamterm=NULL)
+datadir <- system.file('extdata', 'genomeData', package='derfinder')
+dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$',
+    bamterm=NULL)
 ## Shorten the column names
-names(dirs) <- gsub("_accepted_hits.bam", "", names(dirs))
+names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
 ## Read and filter the data, only for 2 files
-fullCov <- fullCoverage(dirs=dirs[1:2], chrnums=c("21", "22"), mc.cores=2)
+fullCov <- fullCoverage(dirs=dirs[1:2], chrnums=c('21', '22'), mc.cores=2)
 fullCov
 
 \dontrun{
 ## You can then use filterData to filter the data if you want to.
 ## Use mclapply if you want to do so with multiple cores.
-library("parallel")
+library('parallel')
 mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 }
 }

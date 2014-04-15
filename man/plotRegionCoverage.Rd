@@ -29,7 +29,7 @@ plotRegionCoverage(regions, regionCoverage, groupInfo, nearestAnnotation,
   the regions to plot.}
 
   \item{colors}{If \code{NULL} then
-  \link[RColorBrewer]{brewer.pal} with the \code{"Dark2"}
+  \link[RColorBrewer]{brewer.pal} with the \code{'Dark2'}
   color scheme is used.}
 
   \item{scalefac}{The parameter used in
@@ -61,30 +61,35 @@ function.
 \examples{
 ## Annotate regions, first two regions only
 regions <- genomeRegions$regions[1:2]
-annotatedRegions <- annotateRegions(regions=regions, genomicState=genomicState, minoverlap=1)
+annotatedRegions <- annotateRegions(regions=regions,
+    genomicState=genomicState, minoverlap=1)
 
 ## Find nearest annotation
-library("bumphunter")
-nearestAnnotation <- annotateNearest(regions, "hg19")
+library('bumphunter')
+nearestAnnotation <- annotateNearest(regions, 'hg19')
 
 ## Obtain fullCov object
-fullCov <- list("21"=genomeDataRaw$coverage)
+fullCov <- list('21'=genomeDataRaw$coverage)
 
 ## Assign chr lengths using hg19 information
-library("GenomicRanges")
-data(hg19Ideogram, package = "biovizBase", envir = environment())
+library('GenomicRanges')
+data(hg19Ideogram, package = 'biovizBase', envir = environment())
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 
 ## Get the region coverage
 regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 ## Make plots for the regions
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov,
+    groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation,
+    annotatedRegions=annotatedRegions, whichRegions=1:2)
 
 \dontrun{
 ## If you prefer, you can save the plots to a pdf file
-pdf("ders.pdf", h = 6, w = 9)
-plotRegionCoverage(regions=regions, regionCoverage=regionCov, groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation, annotatedRegions=annotatedRegions, whichRegions=1:2, ask=FALSE)
+pdf('ders.pdf', h = 6, w = 9)
+plotRegionCoverage(regions=regions, regionCoverage=regionCov,
+    groupInfo=genomeInfo$pop, nearestAnnotation=nearestAnnotation,
+    annotatedRegions=annotatedRegions, whichRegions=1:2, ask=FALSE)
 dev.off()
 }
 }

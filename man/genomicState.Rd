@@ -4,8 +4,10 @@
 \title{Genomic State for Hsapiens.UCSC.hg19.knownGene}
 \format{A GRangesList with two components.
 \describe{
-\item{fullGenome }{ classifies each region as either being exon, intron or intragenic.}
-\item{codingGenome }{ classfies the regions as being promoter, exon, intro, 5UTR, 3UTR or intragenic.}
+\item{fullGenome }{ classifies each region as either being exon, intron or
+intragenic.}
+\item{codingGenome }{ classfies the regions as being promoter, exon, intro,
+5UTR, 3UTR or intragenic.}
 }}
 \description{
 Pre-computed genomic state for Hsapiens UCSC hg19 knownGene

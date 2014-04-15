@@ -4,8 +4,10 @@
 \title{Genome samples processed data}
 \format{A list with two components.
 \describe{
-\item{coverage }{  is a DataFrame object where each column represents a sample.}
-\item{position }{ is a logical Rle with the positions of the chromosome that passed a cutoff of 0.}
+\item{coverage }{  is a DataFrame object where each column represents a
+sample.}
+\item{position }{ is a logical Rle with the positions of the chromosome that
+passed a cutoff of 0.}
 }}
 \description{
 10kb region from chr21 processed for 31 RNA-seq samples

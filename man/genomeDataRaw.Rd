@@ -4,7 +4,8 @@
 \title{Genome samples processed data}
 \format{A list with two components.
 \describe{
-\item{coverage }{  is a DataFrame object where each column represents a sample.}
+\item{coverage }{  is a DataFrame object where each column represents a
+sample.}
 \item{position }{ is \code{NULL} because no bases were filtered.}
 }}
 \description{

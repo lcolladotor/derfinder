@@ -5,8 +5,10 @@
 \format{A data.frame with 5 columns:
 \describe{
 \item{run }{ The short name used to identify the sample BAM file.}
-\item{library.layout }{ Whether it was a single-end library or a paired-end library.}
-\item{hapmap.id }{ The HapMap identifier of the person sequenced. Note that some were sequenced more than once.}
+\item{library.layout }{ Whether it was a single-end library or a paired-end
+library.}
+\item{hapmap.id }{ The HapMap identifier of the person sequenced. Note that
+some were sequenced more than once.}
 \item{gender }{ Whether the person sequence is a female or a male.}
 \item{pop }{ The population the person belongs to.}
 }}

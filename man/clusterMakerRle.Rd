@@ -36,7 +36,7 @@ Rle() world.
 It is a a helper function for \link{findRegions}.
 }
 \examples{
-library("IRanges")
+library('IRanges')
 set.seed(20130725)
 pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
 cluster <- clusterMakerRle(pos, 100L)
@@ -44,9 +44,10 @@ cluster
 
 \dontrun{
 ## clusterMakerRle() is comparable in speed if you start from the Rle world.
-library("bumphunter")
-library("microbenchmark")
-micro <- microbenchmark(clusterMakerRle(pos, 100L), clusterMaker(chr=rep("chr21", sum(pos)), pos=which(pos)))
+library('bumphunter')
+library('microbenchmark')
+micro <- microbenchmark(clusterMakerRle(pos, 100L),
+    clusterMaker(chr=rep('chr21', sum(pos)), pos=which(pos)))
 micro
 }
 }

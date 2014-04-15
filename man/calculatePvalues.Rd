@@ -97,10 +97,12 @@ p-values for the original regions.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose=TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
+    verbose=TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -108,14 +110,17 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 
 ## Preprocess the data
-## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run' section
-prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run'
+## section
+prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0,
+    scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
 
 ## Get the F statistics
 fstats <- genomeFstats
 
 ## Determine a cutoff from the F-distribution.
-## This step is very important and you should consider using quantiles from the observed F statistics
+## This step is very important and you should consider using quantiles from
+## the observed F statistics
 n <- dim(prep$coverageProcessed)[2]
 df1 <- dim(models$mod)[2]
 df0 <- dim(models$mod0)[2]
@@ -125,41 +130,51 @@ cutoff <- qf(0.95, df1-df0, n-df1)
 cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1, chr="chr21", cutoff=cutoff, mc.cores=1)
+regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1,
+    chr='chr21', cutoff=cutoff, mc.cores=1)
 regsWithP
 
 \dontrun{
 ## Calculate again, but with 10 permutations instead of just 1
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, chr="chr21", cutoff=cutoff, mc.cores=2)
+regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10,
+    chr='chr21', cutoff=cutoff, mc.cores=2)
 
 ## Check that they are the same as the previously calculated regions
 identical(regsWithP, genomeRegions)
 
 ## Histogram of the theoretical p-values by region
-hist(pf(regsWithP$regions$value, df1-df0, n-df1), main="Distribution original p-values by region", freq=FALSE)
+hist(pf(regsWithP$regions$value, df1-df0, n-df1), main='Distribution
+    original p-values by region', freq=FALSE)
 
 ## Histogram of the permutted p-values by region
-hist(regsWithP$regions$pvalues, main="Distribution permutted p-values by region", freq=FALSE)
+hist(regsWithP$regions$pvalues, main='Distribution permutted p-values by
+    region', freq=FALSE)
 
 ## MA style plot
-library("ggplot2")
-ma <- data.frame(mean=regsWithP$regions$meanCoverage, log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
-ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() + ylab("Fold Change (log2)") + xlab("Mean coverage (log2)") + labs(title="MA style plot")
+library('ggplot2')
+ma <- data.frame(mean=regsWithP$regions$meanCoverage,
+    log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
+ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() +
+    ylab('Fold Change (log2)') + xlab('Mean coverage (log2)') +
+    labs(title='MA style plot')
 
 ## Annotate the results
-library("bumphunter")
-annotation <- annotateNearest(regsWithP$regions, "hg19")
+library('bumphunter')
+annotation <- annotateNearest(regsWithP$regions, 'hg19')
 head(annotation)
 
 ## Compare speed between 1 and 4 cores (must have them!)
-library("microbenchmark")
+library('microbenchmark')
 micro <- microbenchmark(
-calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
-calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, chr="chr21", cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
+    calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
+        chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+    calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
+        chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
 times=10)
-levels(micro$expr) <- c("one", "four")
+levels(micro$expr) <- c('one', 'four')
 micro
-## Using 4 cores doesn't help with this toy data, but it will (at the expense of more RAM) if you have a larger data set.
+## Using 4 cores doesn't help with this toy data, but it will (at the
+## expense of more RAM) if you have a larger data set.
 }
 }
 \author{

@@ -53,7 +53,7 @@ argument in \link{preprocessCoverage} to filter the data
 before calculating the F statistics.
 }
 \examples{
-library("IRanges")
+library('IRanges')
 x <- Rle(round(runif(1e4, max=10)))
 y <- Rle(round(runif(1e4, max=10)))
 z <- Rle(round(runif(1e4, max=10)))
@@ -62,7 +62,8 @@ filt1 <- filterData(DF, 5)
 filt1
 filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
 filt2
-## The number of TRUE values in 'position' is the same as the number of rows as in 'coverage'.
+## The number of TRUE values in 'position' is the same as the number of rows
+## as in 'coverage'.
 identical(sum(filt2$pos), nrow(filt2$cov))
 }
 \author{

@@ -95,7 +95,8 @@ is a vector with the chunk identifiers.
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()
-dataReady <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, colsubset=NULL, verbose=TRUE)
+dataReady <- preprocessCoverage(genomeData, cutoff=0, scalefac=32,
+    chunksize=1e3, colsubset=NULL, verbose=TRUE)
 names(dataReady)
 dataReady
 }

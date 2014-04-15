@@ -35,34 +35,41 @@ regions.
 }
 \examples{
 ## Load the example data base from the GenomicFeatures vignette
-library("GenomicFeatures")
-samplefile <- system.file("extdata", "UCSC_knownGene_sample.sqlite", package="GenomicFeatures")
+library('GenomicFeatures')
+samplefile <- system.file('extdata', 'UCSC_knownGene_sample.sqlite',
+    package='GenomicFeatures')
 txdb <- loadDb(samplefile)
 
 ## Generate genomic state object, only for chr21
-sampleGenomicState <- makeGenomicState(txdb, chrs="chr21")
+sampleGenomicState <- makeGenomicState(txdb, chrs='chr21')
 \dontrun{
 ## Create the GenomicState object for Hsapiens.UCSC.hg19.knownGene
-library("TxDb.Hsapiens.UCSC.hg19.knownGene")
+library('TxDb.Hsapiens.UCSC.hg19.knownGene')
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
-## Creating this GenomicState object takes around 8 min for all chrs and around 30 secs for chr21
-GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(txdb=txdb, chrs="chr21")
+## Creating this GenomicState object takes around 8 min for all chrs and
+## around 30 secs for chr21
+GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <-
+    makeGenomicState(txdb=txdb, chrs='chr21')
 
 ## For convinience, this object is already included in derfinder
 identical(GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, genomicState)
 
 ## Hsapiens ENSEMBL GRCh37
-library("GenomicFeatures")
+library('GenomicFeatures')
 ## Can take several minutes and speed will depend on your internet speed
-xx <- makeTxDbPackageFromBiomart(version = "0.99", maintainer = "Your Name", author="Your Name")
-txdb <- loadDb(file.path("TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11", "inst", "extdata", "TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11.sqlite"))
+xx <- makeTxDbPackageFromBiomart(version = '0.99', maintainer = 'Your Name',
+    author='Your Name')
+txdb <- loadDb(file.path('TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11', 'inst',
+    'extdata', 'TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11.sqlite'))
 
 ## Creating this GenomicState object takes around 13 min
-GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb, chrs=c(1:22, "X", "Y"), addChrPrefix=TRUE)
+GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb,
+    chrs=c(1:22, 'X', 'Y'), addChrPrefix=TRUE)
 
 ## Save for later use
-save(GenomicState.Hsapiens.ensembl.GRCh37.p11, file="GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata")
+save(GenomicState.Hsapiens.ensembl.GRCh37.p11,
+    file='GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata')
 }
 }
 \author{

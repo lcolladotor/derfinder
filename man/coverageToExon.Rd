@@ -44,9 +44,9 @@ corresponding to the chromosomes in \code{fullCov}, ncol =
 number of samples) with the number of reads (or RPKM) per
 exon. The row names correspond to the row indexes of
 \code{genomicState$fullGenome} (if
-\code{fullOrCoding="full"}) or
+\code{fullOrCoding='full'}) or
 \code{genomicState$codingGenome} (if
-\code{fullOrCoding="coding"}).
+\code{fullOrCoding='coding'}).
 }
 \description{
 This function extracts the coverage information calculated
@@ -57,14 +57,16 @@ calculating RPKM values.
 }
 \examples{
 ## Obtain fullCov object
-fullCov <- list("21"=genomeDataRaw$coverage)
+fullCov <- list('21'=genomeDataRaw$coverage)
 
 ## Use only the first two exons
 smallGenomicState <- genomicState
-smallGenomicState$fullGenome <- smallGenomicState$fullGenome[ which(smallGenomicState$fullGenome$theRegion == "exon")[1:2] ]
+smallGenomicState$fullGenome <- smallGenomicState$fullGenome[
+    which(smallGenomicState$fullGenome$theRegion == 'exon')[1:2] ]
 
 ## Finally, get the coverage information for each exon
-exonCov <- coverageToExon(fullCov=fullCov, genomicState=smallGenomicState, L=36)
+exonCov <- coverageToExon(fullCov=fullCov, genomicState=smallGenomicState,
+    L=36)
 }
 \author{
 Andrew Jaffe, Leonardo Collado-Torres

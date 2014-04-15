@@ -16,7 +16,7 @@ collapseFullCoverage(fullCov, colsubset = NULL, save = FALSE,
   \code{coverageInfo$coverage} to use.}
 
   \item{save}{If \code{TRUE}, the result is saved as
-  "collapsedFull.Rdata".}
+  'collapsedFull.Rdata'.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}
@@ -40,7 +40,8 @@ adjustments. The data set can loaded to R using (see
 }
 \examples{
 ## Collapse the coverage information for the filtered data
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose=TRUE)
 collapsedFull
 
 \dontrun{

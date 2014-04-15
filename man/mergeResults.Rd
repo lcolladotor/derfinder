@@ -73,7 +73,7 @@ https://github.com/lcolladotor/derfinderReport.
 dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)
 
 ## For convenience, the derfinder output has been pre-computed
-file.copy(system.file(file.path("extdata", "chr21"), package="derfinder",
+file.copy(system.file(file.path('extdata', 'chr21'), package='derfinder',
 mustWork=TRUE), 'generateReport-example', recursive=TRUE)
 
 \dontrun{
@@ -110,21 +110,25 @@ genomicState=genomicState)
 
 \dontrun{
 ## You can then explore the wallclock time spent on each step
-load(file.path("generateReport-example", "fullRegions.Rdata"))
+load(file.path('generateReport-example', 'fullRegions.Rdata'))
 
 ## Process the time info
 time <- lapply(fullTime, function(x) data.frame(diff(x)))
 time <- do.call(rbind, time)
-colnames(time) <- "sec"
+colnames(time) <- 'sec'
 time$sec <- as.integer(round(time$sec))
 time$min <- time$sec / 60
-time$chr <- paste0("chr", gsub("\\\\..*", "", rownames(time)))
-time$step <- gsub(".*\\\\.", "", rownames(time))
+time$chr <- paste0('chr', gsub('\\\\..*', '', rownames(time)))
+time$step <- gsub('.*\\\\.', '', rownames(time))
 rownames(time) <- seq_len(nrow(time))
 
 ## Make plot
-library("ggplot2")
-ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() + labs(title="Wallclock time by step") + scale_colour_discrete(limits=chrs) + scale_x_discrete(limits=names(fullTime[[1]])[-1]) + ylab("Time (min)") + xlab("Step")
+library('ggplot2')
+ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() +
+    labs(title='Wallclock time by step') +
+    scale_colour_discrete(limits=chrs) +
+    scale_x_discrete(limits=names(fullTime[[1]])[-1]) + ylab('Time (min)') +
+    xlab('Step')
 }
 }
 \author{

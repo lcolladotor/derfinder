@@ -40,11 +40,11 @@ calculate the mean coverage per sample for each region.
 }
 \examples{
 ## Obtain fullCov object
-fullCov <- list("21"=genomeDataRaw$coverage)
+fullCov <- list('21'=genomeDataRaw$coverage)
 
 ## Assign chr lengths using hg19 information, use only first two regions
-library("GenomicRanges")
-data(hg19Ideogram, package = "biovizBase", envir = environment())
+library('GenomicRanges')
+data(hg19Ideogram, package = 'biovizBase', envir = environment())
 regions <- genomeRegions$regions[1:2]
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 

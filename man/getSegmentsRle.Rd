@@ -37,20 +37,23 @@ cutoff <- quantile(data, .99)
 system.time(segs <- getSegmentsRle(data, cutoff, verbose=TRUE))
 
 \dontrun{
-## The output is different in look than the one from getSegments() but it's use is similar.
-## Plus it can be transformed into the same format as the ouptut from getSegmentsRle().
+## The output is different in look than the one from getSegments() but it's
+## use is similar.
+## Plus it can be transformed into the same format as the ouptut from
+## getSegmentsRle().
 library("bumphunter")
 cluster <- clusterMakerRle(pos, 100L)
 foo <- function() {
-	segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, assumeSorted=TRUE)[c("upIndex", "dnIndex")]
-	segs.ir <- lapply(segs2, function(ind) {
-		tmp <- lapply(ind, function(segment) {
-			c("start"=min(segment), "end"=max(segment))
-		})
-		info <- do.call(rbind, tmp)
-		IRanges(start=info[,"start"], end=info[,"end"])
-	})
-	return(segs.ir)
+    segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff,
+    assumeSorted=TRUE)[c("upIndex", "dnIndex")]
+    segs.ir <- lapply(segs2, function(ind) {
+        tmp <- lapply(ind, function(segment) {
+            c("start"=min(segment), "end"=max(segment))
+        })
+        info <- do.call(rbind, tmp)
+        IRanges(start=info[,"start"], end=info[,"end"])
+    })
+    return(segs.ir)
 }
 identical(foo(), segs)
 
