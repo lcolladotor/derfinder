@@ -69,16 +69,48 @@ generate an HTML report of the results. The
 https://github.com/lcolladotor/derfinderReport.
 }
 \examples{
+## The output will be saved in the 'generateReport-example' directory
+dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)
+
+## For convenience, the derfinder output has been pre-computed
+file.copy(system.file(file.path("extdata", "chr21"), package="derfinder",
+mustWork=TRUE), 'generateReport-example', recursive=TRUE)
+
 \dontrun{
-## For a full example, check generateReport() in derfinderReport
-help("generateReport", "derfinderReport")
+## If you prefer, you can generate the output from derfinder
+initialPath <- getwd()
+setwd(file.path(initialPath, 'generateReport-example'))
 
-## Merge the results
-mergeResults(chrnums="21", prefix="generateReport-example", genomicState=genomicState)
+## Collapse the coverage information
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+verbose=TRUE)
 
+## Calculate library size adjustments
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
+verbose=TRUE)
+
+## Build the models
+group <- genomeInfo$pop
+adjustvars <- data.frame(genomeInfo$gender)
+models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+
+## Analyze chromosome 21
+analyzeChr(chrnum='21', coverageInfo=genomeData, models=models,
+cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=group,
+mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
+
+## Change the directory back to the original one
+setwd(initialPath)
+}
+
+## Merge the results from the different chromosomes. In this case, there's
+## only one: chr21
+mergeResults(chrnums='21', prefix='generateReport-example',
+genomicState=genomicState)
+
+\dontrun{
 ## You can then explore the wallclock time spent on each step
-prefix <- "." ## Set to the same prefix you used in mergeResults()
-load(file.path(prefix, "fullRegions.Rdata"))
+load(file.path("generateReport-example", "fullRegions.Rdata"))
 
 ## Process the time info
 time <- lapply(fullTime, function(x) data.frame(diff(x)))

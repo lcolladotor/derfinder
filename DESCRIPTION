@@ -2,8 +2,8 @@ Package: derfinder
 Type: Package
 Title: Fast differential expression analysis of RNA-seq data at base-pair
     resolution
-Version: 0.0.53
-Date: 2014-04-14
+Version: 0.0.54
+Date: 2014-04-15
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhsph.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -37,5 +37,4 @@ Description: Fast differential expression analysis of RNA-seq data at base-pair
 License: Artistic-2.0
 LazyData: true
 URL: https://github.com/lcolladotor/derfinder
-biocViews: DifferentialExpression, HighThroughputSequencing, RNAseq,
-    MultipleComparisons, Software
+biocViews: DifferentialExpression, Sequencing, RNASeq, Software
