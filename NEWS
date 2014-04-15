@@ -1,0 +1,514 @@
+CHANGES IN VERSION 0.0.54
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added example data for mergeResults(). Now all functions have examples.
+
+CHANGES IN VERSION 0.0.53
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Now derfinder includes the genomic state output for hg19 chr21. This
+        allowed to implement examples for annotateRegions(), 
+        getRegionCoverage(), plotRegionCoverage, and coverageToExon().
+
+
+CHANGES IN VERSION 0.0.52
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Several examples run much faster now
+
+CHANGES IN VERSION 0.0.51
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o makeGenomicState() now has an example
+
+
+CHANGES IN VERSION 0.0.50
+-------------------------
+
+BUG FIXES
+
+    o Fixed warnings in makeGenomicState() related to changes in AnnotationDbi
+
+
+CHANGES IN VERSION 0.0.49
+-------------------------
+
+BUG FIXES
+
+    o Updated the help for plotRegionCoverage() and fixed an issue.
+
+CHANGES IN VERSION 0.0.48
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o loadCoverage() now allows specifying which strand you want to load. More
+        at https://github.com/lcolladotor/derfinder/issues/16
+
+CHANGES IN VERSION 0.0.47
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o getRegionCoverage() now has a depth-adjustment argument
+    
+BUG FIXES
+
+    o Fixed several bugs as suggested by Andrew Jaffe
+
+
+CHANGES IN VERSION 0.0.46
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Now requires R version 3.1
+    o Changed Github organization to match the Git-SVN Bioconductor bridge
+        guidelines.
+    o Dropped Rcpp and RcppArmadillo from F-stats calculation. More at
+        https://github.com/lcolladotor/derfinder/pull/17
+    o Stored the results from some of the example data to speed up other 
+        examples. Check ?genomeDataRaw, ?genomeFstats, ?genomeRegions
+        
+BUG FIXES
+
+    o Fixed 'verbose' for getRegionCoverage()
+    o plotRegionCoverage() now matches latest getRegionCoverage() output
+
+CHANGES IN VERSION 0.0.44
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Updated getRegionCoverage() with a new method for sub setting the coverage
+        matrices, allowing for coverage estimates from overlapping regions. Now
+        also uses mclapply().
+
+BUG FIXES
+
+    o Fixed NAMESPACE to match current bioc-devel (2.14) as suggested by Tim 
+        Triche.
+
+CHANGES IN VERSION 0.0.42
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o A series of performance enhancements were made to reduce the memory load
+         (albeit a very minor time increase).
+
+BUG FIXES
+
+    o Updated analyzeChr() to handle correctly the new 'lowMemDir' argument.
+
+CHANGES IN VERSION 0.0.41
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Introduced the 'lowMemDir' argument to preprocessCoverage(),
+        calculateStats(), calculatePvalues(), fstats.apply(), and analyzeChr().
+        Reduces peak memory usage at the expense of some input-output.
+
+CHANGES IN VERSION 0.0.40
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o mergeResults() will not merge pre-processed data by default
+    o coverageToExon() now uses mclapply() when possible
+    
+CHANGES IN VERSION 0.0.39
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Changed how the data is pre-processed and pre-splitted.
+
+CHANGES IN VERSION 0.0.38
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o preprocessCoverage() now uses Reduce() instead of .rowMeans()
+
+CHANGES IN VERSION 0.0.37
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Updated the example in plotCluster()
+
+CHANGES IN VERSION 0.0.36
+-------------------------
+
+NEW FEATURES
+
+    o Added collapseFullCoverage()
+    
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o sampleDepth() has been greatly changed. It is now based on Hector 
+        Corrada's ideas implemented in metagenomeSeq.
+    o Updated several man pages.
+
+CHANGES IN VERSION 0.0.35
+-------------------------
+
+BUG FIXES
+
+    o Fixed an issue with the bumphunter dependency.
+
+CHANGES IN VERSION 0.0.34
+-------------------------
+
+BUG FIXES
+
+    o Merged changes suggested by Michael Love
+
+
+CHANGES IN VERSION 0.0.33
+-------------------------
+
+BUG FIXES
+
+    o Implemented fixes suggested by Michael Love
+
+CHANGES IN VERSION 0.0.32
+-------------------------
+
+BUG FIXES
+
+    o Fixed an important bug in the F-stats calculation
+    o Implemented fixes suggested by Michael Love
+
+CHANGES IN VERSION 0.0.31
+-------------------------
+
+BUG FIXES
+
+    o loadCoverage() now uses readGAlignmentsFromBam()
+
+CHANGES IN VERSION 0.0.30
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added a 'bai' argument to fullCoverage()
+    o loadCoverage() can now work with a pre-defined BamFileList object.
+
+CHANGES IN VERSION 0.0.29
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Now requires R version 3.0.2
+    o Changed the default of 'center' in sampleDepth() to FALSE.
+    o Added a 'runAnnotation' argument to analyzeChr().
+    o Added a 'bai' argument to loadCoverage().
+    o Added an 'adjustF' argument to all stats functions. Useful for cases when
+        the RSS of the alternative model is very small.
+
+BUG FIXES
+
+    o Fixed plotRegionCoverage() and plotCluster() for unexpected cases.
+
+
+CHANGES IN VERSION 0.0.28
+-------------------------
+
+NEW FEATURES
+
+    o Added sampleDepth()
+    
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o generateReport() has been moved to it's own new package called
+        derfinderReport. It is available at
+        https://github.com/lcolladotor/derfinderReport
+    o Examples and analyzeChr() have been updated now that sampleDepth() was 
+        added
+
+
+CHANGES IN VERSION 0.0.26
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Renamed package from derfinder2 to derfinder to comply with Bioconductor
+        guidelines.
+
+
+CHANGES IN VERSION 0.0.25
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Changed how makeModels() deals with cases when mod and mod0 are not full 
+        rank.
+    o plotCluster() now no longer depends on an active Internet connection for 
+        'hg19 = TRUE'.
+
+BUG FIXES
+
+    o Fixed minor graphical issues in plotRegionCoverage(), plotCluster() and
+        in generateReport()
+
+CHANGES IN VERSION 0.0.24
+-------------------------
+
+BUG FIXES
+
+    o Fixed plotRegionCoverage() for cases when in annotateRegions(minoverlap=x)
+        lead to no overlaps being found between a region and annotation.
+
+CHANGES IN VERSION 0.0.23
+-------------------------
+
+BUG FIXES
+
+    o Fixed some bugs in calculatePvalues() when no null regions or only some
+        were found.
+    o Fixed a bug using 'colsubset' on analyzeChr().
+    o Fixed an issue when the F-stat cutoff used is too high and no regions are
+        found.
+    o Fixed an issue when 'testvars' in makeModels() had unused levels.
+    o Fixed an issue when qvalue::qvalue() fails due to incorrect estimation of
+        pi0
+    o Fixed a bug on how the regions were being clustered.
+
+CHANGES IN VERSION 0.0.22
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o MA-style plots in generateReport() now weight the mean by the number of
+        samples in each group. Also removed the mean coverage vs area section.
+        generateReport() now also has a 'nBestClusters' argument.
+    o plotCluster() now uses scales and has a 'forceLarge' argument
+
+BUG FIXES
+
+    o Fixed an important bug in finding candidate DERs. The example 
+        for plotCluster() now includes code that was used for visualizing the
+        bug.
+    o Fixed some NAMESPACE issues
+
+CHANGES IN VERSION 0.0.21
+-------------------------
+
+NEW FEATURES
+
+    o Added getRegionCoverage(), coverageToExon(), plotRegionCoverage()
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Renamed plotRegion() to plotCluster() plus it no longer shows the exons
+        track as it is redundant information
+    o mergeResults() now also runs annotateRegions()
+    o generateReport() now uses plotRegionCoverage() and includes MA-style plots
+    
+CHANGES IN VERSION 0.0.20
+-------------------------
+
+NEW FEATURES
+
+    o Added annotateRegions()
+
+CHANGES IN VERSION 0.0.19
+-------------------------
+
+NEW FEATURES
+
+    o Added makeGenomicState()
+    
+CHANGES IN VERSION 0.0.18
+-------------------------
+
+NEW FEATURES
+
+    o Added fullCoverage()
+
+CHANGES IN VERSION 0.0.17
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o preprocessCoverage() now uses the 'groupInfo' argument
+    o calculatePvalues() now calculates log2 fold changes (without scaling or
+        adjusting for library size)
+    o Greatly improved generateReport()
+
+CHANGES IN VERSION 0.0.16
+-------------------------
+
+NEW FEATURES
+
+    o Added generateReport()
+
+BUG FIXES
+
+    o Fixed bugs in mergeResults()
+
+
+CHANGES IN VERSION 0.0.15
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o getSegmentsRle() was greatly simplified
+
+BUG FIXES
+
+    o Fixed analyzeChr(), completed mergeResults()
+
+
+CHANGES IN VERSION 0.0.14
+-------------------------
+
+NEW FEATURES
+
+    o Added analyzeChr() and mergeResults()
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Updated README.md
+    o makeModels() now uses 'testvars' instead of 'group' and has a new
+        arguments 'groupInfo', 'center' and 'testIntercept'
+    o calculatePvalues() now uses area of regions instead of mean to calculate
+        the p-values.
+    o preprocessCoverage() now calculates the mean coverage at each base
+
+CHANGES IN VERSION 0.0.13
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Users can specify significance cutoffs for plotOverview() and plotRegion()
+
+CHANGES IN VERSION 0.0.12
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o calculatePvalues() now uses qvalue::qvalue() instead of p.adjust()
+
+CHANGES IN VERSION 0.0.11
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added plotOverview()
+
+CHANGES IN VERSION 0.0.10
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added plotRegion()
+
+BUG FIXES
+
+    o makeModels() can now handle a vector for the 'adjustvars' argument
+
+CHANGES IN VERSION 0.0.9
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o calculatePvalues() will adjust the p.values now using p.adjust()
+    o makeModels() now can handle a matrix for the 'group' argument
+
+BUG FIXES
+
+    o getSegmentsRle() will now work properly in the case that no segments are
+        found
+
+CHANGES IN VERSION 0.0.8
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Attempted to reduce memory load in calculateStats() and calculatePvalues()
+    
+CHANGES IN VERSION 0.0.7
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o fstats.apply() now uses Rcpp and RcppArmadillo
+
+CHANGES IN VERSION 0.0.6
+------------------------
+
+NEW FEATURES
+
+    o preprocessCoverage() can now automatically select the 'chunksize'
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Dropped fstats() and is now part of fstats.apply()
+
+CHANGES IN VERSION 0.0.5
+------------------------
+
+NEW FEATURES
+
+    o Introduced 'method' argument for getSegmetnsRle()
+
+BUG FIXES
+
+    o No longer permuting the data matrix in calculatePvalues()
+
+CHANGES IN VERSION 0.0.4
+------------------------
+
+NEW FEATURES
+
+    o Added makeBamList(), makeModels(), and preprocessCoverage()
+    o Added example data from the Montogemery and Pickrell studies. Check
+        ?genomeData and ?genomeInfo
+
+CHANGES IN VERSION 0.0.3
+------------------------
+
+NEW FEATURES
+
+    o Added calculatePvalues()
+
+CHANGES IN VERSION 0.0.2
+------------------------
+
+NEW FEATURES
+    
+    o Added clusterMakerRle(), findRegions(), and getSegmentsRle()
+
+CHANGES IN VERSION 0.0.1
+------------------------
+
+NEW FEATURES
+    
+    o Added calculateStats(), filterData(), fstats(), and fstats.apply()
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Renamed makeCoverage() to loadCoverage()
+    o Improved NAMESPACE
+
+CHANGES IN VERSION 0.0.0
+-----------------------
+
+NEW FEATURES
+
+    o Initialized the package (named derfinder2) from derfinder 
+        https://github.com/alyssafrazee/derfinder version 1.0.2
+        This version is available at 
+        https://github.com/alyssafrazee/derfinder/tree/d49f7b28c26f075da36a50ab67c9d192ab2fd63d
