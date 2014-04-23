@@ -79,17 +79,19 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
     ## Format appropriately
     seqlengths(regs) <- nrow(covInfo)
     names(regs) <- seq_len(length(regs))
-    regs$theRegion <- "exon"
-    gs <- list(fullGenome = regs, codingGenome = NULL)
     
     ## Get coverage
     fullCovTmp <- list(covInfo)
     names(fullCovTmp) <- chr
-    regionCov <- coverageToExon(fullCov = fullCovTmp, genomicState = gs,
-        L = L, mc.cores = 1, verbose = verbose)
+    
+    regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
+        totalMapped = NULL, mc.cores = 1, verbose = verbose)
+        
+    covMat <- lapply(regionCov, colSums)
+    covMat <- do.call(rbind, covMat) / L
 
     ## Finish
-    res <- list(regions=regs, coverageMatrix=regionCov)
+    res <- list(regions = regs, coverageMatrix = covMat)
     return(res)
     
 }

@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.0.57
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o regionMatrix() now relies on getRegionCoverage() instead of 
+        coverageToExon() making it faster and less memory intensive.
+
 CHANGES IN VERSION 0.0.56
 -------------------------
 

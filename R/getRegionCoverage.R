@@ -26,10 +26,11 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{calculatePvalues}
 #' @export
-#' @importFrom GenomicRanges seqlevels seqnames seqlengths
+#' @importFrom GenomicRanges seqlevels seqnames
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c seqlevelsStyle
 #' @importMethodsFrom IRanges subset as.data.frame
+#' @import GenomeInfoDb
 #'
 #' @examples
 #' ## Obtain fullCov object
