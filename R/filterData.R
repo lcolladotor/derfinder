@@ -13,17 +13,26 @@
 #' the cutoff. If \code{NULL} it is assumed that this is the first time using 
 #' \link{filterData} and thus no previous index exists.
 #' @param colnames Specifies the column names to be used for the results 
-#' DataFrame. If \code{NULL}, no names are assigned.
+#' DataFrame. If \code{NULL}, names from \code{data} are used.
+#' @param filter Has to be either \code{"one"} (default) or \code{"mean"}. In 
+#' the first case, at least one sample has to have coverage above \code{cutoff}.
+#' In the second case, the mean coverage has to be greater than \code{cutoff}.
+#' @param returnMean If \code{TRUE} the mean coverage is included in the result.
+#' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
 #' @param verbose If \code{TRUE} it will report how many rows are remaining out 
 #' of the original ones.
 #'
-#' @return A list with two components. 
+#' @return A list with up to three components.
+#' \code{returnMean = TRUE}. 
 #' \describe{
 #' \item{coverage }{ is a DataFrame object where each column represents a 
 #' sample. The number of rows depends on the number of base pairs that passed 
-#' the cutoff and the information stored is the coverage at that given base.}
+#' the cutoff and the information stored is the coverage at that given base. 
+#' Included only when \code{returnCoverage = TRUE}.}
 #' \item{position }{  is a logical Rle with the positions of the chromosome 
 #' that passed the cutoff.}
+#' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each base. 
+#' Included only when \code{returnMean = TRUE}.}
 #' }
 #'
 #' @details If \code{cutoff} is \code{NULL} then the data is grouped into 
@@ -54,19 +63,31 @@
 #' identical(sum(filt2$pos), nrow(filt2$cov))
 
 filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL, 
-    verbose = TRUE) {
+    filter = "one", returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE) {
+        
+    ## Check filter
+    stopifnot(filter %in% c("one", "mean"))
+    
+    ## Initialize meanCov
+    meanCov <- NULL
+    
     ## If there is no cutoff to apply, just built the DataFrame
     if (is.null(cutoff)) {
         newindex <- NULL
         finalidx <- index
     } else {
         ## Construct the filtering index
-        for (i in seq_len(length(data))) {
-            if (i == 1) {
-                newindex <- data[[i]] > cutoff
-            } else {
-                newindex <- newindex | data[[i]] > cutoff
+        if(filter == "one") {
+            for (i in seq_len(length(data))) {
+                if (i == 1) {
+                    newindex <- data[[i]] > cutoff
+                } else {
+                    newindex <- newindex | data[[i]] > cutoff
+                }
             }
+        } else if (filter == "mean") {
+            meanCov <- Reduce("+", data) / length(data)
+            newindex <- meanCov > cutoff
         }
         
         ## Build the final index
@@ -76,50 +97,80 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
         } else {
             finalidx <- newindex
         }
-        rm(index)
-        gc()
     }
     
     ## Keep only bases that pass the cutoff
-    if (is(data, "DataFrame")) {
-        if (!is.null(newindex)) {
-            DF <- data[newindex, ]
-        } else {
-            DF <- data
+    if(returnMean) {
+        if(is.null(meanCov)) {
+            ## Calculate the mean if needed
+            meanCov <- Reduce("+", data) / length(data)
         }
-    } else {
-        ## Subset the data and group into DataFrame
-        if (!is.null(newindex)) {
-            DF <- DataFrame(lapply(data, function(x) {
-                x[newindex]
-            }))
+        if(!is.null(newindex)) {
+            meanCovFiltered <- meanCov[newindex]
         } else {
-            DF <- DataFrame(data)
+            meanCovFiltered <- meanCov
         }
-        
     }
-    rm(newindex)
-    gc()
+    
+    if(returnCoverage) {
+        if (is(data, "DataFrame")) {
+            if (!is.null(newindex)) {
+                DF <- data[newindex, ]
+            } else {
+                DF <- data
+            }
+        } else {
+            ## Subset the data and group into DataFrame
+            if (!is.null(newindex)) {
+                DF <- DataFrame(lapply(data, function(x) {
+                    x[newindex]
+                }))
+            } else {
+                DF <- DataFrame(data)
+            }
+        }
+    }
     
     
     ## Info for the user
     if (verbose) {
-        message(paste(Sys.time(), "filterData: originally there were", 
-            length(data[[1]]), "rows, now there are", nrow(DF), 
-            "rows. Meaning that", 100 - round(nrow(DF)/length(data[[1]]) * 
-                100, 2), "percent was filtered."))
+        if(returnCoverage) {
+            message(paste(Sys.time(), "filterData: originally there were", 
+                length(data[[1]]), "rows, now there are", nrow(DF), 
+                "rows. Meaning that", 100 - round(nrow(DF)/length(data[[1]]) * 
+                    100, 2), "percent was filtered."))
+        } else if (returnMean) {
+            message(paste(Sys.time(), "filterData: originally there were", 
+                length(data[[1]]), "rows, now there are", 
+                length(meanCovFiltered), "rows. Meaning that", 100 - 
+                round(length(meanCovFiltered)/length(data[[1]]) * 
+                    100, 2), "percent was filtered."))
+        }
     }
     rm(data)
     gc()
     
     
     ## Assign column names
-    if (!is.null(colnames)) {
-        colnames(DF) <- colnames
+    if(returnCoverage) {
+        if (!is.null(colnames)) {
+            colnames(DF) <- colnames
+        }
     }
     
+    
     ## Make the final resulting object.
-    res <- list(coverage = DF, position = finalidx)
+    if(returnMean & returnCoverage) {
+        res <- list(coverage = DF, position = finalidx, 
+            meanCoverage = meanCovFiltered)   
+    } else if (!returnMean & returnCoverage){
+        res <- list(coverage = DF, position = finalidx)
+    } else if (returnMean & !returnCoverage) {
+        res <- list(position = finalidx, meanCoverage = meanCovFiltered)
+    } else {
+        res <- list(position = finalidx)
+    }
+    
     return(res)
     
 } 

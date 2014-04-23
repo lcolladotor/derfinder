@@ -1,3 +1,24 @@
+CHANGES IN VERSION 0.0.56
+-------------------------
+
+NEW FEATURES
+
+    o Added regionMatrix() for filtering coverage data and using the resulting
+        regions to construct a count matrix. Uses several derfinder functions.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Made coverageToExon() more robust for different names in 'fullCov'.
+    o filterData() and loadCoverage() have new arguments 'filter', 'returnMean',
+        and 'returnCoverage' which allow speeding up regionMatrix(). 
+        preprocessCoverage() was changed accordingly.
+    o getRegionCoverage() now internally uses USCS names.
+
+BUG FIXES
+
+    o Fixed warnings in coverageToExon().
+
+
 CHANGES IN VERSION 0.0.55
 -------------------------
 

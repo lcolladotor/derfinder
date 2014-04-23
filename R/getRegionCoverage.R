@@ -28,7 +28,7 @@
 #' @export
 #' @importFrom GenomicRanges seqlevels seqnames seqlengths
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
-#' width c
+#' width c seqlevelsStyle
 #' @importMethodsFrom IRanges subset as.data.frame
 #'
 #' @examples
@@ -49,8 +49,11 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
     
     names(regions) <- seq_len(length(regions))  # add names
     
-    if (!any(grepl("chr", names(fullCov)))) {
+    if (!all(grepl("chr", names(fullCov)))) {
         names(fullCov) <- paste0("chr", names(fullCov))
+    }
+    if (seqlevelsStyle(regions) != "UCSC") {
+        seqlevelsStyle(regions) <- "UCSC"
     }
     
     ## Warning when seqlengths are not specified

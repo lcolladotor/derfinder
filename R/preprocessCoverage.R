@@ -83,6 +83,9 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
         "position"))) == 2)
     stopifnot(is.factor(groupInfo) | is.null(groupInfo))
     
+    ## Use pre-calculated mean coverage if available
+    means <- coverageInfo$meanCoverage
+    
     coverage <- coverageInfo$coverage
     if (is.null(colsubset)) {
         stopifnot(length(groupInfo) == length(coverage) | is.null(groupInfo))
@@ -99,9 +102,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
             message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
         coverageInfo <- filterData(data = coverageInfo$coverage[, 
             colsubset], cutoff = cutoff, index = coverageInfo$position, 
-            verbose = verbose)
+            returnMean=TRUE, verbose = verbose)
         coverage <- coverageInfo$coverage
         position <- coverageInfo$position
+        means <- coverageInfo$meanCoverage
     }
     rm(coverageInfo)
     gc()
@@ -127,7 +131,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     }
     
     ## Find the overall mean coverage
-    means <- Reduce("+", coverage)/length(coverage)
+    if(is.null(means)) {
+        means <- Reduce("+", coverage)/length(coverage)
+    }
+    
     
     ## Find the by group mean coverage
     if (is.null(groupInfo)) {

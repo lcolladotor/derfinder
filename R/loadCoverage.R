@@ -23,6 +23,9 @@
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
 #' passed to \link[Rsamtools]{scanBamFlag}.
+#' @param filter This argument is passed to \link{filterData}.
+#' @param returnMean This argument is passed to \link{filterData}.
+#' @param returnCoverage This argument is passed to \link{filterData}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -72,7 +75,8 @@
 #' }
 
 loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL, 
-    chrlen = NULL, output = NULL, isMinusStrand = NA, verbose = TRUE) {
+    chrlen = NULL, output = NULL, isMinusStrand = NA, filter = "one", 
+    returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE) {
     ## Do the indexes exist?
     if (is(dirs, "BamFileList")) {
         bList <- dirs
@@ -131,7 +135,8 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
             "loadCoverage: applying the cutoff to the merged data"))
     
     res <- filterData(data = data, cutoff = cutoff, index = NULL, 
-        colnames = names(dirs), verbose = verbose)
+        colnames = names(dirs), filter = filter, returnMean = returnMean,
+        returnCoverage = returnCoverage, verbose = verbose)
     rm(data)
     gc()
     

@@ -30,7 +30,7 @@ coverageToExon(fullCov, genomicState, fullOrCoding = "full", L = NULL,
 
   \item{mc.cores}{This argument is passed to
   \link[parallel]{mclapply} twice. First, it's is used by
-  strand. Secondly, for processing the exons by chromosome.
+  strand. Second, for processing the exons by chromosome.
   So there is no gain in using \code{mc.cores} greater than
   the maximum of the number of strands and number of
   chromosomes.}

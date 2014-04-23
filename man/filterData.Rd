@@ -3,6 +3,7 @@
 \title{Filter the positions of interest}
 \usage{
 filterData(data, cutoff = NULL, index = NULL, colnames = NULL,
+  filter = "one", returnMean = FALSE, returnCoverage = TRUE,
   verbose = TRUE)
 }
 \arguments{
@@ -19,20 +20,34 @@ filterData(data, cutoff = NULL, index = NULL, colnames = NULL,
   \link{filterData} and thus no previous index exists.}
 
   \item{colnames}{Specifies the column names to be used for
-  the results DataFrame. If \code{NULL}, no names are
-  assigned.}
+  the results DataFrame. If \code{NULL}, names from
+  \code{data} are used.}
+
+  \item{filter}{Has to be either \code{"one"} (default) or
+  \code{"mean"}. In the first case, at least one sample has
+  to have coverage above \code{cutoff}. In the second case,
+  the mean coverage has to be greater than \code{cutoff}.}
+
+  \item{returnMean}{If \code{TRUE} the mean coverage is
+  included in the result.}
+
+  \item{returnCoverage}{If \code{TRUE}, the coverage
+  DataFrame is returned.}
 
   \item{verbose}{If \code{TRUE} it will report how many
   rows are remaining out of the original ones.}
 }
 \value{
-A list with two components. \describe{ \item{coverage }{ is
-a DataFrame object where each column represents a sample.
-The number of rows depends on the number of base pairs that
-passed the cutoff and the information stored is the
-coverage at that given base.} \item{position }{ is a
-logical Rle with the positions of the chromosome that
-passed the cutoff.} }
+A list with up to three components. \code{returnMean =
+TRUE}. \describe{ \item{coverage }{ is a DataFrame object
+where each column represents a sample. The number of rows
+depends on the number of base pairs that passed the cutoff
+and the information stored is the coverage at that given
+base. Included only when \code{returnCoverage = TRUE}.}
+\item{position }{ is a logical Rle with the positions of
+the chromosome that passed the cutoff.} \item{meanCoverage
+}{ is a numeric Rle with the mean coverage at each base.
+Included only when \code{returnMean = TRUE}.} }
 }
 \description{
 For a group of samples this function reads the coverage

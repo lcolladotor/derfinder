@@ -17,7 +17,7 @@
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply} twice. 
-#' First, it's is used by strand. Secondly, for processing the exons by 
+#' First, it's is used by strand. Second, for processing the exons by 
 #' chromosome. So there is no gain in using \code{mc.cores} greater than the 
 #' maximum of the number of strands and number of chromosomes.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -37,7 +37,7 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue '%in%'
-#' @importFrom parallel mclapply
+#' @importFrom parallel mclapply mcmapply
 #'
 #' @examples
 #' ## Obtain fullCov object
@@ -74,18 +74,26 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     # just the reduced exons
     etab <- gs[gs$theRegion == "exon"]
     
+    ## Check that the names are unique
+    stopifnot(length(etab) == length(unique(names(etab))))
+    
     ## Keep only the exons from the chromosomes in fullCov
-    etab <- etab[seqnames(etab) %in% paste0("chr", names(fullCov))]
+    chrKeep <- names(fullCov)
+    if(all(grepl("chr", seqnames(etab))) & !all(grepl("chr", chrKeep))) {
+        chrKeep <- paste0("chr", chrKeep)
+    }
+    etab <- etab[seqnames(etab) %in% chrKeep]
     
     # split by strand
     strandIndexes <- split(seq_len(length(etab)), as.character(strand(etab)))
     
     # count reads covering exon on each strand
     nCores <- min(mc.cores, length(unique(runValue(strand(etab)))))
+
     # Use at most n cores where n is the number of unique strands
     
     exonByStrand <- mclapply(strandIndexes, .coverageToExonStrandStep, 
-        fullCov = fullCov, etab = etab, L = L, nCores = nCores, 
+        fullCov = fullCov, etab = etab, L = L, nCores = nCores, chrs = chrKeep,
         verbose = verbose, mc.cores = nCores)
     
     # combine two strands
@@ -103,7 +111,7 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, 
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
     verbose) {
     e <- etab[ii]  # subset
     
@@ -114,13 +122,19 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
         cc[[i]]@values <- ifelse(cc[[i]]@values > 0, TRUE, FALSE)
     }
     
+    ## Subset data
+    # subset using logical rle (fastest way)
+    subsets <- mapply(function(covInfo, chr) { subset(covInfo, .(cc[[chr]])) },
+        fullCov, chrs, SIMPLIFY = FALSE)
+    
     # now count exons
-    exonList <- mclapply(seq(along = fullCov), .coverageToExonChrStep, 
-        fullCov = fullCov, cc = cc, e = e, L = L, verbose = verbose, 
-        mc.cores = nCores)
-    
-    out <- do.call("rbind", exonList)  # combine
-    
+    moreArgs <- list(e = e, L = L, verbose = verbose)
+    exonList <- mcmapply(.coverageToExonChrStep, subsets, chrs, 
+        MoreArgs = moreArgs, mc.cores = nCores, SIMPLIFY = FALSE)
+        
+    # combine
+    out <- do.call("rbind", exonList)
+       
     ## Clean up
     rm(e, cc, exonList)
     gc()
@@ -128,16 +142,12 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
 }
 
 
-.coverageToExonChrStep <- function(i, fullCov, cc, e, L, verbose = verbose) {
-    chrnum <- names(fullCov)[i]
-    chr <- paste0("chr", chrnum)
+.coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
     if (verbose) 
-        message(paste(Sys.time(), "coverageToExon: processing chromosome", 
-            chrnum))
+        message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
     
-    # subset using logical rle (fastest way)
-    z.tmp <- subset(fullCov[[chrnum]], cc[[chr]])
-    z <- as.data.frame(z.tmp)
+    ## Transform to regular data.frame   
+    z <- as.data.frame(z.DF)
     
     # only exons from this chr
     g <- e[seqnames(e) == chr]
