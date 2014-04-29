@@ -17,7 +17,7 @@ Imports:
     GenomicAlignments,
     Rsamtools,
     parallel,
-    ggbio (>= 1.10.11),
+    ggbio (>= 1.12.3),
     ggplot2,
     reshape2,
     plyr,
