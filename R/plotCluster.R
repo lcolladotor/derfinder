@@ -278,7 +278,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo,
         ## The tryCatch is needed because not all regions overlap a
         ## transcript
         p.transcripts <- tryCatch(autoplot(txdb, which = wh, 
-            names.expr = "tx_name(gene_id)"), warning = function(w) {
+            names.expr = "tx_name(gene_id)"), error = function(e) {
             FALSE
         })
     }
