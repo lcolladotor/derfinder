@@ -3,19 +3,21 @@
 \title{Load the coverage information from a group of BAM files}
 \usage{
 loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
-  output = NULL, isMinusStrand = NA, filter = "one", returnMean = FALSE,
-  returnCoverage = TRUE, verbose = TRUE)
+  output = NULL, inputType = "bam", isMinusStrand = NA, filter = "one",
+  returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
-  sample BAM files. The names are used for the column names
-  of the DataFrame. Check \link{makeBamList} for
-  constructing \code{dirs}. \code{dirs} can also be a
-  \code{BamFileList} object created with
-  \link[Rsamtools]{BamFileList}.}
+  sample BAM files (or bigWig files). The names are used
+  for the column names of the DataFrame. Check
+  \link{makeBamList} for constructing \code{dirs}.
+  \code{dirs} can also be a \code{BamFileList} object
+  created with \link[Rsamtools]{BamFileList} or a
+  \code{BigWigFileList} object created with
+  \link[rtracklayer]{BigWigFileList}.}
 
-  \item{chr}{Chromosome to read. Should be in simple
-  format. For example, use X and not chrX.}
+  \item{chr}{Chromosome to read. Should be in the format
+  matching the one used in the raw data.}
 
   \item{cutoff}{This argument is passed to
   \link{filterData}.}
@@ -24,7 +26,8 @@ loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
   \code{NULL} it is assumed that the BAM index files are in
   the same location as the BAM files and that they have the
   .bai extension. Ignored if \code{dirs} is a
-  \code{BamFileList} object.}
+  \code{BamFileList} object or if
+  \code{inputType=='bigWig'}.}
 
   \item{chrlen}{The chromosome length in base pairs. If
   it's \code{NULL}, the chromosome length is extracted from
@@ -36,10 +39,15 @@ loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
   character is specified, then that name is used for the
   output file.}
 
+  \item{inputType}{Has to be either \code{bam} or
+  \code{bigWig}. It specifies the format of the raw data
+  files.}
+
   \item{isMinusStrand}{Use \code{TRUE} for negative strand
   alignments only, \code{FALSE} for positive strands and
   \code{NA} for both. This argument is passed to
-  \link[Rsamtools]{scanBamFlag}.}
+  \link[Rsamtools]{scanBamFlag} when
+  \code{inputType='bam'}.}
 
   \item{filter}{This argument is passed to
   \link{filterData}.}

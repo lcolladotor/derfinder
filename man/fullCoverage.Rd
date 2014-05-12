@@ -4,16 +4,18 @@
 list of chromosomes}
 \usage{
 fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
-  mc.cores = getOption("mc.cores", 2L), isMinusStrand = NA,
-  verbose = TRUE)
+  mc.cores = getOption("mc.cores", 2L), inputType = "bam",
+  isMinusStrand = NA, verbose = TRUE)
 }
 \arguments{
   \item{dirs}{A character vector with the full path to the
-  sample BAM files. The names are used for the column names
-  of the DataFrame. Check \link{makeBamList} for
-  constructing \code{dirs}. \code{dirs} can also be a
-  \code{BamFileList} object created with
-  \link[Rsamtools]{BamFileList}.}
+  sample BAM files (or bigWig files). The names are used
+  for the column names of the DataFrame. Check
+  \link{makeBamList} for constructing \code{dirs}.
+  \code{dirs} can also be a \code{BamFileList} object
+  created with \link[Rsamtools]{BamFileList} or a
+  \code{BigWigFileList} object created with
+  \link[rtracklayer]{BigWigFileList}.}
 
   \item{chrnums}{The chromosome numbers of the files to
   read.}
@@ -37,10 +39,15 @@ fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
   \link[parallel]{mclapply}. You should use at most one
   core per chromosome.}
 
+  \item{inputType}{Has to be either \code{bam} or
+  \code{bigWig}. It specifies the format of the raw data
+  files.}
+
   \item{isMinusStrand}{Use \code{TRUE} for negative strand
   alignments only, \code{FALSE} for positive strands and
   \code{NA} for both. This argument is passed to
-  \link[Rsamtools]{scanBamFlag}.}
+  \link[Rsamtools]{scanBamFlag} when
+  \code{inputType='bam'}.}
 
   \item{verbose}{If \code{TRUE} basic status updates will
   be printed along the way.}

@@ -6,10 +6,12 @@
 #' the unfiltered coverage by sample into a DataFrame. The end result is a list 
 #' with one such DataFrame objects per chromosome.
 #' 
-#' @param dirs A character vector with the full path to the sample BAM files. 
+#' @param dirs A character vector with the full path to the sample BAM files
+#' (or bigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{makeBamList} for constructing \code{dirs}. \code{dirs} can also be a 
-#' \code{BamFileList} object created with \link[Rsamtools]{BamFileList}.
+#' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
+#' \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.
 #' @param chrnums The chromosome numbers of the files to read.
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
@@ -22,9 +24,11 @@
 #' \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply}. You 
 #' should use at most one core per chromosome.
+#' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
+#' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
-#' passed to \link[Rsamtools]{scanBamFlag}.
+#' passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -59,8 +63,8 @@
 #' }
 
 fullCoverage <- function(dirs, chrnums, bai = NULL, chrlens = NULL, 
-    outputs = NULL, mc.cores = getOption("mc.cores", 2L), isMinusStrand = NA, 
-    verbose = TRUE) {
+    outputs = NULL, mc.cores = getOption("mc.cores", 2L), inputType = "bam", 
+    isMinusStrand = NA, verbose = TRUE) {
     stopifnot(length(chrlens) == length(chrnums) | is.null(chrlens))
     if (!is.null(outputs)) {
         stopifnot(length(outputs) == length(chrnums) | outputs == 
@@ -71,18 +75,20 @@ fullCoverage <- function(dirs, chrnums, bai = NULL, chrlens = NULL,
     }
     
     ## Subsetting function that runs loadCoverage
-    loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, 
+    loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, inputType,
         isMinusStrand, verbose) {
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
                 chrnums[idx]))
         loadCoverage(dirs = dirs, chr = chrnums[idx], cutoff = NULL, 
             bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
-            isMinusStrand = isMinusStrand, verbose = verbose)$coverage
+            inputType = inputType, isMinusStrand = isMinusStrand,
+            verbose = verbose)$coverage
     }
     result <- mclapply(seq_len(length(chrnums)), loadChr, dirs = dirs, 
         chrnums = chrnums, bai = bai, chrlens = chrlens, outputs = outputs, 
-        verbose = verbose, isMinusStrand = isMinusStrand, mc.cores = mc.cores)
+        verbose = verbose, inputType = inputType, 
+        isMinusStrand = isMinusStrand, mc.cores = mc.cores)
     names(result) <- chrnums
     
     ## Done
