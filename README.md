@@ -71,6 +71,13 @@ A BibTeX entry for LaTeX users is
 * [__master__](https://github.com/lcolladotor/derfinder/tree/master) This 
 branch corresponds to the one that works with the latest 
 [Bioc-devel](http://master.bioconductor.org/packages/devel).
+* [__release__](https://github.com/lcolladotor/derfinder/tree/release) This 
+branch corresponds to the one that works with the latest 
+* [Bioc-release](http://master.bioconductor.org/packages/release). It is also
+available at [derfinder-release](https://github.com/lcolladotor/derfinder-release) in order for the git-svn bridge (release version) to work as suggested by [Ilare here](https://www.mail-archive.com/bioc-devel@r-project.org/msg01967.html).
+
+## Old
+
 * [__BioC-2.13__](https://github.com/lcolladotor/derfinder/tree/BioC-2.13) 
 Version working with [BioC 2.13](http://master.bioconductor.org/packages/2.13)
 
