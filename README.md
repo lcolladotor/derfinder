@@ -72,8 +72,7 @@ A BibTeX entry for LaTeX users is
 branch corresponds to the one that works with the latest 
 [Bioc-devel](http://master.bioconductor.org/packages/devel).
 * [__release__](https://github.com/lcolladotor/derfinder/tree/release) This 
-branch corresponds to the one that works with the latest 
-* [Bioc-release](http://master.bioconductor.org/packages/release). It is also
+branch corresponds to the one that works with the latest [Bioc-release](http://master.bioconductor.org/packages/release). It is also
 available at [derfinder-release](https://github.com/lcolladotor/derfinder-release) in order for the git-svn bridge (release version) to work as suggested by [Ilari Scheinin here](https://www.mail-archive.com/bioc-devel@r-project.org/msg01967.html).
 
 ## Old
