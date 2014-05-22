@@ -28,7 +28,12 @@ biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", 
 
 ## derfinder itself
 library(devtools)
-install_github("lcolladotor/derfinder")
+## If you are using BioC-devel use:
+install_github("lcolladotor/derfinder@master")
+## If you are using BioC-release use:
+install_github("lcolladotor/derfinder@release")
+# or
+install_github("lcolladotor/derfinder-release")
 ```
 
 # 'Watch' for updates
