@@ -44,7 +44,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom GenomicRanges 'seqlengths<-'
+#' @importFrom GenomeInfoDb 'seqlengths<-'
 #' @importMethodsFrom IRanges nrow '$<-'
 #' @examples
 #' library('IRanges')

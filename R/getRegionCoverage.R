@@ -22,15 +22,15 @@
 #' information (nrow = width of region, ncol = number of samples) for a given 
 #' region. The names of the list correspond to the region indexes in 
 #' \code{regions}
-#' #'
+#' 
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{calculatePvalues}
 #' @export
-#' @importFrom GenomicRanges seqlevels seqnames
+#' @importFrom GenomicRanges seqnames
+#' @importFrom GenomeInfoDb seqlevels seqlevelsStyle 'seqlevelsStyle<-'
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
-#' width c seqlevelsStyle
+#' width c
 #' @importMethodsFrom IRanges subset as.data.frame
-#' @import GenomeInfoDb
 #'
 #' @examples
 #' ## Obtain fullCov object

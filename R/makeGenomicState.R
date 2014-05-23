@@ -25,8 +25,8 @@
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
 #' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList 
 #' queryHits subjectHits Rle
-#' @importFrom GenomicRanges GRangesList seqnames seqlengths seqlevels 
-#' 'seqlevels<-'
+#' @importFrom GenomicRanges GRangesList seqnames 
+#' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-'
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 

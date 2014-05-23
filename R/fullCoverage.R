@@ -37,8 +37,7 @@
 #' produced by \link{loadCoverage}.
 #' }
 #'
-#' @seealso \link{loadCoverage}, \link{filterData}, 
-#' \link[derfinderReport]{generateReport}
+#' @seealso \link{loadCoverage}, \link{filterData}
 #'
 #' @author Leonardo Collado-Torres
 #' @export

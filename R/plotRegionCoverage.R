@@ -34,6 +34,7 @@
 #' \link{plotCluster}
 #' @export
 #' @importMethodsFrom GenomicRanges mcols names start end '$' '[[' as.data.frame
+#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-'
 #'
 #' @examples
 #' ## Annotate regions, first two regions only

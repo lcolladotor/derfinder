@@ -33,7 +33,8 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
-#' @importFrom GenomicRanges seqlevels seqnames
+#' @importFrom GenomicRanges seqnames
+#' @importFrom GenomeInfoDb seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue '%in%'
@@ -124,7 +125,7 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     
     ## Subset data
     # subset using logical rle (fastest way)
-    subsets <- mapply(function(covInfo, chr) { subset(covInfo, .(cc[[chr]])) },
+    subsets <- mapply(function(covInfo, chr) { subset(covInfo, cc[[chr]]) },
         fullCov, chrs, SIMPLIFY = FALSE)
     
     # now count exons

@@ -4,7 +4,7 @@
 #' chromosomes and assigns genomic states using \link{annotateRegions}. It 
 #' re-calculates the p-values and q-values using the pooled areas from the null 
 #' regions from all chromosomes. Once the results have been merged, 
-#' \link[derfinderReport]{generateReport} can be used to generate an HTML 
+#' \code{derfinderReport::generateReport} can be used to generate an HTML 
 #' report of the results. The \code{derfinderReport} package is available at 
 #' https://github.com/lcolladotor/derfinderReport.
 #' 
@@ -41,7 +41,7 @@
 #' \item{fullAnnotatedRegions.Rdata}{ A list as constructed in 
 #' \link{annotateRegions} with the assigned genomic states.}
 #' \item{optionsMerge.Rdata}{ A list with the options used when merging the 
-#' results. Used in \link[derfinderReport]{generateReport}.}
+#' results. Used in \code{derfinderReport::generateReport}.}
 #' }
 #'
 #' @author Leonardo Collado-Torres

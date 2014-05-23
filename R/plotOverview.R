@@ -32,7 +32,8 @@
 #' @seealso \link{calculatePvalues}, \link[bumphunter]{annotateNearest}
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom GenomicRanges seqlengths 'seqlengths<-' seqinfo
+#' @importFrom GenomicRanges seqinfo
+#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-'
 #' @importMethodsFrom ggbio autoplot layout_karyogram
 #' @importFrom ggplot2 aes labs scale_colour_manual scale_fill_manual geom_text 
 #' rel geom_segment xlab theme element_text element_blank

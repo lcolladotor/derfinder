@@ -2,7 +2,7 @@
 #'
 #' This is a major wrapper for running several key functions from this package. 
 #' It is meant to be used after \link{loadCoverage} has been used for a 
-#' specific chromosome. The steps run include \link{makeModels}, #' 
+#' specific chromosome. The steps run include \link{makeModels}, 
 #' \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues} 
 #' and \link[bumphunter]{annotateNearest}. 
 #' 

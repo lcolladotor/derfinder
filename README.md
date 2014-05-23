@@ -3,10 +3,10 @@ derfinder
 
 Fast differential expression analysis of RNA-seq data at base-pair resolution. 
 You can generate HTML reports from the results using __derfinderReport__ 
-available at https://github.com/lcolladotor/derfinderReport.
+available [here](https://github.com/lcolladotor/derfinderReport).
 
 For a full example on how to use __derfinder__ check 
-https://github.com/lcolladotor/derfinderExample.
+[derfinderExample](https://github.com/lcolladotor/derfinderExample).
 
 # Installation instructions
 
@@ -56,7 +56,7 @@ To cite package __derfinder__ in publications use:
 
 Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2014). 
 derfinder: Fast differential expression analysis of RNA-seq data at base-pair 
-resolution. R package version 0.0.58. https://github.com/lcolladotor/derfinder
+resolution. R package version 0.0.59. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
@@ -66,7 +66,7 @@ A BibTeX entry for LaTeX users is
     author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe 
         and Jeffrey Leek},
     year = {2014},
-    note = {R package version 0.0.58},
+    note = {R package version 0.0.59},
     url = {https://github.com/lcolladotor/derfinder},
 }
 
