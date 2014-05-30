@@ -77,8 +77,9 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE,
         chrdata <- lapply(sortedFull, function(x) x[[sample]])
         
         ## Collapse it
-        values <- unlist(lapply(chrdata, runValue))
-        weights <- as.numeric(unlist(lapply(chrdata, runLength)))
+        values <- unlist(lapply(chrdata, runValue), use.names = FALSE)
+        weights <- as.numeric(unlist(lapply(chrdata, runLength), 
+            use.names = FALSE))
         
         ## Save it
         collapsedFull[[sample]] <- list(values = values, weights = weights)
