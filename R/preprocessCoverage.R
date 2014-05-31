@@ -108,7 +108,6 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
         means <- coverageInfo$meanCoverage
     }
     rm(coverageInfo)
-    gc()
     
     ## Get the positions and shorter variables
     numrow <- nrow(coverage)
@@ -122,7 +121,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     }
     
     ## Determine number of loops
-    lastloop <- trunc(numrow/chunksize)
+    lastloop <- trunc(numrow / chunksize)
     
     ## Fix the lastloop in case that the N is a factor of
     ## chunksize
@@ -176,9 +175,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
             save(chunkProcessed, file = file.path(lowMemDir, 
                 paste0("chunk", i, ".Rdata")))
         }
-        rm(chunkProcessed)
         coverage <- NULL
-        gc()
         coverage.split <- seq_len(lastloop + 1)
     } else {
         coverage.split <- lapply(seq_len(lastloop + 1), function(x) {
@@ -187,8 +184,9 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     }
     
     ## Done =)
-    result <- list(coverageProcessed = coverage, mclapplyIndex = coverage.split, 
-        position = position, meanCoverage = means, groupMeans = groupMeans)
+    result <- list(coverageProcessed = coverage, 
+        mclapplyIndex = coverage.split, position = position,
+        meanCoverage = means, groupMeans = groupMeans)
     return(result)
     
 } 
