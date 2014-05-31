@@ -9,8 +9,7 @@ regionMatrix(fullCov, cutoff = 5, filter = "mean", maxRegionGap = 0L,
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list
-should be named according to the chromosome number. Can be generated using
+\link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
 \link{fullCoverage}.}
 
 \item{cutoff}{Per base pair, at least one sample has to have coverage

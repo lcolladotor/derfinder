@@ -6,8 +6,7 @@
 #' \link{getRegionCoverage} with additional tweaks for calculating RPKM values.
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list 
-#' should be named according to the chromosome number. Can be generated using 
+#' \link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using 
 #' \link{fullCoverage}.
 #' @param genomicState The output from \link{makeGenomicState}.
 #' @param fullOrCoding If \code{full} then the \code{genomicState$fullGenome} 

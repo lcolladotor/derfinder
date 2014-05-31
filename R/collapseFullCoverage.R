@@ -9,8 +9,7 @@
 #' using \link{filterData}. 
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link[derfinder]{loadCoverage} used with \code{cutoff=NULL}. The elements of 
-#' the list should be named according to the chromosome number. Can be 
+#' \link[derfinder]{loadCoverage} used with \code{cutoff=NULL}. Can be 
 #' generated using \link{fullCoverage}.
 #' @param colsubset Which columns of \code{coverageInfo$coverage} to use.
 #' @param save If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.
