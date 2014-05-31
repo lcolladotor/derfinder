@@ -4,7 +4,8 @@
 \title{Identify regions data by a coverage filter and get a count matrix}
 \usage{
 regionMatrix(fullCov, cutoff = 5, filter = "mean", maxRegionGap = 0L,
-  maxClusterGap = 300L, L, verbose = TRUE)
+  maxClusterGap = 300L, L, totalMapped = NULL, targetSize = 8e+07,
+  verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -32,6 +33,13 @@ It should be greater than \code{maxRegionGap}. This argument is passed to
 
 \item{L}{The width of the reads used. This argument is passed to
 \link{coverageToExon}.}
+
+\item{totalMapped}{The total number of reads mapped for each sample.
+Providing this data adjusts the coverage to reads in \code{targetSize}
+library. By default, to reads per 80 million reads.}
+
+\item{targetSize}{The target library size to adjust the coverage to. Used
+only when \code{totalMapped} is specified.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

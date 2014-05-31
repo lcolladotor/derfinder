@@ -106,8 +106,8 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
     }
     
     ## Graphical setup
-    ann_chr <- ifelse(any(seqnames(regs) == "chrX"), "chrX",
-        levels(seqnames(regs))[length(levels(seqnames(regs)))])
+    ann_chr <- ifelse(any(seqnames(regions) == "chrX"), "chrX",
+        levels(seqnames(regions))[length(levels(seqnames(regions)))])
     ann_text <- data.frame(x = 2.25e+08, y = 10, lab = "Area", 
         seqnames = ann_chr)
     ann_line <- data.frame(x = 2e+08, xend = 2.15e+08, y = 10, 

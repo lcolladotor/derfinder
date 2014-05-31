@@ -5,7 +5,7 @@
 \usage{
 coverageToExon(fullCov, genomicState, fullOrCoding = "full", L = NULL,
   returnType = "raw", mc.cores = getOption("mc.cores", 2L),
-  verbose = TRUE)
+  chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -28,6 +28,9 @@ is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
 First, it's is used by strand. Second, for processing the exons by
 chromosome. So there is no gain in using \code{mc.cores} greater than the
 maximum of the number of strands and number of chromosomes.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

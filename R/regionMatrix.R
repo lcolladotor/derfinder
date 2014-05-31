@@ -65,8 +65,12 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
     targetSize = 80e6, verbose = TRUE) {
         
     ## library size adjustments
-    mappedPerXM  <- ifelse(!is.null(totalMapped), totalMapped / targetSize,
-        NULL)
+    if(!is.null(totalMapped)) {
+        mappedPerXM <- totalMapped / targetSize
+    } else {
+        mappedPerXM <- NULL
+    }
+    
     ## Define args
     moreArgs <- list(cutoff = cutoff, filter = filter,
         maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, L = L,

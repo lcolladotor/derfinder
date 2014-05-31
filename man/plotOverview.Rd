@@ -5,7 +5,7 @@
 \usage{
 plotOverview(regions, annotation = NULL, type = "pval", base_size = 12,
   areaRel = 4, legend.position = c(0.85, 0.12), significantCut = c(0.05,
-  0.1))
+  0.1), chrsStyle = "UCSC")
 }
 \arguments{
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
@@ -32,6 +32,9 @@ two-element numeric vector).}
 \item{significantCut}{A vector of length two specifiying the cutoffs used to
 determine significance. The first element is used to determine significance
 for the p-values and the second element is used for the q-values.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 }
 \value{
 A ggplot2 plot that is ready to be printed out. Tecnically it is a

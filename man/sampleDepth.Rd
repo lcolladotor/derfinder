@@ -3,7 +3,7 @@
 \alias{sampleDepth}
 \title{Calculate adjustments for library size}
 \usage{
-sampleDepth(collapsedFull = NULL, probs = c(0.5, 1), nonzero = TRUE,
+sampleDepth(collapsedFull, probs = c(0.5, 1), nonzero = TRUE,
   scalefac = 32, center = FALSE, verbose = FALSE)
 }
 \arguments{

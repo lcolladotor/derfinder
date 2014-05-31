@@ -4,7 +4,7 @@
 \title{Extract coverage information for a set of regions}
 \usage{
 getRegionCoverage(fullCov, regions, totalMapped = NULL, mc.cores = 1,
-  verbose = TRUE)
+  chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -20,6 +20,9 @@ Providing this data returns coverage adjusted totalMapped per million at
 each base.}
 
 \item{mc.cores}{The number of cores to use for computing coverage. Default=1}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

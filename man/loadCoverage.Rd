@@ -29,8 +29,8 @@ and that they have the .bai extension. Ignored if \code{dirs} is a
 chromosome length is extracted from the BAM files.}
 
 \item{output}{If \code{NULL} then no output is saved in disk. If \code{auto}
-then an automatic name is constructed (chrXCovInfo.Rdata for example). If
-another character is specified, then that name is used for the output file.}
+then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
+for example). If another character is specified, then that name is used for #' the output file.}
 
 \item{inputType}{Has to be either \code{bam} or \code{bigWig}. It specifies
 the format of the raw data files.}

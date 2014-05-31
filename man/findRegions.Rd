@@ -5,7 +5,8 @@
 \usage{
 findRegions(position = NULL, fstats, chr, oneTable = TRUE,
   maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), segmentIR = NULL, basic = FALSE, verbose = TRUE)
+  0.99), segmentIR = NULL, basic = FALSE, chrsStyle = "UCSC",
+  verbose = TRUE)
 }
 \arguments{
 \item{position}{A logical Rle of genomic positions. This is generated in
@@ -38,6 +39,9 @@ potentials DERs, normally given by \link{clusterMakerRle} with
 \item{basic}{If \code{TRUE} a DataFrame is returned that has only basic
 information on the candidate DERs. This is used in \link{calculatePvalues}
 to speed up permutation calculations.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

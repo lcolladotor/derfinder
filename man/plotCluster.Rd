@@ -5,7 +5,7 @@
 \usage{
 plotCluster(idx, regions, annotation, coverageInfo, groupInfo,
   titleUse = "qval", txdb = NULL, p.ideogram = NULL, maxExtend = 300L,
-  colsubset = NULL, forceLarge = FALSE)
+  colsubset = NULL, forceLarge = FALSE, chrsStyle = "UCSC")
 }
 \arguments{
 \item{idx}{A integer specifying the index number of the region of interest.}
@@ -44,6 +44,9 @@ clusters, the one side extension is equal to the width of the region cluster.}
 The window size (region cluster width + 2 times \code{maxExtend}) has to be
 less than 100 kb. Note that a single plot at the 300kb range can take around
 2 hours to complete.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 }
 \value{
 A ggplot2 plot that is ready to be printed out. Tecnically it is a

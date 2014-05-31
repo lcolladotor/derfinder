@@ -4,7 +4,8 @@
 \title{Assign genomic states to regions}
 \usage{
 annotateRegions(regions, genomicState, minoverlap = 20,
-  fullOrCoding = "full", annotate = TRUE, verbose = TRUE)
+  fullOrCoding = "full", annotate = TRUE, chrsStyle = "UCSC",
+  verbose = TRUE)
 }
 \arguments{
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
@@ -22,6 +23,9 @@ genomic state information is used. If \code{coding}, then the
 \item{annotate}{If \code{TRUE} then the regions are annotated by the genomic
 state. Othewise, only the overlaps between the regions and the genomic
 states are computed.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

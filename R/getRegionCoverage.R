@@ -33,7 +33,7 @@
 #' mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c
-#' @importMethodsFrom IRanges subset as.data.frame
+#' @importMethodsFrom IRanges subset as.data.frame as.factor
 #'
 #' @examples
 #' ## Obtain fullCov object
