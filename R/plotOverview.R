@@ -33,7 +33,8 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom GenomicRanges seqinfo
-#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-'
+#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-' seqlevelsStyle 
+#' 'seqlevelsStyle<-'
 #' @importMethodsFrom ggbio autoplot layout_karyogram
 #' @importFrom ggplot2 aes labs scale_colour_manual scale_fill_manual geom_text 
 #' rel geom_segment xlab theme element_text element_blank
@@ -89,6 +90,11 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
     ## Keeping R CMD check happy
     hg19Ideogram <- significant <- midpoint <- area <- x <- y <- xend <-
         significantQval <- region <- NULL
+        
+    ## Use UCSC names
+    if (seqlevelsStyle(regions) != "UCSC") {
+        seqlevelsStyle(regions) <- "UCSC"
+    }
     
     ## Assign chr lengths if needed
     if (any(is.na(seqlengths(regions)))) {
@@ -100,10 +106,12 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
     }
     
     ## Graphical setup
+    ann_chr <- ifelse(any(seqnames(regs) == "chrX"), "chrX",
+        levels(seqnames(regs))[length(levels(seqnames(regs)))])
     ann_text <- data.frame(x = 2.25e+08, y = 10, lab = "Area", 
-        seqnames = "chrX")
+        seqnames = ann_chr)
     ann_line <- data.frame(x = 2e+08, xend = 2.15e+08, y = 10, 
-        seqnames = "chrX")
+        seqnames = ann_chr)
     
     ## Make the plot
     if (type == "pval") {
