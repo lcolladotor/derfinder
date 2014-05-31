@@ -146,7 +146,6 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
                     100, 2), "percent was filtered."))
         }
     }
-    rm(data)
     
     ## Assign column names
     if(returnCoverage) {

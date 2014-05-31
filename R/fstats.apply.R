@@ -74,7 +74,7 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
     ## Calculate rss2
     resid0 <- dat %*% (Id - mod0 %*% solve(t(mod0) %*% mod0) %*% t(mod0))
     rss0 <- (resid0*resid0) %*% nVec
-    rm(resid0, nVec, Id)
+    rm(resid0)
 
 
     ## Get the F-stats
