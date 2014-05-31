@@ -35,6 +35,8 @@
 #' alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
 #' @return A list with four components:
 #' \describe{
@@ -155,11 +157,14 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
         0.99), mc.cores = getOption("mc.cores", 2L), verbose = TRUE, 
-    significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL) {
+    significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL, 
+    chrsStyle = "UCSC") {
     ## Setup
     if (is.null(seeds)) {
         seeds <- rep(NA, nPermute)
     }
+    
+    ## Run some checks
     stopifnot(nPermute == length(seeds))
     stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", 
         "mclapplyIndex", "position", "meanCoverage", "groupMeans"))) == 
@@ -173,6 +178,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     if (verbose) 
         message(paste(Sys.time(),
             "calculatePvalues: identifying data segments"))
+    
+    ## Extract data
     position <- coveragePrep$position
     means <- coveragePrep$meanCoverage
     groupMeans <- coveragePrep$groupMeans
@@ -181,7 +188,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     if (is.null(lowMemDir) & is.null(coverageProcessed)) 
         stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
     rm(coveragePrep)
-    gc()
     
     ## Avoid re-calculating possible candidate DERs for every
     ## permutation
@@ -191,7 +197,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     regs <- findRegions(position = position, chr = chr,
         maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap,
         fstats = fstats, cutoff = cutoff, segmentIR = segmentIR,
-        verbose = verbose)
+        chrsStyle = chrsStyle, verbose = verbose)
     if (is.null(regs)) {
         final <- list(regions = NULL, nullStats = NULL, nullWidths = NULL, 
             nullPermutation = NULL)
@@ -230,11 +236,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
             gc()
         }
         rm(regionGroupMean)
-        gc()
     }
     
     rm(fstats, position, means, groupMeans)
-    gc()
     
     ## Pre-allocate memory
     nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", 
@@ -281,9 +285,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         last <- last + 2
         
         ## Finish loop
-        rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)
-        gc()
-        
+        rm(idx.permute, fstats.output, regs.perm, mod.p, mod0.p)        
     }
     nullstats <- do.call(c, nullstats[!sapply(nullstats, is.null)])
     nullwidths <- do.call(c, nullwidths[!sapply(nullwidths, is.null)])
