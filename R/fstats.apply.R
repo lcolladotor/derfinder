@@ -55,16 +55,15 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
         dat <- as.matrix(as.data.frame(data[index, ]))
     }
     rm(data)
-    gc()
     
     # A function for calculating F-statistics
     # on the rows of dat, comparing the models
     # mod (alternative) and mod0 (null).
     n <- dim(dat)[2]
     m <- dim(dat)[1]
-    p <- rep(0, m)
+    p <- rep(0L, m)
     Id <- diag(n)
-    nVec <- rep(1, n)
+    nVec <- rep(1L, n)
 
     ## Calculate rss1
     resid <- dat %*% (Id - mod %*% solve(t(mod) %*% mod) %*% t(mod))
@@ -83,7 +82,6 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
     df0 <- dim(mod0)[2]
     fstats <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (adjustF + rss1 /
         (n - df1))))
-    gc()
     
     ## Done
     return(fstats)
