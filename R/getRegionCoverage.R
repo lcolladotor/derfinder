@@ -33,7 +33,7 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c
 #' @importMethodsFrom IRanges subset as.data.frame as.factor
-#' @improtFrom parallel mcmapply
+#' @importFrom parallel mcmapply
 #'
 #' @examples
 #' ## Obtain fullCov object
@@ -48,7 +48,7 @@
 #' ## Finally, get the region coverage
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
-getRegionCoverage3 <- function(fullCov, regions, totalMapped = NULL, 
+getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
     mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE) {
     
     names(regions) <- seq_len(length(regions))  # add names
@@ -86,7 +86,8 @@ getRegionCoverage3 <- function(fullCov, regions, totalMapped = NULL,
         # split(yy,ind) # 'CompressedSplitDataFrameList', faster but
         # less clear how to unlist below, so leave out
         split(as.data.frame(yy), ind)
-    }, names(fullCov), fullCov, grl, mc.cores = mc.cores, MoreArgs = moreArgs, SIMPLIFY=FALSE)
+    }, names(fullCov), fullCov, grl, mc.cores = mc.cores, MoreArgs = moreArgs,
+    SIMPLIFY = FALSE)
     covList <- do.call("c", counts)  # collect list elements into one large list
     
     # put in original order
