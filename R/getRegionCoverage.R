@@ -33,6 +33,7 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c
 #' @importMethodsFrom IRanges subset as.data.frame as.factor
+#' @improtFrom parallel mcmapply
 #'
 #' @examples
 #' ## Obtain fullCov object
@@ -47,7 +48,7 @@
 #' ## Finally, get the region coverage
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
-getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
+getRegionCoverage2 <- function(fullCov, regions, totalMapped = NULL, 
     mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE) {
     
     names(regions) <- seq_len(length(regions))  # add names
@@ -61,25 +62,37 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
         warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
     
     # split by chromosome
-    grl <- split(regions, as.factor(seqnames(regions)))  
+    regions.chrs <- as.factor(seqnames(regions))
+    ## Make sure the order matches the one from the fullCov names
+    regions.chrs <- factor(regions.chrs, levels = names(fullCov))
+    grl <- split(regions, regions.chrs)  
     
-    counts <- mclapply(grl, function(g) {
-        # now can be parallel
+    ## Subset without using multiple cores to avoid blowing up the memory
+    if (verbose) 
+        message(paste(Sys.time(), "getRegionCoverage: sub setting fullCov"))
+    subsetCov <- mapply(function(covInfo, g) {
+        yy <- covInfo[ranges(g), ]  # better subset
+    }, fullCov, grl)
+    rm(fullCov)
+    
+    moreArgs <- list(totalMapped = totalMapped, verbose = verbose)
+    counts <- mcmapply(function(chr, covInfo.small, g, totalMapped, verbose) {
+        ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
         if (verbose) 
-            cat(".")
-        thechr <- as.character(unique(seqnames(g)))
-        yy <- fullCov[[thechr]][ranges(g), ]  # better subset
+            message(paste(Sys.time(), "getRegionCoverage: processing", chr))
+        
         # depth-adjust, like for plotting
         if (!is.null(totalMapped)) {
-            yy <- DataFrame(mapply(function(x, d) x/(d/1e+06), 
-                yy, totalMapped))
+            covInfo.small <- DataFrame(mapply(function(x, d) x/(d/1e+06), 
+                covInfo.small, totalMapped))
         }
+        
         ind <- rep(names(g), width(g))  # to split along
         ind <- factor(ind, levels = unique(ind))  # make factor in order
         # split(yy,ind) # 'CompressedSplitDataFrameList', faster but
         # less clear how to unlist below, so leave out
-        split(as.data.frame(yy), ind)
-    }, mc.cores = mc.cores)
+        split(as.data.frame(covInfo.small), ind)
+    }, names(subsetCov), subsetCov, grl, mc.cores = mc.cores, MoreArgs = moreArgs, SIMPLIFY=FALSE)
     covList <- do.call("c", counts)  # collect list elements into one large list
     
     # put in original order
