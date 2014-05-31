@@ -8,7 +8,7 @@
 #' report of the results. The \code{derfinderReport} package is available at 
 #' https://github.com/lcolladotor/derfinderReport.
 #' 
-#' @param chrs The chromosome numbers of the files to be merged.
+#' @param chrs The chromosomes of the files to be merged.
 #' @param prefix The main data directory path, which can be useful if 
 #' \link{analyzeChr} is used for several parameters and the results are saved 
 #' in different directories.

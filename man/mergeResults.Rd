@@ -9,7 +9,7 @@ mergeResults(chrs = c(1:22, "X", "Y"), prefix = ".",
   verbose = TRUE)
 }
 \arguments{
-\item{chrs}{The chromosome numbers of the files to be merged.}
+\item{chrs}{The chromosomes of the files to be merged.}
 
 \item{prefix}{The main data directory path, which can be useful if
 \link{analyzeChr} is used for several parameters and the results are saved
