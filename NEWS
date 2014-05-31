@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.0.60
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o makeGenomicState() no longer has the 'addChrPrefix' argument. It has been
+        replaced by 'levelsStyle' to use GenomeInfoDb to set the naming style.
+
 CHANGES IN VERSION 0.0.59
 -------------------------
 
