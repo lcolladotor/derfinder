@@ -233,7 +233,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
                 names(log2FoldChange), "vs", names(groupMeans)[1])
             values(regs) <- cbind(values(regs), DataFrame(log2FoldChange))
             rm(log2FoldChange)
-            gc()
         }
         rm(regionGroupMean)
     }

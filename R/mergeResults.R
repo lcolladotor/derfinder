@@ -209,7 +209,7 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
             chr = Rle(names(fullNullStats), howMany),
             permutation = permutations)
         rm(nulls, widths, howMany, permutations)
-        gc()
+        
         fullNullSummary$area <- abs(fullNullSummary$stat) * 
             fullNullSummary$width
         fullNullSummary <- fullNullSummary[order(fullNullSummary$area, 
