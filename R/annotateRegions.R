@@ -16,6 +16,8 @@
 #' @param annotate If \code{TRUE} then the regions are annotated by the genomic 
 #' state. Othewise, only the overlaps between the regions and the genomic 
 #' states are computed.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -36,6 +38,7 @@
 #' @seealso \link{makeGenomicState}, \link{calculatePvalues}
 #' @export
 #' @importFrom IRanges queryHits subjectHits
+#' @importFrom GenomeInfoDb 'seqlevelsStyle<-'
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split 
 #' countOverlaps findOverlaps '['
 #' @importMethodsFrom IRanges sapply
@@ -47,7 +50,7 @@
 #' annotatedRegions
 
 annotateRegions <- function(regions, genomicState, minoverlap = 20, 
-    fullOrCoding = "full", annotate = TRUE, verbose = TRUE) {
+    fullOrCoding = "full", annotate = TRUE, chrsStyle = "UCSC", verbose = TRUE) {
     stopifnot(length(intersect(names(genomicState), c("fullGenome", 
         "codingGenome"))) == 2)
     stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 
@@ -61,6 +64,11 @@ annotateRegions <- function(regions, genomicState, minoverlap = 20,
     } else if (fullOrCoding == "coding") {
         gs <- genomicState$codingGenome
     }
+    
+    ## Use UCSC names by default
+    seqlevelsStyle(gs) <- chrsStyle
+    seqlevelsStyle(regions) <- chrsStyle
+    
     gsl <- split(gs, gs$theRegion)
     
     if (verbose) 

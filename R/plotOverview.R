@@ -25,6 +25,8 @@
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
 #' for the p-values and the second element is used for the q-values.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a 
 #' ggbio object.
@@ -33,7 +35,8 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom GenomicRanges seqinfo
-#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-'
+#' @importFrom GenomeInfoDb seqlengths 'seqlengths<-' seqlevelsStyle 
+#' 'seqlevelsStyle<-'
 #' @importMethodsFrom ggbio autoplot layout_karyogram
 #' @importFrom ggplot2 aes labs scale_colour_manual scale_fill_manual geom_text 
 #' rel geom_segment xlab theme element_text element_blank
@@ -81,7 +84,7 @@
 
 plotOverview <- function(regions, annotation = NULL, type = "pval", 
     base_size = 12, areaRel = 4, legend.position = c(0.85, 0.12), 
-    significantCut = c(0.05, 0.1)) {
+    significantCut = c(0.05, 0.1), chrsStyle = "UCSC") {
     stopifnot(type %in% c("pval", "qval", "annotation"))
     stopifnot(length(significantCut) == 2 & all(significantCut >= 
         0 & significantCut <= 1))
@@ -89,6 +92,9 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
     ## Keeping R CMD check happy
     hg19Ideogram <- significant <- midpoint <- area <- x <- y <- xend <-
         significantQval <- region <- NULL
+        
+    ## Use UCSC names by default
+    seqlevelsStyle(regions) <- chrsStyle
     
     ## Assign chr lengths if needed
     if (any(is.na(seqlengths(regions)))) {
@@ -100,10 +106,12 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
     }
     
     ## Graphical setup
+    ann_chr <- ifelse(any(seqnames(regions) == "chrX"), "chrX",
+        levels(seqnames(regions))[length(levels(seqnames(regions)))])
     ann_text <- data.frame(x = 2.25e+08, y = 10, lab = "Area", 
-        seqnames = "chrX")
+        seqnames = ann_chr)
     ann_line <- data.frame(x = 2e+08, xend = 2.15e+08, y = 10, 
-        seqnames = "chrX")
+        seqnames = ann_chr)
     
     ## Make the plot
     if (type == "pval") {

@@ -3,12 +3,13 @@
 \alias{mergeResults}
 \title{Merge results from different chromosomes}
 \usage{
-mergeResults(chrnums = c(1:22, "X", "Y"), prefix = ".",
+mergeResults(chrs = c(1:22, "X", "Y"), prefix = ".",
   significantCut = c(0.05, 0.1), genomicState, minoverlap = 20,
-  fullOrCoding = "full", mergePrep = FALSE, verbose = TRUE)
+  fullOrCoding = "full", mergePrep = FALSE, chrsStyle = "UCSC",
+  verbose = TRUE)
 }
 \arguments{
-\item{chrnums}{The chromosome numbers of the files to be merged.}
+\item{chrs}{The chromosomes of the files to be merged.}
 
 \item{prefix}{The main data directory path, which can be useful if
 \link{analyzeChr} is used for several parameters and the results are saved
@@ -27,6 +28,9 @@ in \link{calculatePvalues}.}
 
 \item{mergePrep}{If \code{TRUE} the output from \link{preprocessCoverage} is
 merged.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
@@ -98,7 +102,7 @@ setwd(initialPath)
 
 ## Merge the results from the different chromosomes. In this case, there's
 ## only one: chr21
-mergeResults(chrnums='21', prefix='generateReport-example',
+mergeResults(chrs='21', prefix='generateReport-example',
 genomicState=genomicState)
 
 \dontrun{

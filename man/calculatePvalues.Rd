@@ -7,7 +7,8 @@ calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
   maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
   0.99), mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
-  significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL)
+  significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
+  chrsStyle = "UCSC")
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -53,6 +54,9 @@ alternative model is very small.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 }
 \value{
 A list with four components:

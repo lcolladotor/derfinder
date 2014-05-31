@@ -4,7 +4,7 @@
 \title{Obtain the genomic state per region from annotation}
 \usage{
 makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")),
-  addChrPrefix = FALSE)
+  chrsStyle = "UCSC")
 }
 \arguments{
 \item{txdb}{A \link[GenomicFeatures]{TranscriptDb} object.}
@@ -12,8 +12,8 @@ makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")),
 \item{chrs}{The names of the chromosomes to use as denoted in the
 \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
 
-\item{addChrPrefix}{If \code{TRUE}, 'chr' is added as a prefix to the
-chromosome names (seqlevels).}
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 }
 \value{
 A \code{GRangesList} object with two elements: \code{fullGenome} and
@@ -61,7 +61,7 @@ txdb <- loadDb(file.path('TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11', 'inst',
 
 ## Creating this GenomicState object takes around 13 min
 GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb,
-    chrs=c(1:22, 'X', 'Y'), addChrPrefix=TRUE)
+    chrs=c(1:22, 'X', 'Y'))
 
 ## Save for later use
 save(GenomicState.Hsapiens.ensembl.GRCh37.p11,

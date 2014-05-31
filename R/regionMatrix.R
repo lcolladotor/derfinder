@@ -8,8 +8,7 @@
 #' region.
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{cutoff=NULL}. The elements of the list 
-#' should be named according to the chromosome number. Can be generated using 
+#' \link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using 
 #' \link{fullCoverage}.
 #' @param cutoff Per base pair, at least one sample has to have coverage 
 #' strictly greater than \code{cutoff} to be included in the result. This
@@ -27,6 +26,11 @@
 #' \link{findRegions}.
 #' @param L The width of the reads used. This argument is passed to
 #' \link{coverageToExon}.
+#' @param totalMapped The total number of reads mapped for each sample. 
+#' Providing this data adjusts the coverage to reads in \code{targetSize} 
+#' library. By default, to reads per 80 million reads.
+#' @param targetSize The target library size to adjust the coverage to. Used
+#' only when \code{totalMapped} is specified.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -56,16 +60,38 @@
 #'     maxClusterGap = 300L, L = 36)
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = "mean", 
-    maxRegionGap = 0L, maxClusterGap = 300L, L, verbose = TRUE) {
-        moreArgs <- list(cutoff = cutoff, filter = filter,
-            maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, L = L,
-            verbose = verbose)
+    maxRegionGap = 0L, maxClusterGap = 300L, L, totalMapped = NULL,
+    targetSize = 80e6, verbose = TRUE) {
+        
+    ## library size adjustments
+    if(!is.null(totalMapped)) {
+        mappedPerXM <- totalMapped / targetSize
+    } else {
+        mappedPerXM <- NULL
+    }
+    
+    ## Define args
+    moreArgs <- list(cutoff = cutoff, filter = filter,
+        maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, L = L,
+        mappedPerXM = mappedPerXM, verbose = verbose)
+    
+    ## Get regions per chr
     mapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 
         SIMPLIFY = FALSE)
 }
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, maxRegionGap = 0L, 
-    maxClusterGap = 300L, L, verbose) {
+    maxClusterGap = 300L, L, mappedPerXM, verbose) {
+    
+    if (verbose) 
+        message(paste(Sys.time(), "regionMatrix: processing chromosome", chr))
+        
+    ## Normalize to a given size
+    if(!is.null(mappedPerXM)) {
+        if (verbose) 
+            message(paste(Sys.time(), "regionMatrix: normalizing coverage"))
+        covInfo <- DataFrame(mapply(function(x, d) x / d, covInfo, mappedPerXM))
+    }    
         
     ## Filter by 'one' or 'mean' and get mean coverage
     filt <- filterData(data = covInfo, cutoff = cutoff, filter = filter,
@@ -84,8 +110,10 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
     fullCovTmp <- list(covInfo)
     names(fullCovTmp) <- chr
     
+    if (verbose) 
+        message(paste(Sys.time(), "regionMatrix: getting region coverage"))
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
-        totalMapped = NULL, mc.cores = 1, verbose = verbose)
+        totalMapped = NULL, mc.cores = 1, verbose = FALSE)
         
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat) / L

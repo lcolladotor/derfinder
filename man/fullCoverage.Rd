@@ -4,9 +4,9 @@
 \title{Load the unfiltered coverage information from a group of BAM files and a
 list of chromosomes}
 \usage{
-fullCoverage(dirs, chrnums, bai = NULL, chrlens = NULL, outputs = NULL,
+fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
   mc.cores = getOption("mc.cores", 2L), inputType = "bam",
-  isMinusStrand = NA, verbose = TRUE)
+  isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -16,7 +16,8 @@ The names are used for the column names of the DataFrame. Check
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
-\item{chrnums}{The chromosome numbers of the files to read.}
+\item{chrs}{The chromosome of the files to read. The format has to match the
+one used in the input files.}
 
 \item{bai}{The full path to the BAM index files. If \code{NULL} it is
 assumed that the BAM index files are in the same location as the BAM files
@@ -25,7 +26,7 @@ and that they have the .bai extension. Ignored if \code{dirs} is a
 
 \item{chrlens}{The chromosome lengths in base pairs. If it's \code{NULL},
 the chromosome length is extracted from the BAM files. Otherwise, it should
-have the same length as \code{chrnums}.}
+have the same length as \code{chrs}.}
 
 \item{outputs}{This argument is passed to the \code{output} argument of
 \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.}
@@ -39,6 +40,9 @@ the format of the raw data files.}
 \item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,
 \code{FALSE} for positive strands and \code{NA} for both. This argument is
 passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.}
+
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
@@ -63,7 +67,7 @@ dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$',
 names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
 ## Read and filter the data, only for 2 files
-fullCov <- fullCoverage(dirs=dirs[1:2], chrnums=c('21', '22'), mc.cores=2)
+fullCov <- fullCoverage(dirs=dirs[1:2], chrs=c('21', '22'), mc.cores=2)
 fullCov
 
 \dontrun{

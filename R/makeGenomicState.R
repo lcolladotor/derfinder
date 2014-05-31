@@ -8,8 +8,8 @@
 #' @param txdb A \link[GenomicFeatures]{TranscriptDb} object.
 #' @param chrs The names of the chromosomes to use as denoted in the 
 #' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
-#' @param addChrPrefix If \code{TRUE}, 'chr' is added as a prefix to the 
-#' chromosome names (seqlevels).
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
 #' @return A \code{GRangesList} object with two elements: \code{fullGenome} and 
 #' \code{codingGenome}. Both have metadata information for the type of region 
@@ -26,7 +26,8 @@
 #' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList 
 #' queryHits subjectHits Rle
 #' @importFrom GenomicRanges GRangesList seqnames 
-#' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-'
+#' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-' seqlevelsStyle 
+#' 'seqlevelsStyle<-'
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
@@ -68,7 +69,7 @@
 #' 
 #' ## Creating this GenomicState object takes around 13 min
 #' GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb, 
-#'     chrs=c(1:22, 'X', 'Y'), addChrPrefix=TRUE)
+#'     chrs=c(1:22, 'X', 'Y'))
 #' 
 #' ## Save for later use
 #' save(GenomicState.Hsapiens.ensembl.GRCh37.p11, 
@@ -76,7 +77,7 @@
 #' }
 
 makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22, 
-    "X", "Y")), addChrPrefix = FALSE) {
+    "X", "Y")), chrsStyle = "UCSC") {
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
     
@@ -392,11 +393,9 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     codingGenome <- sort(codingGenome)
     names(codingGenome) <- seq(along = codingGenome)
     
-    ## Add chr prefix
-    if (addChrPrefix) {
-        seqlevels(codingGenome) <- paste0("chr", seqlevels(codingGenome))
-        seqlevels(fullGenome) <- paste0("chr", seqlevels(fullGenome))
-    }
+    ## Define seqlevelsStyle
+    seqlevelsStyle(codingGenome) <- chrsStyle
+    seqlevelsStyle(fullGenome) <- chrsStyle
     
     GenomicState <- GRangesList(fullGenome = fullGenome,
         codingGenome = codingGenome)

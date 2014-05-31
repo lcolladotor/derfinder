@@ -3,18 +3,18 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-analyzeChr(chrnum, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
+analyzeChr(chr, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
   scalefac = 32, chunksize = NULL, adjustF = 0, cutoffFstat = 1e-08,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
   "", Sys.Date())) + seq_len(nPermute), maxRegionGap = 0L,
   maxClusterGap = 300L, groupInfo, subject = "hg19",
   mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE,
   returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
-  verbose = TRUE)
+  chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
-\item{chrnum}{Used for naming the output files when \code{writeOutput=TRUE}
-and for \link[bumphunter]{annotateNearest}. Use '21' instead of 'chr21'.}
+\item{chr}{Used for naming the output files when \code{writeOutput=TRUE}
+and for \link[bumphunter]{annotateNearest}.}
 
 \item{coverageInfo}{The output from \link{loadCoverage}.}
 
@@ -75,6 +75,9 @@ run. Otherwise this step is skipped.}
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
+\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
+\link[GenomeInfoDb]{seqlevelsStyle}.}
+
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
 }
@@ -113,7 +116,7 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 
 ## Analyze the chromosome
-results <- analyzeChr(chrnum='21', coverageInfo=genomeData, models=models,
+results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
     cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1,
     writeOutput=FALSE, returnOutput=TRUE)
 names(results)
