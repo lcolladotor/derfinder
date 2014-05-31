@@ -56,6 +56,7 @@
 #' guides scale_y_continuous geom_segment
 #' @importFrom plyr ddply summarise
 #' @importFrom scales log2_trans log_trans
+#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
 #' 
 #' @examples
 #' ## Annotate the results
@@ -188,6 +189,12 @@ plotCluster <- function(idx, regions, annotation, coverageInfo,
     stopifnot(is.factor(groupInfo))
     if (is.null(colsubset)) 
         colsubset <- seq_len(length(groupInfo))
+    
+    ## Use UCSC names
+    if (seqlevelsStyle(regions) != "UCSC") {
+        seqlevelsStyle(regions) <- "UCSC"
+    }
+    
     current <- regions[idx]
     
     ## Satisfying R CMD check
