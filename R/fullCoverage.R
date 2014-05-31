@@ -12,14 +12,15 @@
 #' \link{makeBamList} for constructing \code{dirs}. \code{dirs} can also be a 
 #' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 #' \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.
-#' @param chrnums The chromosome numbers of the files to read.
+#' @param chrs The chromosome of the files to read. The format has to match the
+#' one used in the input files.
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
 #' and that they have the .bai extension. Ignored if \code{dirs} is a 
 #' \code{BamFileList} object.
 #' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, 
 #' the chromosome length is extracted from the BAM files. Otherwise, it should 
-#' have the same length as \code{chrnums}.
+#' have the same length as \code{chrs}.
 #' @param outputs This argument is passed to the \code{output} argument of 
 #' \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.
 #' @param mc.cores This argument is passed to \link[parallel]{mclapply}. You 
@@ -42,6 +43,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom parallel mclapply
+#' @importFrom GenomeInfoDb mapSeqlevels
 #'
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
@@ -51,7 +53,7 @@
 #' names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 #' 
 #' ## Read and filter the data, only for 2 files
-#' fullCov <- fullCoverage(dirs=dirs[1:2], chrnums=c('21', '22'), mc.cores=2)
+#' fullCov <- fullCoverage(dirs=dirs[1:2], chrs=c('21', '22'), mc.cores=2)
 #' fullCov
 #'
 #' \dontrun{
@@ -61,34 +63,34 @@
 #' mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
 #' }
 
-fullCoverage <- function(dirs, chrnums, bai = NULL, chrlens = NULL, 
+fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
     outputs = NULL, mc.cores = getOption("mc.cores", 2L), inputType = "bam", 
     isMinusStrand = NA, verbose = TRUE) {
-    stopifnot(length(chrlens) == length(chrnums) | is.null(chrlens))
+        
+    stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
-        stopifnot(length(outputs) == length(chrnums) | outputs == 
-            "auto")
+        stopifnot(length(outputs) == length(chrs) | outputs == "auto")
         if (outputs == "auto") {
-            outputs <- rep("auto", length(chrnums))
+            outputs <- rep("auto", length(chrs))
         }
     }
     
     ## Subsetting function that runs loadCoverage
-    loadChr <- function(idx, dirs, chrnums, bai, chrlens, outputs, inputType,
+    loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, inputType,
         isMinusStrand, verbose) {
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
-                chrnums[idx]))
-        loadCoverage(dirs = dirs, chr = chrnums[idx], cutoff = NULL, 
+                chrs[idx]))
+        loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = NULL, 
             bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
             inputType = inputType, isMinusStrand = isMinusStrand,
             verbose = verbose)$coverage
     }
-    result <- mclapply(seq_len(length(chrnums)), loadChr, dirs = dirs, 
-        chrnums = chrnums, bai = bai, chrlens = chrlens, outputs = outputs, 
+    result <- mclapply(seq_len(length(chrs)), loadChr, dirs = dirs, 
+        chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         verbose = verbose, inputType = inputType, 
         isMinusStrand = isMinusStrand, mc.cores = mc.cores)
-    names(result) <- chrnums
+    names(result) <- mapSeqlevels(chrs, "UCSC")
     
     ## Done
     return(result)
