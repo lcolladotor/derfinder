@@ -147,17 +147,15 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
         message(paste(Sys.time(),
             "loadCoverage: applying the cutoff to the merged data"))
     
-    res <- filterData(data = data, cutoff = cutoff, index = NULL, 
+    ## Rename the object to a name that will make more sense later
+    varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
+    assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
         colnames = names(dirs), filter = filter, returnMean = returnMean,
-        returnCoverage = returnCoverage, verbose = verbose)
+        returnCoverage = returnCoverage, verbose = verbose))
     rm(data)    
     
     ## Save if output is specified
     if (!is.null(output)) {
-        ## Rename the object to a name that will make more sense later
-        varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
-        assign(varname, res)
-        
         ## Automatic output name
         if (output == "auto") {
             output <- paste0(varname, ".Rdata")
@@ -173,7 +171,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     }
     
     ## Done
-    return(res)
+    return(get(varname))
 } 
 
 
