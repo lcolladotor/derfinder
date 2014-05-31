@@ -110,7 +110,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
     if (verbose) 
         message(paste(Sys.time(), "regionMatrix: getting region coverage"))
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
-        totalMapped = NULL, mc.cores = 1, verbose = verbose)
+        totalMapped = NULL, mc.cores = 1, verbose = FALSE)
         
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat) / L
