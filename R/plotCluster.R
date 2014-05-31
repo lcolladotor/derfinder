@@ -193,9 +193,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo,
         colsubset <- seq_len(length(groupInfo))
     
     ## Use UCSC names by default
-    if (seqlevelsStyle(regions) != chrsStyle) {
-        seqlevelsStyle(regions) <- chrsStyle
-    }
+    seqlevelsStyle(regions) <- chrsStyle
     
     current <- regions[idx]
     

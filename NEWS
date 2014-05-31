@@ -3,14 +3,15 @@ CHANGES IN VERSION 0.0.60
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o coverageToExon(), findRegions(), fullCoverage(), getRegionCoverage(), 
-        makeGenomicState(), plotCluster(), plotOverview(), calculatePvalues(),
-        annotateRegions()
+    o analyzeChr(), annotateRegions(), calculatePvalues(), coverageToExon(),
+        findRegions(), fullCoverage(), getRegionCoverage(), 
+        makeGenomicState(), mergeResults(), plotCluster(), plotOverview()
         now all have 'chrsStyle' as an argument to specify the chromosome 
         naming convention used. Defaults to UCSC.
     o makeGenomicState() no longer has the 'addChrPrefix' argument. It has been
         replaced by 'chrsStyle' to use GenomeInfoDb to set the naming style.
-    o 'chrnums' has been changed to 'chrs' in fullCoverage()
+    o 'chrnums' has been renamed to 'chrs' in fullCoverage()
+    o 'chrnum' has been renamed to 'chr' in analyzeChr()
 
 CHANGES IN VERSION 0.0.59
 -------------------------

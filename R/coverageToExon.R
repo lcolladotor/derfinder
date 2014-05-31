@@ -36,7 +36,8 @@
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
 #' @importFrom GenomicRanges seqnames
-#' @importFrom GenomeInfoDb seqlevels
+#' @importFrom GenomeInfoDb seqlevels seqlevelsStyle 'seqlevelsStyle<-'
+#' mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue '%in%'
@@ -138,9 +139,8 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
         
     # combine
     out <- do.call("rbind", exonList)
-       
-    ## Clean up
-    rm(e, cc, exonList)
+    
+    # done
     return(out)
 }
 
@@ -158,7 +158,6 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     tmpList <- split(z, ind)  # split
     res <- t(sapply(tmpList, colSums)/L)  # get # reads
     
-    ## Clean up
-    rm(z, g, ind, tmpList)
+    # done
     return(res)
 } 

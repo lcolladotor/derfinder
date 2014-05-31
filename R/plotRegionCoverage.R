@@ -75,8 +75,10 @@ plotRegionCoverage <- function(regions, regionCoverage, groupInfo,
     nearestAnnotation, annotatedRegions, whichRegions = seq_len(min(100, 
         length(regions))), colors = NULL, scalefac = 32, ask = interactive(), 
     ylab = "Coverage", verbose = TRUE) {
-    stopifnot(length(intersect(names(annotatedRegions), c("annotationList"))) == 
-        1)
+        
+    ## Check inputs
+    stopifnot(length(intersect(names(annotatedRegions), 
+        c("annotationList"))) == 1)
     stopifnot(is.data.frame(nearestAnnotation) | is(nearestAnnotation, 
         "GRanges"))
     if (is.data.frame(nearestAnnotation)) {

@@ -6,8 +6,8 @@
 #' \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues} 
 #' and \link[bumphunter]{annotateNearest}. 
 #' 
-#' @param chrnum Used for naming the output files when \code{writeOutput=TRUE} 
-#' and for \link[bumphunter]{annotateNearest}. Use '21' instead of 'chr21'.
+#' @param chr Used for naming the output files when \code{writeOutput=TRUE} 
+#' and for \link[bumphunter]{annotateNearest}.
 #' @param coverageInfo The output from \link{loadCoverage}.
 #' @param models The output from \link{makeModels}.
 #' @param cutoffPre This argument is passed to \link{preprocessCoverage} 
@@ -47,6 +47,8 @@
 #' run. Otherwise this step is skipped.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -69,6 +71,7 @@
 #' @export
 #' @importMethodsFrom IRanges as.numeric
 #' @importFrom bumphunter annotateNearest
+#' @importFrom GenomeInfoDb mapSeqlevels
 #' 
 #' @examples
 #' ## Collapse the coverage information
@@ -90,18 +93,21 @@
 #'     writeOutput=FALSE, returnOutput=TRUE)
 #' names(results)
 
-analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5, 
+analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
     colsubset = NULL, scalefac = 32, chunksize = NULL, adjustF = 0, 
     cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo, subject = "hg19", 
     mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE, 
     returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL, 
-    verbose = TRUE) {
+    chrsStyle = "UCSC", verbose = TRUE) {
     stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", 
         "manual"))) == 1)
     stopifnot(is.factor(groupInfo))
-    chr <- paste0("chr", chrnum)
+    
+    ## Use UCSC names by default
+    chr <- mapSeqlevels(chr, chrsStyle)
+    
     ## Begin timing
     timeinfo <- NULL
     ## Init
@@ -113,10 +119,11 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5,
     ## Save parameters used for running calculateStats
     optionsStats <- list(models = models, cutoffPre = cutoffPre, 
         colsubset = colsubset, scalefac = scalefac, chunksize = chunksize, 
-        cutoffFstat = cutoffFstat, cutoffType = cutoffType, nPermute = nPermute, 
-        seeds = seeds, maxRegionGap = maxRegionGap,
+        cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
+        nPermute = nPermute, seeds = seeds, maxRegionGap = maxRegionGap,
         maxClusterGap = maxClusterGap, groupInfo = groupInfo, adjustF = adjustF,
-        lowMemDir = lowMemDir, analyzeCall = match.call())
+        lowMemDir = lowMemDir, chrsStyle = chrsStyle, 
+        analyzeCall = match.call())
     
     ## Setup
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -138,7 +145,6 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5,
         scalefac = scalefac, chunksize = chunksize, mc.cores = mc.cores,
         lowMemDir = lowMemDir, verbose = verbose)
     rm(coverageInfo)
-    gc()
     
     ## prepData
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -174,7 +180,11 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5,
     
     ## Choose the cutoff
     if (cutoffType == "empirical") {
-        cutoff <- quantile(as.numeric(fstats), 0.99)
+        if(cutoffFstat == 1e-08) {
+            cutoffFstat <- 0.99
+            warning("Switching 'cutoffFstat' to 0.99 as the user probably forgot to change its default value.")
+        }
+        cutoff <- quantile(as.numeric(fstats), cutoffFstat)
     } else if (cutoffType == "theoretical") {
         n <- dim(models$mod)[1]
         df1 <- dim(models$mod)[2]
@@ -192,10 +202,9 @@ analyzeChr <- function(chrnum, coverageInfo, models, cutoffPre = 5,
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
         chr = chr, maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, 
         cutoff = cutoff, mc.cores = mc.cores, verbose = verbose, 
-        adjustF = adjustF, lowMemDir = lowMemDir)
+        adjustF = adjustF, lowMemDir = lowMemDir, chrsStyle = chrsStyle)
     if (!returnOutput) {
         rm(prep)
-        gc()
     }
     
     ## calculatePValues

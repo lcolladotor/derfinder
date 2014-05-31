@@ -94,9 +94,7 @@ plotOverview <- function(regions, annotation = NULL, type = "pval",
         significantQval <- region <- NULL
         
     ## Use UCSC names by default
-    if (seqlevelsStyle(regions) != chrsStyle) {
-        seqlevelsStyle(regions) <- chrsStyle
-    }
+    seqlevelsStyle(regions) <- chrsStyle
     
     ## Assign chr lengths if needed
     if (any(is.na(seqlengths(regions)))) {
