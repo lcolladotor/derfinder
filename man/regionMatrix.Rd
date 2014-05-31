@@ -5,7 +5,7 @@
 \usage{
 regionMatrix(fullCov, cutoff = 5, filter = "mean", maxRegionGap = 0L,
   maxClusterGap = 300L, L, totalMapped = NULL, targetSize = 8e+07,
-  verbose = TRUE)
+  mc.cores = 1, verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -39,6 +39,8 @@ library. By default, to reads per 80 million reads.}
 
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
+
+\item{mc.cores}{The number of cores to use. Maximum, 1 core per chr.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

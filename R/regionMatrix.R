@@ -31,6 +31,7 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
+#' @param mc.cores The number of cores to use. Maximum, 1 core per chr.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -50,6 +51,7 @@
 #' @export
 #' @importFrom GenomeInfoDb 'seqlengths<-'
 #' @importMethodsFrom IRanges nrow '$<-'
+#' @importFrom parallel mcmapply
 #' @examples
 #' library('IRanges')
 #' x <- Rle(round(runif(1e4, max=10)))
@@ -61,7 +63,7 @@
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = "mean", 
     maxRegionGap = 0L, maxClusterGap = 300L, L, totalMapped = NULL,
-    targetSize = 80e6, verbose = TRUE) {
+    targetSize = 80e6, mc.cores = 1, verbose = TRUE) {
         
     ## library size adjustments
     if(!is.null(totalMapped)) {
@@ -76,15 +78,15 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
         mappedPerXM = mappedPerXM, verbose = verbose)
     
     ## Get regions per chr
-    mapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 
-        SIMPLIFY = FALSE)
+    mcmapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 
+        SIMPLIFY = FALSE, mc.cores = mc.cores)
 }
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, maxRegionGap = 0L, 
     maxClusterGap = 300L, L, mappedPerXM, verbose) {
     
     if (verbose) 
-        message(paste(Sys.time(), "regionMatrix: processing chromosome", chr))
+        message(paste(Sys.time(), "regionMatrix: processing", chr))
         
     ## Normalize to a given size
     if(!is.null(mappedPerXM)) {
