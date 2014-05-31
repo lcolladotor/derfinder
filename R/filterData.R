@@ -130,8 +130,7 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
             }
         }
     }
-    
-    
+        
     ## Info for the user
     if (verbose) {
         if(returnCoverage) {
@@ -148,8 +147,6 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
         }
     }
     rm(data)
-    gc()
-    
     
     ## Assign column names
     if(returnCoverage) {
@@ -157,7 +154,6 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
             colnames(DF) <- colnames
         }
     }
-    
     
     ## Make the final resulting object.
     if(returnMean & returnCoverage) {
@@ -172,5 +168,4 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     }
     
     return(res)
-    
 } 
