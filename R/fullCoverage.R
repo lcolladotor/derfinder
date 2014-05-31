@@ -30,6 +30,8 @@
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
 #' passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -65,7 +67,7 @@
 
 fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
     outputs = NULL, mc.cores = getOption("mc.cores", 2L), inputType = "bam", 
-    isMinusStrand = NA, verbose = TRUE) {
+    isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
@@ -90,7 +92,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         verbose = verbose, inputType = inputType, 
         isMinusStrand = isMinusStrand, mc.cores = mc.cores)
-    names(result) <- mapSeqlevels(chrs, "UCSC")
+    names(result) <- mapSeqlevels(chrs, chrsStyle)
     
     ## Done
     return(result)

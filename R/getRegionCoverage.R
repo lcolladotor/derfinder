@@ -15,6 +15,8 @@
 #' Providing this data returns coverage adjusted totalMapped per million at 
 #' each base.
 #' @param mc.cores The number of cores to use for computing coverage. Default=1
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -28,6 +30,7 @@
 #' @export
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels seqlevelsStyle 'seqlevelsStyle<-'
+#' mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c
 #' @importMethodsFrom IRanges subset as.data.frame
@@ -46,15 +49,16 @@
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
-    mc.cores = 1, verbose = TRUE) {
+    mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE) {
     
     names(regions) <- seq_len(length(regions))  # add names
     
-    if (!all(grepl("chr", names(fullCov)))) {
-        names(fullCov) <- paste0("chr", names(fullCov))
+    ## Use UCSC style names by default
+    if (seqlevelsStyle(names(fullCov)) != chrsStyle) {
+        names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     }
-    if (seqlevelsStyle(regions) != "UCSC") {
-        seqlevelsStyle(regions) <- "UCSC"
+    if (seqlevelsStyle(regions) != chrsStyle) {
+        seqlevelsStyle(regions) <- chrsStyle
     }
     
     ## Warning when seqlengths are not specified
@@ -62,7 +66,7 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
         warning("'regions' does not have seqlengths assigned! In some cases, this can lead to erroneous results. getRegionCoverage() will proceed, but please check for other warnings or errors.")
     
     # split by chromosome
-    grl <- split(regions, as.character(seqnames(regions)))  
+    grl <- split(regions, as.factor(seqnames(regions)))  
     
     counts <- mclapply(grl, function(g) {
         # now can be parallel

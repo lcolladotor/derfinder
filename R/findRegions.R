@@ -28,6 +28,8 @@
 #' @param basic If \code{TRUE} a DataFrame is returned that has only basic 
 #' information on the candidate DERs. This is used in \link{calculatePvalues} 
 #' to speed up permutation calculations.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -56,6 +58,7 @@
 #' @importFrom IRanges IRanges start end width Views Rle runLength ranges 
 #' DataFrame runValue 'runValue<-'
 #' @importFrom GenomicRanges GRanges GRangesList
+#' @importFrom GenomeInfoDb mapSeqlevels
 #' @importMethodsFrom IRanges quantile which length mean rbind
 #' @examples
 #' ## Preprocess the data
@@ -95,7 +98,8 @@
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
     maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
-        0.99), segmentIR = NULL, basic = FALSE, verbose = TRUE) {
+        0.99), segmentIR = NULL, basic = FALSE, chrsStyle = "UCSC", 
+        verbose = TRUE) {
     if (!basic) {
         if (is.null(segmentIR)) {
             stopifnot(!is.null(position))
@@ -160,6 +164,9 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Build the output shell
     res <- vector("list", sum(hasInfo))
     names(res) <- names(hasInfo)[hasInfo]
+    
+    ## Use UCSC names by default
+    chr <- mapSeqlevels(chr, chrsStyle)
     
     for (i in names(hasInfo)[hasInfo]) {
         if (!basic) {

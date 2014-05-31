@@ -33,6 +33,8 @@
 #' The window size (region cluster width + 2 times \code{maxExtend}) has to be 
 #' less than 100 kb. Note that a single plot at the 300kb range can take around 
 #' 2 hours to complete.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
 #' @return A ggplot2 plot that is ready to be printed out. Tecnically it is a 
 #' ggbio object. The region with the red bar is the one whose information is 
@@ -56,7 +58,7 @@
 #' guides scale_y_continuous geom_segment
 #' @importFrom plyr ddply summarise
 #' @importFrom scales log2_trans log_trans
-#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-' mapSeqlevels
 #' 
 #' @examples
 #' ## Annotate the results
@@ -184,15 +186,15 @@
 
 plotCluster <- function(idx, regions, annotation, coverageInfo, 
     groupInfo, titleUse = "qval", txdb = NULL, p.ideogram = NULL, 
-    maxExtend = 300L, colsubset = NULL, forceLarge = FALSE) {
+    maxExtend = 300L, colsubset = NULL, forceLarge = FALSE, chrsStyle = "UCSC") {
     stopifnot(titleUse %in% c("pval", "qval", "none"))
     stopifnot(is.factor(groupInfo))
     if (is.null(colsubset)) 
         colsubset <- seq_len(length(groupInfo))
     
-    ## Use UCSC names
-    if (seqlevelsStyle(regions) != "UCSC") {
-        seqlevelsStyle(regions) <- "UCSC"
+    ## Use UCSC names by default
+    if (seqlevelsStyle(regions) != chrsStyle) {
+        seqlevelsStyle(regions) <- chrsStyle
     }
     
     current <- regions[idx]
@@ -232,7 +234,7 @@ plotCluster <- function(idx, regions, annotation, coverageInfo,
         hg19IdeogramCyto <- NULL
         load(system.file("data", "hg19IdeogramCyto.rda", package = "biovizBase", 
             mustWork = TRUE))
-        p.ideogram <- plotIdeogram(hg19IdeogramCyto, chr)
+        p.ideogram <- plotIdeogram(hg19IdeogramCyto, mapSeqlevels(chr, "UCSC"))
     }
     
     ## Regions found (from the view)

@@ -20,6 +20,8 @@
 #' First, it's is used by strand. Second, for processing the exons by 
 #' chromosome. So there is no gain in using \code{mc.cores} greater than the 
 #' maximum of the number of strands and number of chromosomes.
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -56,7 +58,7 @@
 
 coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", 
     L = NULL, returnType = "raw", mc.cores = getOption("mc.cores", 
-        2L), verbose = TRUE) {
+        2L), chrsStyle = "UCSC", verbose = TRUE) {
     stopifnot(length(intersect(names(genomicState), c("fullGenome", 
         "codingGenome"))) == 2)
     stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 
@@ -72,6 +74,10 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
         gs <- genomicState$codingGenome
     }
     
+    ## Use UCSC names by default
+    seqlevelsStyle(gs) <- chrsStyle
+    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
+    
     # just the reduced exons
     etab <- gs[gs$theRegion == "exon"]
     
@@ -80,9 +86,6 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     
     ## Keep only the exons from the chromosomes in fullCov
     chrKeep <- names(fullCov)
-    if(all(grepl("chr", seqnames(etab))) & !all(grepl("chr", chrKeep))) {
-        chrKeep <- paste0("chr", chrKeep)
-    }
     etab <- etab[seqnames(etab) %in% chrKeep]
     
     # split by strand
@@ -138,7 +141,6 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
        
     ## Clean up
     rm(e, cc, exonList)
-    gc()
     return(out)
 }
 
@@ -158,6 +160,5 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     
     ## Clean up
     rm(z, g, ind, tmpList)
-    gc()
     return(res)
 } 
