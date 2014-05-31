@@ -20,8 +20,8 @@
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the 
 #' chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} 
-#' then an automatic name is constructed (chrXCovInfo.Rdata for example). If 
-#' another character is specified, then that name is used for the output file.
+#' then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
+#' for example). If another character is specified, then that name is used for #' the output file.
 #' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
 #' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
@@ -48,6 +48,7 @@
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList
+#' @importFrom GenomeInfoDb mapSeqlevels
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
@@ -149,15 +150,12 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     res <- filterData(data = data, cutoff = cutoff, index = NULL, 
         colnames = names(dirs), filter = filter, returnMean = returnMean,
         returnCoverage = returnCoverage, verbose = verbose)
-    rm(data)
-    gc()
-    
+    rm(data)    
     
     ## Save if output is specified
     if (!is.null(output)) {
         ## Rename the object to a name that will make more sense later
-        chrnum <- gsub("chr", "", chr)
-        varname <- paste0("chr", chrnum, "CovInfo")
+        varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
         assign(varname, res)
         
         ## Automatic output name
@@ -192,14 +190,14 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     return(output)
 }
 
-.loadCoverageBigWig <- function(x,which, chr, verbose) {
+.loadCoverageBigWig <- function(x, which, chr, verbose) {
     if (verbose) 
         message(paste(Sys.time(), "loadCoverage: loading BigWig file", 
             path(x)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- import(x, selection=which, as="RleList")[[chr]]
+    output <- import(x, selection = which, as = "RleList")[[chr]]
         
     ## Done
     return(output)
