@@ -5,7 +5,8 @@
 \usage{
 loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
   output = NULL, inputType = "bam", isMinusStrand = NA, filter = "one",
-  returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE)
+  returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
+  targetSize = 8e+07, verbose = TRUE)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -44,6 +45,13 @@ passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.}
 \item{returnMean}{This argument is passed to \link{filterData}.}
 
 \item{returnCoverage}{This argument is passed to \link{filterData}.}
+
+\item{totalMapped}{The total number of reads mapped for each sample.
+Providing this data adjusts the coverage to reads in \code{targetSize}
+library prior to filtering. By default, to reads per 80 million reads.}
+
+\item{targetSize}{The target library size to adjust the coverage to. Used
+only when \code{totalMapped} is specified.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

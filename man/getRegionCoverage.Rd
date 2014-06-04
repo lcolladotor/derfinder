@@ -3,20 +3,23 @@
 \alias{getRegionCoverage}
 \title{Extract coverage information for a set of regions}
 \usage{
-getRegionCoverage(fullCov, regions, totalMapped = NULL, mc.cores = 1,
-  chrsStyle = "UCSC", verbose = TRUE)
+getRegionCoverage(fullCov, regions, totalMapped = NULL, targetSize = 8e+07,
+  mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
-\link{fullCoverage}.}
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
+using \link{fullCoverage}.}
 
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}. It
 is important that the seqlengths information is provided.}
 
 \item{totalMapped}{The total number of reads mapped for each sample.
-Providing this data returns coverage adjusted totalMapped per million at
-each base.}
+Providing this data adjusts the coverage to reads in \code{targetSize}
+library. By default, to reads per 80 million reads.}
+
+\item{targetSize}{The target library size to adjust the coverage to. Used
+only when \code{totalMapped} is specified.}
 
 \item{mc.cores}{The number of cores to use for computing coverage. Default=1}
 
@@ -37,6 +40,13 @@ This function extracts the raw coverage information calculated by
 \link{fullCoverage} at each base for a set of regions found with
 \link{calculatePvalues}. It can further calculate the mean coverage per
 sample for each region.
+}
+\details{
+When \code{fullCov} is the output of \link{loadCoverage} with
+\code{cutoff} non-NULL, \link{getRegionCoverage} assumes that the regions
+come from the same data. Meaning that \link{filterData} was not used again.
+This ensures that the regions are a subset of the data available in
+\code{fullCov}.
 }
 \examples{
 ## Obtain fullCov object

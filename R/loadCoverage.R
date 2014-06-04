@@ -30,6 +30,11 @@
 #' @param filter This argument is passed to \link{filterData}.
 #' @param returnMean This argument is passed to \link{filterData}.
 #' @param returnCoverage This argument is passed to \link{filterData}.
+#' @param totalMapped The total number of reads mapped for each sample. 
+#' Providing this data adjusts the coverage to reads in \code{targetSize} 
+#' library prior to filtering. By default, to reads per 80 million reads.
+#' @param targetSize The target library size to adjust the coverage to. Used
+#' only when \code{totalMapped} is specified.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -81,9 +86,10 @@
 #' print(object.size(dataRaw), units='Kb')
 #' }
 
-loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL, 
+loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     chrlen = NULL, output = NULL, inputType = "bam", isMinusStrand = NA,
-    filter = "one", returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE) {
+    filter = "one", returnMean = FALSE, returnCoverage = TRUE,
+    totalMapped = NULL, targetSize = 80e6, verbose = TRUE) {
     stopifnot(inputType %in% c("bam", "bigWig"))
         
     ## Do the indexes exist?
@@ -151,7 +157,8 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
         colnames = names(dirs), filter = filter, returnMean = returnMean,
-        returnCoverage = returnCoverage, verbose = verbose))
+        returnCoverage = returnCoverage, totalMapped = totalMapped, 
+        targetSize = targetSize, verbose = verbose))
     rm(data)    
     
     ## Save if output is specified

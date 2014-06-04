@@ -19,6 +19,11 @@
 #' In the second case, the mean coverage has to be greater than \code{cutoff}.
 #' @param returnMean If \code{TRUE} the mean coverage is included in the result.
 #' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
+#' @param totalMapped The total number of reads mapped for each sample. 
+#' Providing this data adjusts the coverage to reads in \code{targetSize} 
+#' library prior to filtering. By default, to reads per 80 million reads.
+#' @param targetSize The target library size to adjust the coverage to. Used
+#' only when \code{totalMapped} is specified.
 #' @param verbose If \code{TRUE} it will report how many rows are remaining out 
 #' of the original ones.
 #'
@@ -62,8 +67,9 @@
 #' ## as in 'coverage'.
 #' identical(sum(filt2$pos), nrow(filt2$cov))
 
-filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL, 
-    filter = "one", returnMean = FALSE, returnCoverage = TRUE, verbose = TRUE) {
+filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
+    filter = "one", returnMean = FALSE, returnCoverage = TRUE,
+    totalMapped = NULL, targetSize = 80e6, verbose = TRUE) {
         
     ## Check filter
     stopifnot(filter %in% c("one", "mean"))
@@ -71,7 +77,19 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     ## Initialize meanCov
     meanCov <- NULL
     
-    ## If there is no cutoff to apply, just built the DataFrame
+    ## library size adjustments
+    if(!is.null(totalMapped) & targetSize != 0) {
+        mappedPerXM <- totalMapped / targetSize
+        
+        ## Normalize to a given library size
+        if (verbose) 
+            message(paste(Sys.time(), "filterData: normalizing coverage"))
+        data <- mapply(function(x, d) x / d, data, mappedPerXM)
+        if (verbose) 
+            message(paste(Sys.time(), "filterData: done normalizing coverage"))
+    }
+    
+    ## If there is no cutoff to apply, just build the DataFrame
     if (is.null(cutoff)) {
         newindex <- NULL
         finalidx <- index

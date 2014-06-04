@@ -5,16 +5,17 @@
 \usage{
 regionMatrix(fullCov, cutoff = 5, filter = "mean", maxRegionGap = 0L,
   maxClusterGap = 300L, L, totalMapped = NULL, targetSize = 8e+07,
-  mc.cores = 1, verbose = TRUE)
+  mc.cores = 1, runFilter = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
-\link{fullCoverage}.}
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
+using \link{fullCoverage}. If \code{runFilter = FALSE}, then
+\code{returnMean = TRUE} must have been used.}
 
 \item{cutoff}{Per base pair, at least one sample has to have coverage
 strictly greater than \code{cutoff} to be included in the result. This
-argument is passed to \link{filterData}.}
+argument is passed to \link{filterData} and must be non-NULL.}
 
 \item{filter}{Has to be either \code{"one"} (default) or \code{"mean"}. In
 the first case, at least one sample has to have coverage above \code{cutoff}.
@@ -42,6 +43,10 @@ only when \code{totalMapped} is specified.}
 
 \item{mc.cores}{The number of cores to use. Maximum, 1 core per chr.}
 
+\item{runFilter}{This controls whether to run \link{filterData} or not. If
+set to \code{FALSE} then \code{returnMean = TRUE} must have been used to
+create each element of \code{fullCov}.}
+
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
 }
@@ -64,8 +69,8 @@ samples. The values are the mean coverage for a given sample for a given
 region.
 }
 \details{
-This function uses several other \link{derfinder-package} functions. Inspect
-the code if interested.
+This function uses several other \link{derfinder-package}
+functions. Inspect the code if interested.
 }
 \examples{
 library('IRanges')

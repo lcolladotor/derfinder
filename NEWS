@@ -1,3 +1,15 @@
+CHANGES IN VERSION 0.0.61
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o filterData() and loadCoverage() now have arguments 'totalMapped' and 
+        'targetSize'
+    o getRegionCoverage() and regionMatrix() can now work with list output from 
+        loadCoverage() with a non-NULL cutoff
+    o regionMatrix() now has an argument 'runFilter' so it can be used with 
+        previous output from loadCoverage()/filterData() with 'returnMean=TRUE'
+
 CHANGES IN VERSION 0.0.60
 -------------------------
 
