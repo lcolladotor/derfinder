@@ -119,21 +119,30 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
                 totalMapped = totalMapped, targetSize = targetSize,
                 verbose = verbose)
         }
-    } else {
-        filt <- covInfo
-    }
-    rm(covInfo)
-    
-    ## Identify regions
-    regs <- findRegions(position = filt$position, fstats = filt$meanCoverage,
-        chr = chr, cutoff = 0, maxRegionGap = maxRegionGap,
-        maxClusterGap = maxClusterGap, verbose = verbose)
+        
+        ## Identify regions
+        regs <- findRegions(position = filt$position, 
+            fstats = filt$meanCoverage, chr = chr, cutoff = 0,
+            maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap,
+            verbose = verbose)
+            
+        ## Prepare for getRegionCoverage
+        fullCovTmp <- list(filt)
+    } else {        
+        ## Identify regions
+        regs <- findRegions(position = covInfo$position, 
+            fstats = covInfo$meanCoverage, chr = chr, cutoff = 0,
+            maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap,
+            verbose = verbose)
+        
+        ## Prepare for getRegionCoverage
+        fullCovTmp <- list(covInfo)
+    }     
     
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
     
     ## Prepare for getRegionCoverage
-    fullCovTmp <- list(filt)
     names(fullCovTmp) <- chr
         
     ## Get region coverage    
