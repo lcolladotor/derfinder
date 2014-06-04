@@ -65,6 +65,16 @@
 #' fullCov <- list("chr21" = DataFrame(x, y, z))
 #' regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L, 
 #'     maxClusterGap = 300L, L = 36)
+#'
+#' \dontrun{
+#' ## You can alternatively use filterData() on fullCov to reduce the required
+#' ## memory before using regionMatrix(). This can be useful when mc.cores > 1
+#' filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean', 
+#'     cutoff=5)
+#' regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
+#'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
+#' identical(regionMat2, regionMat)
+#' }
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = "mean", 
     maxRegionGap = 0L, maxClusterGap = 300L, L, totalMapped = NULL,
