@@ -1,3 +1,15 @@
+CHANGES IN VERSION 0.0.64
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o fullCoverage() has several new arguments and now is a full parallel 
+        implementation of loadCoverage(). These changes were introduced since
+        fullCoverage() no longer blows up in memory since version 0.0.62 and
+        thus the new recommended use case is to call fullCoverage() instead of
+        running one job with loadCoverage() per chromosome or using a lapply()
+        loop.
+
 CHANGES IN VERSION 0.0.63
 -------------------------
 

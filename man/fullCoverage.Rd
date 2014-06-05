@@ -6,8 +6,10 @@ list of chromosomes}
 \usage{
 fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
   mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), inputType = "bam",
-  isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE)
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), cutoff = NULL,
+  inputType = "bam", isMinusStrand = NA, filter = "one",
+  returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
+  targetSize = 8e+07, chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -39,12 +41,32 @@ chromosome.}
 \item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
 to specify the \code{outfile} for any output from the workers.}
 
+\item{cutoff}{This argument is passed to \link{filterData}. If set to
+\code{NULL}, then the data is loaded and only the \code{$coverage} is
+returned.}
+
 \item{inputType}{Has to be either \code{bam} or \code{bigWig}. It specifies
 the format of the raw data files.}
 
 \item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,
 \code{FALSE} for positive strands and \code{NA} for both. This argument is
 passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.}
+
+\item{filter}{This argument is passed to \link{filterData}. It is only used
+when \code{cutoff} is non-NULL.}
+
+\item{returnMean}{This argument is passed to \link{filterData}. It is only
+used when \code{cutoff} is non-NULL.}
+
+\item{returnCoverage}{This argument is passed to \link{filterData}. It is
+only used when \code{cutoff} is non-NULL.}
+
+\item{totalMapped}{The total number of reads mapped for each sample.
+Providing this data adjusts the coverage to reads in \code{targetSize}
+library prior to filtering. By default, to reads per 80 million reads.}
+
+\item{targetSize}{The target library size to adjust the coverage to. Used
+only when \code{totalMapped} is specified.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}

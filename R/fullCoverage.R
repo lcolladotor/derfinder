@@ -28,11 +28,25 @@
 #' chromosome.
 #' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
 #' to specify the \code{outfile} for any output from the workers.
+#' @param cutoff This argument is passed to \link{filterData}. If set to 
+#' \code{NULL}, then the data is loaded and only the \code{$coverage} is 
+#' returned.
 #' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
 #' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
 #' passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.
+#' @param filter This argument is passed to \link{filterData}. It is only used
+#' when \code{cutoff} is non-NULL.
+#' @param returnMean This argument is passed to \link{filterData}. It is only 
+#' used when \code{cutoff} is non-NULL.
+#' @param returnCoverage This argument is passed to \link{filterData}. It is 
+#' only used when \code{cutoff} is non-NULL.
+#' @param totalMapped The total number of reads mapped for each sample. 
+#' Providing this data adjusts the coverage to reads in \code{targetSize} 
+#' library prior to filtering. By default, to reads per 80 million reads.
+#' @param targetSize The target library size to adjust the coverage to. Used
+#' only when \code{totalMapped} is specified.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -72,8 +86,10 @@
 
 fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
     outputs = NULL, mc.cores = getOption("mc.cores", 1L), 
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), inputType = "bam", 
-    isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE) {
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), cutoff = NULL, 
+    inputType = "bam", isMinusStrand = NA, filter = "one", returnMean = FALSE,
+    returnCoverage = TRUE, totalMapped = NULL, targetSize = 80e6,
+    chrsStyle = "UCSC", verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
@@ -92,20 +108,34 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     
     ## Subsetting function that runs loadCoverage
     loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, inputType,
-        isMinusStrand, verbose) {
+        isMinusStrand, cutoff, filter, returnMean, returnCoverage, totalMapped, 
+        targetSize, verbose) {
         
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
                 chrs[idx]))
-        loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = NULL, 
-            bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
-            inputType = inputType, isMinusStrand = isMinusStrand,
-            verbose = verbose)$coverage
+        if (is.null(cutoff)) {
+            res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = NULL, 
+                bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
+                inputType = inputType, isMinusStrand = isMinusStrand,  
+                totalMapped = totalMapped, targetSize = targetSize, 
+                verbose = verbose)$coverage
+        } else {
+            res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = cutoff, 
+                bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
+                inputType = inputType, isMinusStrand = isMinusStrand,
+                filter = filter, returnMean = returnMean,
+                returnCoverage = returnCoverage, totalMapped = totalMapped,
+                targetSize = targetSize, verbose = verbose)
+        }
+        return(res)        
     }
     result <- bplapply(seq_len(length(chrs)), loadChr, dirs = dirs, 
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         verbose = verbose, inputType = inputType, 
-        isMinusStrand = isMinusStrand, BPPARAM = BPPARAM)
+        isMinusStrand = isMinusStrand, cutoff = cutoff, filter = filter, 
+        returnMean = returnMean, returnCoverage = returnCoverage, 
+        totalMapped = totalMapped, targetSize = targetSize, BPPARAM = BPPARAM)
     names(result) <- mapSeqlevels(chrs, chrsStyle)
     
     ## Done
