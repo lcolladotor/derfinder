@@ -4,8 +4,9 @@
 \title{Extract coverage information for exons}
 \usage{
 coverageToExon(fullCov, genomicState, fullOrCoding = "full", L = NULL,
-  returnType = "raw", mc.cores = getOption("mc.cores", 2L),
-  chrsStyle = "UCSC", verbose = TRUE)
+  returnType = "raw", mc.cores = getOption("mc.cores", 1L),
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), chrsStyle = "UCSC",
+  verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -23,10 +24,13 @@ genomic state information is used. If \code{coding}, then the
 \item{returnType}{If \code{raw}, then the raw coverage information per exon
 is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
 
-\item{mc.cores}{This argument is passed to \link[parallel]{mclapply} twice.
-First, it's is used by strand. Second, for processing the exons by
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+twice. First, it is used by strand. Second, for processing the exons by
 chromosome. So there is no gain in using \code{mc.cores} greater than the
 maximum of the number of strands and number of chromosomes.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}

@@ -6,9 +6,10 @@
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
   maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
+  0.99), mc.cores = getOption("mc.cores", 2L),
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE,
   significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
-  chrsStyle = "UCSC")
+  method = "Matrix", scalefac = 32, chrsStyle = "UCSC")
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -38,8 +39,11 @@ This argument is passed to \link{findRegions}.}
 
 \item{cutoff}{This argument is passed to \link{getSegmentsRle}.}
 
-\item{mc.cores}{This argument is passed to \link[parallel]{mclapply} to run
-\link{fstats.apply}.}
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers} used for running \link{fstats.apply}.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
@@ -54,6 +58,12 @@ alternative model is very small.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{method}{This argument is passed to \link{fstats.apply}. Check the
+details there for more information}
+
+\item{scalefac}{This argument is passed to \link{fstats.apply} and should be
+the same as the one used in \link{preprocessCoverage}.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}
@@ -123,13 +133,13 @@ cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1,
-    chr='chr21', cutoff=cutoff, mc.cores=1)
+    chr='chr21', cutoff=cutoff, mc.cores=1, method='regular')
 regsWithP
 
 \dontrun{
 ## Calculate again, but with 10 permutations instead of just 1
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10,
-    chr='chr21', cutoff=cutoff, mc.cores=2)
+    chr='chr21', cutoff=cutoff, mc.cores=2, method='regular')
 
 ## Check that they are the same as the previously calculated regions
 identical(regsWithP, genomeRegions)
@@ -159,10 +169,12 @@ head(annotation)
 library('microbenchmark')
 micro <- microbenchmark(
     calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
-        chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+        chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE,
+        method='regular'),
     calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
-        chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
-times=10)
+        chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE,
+        method='regular'),
+    times=10)
 levels(micro$expr) <- c('one', 'four')
 micro
 ## Using 4 cores doesn't help with this toy data, but it will (at the

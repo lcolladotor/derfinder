@@ -4,7 +4,7 @@
 \title{Calculate F-statistics per base by extracting chunks from a DataFrame}
 \usage{
 fstats.apply(index = Rle(TRUE, nrow(data)), data, mod, mod0, adjustF = 0,
-  lowMemDir = NULL)
+  lowMemDir = NULL, method = "Matrix", scalefac = 32)
 }
 \arguments{
 \item{index}{An index (logical Rle is the best for saving memory) indicating
@@ -26,6 +26,11 @@ alternative model is very small.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{method}{Has to be either 'Matrix' (default), 'Rle' or 'regular'. See details.}
+
+\item{scalefac}{The scaling factor used in \link{preprocessCoverage}. It is
+only used when \code{method='Matrix'}.}
 }
 \value{
 A numeric Rle with the F-statistics per base for the chunk in
@@ -40,17 +45,59 @@ Extract chunks from a DataFrame and get the F-statistics on the rows of
 \details{
 If \code{lowMemDir} is specified then \code{index} is expected to
 specify the chunk number.
+
+\link{fstats.apply} has three different implemenations which are controlled
+by the \code{method} parameter. \code{method='regular'} coerces the data to
+a standard 'matrix' object. \code{method='Matrix'} coerces the data to a
+\link[Matrix]{sparseMatrix} which reduces the required memory. This method
+is only usable when the projection matrices have row sums equal to 0. Note
+that these row sums are not exactly 0 due to how the computer works, thus
+leading to very small numerical differences in the F-statistics calculated
+versus \code{method='regular'}. Finally, \code{method='Rle'} calculates the
+F-statistics using the Rle compressed data without coercing it to other
+types of objects, thus using less memory that the other methods. However,
+it's speed is affected by the number of samples (n) as the current
+implementation requires n (n + 1) operations, so it's only recommended for
+small data sets. \code{method='Rle'} does result in small numerical
+differences versus \code{method='regular'}.
+
+Overall \code{method='Matrix'} is faster than the other options and requires
+less memory than \code{method='regular'}. With tiny example data sets,
+\code{method='Matrix'} can be slower than \code{method='regular'} because the
+coercion step is slower.
+
+In versions <= 0.0.62, \code{method='regular'} was the only option available.
 }
 \examples{
 ## Create the model matrices
 mod <- model.matrix(~ genomeInfo$pop)
 mod0 <- model.matrix(~ 0 + rep(1, nrow(genomeInfo)))
 ## Run the function
-fstats.output <- fstats.apply(data=genomeData$coverage, mod=mod, mod0=mod0)
-fstats.output
+system.time(fstats.Matrix <- fstats.apply(data=genomeData$coverage, mod=mod,
+    mod0=mod0, method='Matrix', scalefac = 1))
+fstats.Matrix
+
+\dontrun{
+## Compare methods
+system.time(fstats.regular <- fstats.apply(data=genomeData$coverage,
+    mod=mod, mod0=mod0, method='regular'))
+system.time(fstats.Rle <- fstats.apply(data=genomeData$coverage, mod=mod,
+    mod0=mod0, method='Rle'))
+
+## Small numerical differences can occur
+summary(fstats.regular - fstats.Matrix)
+summary(fstats.regular - fstats.Rle)
+
+## You can make the effect negligible by appropriately rounding
+## findRegions(cutoff) so the DERs will be the same regardless of the method
+## used.
+
+## Extra comparison, although the method to compare against is 'regular'
+summary(fstats.Rle - fstats.Matrix)
+}
 }
 \author{
-Jeff Leek, Leonardo Collado-Torres
+Leonardo Collado-Torres, Jeff Leek
 }
 \seealso{
 \link{calculateStats}, \link{calculatePvalues}

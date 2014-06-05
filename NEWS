@@ -1,3 +1,73 @@
+CHANGES IN VERSION 0.0.64
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o fullCoverage() has several new arguments and now is a full parallel 
+        implementation of loadCoverage(). These changes were introduced since
+        fullCoverage() no longer blows up in memory since version 0.0.62 and
+        thus the new recommended use case is to call fullCoverage() instead of
+        running one job with loadCoverage() per chromosome or using a lapply()
+        loop.
+
+CHANGES IN VERSION 0.0.63
+-------------------------
+
+NEW FEATURES
+
+    o fstats.apply() now has 'method' and 'scalefac' arguments. The 'method'
+        argument controls which of the 3 implementations to use. The old method
+        is called 'regular' now. The new method 'Rle' calculates the 
+        F-statistics without de-compressing the data, which is good for memory
+        but gets considerably slower as the number of samples increases. The
+        default method is 'Matrix' which uses the Matrix package and is both 
+        faster (given that the coercion doesn't take long) and less memory
+        intensive than the 'regular' method.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Functions analyzeChr(), calculatePvalues() and calculateStats() now have
+        arguments 'method' and 'scalefac' to match the changes in fstats.apply()
+
+CHANGES IN VERSION 0.0.62
+-------------------------
+
+NEW FEATURES
+
+    o derfinder now uses BiocParallel::blapply() instead of parallel::mclapply()
+        When 'mc.cores' is greater than 1, BiocParallel::SnowParam() is used to
+        construct the cluster. Otherwise, BiocParallel::SerialParam() is used.
+        This change reduces memory load when using the functions that have the
+        'mc.cores' argument greater than 1.
+
+    o Functions analyzeChr(), calculatePvalues(), calculateStats(),
+        coverageToExon(), fullCoverage(), getRegionCoverage(), regionMatrix()
+        all have a new argument 'mc.output'. This is passed to 
+        BiocParallel::SnowParam(outfile).
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o You may now use fullCoverage() without problems and should no longer
+        encounter errors due to longer vectors not being implemented.
+    o Functions like fullCoverage() now use much less memory and do not blow up
+        as you increase 'mc.cores'. Note however that the memory does increase,
+        but now it's close to linear.
+    o Examples might take longer to run with 'mc.cores' greater than 1, but that
+        is due to the small setup overhead of BiocParallel::SnowParam() which
+        is minimal compared to the overall speed gains with real data sets.
+
+CHANGES IN VERSION 0.0.61
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o filterData() and loadCoverage() now have arguments 'totalMapped' and 
+        'targetSize'
+    o getRegionCoverage() and regionMatrix() can now work with list output from 
+        loadCoverage() with a non-NULL cutoff
+    o regionMatrix() now has an argument 'runFilter' so it can be used with 
+        previous output from loadCoverage()/filterData() with 'returnMean=TRUE'
+
 CHANGES IN VERSION 0.0.60
 -------------------------
 

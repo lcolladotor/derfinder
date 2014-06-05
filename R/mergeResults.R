@@ -84,7 +84,7 @@
 #' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 #'
 #' ## Analyze chromosome 21
-#' analyzeChr(chrnum='21', coverageInfo=genomeData, models=models, 
+#' analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
 #' cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=group, 
 #' mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
 #'

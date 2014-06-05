@@ -15,10 +15,12 @@
 #' @param L The width of the reads used.
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
-#' @param mc.cores This argument is passed to \link[parallel]{mclapply} twice. 
-#' First, it's is used by strand. Second, for processing the exons by 
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' twice. First, it is used by strand. Second, for processing the exons by 
 #' chromosome. So there is no gain in using \code{mc.cores} greater than the 
 #' maximum of the number of strands and number of chromosomes.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -40,7 +42,7 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame as.character runValue '%in%'
-#' @importFrom parallel mclapply mcmapply
+#' @importFrom BiocParallel SnowParam SerialParam bplapply bpmapply
 #'
 #' @examples
 #' ## Obtain fullCov object
@@ -57,8 +59,11 @@
 
 
 coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", 
-    L = NULL, returnType = "raw", mc.cores = getOption("mc.cores", 
-        2L), chrsStyle = "UCSC", verbose = TRUE) {
+    L = NULL, returnType = "raw", mc.cores = getOption("mc.cores", 1L),
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), chrsStyle = "UCSC",
+    verbose = TRUE) {
+    
+    ## Run some checks
     stopifnot(length(intersect(names(genomicState), c("fullGenome", 
         "codingGenome"))) == 2)
     stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 
@@ -94,11 +99,18 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     # count reads covering exon on each strand
     nCores <- min(mc.cores, length(unique(runValue(strand(etab)))))
 
+    ## Define cluster
+    if(nCores > 1) {
+        BPPARAM <- SnowParam(workers = nCores, outfile = mc.outfile)
+    } else {
+        BPPARAM <- SerialParam()
+    }
+
     # Use at most n cores where n is the number of unique strands
-    
-    exonByStrand <- mclapply(strandIndexes, .coverageToExonStrandStep, 
-        fullCov = fullCov, etab = etab, L = L, nCores = nCores, chrs = chrKeep,
-        verbose = verbose, mc.cores = nCores)
+    exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
+        fullCov = fullCov, etab = etab, L = L, nCores = mc.cores,
+        mcOut = mc.outfile, chrs = chrKeep,
+        verbose = verbose, BPPARAM = BPPARAM)
     
     # combine two strands
     exons <- do.call("rbind", exonByStrand)
@@ -115,8 +127,9 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, mcOut, chrs,
     verbose) {
+        
     e <- etab[ii]  # subset
     
     ## use logical rle to subset large coverage matrix
@@ -133,8 +146,36 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     
     # now count exons
     moreArgs <- list(e = e, L = L, verbose = verbose)
-    exonList <- mcmapply(.coverageToExonChrStep, subsets, chrs, 
-        MoreArgs = moreArgs, mc.cores = nCores, SIMPLIFY = FALSE)
+    
+    ## Define cluster
+    nCores <- min(nCores, length(subsets))
+    if(nCores > 1) {
+        BPPARAM.chrStep <- SnowParam(workers = nCores, outfile = mcOut)
+    } else {
+        BPPARAM.chrStep <- SerialParam()
+    }
+    
+    ## Define ChrStep function
+    .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
+        if (verbose) 
+            message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
+    
+        ## Transform to regular data.frame   
+        z <- as.data.frame(z.DF)
+    
+        # only exons from this chr
+        g <- e[seqnames(e) == chr]
+        ind <- rep(names(g), width(g))  # to split
+        tmpList <- split(z, ind)  # split
+        res <- t(sapply(tmpList, colSums)/L)  # get # reads
+    
+        # done
+        return(res)
+    }    
+    
+    ## Now run it
+    exonList <- bpmapply(.coverageToExonChrStep, subsets, chrs, 
+        MoreArgs = moreArgs, BPPARAM = BPPARAM.chrStep, SIMPLIFY = FALSE)
         
     # combine
     out <- do.call("rbind", exonList)
@@ -144,19 +185,4 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
 }
 
 
-.coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
-    if (verbose) 
-        message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
-    
-    ## Transform to regular data.frame   
-    z <- as.data.frame(z.DF)
-    
-    # only exons from this chr
-    g <- e[seqnames(e) == chr]
-    ind <- rep(names(g), width(g))  # to split
-    tmpList <- split(z, ind)  # split
-    res <- t(sapply(tmpList, colSums)/L)  # get # reads
-    
-    # done
-    return(res)
-} 
+

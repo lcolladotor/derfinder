@@ -5,16 +5,18 @@
 \usage{
 regionMatrix(fullCov, cutoff = 5, filter = "mean", maxRegionGap = 0L,
   maxClusterGap = 300L, L, totalMapped = NULL, targetSize = 8e+07,
-  verbose = TRUE)
+  mc.cores = 1, mc.outfile = Sys.getenv("SGE_STDERR_PATH"),
+  runFilter = TRUE, verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
-\link{fullCoverage}.}
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
+using \link{fullCoverage}. If \code{runFilter = FALSE}, then
+\code{returnMean = TRUE} must have been used.}
 
 \item{cutoff}{Per base pair, at least one sample has to have coverage
 strictly greater than \code{cutoff} to be included in the result. This
-argument is passed to \link{filterData}.}
+argument is passed to \link{filterData} and must be non-NULL.}
 
 \item{filter}{Has to be either \code{"one"} (default) or \code{"mean"}. In
 the first case, at least one sample has to have coverage above \code{cutoff}.
@@ -40,6 +42,17 @@ library. By default, to reads per 80 million reads.}
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
 
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers}. You should use at most one core per
+chromosome.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
+
+\item{runFilter}{This controls whether to run \link{filterData} or not. If
+set to \code{FALSE} then \code{returnMean = TRUE} must have been used to
+create each element of \code{fullCov}.}
+
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
 }
@@ -62,8 +75,8 @@ samples. The values are the mean coverage for a given sample for a given
 region.
 }
 \details{
-This function uses several other \link{derfinder-package} functions. Inspect
-the code if interested.
+This function uses several other \link{derfinder-package}
+functions. Inspect the code if interested.
 }
 \examples{
 library('IRanges')
@@ -73,6 +86,16 @@ z <- Rle(round(runif(1e4, max=10)))
 fullCov <- list("chr21" = DataFrame(x, y, z))
 regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36)
+
+\dontrun{
+## You can alternatively use filterData() on fullCov to reduce the required
+## memory before using regionMatrix(). This can be useful when mc.cores > 1
+filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
+    cutoff=5)
+regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
+    maxClusterGap = 300L, L = 36, runFilter=FALSE)
+identical(regionMat2, regionMat)
+}
 }
 \author{
 Leonardo Collado-Torres

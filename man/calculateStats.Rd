@@ -4,7 +4,8 @@
 \title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
 calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 2L),
-  adjustF = 0, lowMemDir = NULL, verbose = TRUE)
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), adjustF = 0,
+  lowMemDir = NULL, method = "Matrix", scalefac = 32, verbose = TRUE)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -14,8 +15,11 @@ calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 2L),
 \item{models}{A list with \code{$mod} and \code{$mod0} normally generated
 using \link{makeModels}.}
 
-\item{mc.cores}{This argument is passed to \link[parallel]{mclapply} to run
-\link{fstats.apply}.}
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers} used for running \link{fstats.apply}.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{adjustF}{A single value to adjust that is added in the denominator of
 the F-stat calculation. Useful when the Residual Sum of Squares of the
@@ -23,6 +27,12 @@ alternative model is very small.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{method}{This argument is passed to \link{fstats.apply}. Check the
+details there for more information}
+
+\item{scalefac}{This argument is passed to \link{fstats.apply} and should be
+the same as the one used in \link{preprocessCoverage}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
@@ -55,7 +65,8 @@ prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
     colsubset=NULL)
 
 ## Run the function
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
+fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE,
+    method='regular')
 fstats
 
 \dontrun{

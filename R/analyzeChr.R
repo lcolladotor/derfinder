@@ -37,6 +37,8 @@
 #' now.
 #' @param mc.cores This argument is passed to \link{preprocessCoverage} (useful 
 #' if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 
 #' \code{chrnum='21'}). One Rdata files is created for each component described 
@@ -47,6 +49,8 @@
 #' run. Otherwise this step is skipped.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param method This argument is passed to \link{fstats.apply}. Check the 
+#' details there for more information.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -90,7 +94,7 @@
 #' ## Analyze the chromosome
 #' results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
 #'     cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1, 
-#'     writeOutput=FALSE, returnOutput=TRUE)
+#'     writeOutput=FALSE, returnOutput=TRUE, method='regular')
 #' names(results)
 
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
@@ -98,9 +102,12 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo, subject = "hg19", 
-    mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE, 
-    returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL, 
-    chrsStyle = "UCSC", verbose = TRUE) {
+    mc.cores = getOption("mc.cores", 1L),
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), writeOutput = TRUE, 
+    returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
+    method = 'Matrix', chrsStyle = "UCSC", verbose = TRUE) {
+        
+    ## Run some checks
     stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", 
         "manual"))) == 1)
     stopifnot(is.factor(groupInfo))
@@ -122,7 +129,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
         nPermute = nPermute, seeds = seeds, maxRegionGap = maxRegionGap,
         maxClusterGap = maxClusterGap, groupInfo = groupInfo, adjustF = adjustF,
-        lowMemDir = lowMemDir, chrsStyle = chrsStyle, 
+        lowMemDir = lowMemDir, method = method, chrsStyle = chrsStyle, 
         analyzeCall = match.call())
     
     ## Setup
@@ -160,7 +167,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     if (verbose) 
         message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
     fstats <- calculateStats(coveragePrep = prep, models = models, 
-        mc.cores = mc.cores, adjustF = adjustF, lowMemDir = lowMemDir, 
+        mc.cores = mc.cores, mc.outfile = mc.outfile, adjustF = adjustF,
+        lowMemDir = lowMemDir, method = method, scalefac = scalefac, 
         verbose = verbose)
     
     ## calculateStats
@@ -201,8 +209,9 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
         chr = chr, maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, 
-        cutoff = cutoff, mc.cores = mc.cores, verbose = verbose, 
-        adjustF = adjustF, lowMemDir = lowMemDir, chrsStyle = chrsStyle)
+        cutoff = cutoff, mc.cores = mc.cores, mc.outfile = mc.outfile, 
+        verbose = verbose, adjustF = adjustF, lowMemDir = lowMemDir,
+        method = method, scalefac = scalefac, chrsStyle = chrsStyle)
     if (!returnOutput) {
         rm(prep)
     }
