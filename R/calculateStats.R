@@ -9,8 +9,10 @@
 #' \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated 
 #' using \link{makeModels}.
-#' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run 
-#' \link{fstats.apply}.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers} used for running \link{fstats.apply}.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param adjustF A single value to adjust that is added in the denominator of 
 #' the F-stat calculation. Useful when the Residual Sum of Squares of the 
 #' alternative model is very small.
@@ -25,7 +27,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @seealso \link{makeModels}, \link{preprocessCoverage}
-#' @importFrom parallel mclapply
+#' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importMethodsFrom IRanges ncol '[[' length unlist
 #' @importFrom IRanges RleList
 #' @examples
@@ -55,8 +57,11 @@
 #' summary(fstats - genomeFstats)
 #' }
 
-calculateStats <- function(coveragePrep, models, mc.cores = getOption("mc.cores", 
-    2L), adjustF = 0, lowMemDir = NULL, verbose = TRUE) {
+calculateStats <- function(coveragePrep, models, 
+    mc.cores = getOption("mc.cores", 2L),
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), adjustF = 0, lowMemDir = NULL,
+    verbose = TRUE) {
+    
     stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", 
         "mclapplyIndex", "position"))) == 3)
     stopifnot(length(intersect(names(models), c("mod", "mod0"))) == 
@@ -81,12 +86,19 @@ calculateStats <- function(coveragePrep, models, mc.cores = getOption("mc.cores"
         }
     }
     
+    ## Define cluster
+    if(mc.cores > 1) {
+        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+    } else {
+        BPPARAM <- SerialParam()
+    }
+    
     ## Fit a model to each row (chunk) of database:
     if (verbose) 
         message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
-    fstats.output <- mclapply(mclapplyIndex, fstats.apply, 
+    fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
         data = coverageProcessed, mod = models$mod, mod0 = models$mod0,
-        adjustF = adjustF, lowMemDir = lowMemDir, mc.cores = mc.cores)
+        adjustF = adjustF, lowMemDir = lowMemDir, BPPARAM = BPPARAM)
     ## Using mclapply is as fast as using lapply if mc.cores=1, so
     ## there is no damage in setting the default mc.cores=1.
     ## Specially since parallel is included in R 3.0.x More at

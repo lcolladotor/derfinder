@@ -8,7 +8,8 @@ analyzeChr(chr, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
   "", Sys.Date())) + seq_len(nPermute), maxRegionGap = 0L,
   maxClusterGap = 300L, groupInfo, subject = "hg19",
-  mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE,
+  mc.cores = getOption("mc.cores", 1L),
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), writeOutput = TRUE,
   returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
   chrsStyle = "UCSC", verbose = TRUE)
 }
@@ -60,6 +61,9 @@ now.}
 
 \item{mc.cores}{This argument is passed to \link{preprocessCoverage} (useful
 if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{writeOutput}{If \code{TRUE}, output Rdata files are created at each
 step inside a directory with the chromosome name (example: 'chr21' if

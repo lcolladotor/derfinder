@@ -32,7 +32,11 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
-#' @param mc.cores The number of cores to use. Maximum, 1 core per chr.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers}. You should use at most one core per 
+#' chromosome.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param runFilter This controls whether to run \link{filterData} or not. If 
 #' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
 #' create each element of \code{fullCov}.
@@ -55,7 +59,7 @@
 #' @export
 #'
 #' @importMethodsFrom IRanges nrow '$<-'
-#' @importFrom parallel mcmapply
+#' @importFrom BiocParallel SnowParam SerialParam bpmapply
 #'
 #' @examples
 #' library('IRanges')
@@ -78,10 +82,15 @@
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = "mean", 
     maxRegionGap = 0L, maxClusterGap = 300L, L, totalMapped = NULL,
-    targetSize = 80e6, mc.cores = 1, runFilter = TRUE, verbose = TRUE) {
+    targetSize = 80e6, mc.cores = 1,
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), runFilter = TRUE,
+    verbose = TRUE) {
         
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
+    
+    ## fullCov has to be named
+    stopifnot(!is.null(names(fullCov)))
     
     ## If filtering has been run, check that the information is there
     if(!runFilter) {
@@ -95,9 +104,16 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
         totalMapped = totalMapped, targetSize = targetSize,
         runFilter = runFilter, verbose = verbose)
     
+    ## Define cluster
+    if(mc.cores > 1) {
+        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+    } else {
+        BPPARAM <- SerialParam()
+    }
+        
     ## Get regions per chr
-    mcmapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 
-        SIMPLIFY = FALSE, mc.cores = mc.cores)
+    bpmapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 
+        SIMPLIFY = FALSE, BPPARAM = BPPARAM)
 }
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, maxRegionGap = 0L, 

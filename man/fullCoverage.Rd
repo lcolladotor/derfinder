@@ -5,7 +5,8 @@
 list of chromosomes}
 \usage{
 fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
-  mc.cores = getOption("mc.cores", 2L), inputType = "bam",
+  mc.cores = getOption("mc.cores", 1L),
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), inputType = "bam",
   isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
@@ -31,8 +32,12 @@ have the same length as \code{chrs}.}
 \item{outputs}{This argument is passed to the \code{output} argument of
 \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.}
 
-\item{mc.cores}{This argument is passed to \link[parallel]{mclapply}. You
-should use at most one core per chromosome.}
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers}. You should use at most one core per
+chromosome.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{inputType}{Has to be either \code{bam} or \code{bigWig}. It specifies
 the format of the raw data files.}
@@ -66,15 +71,17 @@ dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$',
 ## Shorten the column names
 names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
-## Read and filter the data, only for 2 files
-fullCov <- fullCoverage(dirs=dirs[1:2], chrs=c('21', '22'), mc.cores=2)
+## Read and filter the data, only for 1 file
+fullCov <- fullCoverage(dirs=dirs[1], chrs=c('21', '22'))
 fullCov
 
 \dontrun{
-## You can then use filterData to filter the data if you want to.
-## Use mclapply if you want to do so with multiple cores.
-library('parallel')
-mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
+## You can then use filterData() to filter the data if you want to.
+## Use bplapply() if you want to do so with multiple cores as shown below.
+library('BiocParallel')
+p <- SnowParam(2L)
+bplapply(fullCov, function(x) {
+    library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
 }
 }
 \author{

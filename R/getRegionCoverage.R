@@ -15,7 +15,11 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
-#' @param mc.cores The number of cores to use for computing coverage. Default=1
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers}. You should use at most one core per 
+#' chromosome.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -36,7 +40,7 @@
 #' width c '$'
 #' @importMethodsFrom IRanges subset as.data.frame as.factor
 #' @importFrom IRanges IRanges
-#' @importFrom parallel mcmapply
+#' @importFrom BiocParallel SnowParam SerialParam bpmapply
 #'
 #' @details When \code{fullCov} is the output of \link{loadCoverage} with
 #' \code{cutoff} non-NULL, \link{getRegionCoverage} assumes that the regions
@@ -59,7 +63,9 @@
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
-    targetSize = 80e6, mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE) {
+    targetSize = 80e6, mc.cores = 1,
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), chrsStyle = "UCSC",
+    verbose = TRUE) {
     
     names(regions) <- seq_len(length(regions))  # add names
     
@@ -73,8 +79,18 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
     regions.chrs <- factor(regions.chrs, levels = names(fullCov))
     grl <- split(regions, regions.chrs)  
     
+    ## Define args
     moreArgs <- list(totalMapped = totalMapped, verbose = verbose)
-    counts <- mcmapply(function(chr, covInfo, g, totalMapped, verbose) {
+    
+    ## Define cluster
+    if(mc.cores > 1) {
+        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+    } else {
+        BPPARAM <- SerialParam()
+    }
+    
+    counts <- bpmapply(function(chr, covInfo, g, totalMapped, verbose) {
+        
         ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
         if (verbose) 
             message(paste(Sys.time(), "getRegionCoverage: processing", chr))
@@ -104,7 +120,7 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
                 
         ## Done
         return(res)
-    }, names(fullCov), fullCov, grl, mc.cores = mc.cores, MoreArgs = moreArgs,
+    }, names(fullCov), fullCov, grl, MoreArgs = moreArgs, BPPARAM = BPPARAM,
     SIMPLIFY = FALSE)
     covList <- do.call("c", counts)  # collect list elements into one large list
     

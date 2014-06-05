@@ -23,8 +23,11 @@
 #' have the same length as \code{chrs}.
 #' @param outputs This argument is passed to the \code{output} argument of 
 #' \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.
-#' @param mc.cores This argument is passed to \link[parallel]{mclapply}. You 
-#' should use at most one core per chromosome.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers}. You should use at most one core per 
+#' chromosome.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
 #' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
@@ -44,7 +47,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom parallel mclapply
+#' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom GenomeInfoDb mapSeqlevels
 #'
 #' @examples
@@ -54,19 +57,22 @@
 #' ## Shorten the column names
 #' names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 #' 
-#' ## Read and filter the data, only for 2 files
-#' fullCov <- fullCoverage(dirs=dirs[1:2], chrs=c('21', '22'), mc.cores=2)
+#' ## Read and filter the data, only for 1 file
+#' fullCov <- fullCoverage(dirs=dirs[1], chrs=c('21', '22'))
 #' fullCov
 #'
 #' \dontrun{
-#' ## You can then use filterData to filter the data if you want to. 
-#' ## Use mclapply if you want to do so with multiple cores.
-#' library('parallel')
-#' mclapply(fullCov, filterData, cutoff=0, mc.cores=2)
+#' ## You can then use filterData() to filter the data if you want to. 
+#' ## Use bplapply() if you want to do so with multiple cores as shown below.
+#' library('BiocParallel')
+#' p <- SnowParam(2L)
+#' bplapply(fullCov, function(x) {
+#'     library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
 #' }
 
 fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
-    outputs = NULL, mc.cores = getOption("mc.cores", 2L), inputType = "bam", 
+    outputs = NULL, mc.cores = getOption("mc.cores", 1L), 
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), inputType = "bam", 
     isMinusStrand = NA, chrsStyle = "UCSC", verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
@@ -77,9 +83,17 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
         }
     }
     
+    ## Define cluster
+    if(mc.cores > 1) {
+        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+    } else {
+        BPPARAM <- SerialParam()
+    }
+    
     ## Subsetting function that runs loadCoverage
     loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, inputType,
         isMinusStrand, verbose) {
+        
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
                 chrs[idx]))
@@ -88,10 +102,10 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
             inputType = inputType, isMinusStrand = isMinusStrand,
             verbose = verbose)$coverage
     }
-    result <- mclapply(seq_len(length(chrs)), loadChr, dirs = dirs, 
+    result <- bplapply(seq_len(length(chrs)), loadChr, dirs = dirs, 
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         verbose = verbose, inputType = inputType, 
-        isMinusStrand = isMinusStrand, mc.cores = mc.cores)
+        isMinusStrand = isMinusStrand, BPPARAM = BPPARAM)
     names(result) <- mapSeqlevels(chrs, chrsStyle)
     
     ## Done

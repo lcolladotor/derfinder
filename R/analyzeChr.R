@@ -37,6 +37,8 @@
 #' now.
 #' @param mc.cores This argument is passed to \link{preprocessCoverage} (useful 
 #' if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 
 #' \code{chrnum='21'}). One Rdata files is created for each component described 
@@ -98,7 +100,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo, subject = "hg19", 
-    mc.cores = getOption("mc.cores", 2L), writeOutput = TRUE, 
+    mc.cores = getOption("mc.cores", 1L),
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), writeOutput = TRUE, 
     returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL, 
     chrsStyle = "UCSC", verbose = TRUE) {
     stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", 
@@ -160,8 +163,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     if (verbose) 
         message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
     fstats <- calculateStats(coveragePrep = prep, models = models, 
-        mc.cores = mc.cores, adjustF = adjustF, lowMemDir = lowMemDir, 
-        verbose = verbose)
+        mc.cores = mc.cores, mc.outfile = mc.outfile, adjustF = adjustF,
+        lowMemDir = lowMemDir, verbose = verbose)
     
     ## calculateStats
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -201,8 +204,9 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
         chr = chr, maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, 
-        cutoff = cutoff, mc.cores = mc.cores, verbose = verbose, 
-        adjustF = adjustF, lowMemDir = lowMemDir, chrsStyle = chrsStyle)
+        cutoff = cutoff, mc.cores = mc.cores, mc.outfile = mc.outfile, 
+        verbose = verbose, adjustF = adjustF, lowMemDir = lowMemDir,
+        chrsStyle = chrsStyle)
     if (!returnOutput) {
         rm(prep)
     }

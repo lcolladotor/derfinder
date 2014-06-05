@@ -4,7 +4,8 @@
 \title{Extract coverage information for a set of regions}
 \usage{
 getRegionCoverage(fullCov, regions, totalMapped = NULL, targetSize = 8e+07,
-  mc.cores = 1, chrsStyle = "UCSC", verbose = TRUE)
+  mc.cores = 1, mc.outfile = Sys.getenv("SGE_STDERR_PATH"),
+  chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -21,7 +22,12 @@ library. By default, to reads per 80 million reads.}
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
 
-\item{mc.cores}{The number of cores to use for computing coverage. Default=1}
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers}. You should use at most one core per
+chromosome.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}

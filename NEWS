@@ -1,3 +1,30 @@
+CHANGES IN VERSION 0.0.62
+-------------------------
+
+NEW FEATURES
+
+    o derfinder now uses BiocParallel::blapply() instead of parallel::mclapply()
+        When 'mc.cores' is greater than 1, BiocParallel::SnowParam() is used to
+        construct the cluster. Otherwise, BiocParallel::SerialParam() is used.
+        This change reduces memory load when using the functions that have the
+        'mc.cores' argument greater than 1.
+
+    o Functions analyzeChr(), calculatePvalues(), calculateStats(),
+        coverageToExon(), fullCoverage(), getRegionCoverage(), regionMatrix()
+        all have a new argument 'mc.output'. This is passed to 
+        BiocParallel::SnowParam(outfile).
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o You may now use fullCoverage() without problems and should no longer
+        encounter errors due to longer vectors not being implemented.
+    o Functions like fullCoverage() now use much less memory and do not blow up
+        as you increase 'mc.cores'. Note however that the memory does increase,
+        but now it's close to linear.
+    o Examples might take longer to run with 'mc.cores' greater than 1, but that
+        is due to the small setup overhead of BiocParallel::SnowParam() which
+        is minimal compared to the overall speed gains with real data sets.
+
 CHANGES IN VERSION 0.0.61
 -------------------------
 

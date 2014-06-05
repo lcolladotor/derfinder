@@ -23,8 +23,10 @@
 #' @param maxRegionGap This argument is passed to \link{findRegions}.
 #' @param maxClusterGap This argument is passed to \link{findRegions}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
-#' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run 
-#' \link{fstats.apply}.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers} used for running \link{fstats.apply}.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
@@ -68,7 +70,7 @@
 #' as.numeric '$' '$<-' cbind
 #' @importFrom IRanges Views RleList Rle IRanges Views DataFrame values 
 #' 'values<-' nrow
-#' @importFrom parallel mclapply
+#' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom qvalue qvalue
 #'
 #' @examples
@@ -156,7 +158,8 @@
 calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
-        0.99), mc.cores = getOption("mc.cores", 2L), verbose = TRUE, 
+        0.99), mc.cores = getOption("mc.cores", 2L),
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE, 
     significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL, 
     chrsStyle = "UCSC") {
     ## Setup
@@ -260,10 +263,18 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         mod.p <- models$mod[idx.permute, , drop = FALSE]
         mod0.p <- models$mod0[idx.permute, , drop = FALSE]
         
+        ## Define cluster
+        if(mc.cores > 1) {
+            BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+        } else {
+            BPPARAM <- SerialParam()
+        }
+        
+        
         ## Get the F-statistics
-        fstats.output <- mclapply(mclapplyIndex, fstats.apply, 
+        fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
-            adjustF = adjustF, lowMemDir = lowMemDir, mc.cores = mc.cores)
+            adjustF = adjustF, lowMemDir = lowMemDir, BPPARAM = BPPARAM)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
         
         ## Find the segments

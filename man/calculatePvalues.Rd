@@ -6,7 +6,8 @@
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
   maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), mc.cores = getOption("mc.cores", 2L), verbose = TRUE,
+  0.99), mc.cores = getOption("mc.cores", 2L),
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE,
   significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
   chrsStyle = "UCSC")
 }
@@ -38,8 +39,11 @@ This argument is passed to \link{findRegions}.}
 
 \item{cutoff}{This argument is passed to \link{getSegmentsRle}.}
 
-\item{mc.cores}{This argument is passed to \link[parallel]{mclapply} to run
-\link{fstats.apply}.}
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers} used for running \link{fstats.apply}.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

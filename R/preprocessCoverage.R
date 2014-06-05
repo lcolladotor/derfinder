@@ -24,11 +24,12 @@
 #' @param lowMemDir If specified, each chunk is saved into a separate Rdata 
 #' file under \code{lowMemDir} and later loaded in \link{fstats.apply} when 
 #' running \link{calculateStats} and \link{calculatePvalues}. Using this option 
-#' helps reduce the memory load as each fork in \link[parallel]{mclapply} loads 
-#' only the data needed for the chunk processing. The downside is a bit longer 
-#' computation time due to input/output. 
-#' @param mc.cores This argument is passed to \link[parallel]{mclapply} to run 
-#' \link{fstats.apply}.
+#' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
+#' loads only the data needed for the chunk processing. The downside is a bit 
+#' longer computation time due to input/output. NOTE: this might need to be
+#' udpated after transitioning from parallel to BiocParallel.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{bplapply} to 
+#' run \link{fstats.apply}.
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to 
 #' determine the \code{chunksize}. This is useful if you want to split the data 
@@ -36,7 +37,7 @@
 #'
 #' Computing the indexes and using those for \link[parallel]{mclapply} reduces 
 #' memory copying as described by Ryan Thompson and illustrated in approach #4 
-#' at \url{http://bit.ly/mclapplyMem}
+#' at \url{http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-when-using-mclapply}
 #'
 #' If \code{lowMemDir} is specified then \code{$coverageProcessed} is NULL and 
 #' \code{$mclapplyIndex} is a vector with the chunk identifiers.
