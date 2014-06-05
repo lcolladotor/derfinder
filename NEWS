@@ -1,3 +1,22 @@
+CHANGES IN VERSION 0.0.63
+-------------------------
+
+NEW FEATURES
+
+    o fstats.apply() now has 'method' and 'scalefac' arguments. The 'method'
+        argument controls which of the 3 implementations to use. The old method
+        is called 'regular' now. The new method 'Rle' calculates the 
+        F-statistics without de-compressing the data, which is good for memory
+        but gets considerably slower as the number of samples increases. The
+        default method is 'Matrix' which uses the Matrix package and is both 
+        faster (given that the coercion doesn't take long) and less memory
+        intensive than the 'regular' method.
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Functions analyzeChr(), calculatePvalues() and calculateStats() now have
+        arguments 'method' and 'scalefac' to match the changes in fstats.apply()
+
 CHANGES IN VERSION 0.0.62
 -------------------------
 

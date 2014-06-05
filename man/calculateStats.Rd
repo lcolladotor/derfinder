@@ -5,7 +5,7 @@
 \usage{
 calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 2L),
   mc.outfile = Sys.getenv("SGE_STDERR_PATH"), adjustF = 0,
-  lowMemDir = NULL, verbose = TRUE)
+  lowMemDir = NULL, method = "Matrix", scalefac = 32, verbose = TRUE)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -27,6 +27,12 @@ alternative model is very small.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{method}{This argument is passed to \link{fstats.apply}. Check the
+details there for more information}
+
+\item{scalefac}{This argument is passed to \link{fstats.apply} and should be
+the same as the one used in \link{preprocessCoverage}.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
@@ -59,7 +65,8 @@ prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
     colsubset=NULL)
 
 ## Run the function
-fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
+fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE,
+    method='regular')
 fstats
 
 \dontrun{

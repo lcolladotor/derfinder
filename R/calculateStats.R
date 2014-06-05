@@ -18,6 +18,10 @@
 #' alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param method This argument is passed to \link{fstats.apply}. Check the 
+#' details there for more information
+#' @param scalefac This argument is passed to \link{fstats.apply} and should be 
+#' the same as the one used in \link{preprocessCoverage}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -49,7 +53,8 @@
 #'     colsubset=NULL)
 #' 
 #' ## Run the function
-#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE)
+#' fstats <- calculateStats(prep, models, mc.cores=1, verbose=TRUE, 
+#'     method='regular')
 #' fstats
 #'
 #' \dontrun{
@@ -59,8 +64,8 @@
 
 calculateStats <- function(coveragePrep, models, 
     mc.cores = getOption("mc.cores", 2L),
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), adjustF = 0, lowMemDir = NULL,
-    verbose = TRUE) {
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), adjustF = 0, lowMemDir = NULL, 
+    method = 'Matrix', scalefac = 32, verbose = TRUE) {
     
     stopifnot(length(intersect(names(coveragePrep), c("coverageProcessed", 
         "mclapplyIndex", "position"))) == 3)
@@ -98,7 +103,8 @@ calculateStats <- function(coveragePrep, models,
         message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
     fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
         data = coverageProcessed, mod = models$mod, mod0 = models$mod0,
-        adjustF = adjustF, lowMemDir = lowMemDir, BPPARAM = BPPARAM)
+        adjustF = adjustF, lowMemDir = lowMemDir, method = method,
+        scalefac = scalefac, BPPARAM = BPPARAM)
     ## Using mclapply is as fast as using lapply if mc.cores=1, so
     ## there is no damage in setting the default mc.cores=1.
     ## Specially since parallel is included in R 3.0.x More at

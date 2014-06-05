@@ -49,6 +49,8 @@
 #' run. Otherwise this step is skipped.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param method This argument is passed to \link{fstats.apply}. Check the 
+#' details there for more information.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -92,7 +94,7 @@
 #' ## Analyze the chromosome
 #' results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
 #'     cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1, 
-#'     writeOutput=FALSE, returnOutput=TRUE)
+#'     writeOutput=FALSE, returnOutput=TRUE, method='regular')
 #' names(results)
 
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
@@ -102,8 +104,10 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     maxRegionGap = 0L, maxClusterGap = 300L, groupInfo, subject = "hg19", 
     mc.cores = getOption("mc.cores", 1L),
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), writeOutput = TRUE, 
-    returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL, 
-    chrsStyle = "UCSC", verbose = TRUE) {
+    returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
+    method = 'Matrix', chrsStyle = "UCSC", verbose = TRUE) {
+        
+    ## Run some checks
     stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", 
         "manual"))) == 1)
     stopifnot(is.factor(groupInfo))
@@ -125,7 +129,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
         nPermute = nPermute, seeds = seeds, maxRegionGap = maxRegionGap,
         maxClusterGap = maxClusterGap, groupInfo = groupInfo, adjustF = adjustF,
-        lowMemDir = lowMemDir, chrsStyle = chrsStyle, 
+        lowMemDir = lowMemDir, method = method, chrsStyle = chrsStyle, 
         analyzeCall = match.call())
     
     ## Setup
@@ -164,7 +168,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
     fstats <- calculateStats(coveragePrep = prep, models = models, 
         mc.cores = mc.cores, mc.outfile = mc.outfile, adjustF = adjustF,
-        lowMemDir = lowMemDir, verbose = verbose)
+        lowMemDir = lowMemDir, method = method, scalefac = scalefac, 
+        verbose = verbose)
     
     ## calculateStats
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -206,7 +211,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         chr = chr, maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, 
         cutoff = cutoff, mc.cores = mc.cores, mc.outfile = mc.outfile, 
         verbose = verbose, adjustF = adjustF, lowMemDir = lowMemDir,
-        chrsStyle = chrsStyle)
+        method = method, scalefac = scalefac, chrsStyle = chrsStyle)
     if (!returnOutput) {
         rm(prep)
     }

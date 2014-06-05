@@ -11,7 +11,7 @@ analyzeChr(chr, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
   mc.cores = getOption("mc.cores", 1L),
   mc.outfile = Sys.getenv("SGE_STDERR_PATH"), writeOutput = TRUE,
   returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
-  chrsStyle = "UCSC", verbose = TRUE)
+  method = "Matrix", chrsStyle = "UCSC", verbose = TRUE)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE}
@@ -79,6 +79,9 @@ run. Otherwise this step is skipped.}
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
+\item{method}{This argument is passed to \link{fstats.apply}. Check the
+details there for more information.}
+
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}
 
@@ -122,7 +125,7 @@ models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 ## Analyze the chromosome
 results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
     cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1,
-    writeOutput=FALSE, returnOutput=TRUE)
+    writeOutput=FALSE, returnOutput=TRUE, method='regular')
 names(results)
 }
 \author{

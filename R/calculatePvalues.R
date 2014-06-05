@@ -37,6 +37,10 @@
 #' alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' @param method This argument is passed to \link{fstats.apply}. Check the 
+#' details there for more information
+#' @param scalefac This argument is passed to \link{fstats.apply} and should be 
+#' the same as the one used in \link{preprocessCoverage}.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
@@ -109,13 +113,13 @@
 #'
 #' ## Calculate the p-values and define the regions of interest.
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1, 
-#'     chr='chr21', cutoff=cutoff, mc.cores=1)
+#'     chr='chr21', cutoff=cutoff, mc.cores=1, method='regular')
 #' regsWithP
 #'
 #' \dontrun{
 #' ## Calculate again, but with 10 permutations instead of just 1
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, 
-#'     chr='chr21', cutoff=cutoff, mc.cores=2)
+#'     chr='chr21', cutoff=cutoff, mc.cores=2, method='regular')
 #' 
 #' ## Check that they are the same as the previously calculated regions
 #' identical(regsWithP, genomeRegions)
@@ -145,10 +149,12 @@
 #' library('microbenchmark')
 #' micro <- microbenchmark(
 #'     calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, 
-#'         chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE),
+#'         chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE,
+#'         method='regular'),
 #'     calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL, 
-#'         chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE),
-#' times=10)
+#'         chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE,
+#'         method='regular'),
+#'     times=10)
 #' levels(micro$expr) <- c('one', 'four')
 #' micro
 #' ## Using 4 cores doesn't help with this toy data, but it will (at the 
@@ -160,8 +166,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
         0.99), mc.cores = getOption("mc.cores", 2L),
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE, 
-    significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL, 
-    chrsStyle = "UCSC") {
+    significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
+    method = 'Matrix', scalefac = 32, chrsStyle = "UCSC") {
     ## Setup
     if (is.null(seeds)) {
         seeds <- rep(NA, nPermute)
@@ -274,7 +280,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         ## Get the F-statistics
         fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
-            adjustF = adjustF, lowMemDir = lowMemDir, BPPARAM = BPPARAM)
+            adjustF = adjustF, lowMemDir = lowMemDir, method = method, 
+            scalefac = scalefac, BPPARAM = BPPARAM)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
         
         ## Find the segments

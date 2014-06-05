@@ -51,7 +51,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @importFrom IRanges DataFrame Rle
-#' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
+#' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply Reduce
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples
 #' library('IRanges')
