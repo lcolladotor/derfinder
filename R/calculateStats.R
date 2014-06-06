@@ -63,7 +63,7 @@
 #' }
 
 calculateStats <- function(coveragePrep, models, 
-    mc.cores = getOption("mc.cores", 2L),
+    mc.cores = getOption("mc.cores", 1L),
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), adjustF = 0, lowMemDir = NULL, 
     method = 'Matrix', scalefac = 32, verbose = TRUE) {
     

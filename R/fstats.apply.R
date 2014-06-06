@@ -101,20 +101,18 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
         
     ## Load the chunk file
     if(!is.null(lowMemDir)) {
-        chunkProcessed <- NULL
-        load(file.path(lowMemDir, paste0("chunk", index, ".Rdata")))
-        data <- chunkProcessed
+        data <- .loadChunk(lowMemDir = lowMemDir, index = index)
     } else{
-        ##  Subset the DataFrame to the current chunk 
-        data <- data[index, ]
+        if(!all(index)) {
+            ##  Subset the DataFrame to the current chunk 
+            data <- data[index, ]
+        }        
     }
     
     ## General setup
     n <- ncol(data)
     m <- nrow(data)
-    p <- rep(0L, m)
     Id <- diag(n)
-    nVec <- rep(1L, n)
     df1 <- ncol(mod)
     df0 <- ncol(mod0)
     
@@ -125,7 +123,8 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
     ## Determine which method to use
     useMethod <- method
     if(useMethod == "Matrix") {
-        useMethod <- ifelse(all(sapply(list(P0, P1), function(x) round(max(rowSums(x)), 4) == 0)), "Matrix", "regular")
+        useMethod <- ifelse(all(sapply(list(P0, P1), function(x) {
+            round(max(rowSums(x)), 4) == 0 })), "Matrix", "regular")
         if(useMethod == "regular") 
             warning("Switching to method 'regular' because the row sums of the projection matrices are not 0. This can happen when a model matrix does not have an intercept term.")
     } else if (useMethod == "Rle") {
@@ -135,42 +134,22 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
     
     ## Transform data
     if(useMethod == "Matrix") {
-        scalefac.log2 <- ifelse(scalefac <= 0, 0, log2(scalefac))
-        
-        ## Build Matrix object from a DataFrame
-        i.list <- sapply(data, function(x) { which(x > scalefac.log2) })
-        j.list <- mapply(function(x, y) { rep(y, length(x)) }, i.list, seq_len(length(i.list)))
-        i <- unlist(i.list, use.names=FALSE)
-        j <- unlist(j.list, use.names=FALSE)
-        x <- unlist(mapply(function(x, y) { as.numeric(x[y]) }, data, i.list),
-            use.names=FALSE) - scalefac.log2
-        dat <- sparseMatrix(i=i, j=j, x=x, dims=c(nrow(data), ncol(data)), giveCsparse=TRUE, symmetric=FALSE, index1=TRUE)
-        rm(i.list, j.list, i, j, x)    
+        data <- .transformSparseMatrix(data = data, scalefac = scalefac)
     } else if (useMethod == "regular") {
         ##  Transform to a regular matrix
-        dat <- as.matrix(as.data.frame(data))
+        data <- as.matrix(as.data.frame(data))
     }    
     
     ## How to calculate RSS and F-stats
     calculateMethod <- useMethod == "Matrix" | useMethod == "regular"
         
-    ## Calculate rss1
+    ## Calculate RSS
     if(calculateMethod) {
-        rm(data)
-        resid1 <- dat %*% P1
-        rss1 <- (resid1 * resid1) %*% nVec
-        rm(resid1)
+        rss1 <- .calcRSS(data = data, P = P1, n = n)
+        rss0 <- .calcRSS(data = data, P = P0, n = n)
     } else {
-        rss1 <- Reduce("+", lapply(.residRle(P1, n, data), "^", 2)) 
-    }
-    
-    ## Calculate rss0
-    if(calculateMethod) {
-        resid0 <- dat %*% P0
-        rss0 <- (resid0 * resid0) %*% nVec
-        rm(resid0)
-    } else {
-        rss0 <- Reduce("+", lapply(.residRle(P0, n, data), "^", 2)) 
+        rss1 <- .calcRSSRle(data = data, P = P1, n = n)
+        rss0 <- .calcRSSRle(data = data, P = P0, n = n)
     }
 
     ## Get the F-stats
@@ -183,6 +162,36 @@ fstats.apply <- function(index=Rle(TRUE, nrow(data)), data, mod, mod0,
     
     ## Done
     return(fstats)
+}
+
+## Load chunk
+.loadChunk <- function(lowMemDir, index) {
+    load(file.path(lowMemDir, paste0("chunk", index, ".Rdata")))
+}
+
+## Coerce to sparseMatrix
+.transformSparseMatrix  <- function(data, scalefac) {
+    scalefac.log2 <- ifelse(scalefac <= 0, 0, log2(scalefac))
+    
+    ## Build Matrix object from a DataFrame
+    i.list <- sapply(data, function(x) { which(x > scalefac.log2) })
+    j.list <- mapply(function(x, y) { rep(y, length(x)) }, i.list, seq_len(length(i.list)))
+    i <- unlist(i.list, use.names=FALSE)
+    j <- unlist(j.list, use.names=FALSE)
+    x <- unlist(mapply(function(x, y) { as.numeric(x[y]) }, data, i.list),
+        use.names=FALSE) - scalefac.log2
+        
+    ## Build final object
+    sparseMatrix(i=i, j=j, x=x, dims=c(nrow(data), ncol(data)), giveCsparse=TRUE, symmetric=FALSE, index1=TRUE)
+}
+
+## Calculate RSS
+.calcRSS <- function(data, P, n) {
+    resid <- data %*% P
+    (resid * resid) %*% rep(1L, n)
+}
+.calcRSSRle <- function(data, P, n) {
+    Reduce("+", lapply(.residRle(P = P, n = n, data = data), "^", 2))
 }
 
 ## Calculating residuals in Rle form

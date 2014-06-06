@@ -3,7 +3,7 @@
 \alias{calculateStats}
 \title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
-calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 2L),
+calculateStats(coveragePrep, models, mc.cores = getOption("mc.cores", 1L),
   mc.outfile = Sys.getenv("SGE_STDERR_PATH"), adjustF = 0,
   lowMemDir = NULL, method = "Matrix", scalefac = 32, verbose = TRUE)
 }

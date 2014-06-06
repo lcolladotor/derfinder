@@ -1,3 +1,14 @@
+CHANGES IN VERSION 0.0.65
+-------------------------
+
+    o Re-organized code for fstats.apply(). Note that improving 
+        .transformSparseMatrix() would speed up the 'Matrix' method.
+    o Note that all parallel functions have some overhead from loading derfinder
+        on each worker. Check system.time(library(derfinder)) to see how long
+        the overhead is. It only pays off to use more cores if the calculations
+        are taking longer than the overhead.
+
+
 CHANGES IN VERSION 0.0.64
 -------------------------
 

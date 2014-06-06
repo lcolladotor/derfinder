@@ -6,7 +6,7 @@
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
   maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), mc.cores = getOption("mc.cores", 2L),
+  0.99), mc.cores = getOption("mc.cores", 1L),
   mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE,
   significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
   method = "Matrix", scalefac = 32, chrsStyle = "UCSC")
