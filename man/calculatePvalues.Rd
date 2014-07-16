@@ -40,7 +40,8 @@ This argument is passed to \link{findRegions}.}
 \item{cutoff}{This argument is passed to \link{getSegmentsRle}.}
 
 \item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers} used for running \link{fstats.apply}.}
+to define the number of \code{workers} used for running
+\link[derfinderHelper]{fstats.apply}.}
 
 \item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
 to specify the \code{outfile} for any output from the workers.}
@@ -59,11 +60,13 @@ alternative model is very small.}
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
-\item{method}{This argument is passed to \link{fstats.apply}. Check the
-details there for more information}
+\item{method}{This argument is passed to
+\link[derfinderHelper]{fstats.apply}. Check the details there for more
+information.}
 
-\item{scalefac}{This argument is passed to \link{fstats.apply} and should be
-the same as the one used in \link{preprocessCoverage}.}
+\item{scalefac}{This argument is passed to
+\link[derfinderHelper]{fstats.apply} and should be the same as the one used
+in \link{preprocessCoverage}.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}
@@ -186,6 +189,6 @@ Leonardo Collado-Torres
 }
 \seealso{
 \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle},
-\link{fstats.apply}, \link[qvalue]{qvalue}
+\link[derfinderHelper]{fstats.apply}, \link[qvalue]{qvalue}
 }
 

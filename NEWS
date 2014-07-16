@@ -1,3 +1,17 @@
+CHANGES IN VERSION 0.0.66
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o fstats.apply() has been moved to it's own package: derfinderHelper. This
+        will speed up the run time when using BiocParallel::SnowParam() as
+        derfinderHelper takes much less time to load than derfinder.
+    o plotCluster(), plotOverview() and plotRegionCoverage() were all moved to
+        their new own package: derfinderPlot. This will make maintenance easier
+        as the dependency ggbio is still under active development.
+
+
+
 CHANGES IN VERSION 0.0.65
 -------------------------
 

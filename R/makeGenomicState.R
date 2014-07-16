@@ -24,7 +24,8 @@
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
 #' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList 
-#' queryHits subjectHits Rle
+#' queryHits subjectHits
+#' @importFrom S4Vectors Rle
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-' seqlevelsStyle 
 #' 'seqlevelsStyle<-'
@@ -32,8 +33,8 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
 #' strand 'strand<-' gaps width
-#' @importMethodsFrom IRanges names unlist relist length lapply sapply 
-#' as.character '['
+#' @importMethodsFrom IRanges names unlist relist length lapply sapply '['
+#' @importMethodsFrom S4Vectors as.character
 #' @importMethodsFrom GenomicFeatures promoters
 #'
 #' @examples

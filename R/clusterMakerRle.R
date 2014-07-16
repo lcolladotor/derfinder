@@ -28,8 +28,10 @@
 #' 1.1.10.
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges IRanges start end runValue reduce Views Rle runLength
+#' @importFrom IRanges IRanges start end reduce Views runLength
 #' @importMethodsFrom IRanges length sum
+#' @importFrom S4Vectors Rle runValue
+#'
 #' @examples
 #' library('IRanges')
 #' set.seed(20130725)

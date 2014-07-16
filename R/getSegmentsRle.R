@@ -21,8 +21,9 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importMethodsFrom IRanges quantile as.vector as.numeric
+#' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
+#' @importMethodsFrom S4Vectors as.numeric
 #' @examples
 #' library("IRanges")
 #' set.seed(20130725)

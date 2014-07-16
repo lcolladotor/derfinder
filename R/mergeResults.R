@@ -53,7 +53,8 @@
 #' @importMethodsFrom GenomicRanges '$' '$<-' '['
 #' @importFrom IRanges DataFrame RleList
 #' @importMethodsFrom IRanges cbind values 'values<-' '[' '$' '$<-' length 
-#' order unlist as.numeric nrow
+#' order unlist nrow
+#' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom qvalue qvalue
 #' @importFrom GenomeInfoDb mapSeqlevels
 #'

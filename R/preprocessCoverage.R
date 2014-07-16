@@ -68,7 +68,8 @@
 #' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
 #' @importMethodsFrom IRanges ncol nrow sapply '[' '[[' '[[<-' c split Reduce
-#' @importFrom IRanges Rle
+#' @importFrom S4Vectors Rle
+#'
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()
 #' dataReady <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, 

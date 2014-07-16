@@ -31,7 +31,8 @@
 #' @param maxRegionGap This argument is passed to \link{calculatePvalues}.
 #' @param maxClusterGap This argument is passed to \link{calculatePvalues}.
 #' @param groupInfo A factor specifying the group membership of each sample 
-#' that can later be used with \code{plotRegion}.
+#' that can later be used with the plotting functions in the 
+#' \code{derfinderPlot} package.
 #' @param subject This argument is passed to 
 #' \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right 
 #' now.
@@ -49,8 +50,9 @@
 #' run. Otherwise this step is skipped.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param method This argument is passed to \link{fstats.apply}. Check the 
-#' details there for more information.
+#' @param method This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply}. Check the details there for more 
+#' information.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -73,7 +75,7 @@
 #' \link{calculateStats}, \link{calculatePvalues}, 
 #' \link[bumphunter]{annotateNearest}
 #' @export
-#' @importMethodsFrom IRanges as.numeric
+#' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom bumphunter annotateNearest
 #' @importFrom GenomeInfoDb mapSeqlevels
 #' 

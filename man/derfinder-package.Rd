@@ -14,7 +14,7 @@ of interest using \link{calculatePvalues}, and finally annotating them using
 \link[bumphunter]{annotateNearest} from the bumphunter package.
 }
 \author{
-Leonardo Collado-Torres <lcollado@jhsph.edu>
+Leonardo Collado-Torres <lcollado@jhu.edu>
 }
 \references{
 Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. &

@@ -17,22 +17,29 @@ Get R 3.1 or newer from [CRAN](http://cran.r-project.org/).
 install.packages("devtools")
 
 ## Pre-requisites from CRAN
-install.packages(c("ggplot2", "reshape2", "plyr", "microbenchmark", "RColorBrewer", "scales",
-    "Hmisc", "gridExtra", "Matrix"))
+install.packages(c("ggplot2", "microbenchmark", "Hmisc"))
 
 ## Pre-requisites from Bioconductor
 source("http://bioconductor.org/biocLite.R")
-biocLite(c("IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "ggbio", "qvalue",
+biocLite(c("S4Vectors", "IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "qvalue",
     "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures", "GenomeInfoDb",
     "rtracklayer", "BiocParallel"))
+    
+## derfinderHelper
+library("devtools")
+install_github("lcolladotor/derfinderHelper")
 
 ## derfinder itself
-library(devtools)
+
 ## If you are using BioC-devel use:
 install_github("lcolladotor/derfinder@master")
 
 ## If you are using BioC-release use:
 install_github("lcolladotor/derfinder@release")
+
+## Suggested:
+biocLite("ggbio")
+install_github("lcolladotor/derfinderPlot")
 ```
 
 # 'Watch' for updates

@@ -50,8 +50,10 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges DataFrame Rle
+#' @importFrom IRanges DataFrame
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply Reduce
+#' @importFrom S4Vectors Rle
+#'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples
 #' library('IRanges')

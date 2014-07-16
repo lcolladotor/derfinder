@@ -10,7 +10,8 @@
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated 
 #' using \link{makeModels}.
 #' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers} used for running \link{fstats.apply}.
+#' to define the number of \code{workers} used for running 
+#' \link[derfinderHelper]{fstats.apply}.
 #' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
 #' to specify the \code{outfile} for any output from the workers.
 #' @param adjustF A single value to adjust that is added in the denominator of 
@@ -18,10 +19,12 @@
 #' alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param method This argument is passed to \link{fstats.apply}. Check the 
-#' details there for more information
-#' @param scalefac This argument is passed to \link{fstats.apply} and should be 
-#' the same as the one used in \link{preprocessCoverage}.
+#' @param method This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply}. Check the details there for more 
+#' information.
+#' @param scalefac This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+#' in \link{preprocessCoverage}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -34,6 +37,8 @@
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importMethodsFrom IRanges ncol '[[' length unlist
 #' @importFrom IRanges RleList
+#' @importFrom derfinderHelper fstats.apply
+#'
 #' @examples
 #' ## Collapse the coverage information
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 

@@ -25,7 +25,7 @@
 #' @seealso \link{fullCoverage}, \link{sampleDepth}
 #' @export
 #' @importMethodsFrom IRanges names '[' sort
-#' @importFrom IRanges runValue runLength
+#' @importFrom S4Vectors runValue runLength
 #' @examples
 #' ## Collapse the coverage information for the filtered data
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 

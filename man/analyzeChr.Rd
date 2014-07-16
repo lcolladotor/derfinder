@@ -53,7 +53,8 @@ passed to \link{calculatePvalues} without any other calculation.}
 \item{maxClusterGap}{This argument is passed to \link{calculatePvalues}.}
 
 \item{groupInfo}{A factor specifying the group membership of each sample
-that can later be used with \code{plotRegion}.}
+that can later be used with the plotting functions in the
+\code{derfinderPlot} package.}
 
 \item{subject}{This argument is passed to
 \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right
@@ -79,8 +80,9 @@ run. Otherwise this step is skipped.}
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
-\item{method}{This argument is passed to \link{fstats.apply}. Check the
-details there for more information.}
+\item{method}{This argument is passed to
+\link[derfinderHelper]{fstats.apply}. Check the details there for more
+information.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
 \link[GenomeInfoDb]{seqlevelsStyle}.}

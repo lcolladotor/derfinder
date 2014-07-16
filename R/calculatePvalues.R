@@ -24,7 +24,8 @@
 #' @param maxClusterGap This argument is passed to \link{findRegions}.
 #' @param cutoff This argument is passed to \link{getSegmentsRle}.
 #' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers} used for running \link{fstats.apply}.
+#' to define the number of \code{workers} used for running 
+#' \link[derfinderHelper]{fstats.apply}.
 #' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
 #' to specify the \code{outfile} for any output from the workers.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
@@ -37,10 +38,12 @@
 #' alternative model is very small.
 #' @param lowMemDir The directory where the processed chunks are saved when 
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param method This argument is passed to \link{fstats.apply}. Check the 
-#' details there for more information
-#' @param scalefac This argument is passed to \link{fstats.apply} and should be 
-#' the same as the one used in \link{preprocessCoverage}.
+#' @param method This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply}. Check the details there for more 
+#' information.
+#' @param scalefac This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+#' in \link{preprocessCoverage}.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #'
@@ -68,14 +71,16 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, 
-#' \link{fstats.apply}, \link[qvalue]{qvalue}
+#' \link[derfinderHelper]{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
-#' as.numeric '$' '$<-' cbind
-#' @importFrom IRanges Views RleList Rle IRanges Views DataFrame values 
-#' 'values<-' nrow
+#' '$' '$<-' cbind
+#' @importFrom IRanges Views RleList DataFrame values 'values<-' nrow
+#' @importFrom S4Vectors Rle
+#' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom qvalue qvalue
+#' @importFrom derfinderHelper fstats.apply
 #'
 #' @examples
 #' ## Collapse the coverage information

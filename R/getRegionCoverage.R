@@ -38,8 +38,9 @@
 #' mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c '$'
-#' @importMethodsFrom IRanges subset as.data.frame as.factor
+#' @importMethodsFrom IRanges subset as.data.frame
 #' @importFrom IRanges IRanges
+#' @importMethodsFrom S4Vectors as.factor
 #' @importFrom BiocParallel SnowParam SerialParam bpmapply
 #'
 #' @details When \code{fullCov} is the output of \link{loadCoverage} with
