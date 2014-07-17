@@ -5,7 +5,8 @@
 \usage{
 preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
   scalefac = 32, chunksize = 5e+06, colsubset = NULL,
-  mc.cores = getOption("mc.cores", 1L), lowMemDir = NULL, verbose = FALSE)
+  mc.cores = getOption("mc.cores", 1L), lowMemDir = NULL,
+  toMatrix = !is.null(lowMemDir), verbose = FALSE)
 }
 \arguments{
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
@@ -39,6 +40,10 @@ helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
 loads only the data needed for the chunk processing. The downside is a bit
 longer computation time due to input/output. NOTE: this might need to be
 udpated after transitioning from parallel to BiocParallel.}
+
+\item{toMatrix}{Determines whether the data in the chunk should already be
+saved as a Matrix object, which can be useful to reduce the computation time
+of the F-statistics. Only used when \code{lowMemDir} is not NULL.}
 
 \item{mc.cores}{This argument is passed to \link[BiocParallel]{bplapply} to
 run \link{fstats.apply}.}

@@ -1,3 +1,14 @@
+CHANGES IN VERSION 0.0.67
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o preprocessCoverage() now has a 'toMatrix' argument which is only used when
+        'lowMemDir' is not NULL. It controls whether to save the chunks as
+        DataFrame objects or dgCMatrix objects and the idea is that it can time
+        by just transforming the data once instead of doing so at each
+        permutation.
+
 CHANGES IN VERSION 0.0.66
 -------------------------
 
