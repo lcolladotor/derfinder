@@ -1,3 +1,12 @@
+CHANGES IN VERSION 0.0.69
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o loadCoverage() and fullCoverage() now have a 'tilewidth' argument. When
+        specified GenomicFiles is used to read the coverage in chunks. In 
+        theory, this can lead to lower memory usage at the expense of time.
+        
 CHANGES IN VERSION 0.0.67
 -------------------------
 

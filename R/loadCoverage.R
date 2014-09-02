@@ -35,6 +35,14 @@
 #' library prior to filtering. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
+#' @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
+#' break up the chromosome into chunks.
+#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to define the number of \code{workers}. You may use up to one core per tile.
+#' Only used when \code{tilewidth} is specified.
+#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
+#' to specify the \code{outfile} for any output from the workers.
+#' Only used when \code{tilewidth} is specified.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -54,6 +62,9 @@
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList
 #' @importFrom GenomeInfoDb mapSeqlevels
+#' @importFrom GenomicRanges tileGenome
+#' @importFrom GenomicFiles reduceByFile
+#' @importFrom BiocParallel SnowParam SerialParam
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
@@ -89,7 +100,8 @@
 loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     chrlen = NULL, output = NULL, inputType = "bam", isMinusStrand = NA,
     filter = "one", returnMean = FALSE, returnCoverage = TRUE,
-    totalMapped = NULL, targetSize = 80e6, verbose = TRUE) {
+    totalMapped = NULL, targetSize = 80e6, tilewidth = NULL, mc.cores = 1,
+    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     stopifnot(inputType %in% c("bam", "bigWig"))
         
     ## Do the indexes exist?
@@ -131,21 +143,45 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
         chrlen <- clengths[chr]
     }
     
+    ## Make tiles if using GenomicFiles
+    if(!is.null(tilewidth)) {
+        tiles <- tileGenome(chrlen, tilewidth = tilewidth)
+        
+        ## Define cluster
+        if(mc.cores > 1) {
+            BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+        } else {
+            BPPARAM <- SerialParam()
+        }
+    }    
+    
     ## Construct the objects so only the chr of interest is read
-    ## from the BAM file
+    ## from the BAM/bigWig file
+    which <- GRanges(seqnames=chr, ranges=IRanges(1, chrlen))
     if(inputType == "bam") {
-        which <- RangesList(IRanges(1, chrlen))
-        names(which) <- chr
         param <- ScanBamParam(which = which, 
             flag = scanBamFlag(isMinusStrand = isMinusStrand))
         
         ## Read in the data for all the chrs
-        data <- lapply(bList, .loadCoverageBAM, param=param, chr=chr, verbose=verbose)
-    } else if (inputType == "bigWig") {
-        which <- GRanges(seqnames=chr, ranges=IRanges(1, chrlen))
+        if(is.null(tilewidth)) {
+            data <- lapply(bList, .loadCoverageBAM, param = param, chr = chr,
+                verbose=verbose)
+        } else {
+            data <- reduceByFile(tiles, bList, .bamMAPPER, .REDUCER, 
+                chr = chr, verbose = verbose, isMinusStrand = isMinusStrand, 
+                BPPARAM = BPPARAM)
+        }
         
+    } else if (inputType == "bigWig") {
         ## Read in the data for all the chrs
-        data <- lapply(bList, .loadCoverageBigWig, which=which, chr=chr, verbose=verbose)
+        if(is.null(tilewidth)) {
+            data <- lapply(bList, .loadCoverageBigWig, range = which,
+                chr = chr, verbose = verbose)
+        } else {
+            data <- reduceByFile(tiles, bList, .loadCoverageBigWig, .REDUCER, 
+                chr = chr, verbose = verbose, BPPARAM = BPPARAM)
+        }
+        
     }
    
     ## Identify which bases pass the cutoff
@@ -182,27 +218,39 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
 } 
 
 
-.loadCoverageBAM <- function(x, param, chr, verbose) {
+## GenomicFiles functions for BAM/bigWig files
+.bamMAPPER <- function(range, file, chr, verbose, isMinusStrand, ...) {
+    param <- ScanBamParam(which = range, 
+        flag = scanBamFlag(isMinusStrand = isMinusStrand))
+    .loadCoverageBAM(file, param, chr, verbose)
+}
+
+.REDUCER <- function(mapped, ...) {
+    Reduce('+', mapped)
+}
+
+
+.loadCoverageBAM <- function(file, param, chr, verbose) {
     if (verbose) 
         message(paste(Sys.time(), "loadCoverage: loading BAM file", 
-            path(x)))
+            path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- coverage(readGAlignmentsFromBam(x, param = param))[[chr]]
+    output <- coverage(readGAlignmentsFromBam(file, param = param))[[chr]]
         
     ## Done
     return(output)
 }
 
-.loadCoverageBigWig <- function(x, which, chr, verbose) {
+.loadCoverageBigWig <- function(file, range, chr, verbose) {
     if (verbose) 
         message(paste(Sys.time(), "loadCoverage: loading BigWig file", 
-            path(x)))
+            path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- import(x, selection = which, as = "RleList")[[chr]]
+    output <- import(file, selection = range, as = "RleList")[[chr]]
         
     ## Done
     return(output)

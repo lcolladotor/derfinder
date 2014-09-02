@@ -49,6 +49,9 @@
 #' only when \code{totalMapped} is specified.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
+#' @param tilewidth This argument is passed to \link{loadCoverage}. 
+#' When specified, \link[GenomicRanges]{tileGenome} is used to
+#' break up the chromosome into chunks.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -89,7 +92,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), cutoff = NULL, 
     inputType = "bam", isMinusStrand = NA, filter = "one", returnMean = FALSE,
     returnCoverage = TRUE, totalMapped = NULL, targetSize = 80e6,
-    chrsStyle = "UCSC", verbose = TRUE) {
+    chrsStyle = "UCSC", tilewidth = NULL, verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
@@ -109,7 +112,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     ## Subsetting function that runs loadCoverage
     loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, inputType,
         isMinusStrand, cutoff, filter, returnMean, returnCoverage, totalMapped, 
-        targetSize, verbose) {
+        targetSize, tilewidth, mc.cores, mc.outfile, verbose) {
         
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
@@ -119,14 +122,17 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 inputType = inputType, isMinusStrand = isMinusStrand,  
                 totalMapped = totalMapped, targetSize = targetSize, 
-                verbose = verbose)$coverage
+                verbose = verbose, tilewidth = tilewidth, mc.cores = mc.cores,
+                mc.outfile = mc.outfile)$coverage
         } else {
             res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = cutoff, 
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 inputType = inputType, isMinusStrand = isMinusStrand,
                 filter = filter, returnMean = returnMean,
                 returnCoverage = returnCoverage, totalMapped = totalMapped,
-                targetSize = targetSize, verbose = verbose)
+                targetSize = targetSize, verbose = verbose, 
+                tilewidth = tilewidth, mc.cores = mc.cores, 
+                mc.outfile = mc.outfile)
         }
         return(res)        
     }
@@ -135,7 +141,9 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
         verbose = verbose, inputType = inputType, 
         isMinusStrand = isMinusStrand, cutoff = cutoff, filter = filter, 
         returnMean = returnMean, returnCoverage = returnCoverage, 
-        totalMapped = totalMapped, targetSize = targetSize, BPPARAM = BPPARAM)
+        totalMapped = totalMapped, targetSize = targetSize,
+        tilewidth = tilewidth, mc.cores = mc.cores, mc.outfile = mc.outfile, 
+        BPPARAM = BPPARAM)
     names(result) <- mapSeqlevels(chrs, chrsStyle)
     
     ## Done

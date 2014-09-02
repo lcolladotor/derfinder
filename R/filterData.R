@@ -50,9 +50,8 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @importFrom IRanges DataFrame
+#' @importFrom IRanges DataFrame RleList
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply Reduce
-#' RleList
 #' @importFrom S4Vectors Rle
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
@@ -99,9 +98,9 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     } else {
         ## Construct the filtering index
         if(filter == "one") {
-            newindex <- Reduce("|", RleList(data) > cutoff)
+            newindex <- Reduce('|', RleList(data) > cutoff)
         } else if (filter == "mean") {
-            meanCov <- Reduce("+", data) / length(data)
+            meanCov <- Reduce('+', data) / length(data)
             newindex <- meanCov > cutoff
         }
         
@@ -118,7 +117,7 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     if(returnMean) {
         if(is.null(meanCov)) {
             ## Calculate the mean if needed
-            meanCov <- Reduce("+", data) / length(data)
+            meanCov <- Reduce('+', data) / length(data)
         }
         if(!is.null(newindex)) {
             meanCovFiltered <- meanCov[newindex]

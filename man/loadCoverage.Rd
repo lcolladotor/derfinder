@@ -6,7 +6,8 @@
 loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
   output = NULL, inputType = "bam", isMinusStrand = NA, filter = "one",
   returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
-  targetSize = 8e+07, verbose = TRUE)
+  targetSize = 8e+07, tilewidth = NULL, mc.cores = 1,
+  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -52,6 +53,17 @@ library prior to filtering. By default, to reads per 80 million reads.}
 
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
+
+\item{tilewidth}{When specified, \link[GenomicRanges]{tileGenome} is used to
+break up the chromosome into chunks.}
+
+\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
+to define the number of \code{workers}. You may use up to one core per tile.
+Only used when \code{tilewidth} is specified.}
+
+\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
+to specify the \code{outfile} for any output from the workers.
+Only used when \code{tilewidth} is specified.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

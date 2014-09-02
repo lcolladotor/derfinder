@@ -23,7 +23,7 @@ install.packages(c("ggplot2", "microbenchmark", "Hmisc"))
 source("http://bioconductor.org/biocLite.R")
 biocLite(c("S4Vectors", "IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "qvalue",
     "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures", "GenomeInfoDb",
-    "rtracklayer", "BiocParallel"))
+    "rtracklayer", "BiocParallel", "GenomicFiles"))
     
 ## derfinderHelper
 library("devtools")
@@ -62,7 +62,7 @@ To cite package __derfinder__ in publications use:
 
 Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2014). 
 derfinder: Fast differential expression analysis of RNA-seq data at base-pair 
-resolution. R package version 0.0.65. https://github.com/lcolladotor/derfinder
+resolution. R package version 0.0.69. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
@@ -72,7 +72,7 @@ A BibTeX entry for LaTeX users is
     author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe 
         and Jeffrey Leek},
     year = {2014},
-    note = {R package version 0.0.65},
+    note = {R package version 0.0.69},
     url = {https://github.com/lcolladotor/derfinder},
 }
 
