@@ -110,6 +110,41 @@ identical(dataRaw, genomeDataRaw)
 ## Note that the object size is pretty much the same due to the Rle
 ## compression
 print(object.size(dataRaw), units='Kb')
+
+
+#################################################################
+
+## The following code shows how to export the coverage to a BigWig file
+library('rtracklayer')
+sample1 <- RleList("chr21" = dataSmall$coverage[[1]])
+export(sample1, "sample1.bw")
+
+## Re-load it in R
+sample1.new <- import("sample1.bw", selection = GRanges("chr21", IRanges(1,
+   48129895)), as = "RleList")
+
+## Compare them
+sample1 - sample1.new
+## Note that the original one is a RleList of integer-Rle while the new one
+## is a RleList of numeric-Rle
+
+#################################################################
+## Below is an example of using loadCoverage(inputType='bigWig')
+
+## First we need to export the second sample too
+sample2 <- RleList("chr21" = dataSmall$coverage[[2]])
+export(sample2, "sample2.bw")
+
+## Now we can use loadCoverage
+dataSmall.bigWig <- loadCoverage(c(ERR009101 = 'sample1.bw', ERR009102 =
+    'sample2.bw'), chr="chr21", inputType="bigWig")
+
+## We can compare the results
+mapply(function(x, y) { x - y}, dataSmall$coverage,
+    dataSmall.bigWig$coverage)
+## Note that the only difference is the type of Rle (integer vs numeric) used
+## to store the data.
+
 }
 }
 \author{
