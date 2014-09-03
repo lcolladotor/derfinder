@@ -7,7 +7,7 @@ makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")),
   chrsStyle = "UCSC")
 }
 \arguments{
-\item{txdb}{A \link[GenomicFeatures]{TranscriptDb} object.}
+\item{txdb}{A \link[GenomicFeatures]{TxDb} object.}
 
 \item{chrs}{The names of the chromosomes to use as denoted in the
 \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
@@ -25,7 +25,7 @@ promoter, exon, intro, 5UTR, 3UTR or intragenic.
 }
 \description{
 This function summarizes the annotation contained in a
-\link[GenomicFeatures]{TranscriptDb} at each given base of the genome based
+\link[GenomicFeatures]{TxDb} at each given base of the genome based
 on annotated transcripts. It groups contiguous base pairs classified as the
 same type into regions.
 }
@@ -72,6 +72,6 @@ save(GenomicState.Hsapiens.ensembl.GRCh37.p11,
 Andrew Jaffe, Leonardo Collado-Torres
 }
 \seealso{
-\link[GenomicFeatures]{TranscriptDb}
+\link[GenomicFeatures]{TxDb}
 }
 

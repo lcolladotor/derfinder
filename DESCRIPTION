@@ -10,7 +10,7 @@ Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     "andrew.jaffe@libd.org"), person("Jeffrey", "Leek", role = c("aut", "ths"),
     email = "jtleek@gmail.com"))
 Depends:
-    R(>= 3.1)
+    R(>= 3.1.1)
 Imports:
     AnnotationDbi (>= 1.27.6),
     BiocParallel,

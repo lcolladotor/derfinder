@@ -1,11 +1,11 @@
 #' Obtain the genomic state per region from annotation
 #'
 #' This function summarizes the annotation contained in a 
-#' \link[GenomicFeatures]{TranscriptDb} at each given base of the genome based 
+#' \link[GenomicFeatures]{TxDb} at each given base of the genome based 
 #' on annotated transcripts. It groups contiguous base pairs classified as the 
 #' same type into regions.
 #' 
-#' @param txdb A \link[GenomicFeatures]{TranscriptDb} object.
+#' @param txdb A \link[GenomicFeatures]{TxDb} object.
 #' @param chrs The names of the chromosomes to use as denoted in the 
 #' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
@@ -19,7 +19,7 @@
 #' promoter, exon, intro, 5UTR, 3UTR or intragenic.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link[GenomicFeatures]{TranscriptDb}
+#' @seealso \link[GenomicFeatures]{TxDb}
 #' @export
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
