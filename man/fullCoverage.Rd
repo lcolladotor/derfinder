@@ -10,7 +10,7 @@ fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
   inputType = "bam", isMinusStrand = NA, filter = "one",
   returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
   targetSize = 8e+07, chrsStyle = "UCSC", tilewidth = NULL,
-  verbose = TRUE)
+  mc.cores.load = mc.cores, verbose = TRUE)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -75,6 +75,9 @@ only when \code{totalMapped} is specified.}
 \item{tilewidth}{This argument is passed to \link{loadCoverage}.
 When specified, \link[GenomicRanges]{tileGenome} is used to
 break up the chromosome into chunks.}
+
+\item{mc.cores.load}{Controls the number of cores to be used per chr for
+loading the data in chunks. Only used when \code{tilewidth} is specified.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}

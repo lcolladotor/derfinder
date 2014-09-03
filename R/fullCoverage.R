@@ -52,6 +52,8 @@
 #' @param tilewidth This argument is passed to \link{loadCoverage}. 
 #' When specified, \link[GenomicRanges]{tileGenome} is used to
 #' break up the chromosome into chunks.
+#' @param mc.cores.load Controls the number of cores to be used per chr for 
+#' loading the data in chunks. Only used when \code{tilewidth} is specified.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
 #'
@@ -92,7 +94,8 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), cutoff = NULL, 
     inputType = "bam", isMinusStrand = NA, filter = "one", returnMean = FALSE,
     returnCoverage = TRUE, totalMapped = NULL, targetSize = 80e6,
-    chrsStyle = "UCSC", tilewidth = NULL, verbose = TRUE) {
+    chrsStyle = "UCSC", tilewidth = NULL, mc.cores.load = mc.cores, 
+    verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
@@ -112,7 +115,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     ## Subsetting function that runs loadCoverage
     loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, inputType,
         isMinusStrand, cutoff, filter, returnMean, returnCoverage, totalMapped, 
-        targetSize, tilewidth, mc.cores, mc.outfile, verbose) {
+        targetSize, tilewidth, mc.cores.load, mc.outfile, verbose) {
         
         if (verbose) 
             message(paste(Sys.time(), "fullCoverage: processing chromosome", 
@@ -122,8 +125,8 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 inputType = inputType, isMinusStrand = isMinusStrand,  
                 totalMapped = totalMapped, targetSize = targetSize, 
-                verbose = verbose, tilewidth = tilewidth, mc.cores = mc.cores,
-                mc.outfile = mc.outfile)$coverage
+                verbose = verbose, tilewidth = tilewidth,
+                mc.cores = mc.cores.load, mc.outfile = mc.outfile)$coverage
         } else {
             res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = cutoff, 
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
@@ -131,7 +134,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
                 filter = filter, returnMean = returnMean,
                 returnCoverage = returnCoverage, totalMapped = totalMapped,
                 targetSize = targetSize, verbose = verbose, 
-                tilewidth = tilewidth, mc.cores = mc.cores, 
+                tilewidth = tilewidth, mc.cores = mc.cores.load, 
                 mc.outfile = mc.outfile)
         }
         return(res)        
@@ -142,8 +145,8 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
         isMinusStrand = isMinusStrand, cutoff = cutoff, filter = filter, 
         returnMean = returnMean, returnCoverage = returnCoverage, 
         totalMapped = totalMapped, targetSize = targetSize,
-        tilewidth = tilewidth, mc.cores = mc.cores, mc.outfile = mc.outfile, 
-        BPPARAM = BPPARAM)
+        tilewidth = tilewidth, mc.cores.load = mc.cores.load,
+        mc.outfile = mc.outfile, BPPARAM = BPPARAM)
     names(result) <- mapSeqlevels(chrs, chrsStyle)
     
     ## Done
