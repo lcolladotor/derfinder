@@ -66,6 +66,7 @@
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
 #' @importFrom BiocParallel SnowParam SerialParam
+#' @importMethodsFrom S4Vectors Reduce
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw

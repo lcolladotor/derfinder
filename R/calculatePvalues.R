@@ -75,10 +75,10 @@
 #' @export
 #' @aliases calculate_pvalues
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
-#' '$' '$<-' cbind
+#' '$<-' cbind
 #' @importFrom IRanges Views RleList DataFrame values 'values<-' nrow
 #' @importFrom S4Vectors Rle
-#' @importMethodsFrom S4Vectors as.numeric
+#' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom qvalue qvalue
 #' @importFrom derfinderHelper fstats.apply

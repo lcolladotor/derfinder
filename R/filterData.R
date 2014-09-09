@@ -52,8 +52,9 @@
 #' @export
 #' @aliases filter_data
 #' @importFrom IRanges DataFrame
-#' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply Reduce
+#' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
 #' @importFrom S4Vectors Rle
+#' @importMethodsFrom S4Vectors Reduce
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples

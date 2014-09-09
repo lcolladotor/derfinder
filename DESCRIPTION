@@ -20,13 +20,13 @@ Imports:
     GenomicAlignments,
     GenomicFeatures,
     GenomicFiles,
-    GenomicRanges (>= 1.17.24),
+    GenomicRanges (>= 1.17.39),
     Hmisc,
-    IRanges (>= 1.99.22),
+    IRanges (>= 1.99.27),
     qvalue,
     Rsamtools,
     rtracklayer,
-    S4Vectors
+    S4Vectors (>= 0.2.2)
 Suggests:
     biovizBase,
     ggplot2,

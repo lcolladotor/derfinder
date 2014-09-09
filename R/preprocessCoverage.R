@@ -72,8 +72,9 @@
 #' @export
 #' @aliases preprocess_coverage
 #'
-#' @importMethodsFrom IRanges ncol nrow sapply '[' '[[' '[[<-' c split Reduce
+#' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-' c split
 #' @importFrom S4Vectors Rle
+#' @importMethodsFrom S4Vectors Reduce sapply
 #'
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()

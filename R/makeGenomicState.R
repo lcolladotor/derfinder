@@ -35,8 +35,8 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
 #' strand 'strand<-' gaps width
-#' @importMethodsFrom IRanges names unlist relist length lapply sapply '['
-#' @importMethodsFrom S4Vectors as.character
+#' @importMethodsFrom IRanges names unlist relist length lapply '['
+#' @importMethodsFrom S4Vectors as.character sapply
 #' @importMethodsFrom GenomicFeatures promoters
 #'
 #' @examples

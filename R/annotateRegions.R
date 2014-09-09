@@ -42,7 +42,7 @@
 #' @importFrom GenomeInfoDb 'seqlevelsStyle<-'
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split 
 #' countOverlaps findOverlaps '['
-#' @importMethodsFrom IRanges sapply
+#' @importMethodsFrom S4Vectors sapply
 #'
 #' @examples
 #' ## Annotate regions, first two only
