@@ -29,6 +29,8 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{sampleDepth}, \link{calculateStats}
 #' @export
+#' @aliases make_models
+#'
 #' @importMethodsFrom IRanges ncol sapply median '['
 #' @examples
 #' ## Collapse the coverage information
@@ -125,3 +127,6 @@ makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
     ## Done =)
     return(result)
 } 
+
+#' @export
+make_models <- makeModels

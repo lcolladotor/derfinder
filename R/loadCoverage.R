@@ -57,6 +57,7 @@
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
+#' @aliases load_coverage
 #' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path scanBamFlag
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
@@ -252,6 +253,8 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     return(get(varname))
 } 
 
+#' @export
+load_coverage <- loadCoverage
 
 ## GenomicFiles functions for BAM/bigWig files
 .bamMAPPER <- function(range, file, chr, verbose, isMinusStrand, ...) {

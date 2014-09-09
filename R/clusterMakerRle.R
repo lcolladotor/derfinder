@@ -28,6 +28,7 @@
 #' 1.1.10.
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases cluster_maker_rle
 #' @importFrom IRanges IRanges start end reduce Views runLength
 #' @importMethodsFrom IRanges length sum
 #' @importFrom S4Vectors Rle runValue
@@ -76,3 +77,6 @@ clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
     ## Done
     return(result)
 } 
+
+#' @export
+cluster_maker_rle <- clusterMakerRle

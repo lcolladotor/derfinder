@@ -73,6 +73,7 @@
 #' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, 
 #' \link[derfinderHelper]{fstats.apply}, \link[qvalue]{qvalue}
 #' @export
+#' @aliases calculate_pvalues
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' '$' '$<-' cbind
 #' @importFrom IRanges Views RleList DataFrame values 'values<-' nrow
@@ -360,3 +361,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     ## Done =)
     return(final)
 } 
+
+#' @export
+calculate_pvalues <- calculatePvalues

@@ -22,6 +22,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases make_bam_list
 #' @seealso \link{loadCoverage}
 #' @examples
 #' ## Get list of BAM files included in derfinder
@@ -68,3 +69,6 @@ makeBamList <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     ## Done
     return(dirs)
 } 
+
+#' @export
+make_bam_list <- makeBamList

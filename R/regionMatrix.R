@@ -57,6 +57,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases region_matrix
 #'
 #' @importMethodsFrom IRanges nrow '$<-'
 #' @importFrom BiocParallel SnowParam SerialParam bpmapply
@@ -173,3 +174,6 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = "mean",
     return(res)
     
 }
+
+#' @export
+region_matrix <- regionMatrix

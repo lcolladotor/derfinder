@@ -70,6 +70,8 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
+#' @aliases preprocess_coverage
+#'
 #' @importMethodsFrom IRanges ncol nrow sapply '[' '[[' '[[<-' c split Reduce
 #' @importFrom S4Vectors Rle
 #'
@@ -201,3 +203,6 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     return(result)
     
 } 
+
+#' @export
+preprocess_coverage <- preprocessCoverage

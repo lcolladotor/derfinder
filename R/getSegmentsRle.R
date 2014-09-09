@@ -21,6 +21,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases get_segments_rle
 #' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
 #' @importMethodsFrom S4Vectors as.numeric
@@ -87,3 +88,6 @@ getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
     ## Done!
     return(result)
 }
+
+#' @export
+get_segments_rle <- getSegmentsRle

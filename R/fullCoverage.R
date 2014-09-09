@@ -66,6 +66,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases full_coverage
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom GenomeInfoDb mapSeqlevels
 #'
@@ -152,3 +153,6 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     ## Done
     return(result)
 } 
+
+#' @export
+full_coverage <- fullCoverage

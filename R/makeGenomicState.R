@@ -21,6 +21,8 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link[GenomicFeatures]{TxDb}
 #' @export
+#' @aliases make_genomic_state
+#'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
 #' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList 
@@ -404,3 +406,6 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     ## Done
     return(GenomicState)
 } 
+
+#' @export
+make_genomic_state <- makeGenomicState

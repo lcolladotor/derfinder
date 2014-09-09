@@ -75,6 +75,7 @@
 #' \link{calculateStats}, \link{calculatePvalues}, 
 #' \link[bumphunter]{annotateNearest}
 #' @export
+#' @aliases analyze_chr
 #' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom bumphunter annotateNearest
 #' @importFrom GenomeInfoDb mapSeqlevels
@@ -269,3 +270,6 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## Done
     return(invisible(result))
 } 
+
+#' @export
+analyze_chr <- analyzeChr

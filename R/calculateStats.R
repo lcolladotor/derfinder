@@ -33,6 +33,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases calculate_stats
 #' @seealso \link{makeModels}, \link{preprocessCoverage}
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importMethodsFrom IRanges ncol '[[' length unlist
@@ -119,3 +120,6 @@ calculateStats <- function(coveragePrep, models,
     ## Done =)
     return(result)    
 } 
+
+#' @export
+calculate_stats <- calculateStats

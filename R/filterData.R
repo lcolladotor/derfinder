@@ -50,6 +50,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
+#' @aliases filter_data
 #' @importFrom IRanges DataFrame
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply Reduce
 #' @importFrom S4Vectors Rle
@@ -188,3 +189,6 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     
     return(res)
 } 
+
+#' @export
+filter_data <- filterData

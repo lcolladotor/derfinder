@@ -37,6 +37,7 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{makeGenomicState}, \link{calculatePvalues}
 #' @export
+#' @aliases annotate_regions
 #' @importFrom IRanges queryHits subjectHits
 #' @importFrom GenomeInfoDb 'seqlevelsStyle<-'
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split 
@@ -89,3 +90,6 @@ annotateRegions <- function(regions, genomicState, minoverlap = 20,
     }
     return(out)
 } 
+
+#' @export
+annotate_regions <- annotateRegions

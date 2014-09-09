@@ -1,3 +1,13 @@
+CHANGES IN VERSION 0.0.70
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o All exported functions now have aliases with underscore names for those
+        that prefer them over camel case names. For example, analyze_chr() is
+        the new alias for analyzeChr().
+
+
 CHANGES IN VERSION 0.0.69
 -------------------------
 
