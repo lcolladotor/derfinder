@@ -1,3 +1,12 @@
+CHANGES IN VERSION 0.0.71
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Introduced coerceGR(), createBwSample() and createBw() for exporting
+        output from fullCoverage() into BigWig files.
+
+
 CHANGES IN VERSION 0.0.70
 -------------------------
 
