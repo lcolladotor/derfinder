@@ -56,7 +56,8 @@ createBwSample <- function(sample, path = '.', fullCov, seqlengths,
     
     ## Export bw file
     if(verbose) 
-        message(paste(Sys.time(), "create_bw: exporting bw for sample", sample))
+        message(paste(Sys.time(), "createBwSample: exporting bw for sample",
+            sample))
     
     ## Check that there is something to write
     if(length(gr.sample) > 0) {

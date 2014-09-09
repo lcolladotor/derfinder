@@ -48,7 +48,7 @@ coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow),
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     
     if(verbose) 
-        message(paste(Sys.time(), "coerce_GRanges: coercing sample", sample))
+        message(paste(Sys.time(), "coerceGR: coercing sample", sample))
     
     ## Define cluster
     if(mc.cores > 1) {
