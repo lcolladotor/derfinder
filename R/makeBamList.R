@@ -1,7 +1,8 @@
-#' Construct full paths to a group of BAM files
+#' Construct full paths to a group of raw input files
 #'
-#' For a group of samples this function creates the list of paths to the BAM 
-#' files which can then be used in \link{loadCoverage}.
+#' For a group of samples this function creates the list of paths to the raw 
+#' input files which can then be used in \link{loadCoverage}. The raw input
+#' files are either BAM files or BigWig files.
 #' 
 #' @param datadir The main directory where each of the \code{sampledirs} is a 
 #' sub-directory of \code{datadir}.
@@ -11,28 +12,30 @@
 #' @param samplepatt If specified and \code{sampledirs} is set to \code{NULL}, 
 #' then the directories matching this pattern in \code{datadir} (set to 
 #' \code{.} if it's set to \code{NULL}) are used as the sample directories.
-#' @param bamterm Name of the BAM file used in each sample. By default it is 
-#' set to \code{accepted_hits.bam} since that is the automatic name generated 
-#' when aligning with TopHat. If \code{NULL} it is then ignored when reading 
-#' the BAM files. This can be useful if all the BAM files are stored in a 
-#' single directory.
+#' @param fileterm Name of the BAM or BigWig file used in each sample. By 
+#' default it is set to \code{accepted_hits.bam} since that is the automatic 
+#' name generated when aligning with TopHat. If \code{NULL} it is then ignored 
+#' when reading the rawfiles. This can be useful if all the raw files are 
+#' stored in a single directory.
 #'
-#' @return A vector with the full paths to the BAM files and sample names 
+#' @return A vector with the full paths to the raw files and sample names 
 #' stored as the vector names.
+#'
+#' @details This function can also be used to identify a set of BigWig files.
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @aliases make_bam_list
+#' @aliases raw_files
 #' @seealso \link{loadCoverage}
 #' @examples
 #' ## Get list of BAM files included in derfinder
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$', 
-#'     bamterm=NULL)
+#' dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
+#'     fileterm=NULL)
 #' dirs
 
-makeBamList <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL, 
-    bamterm = "accepted_hits.bam") {
+rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL, 
+    fileterm = "accepted_hits.bam") {
     ## Determine the full paths to the sample directories
     if (!is.null(sampledirs)) {
         if (!is.null(datadir)) {
@@ -60,8 +63,8 @@ makeBamList <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     }
     
     ## Tell R which are the BAM files
-    if (!is.null(bamterm)) {
-        tmp <- file.path(dirs, bamterm)
+    if (!is.null(fileterm)) {
+        tmp <- file.path(dirs, fileterm)
         names(tmp) <- names(dirs)
         dirs <- tmp
     }
@@ -71,4 +74,4 @@ makeBamList <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
 } 
 
 #' @export
-make_bam_list <- makeBamList
+raw_files <- rawFiles

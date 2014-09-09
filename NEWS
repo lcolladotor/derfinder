@@ -6,6 +6,8 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o All exported functions now have aliases with underscore names for those
         that prefer them over camel case names. For example, analyze_chr() is
         the new alias for analyzeChr().
+    o makeBamList() has been renamed to rawFiles() since it can be used to
+        identify a list of BigWig files instead of BAM files.
 
 
 CHANGES IN VERSION 0.0.69

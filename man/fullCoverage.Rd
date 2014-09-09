@@ -17,7 +17,7 @@ fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
 \item{dirs}{A character vector with the full path to the sample BAM files
 (or bigWig files).
 The names are used for the column names of the DataFrame. Check
-\link{makeBamList} for constructing \code{dirs}. \code{dirs} can also be a
+\link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
@@ -97,8 +97,8 @@ with one such DataFrame objects per chromosome.
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- makeBamList(datadir=datadir, samplepatt='*accepted_hits.bam$',
-    bamterm=NULL)
+dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
+    fileterm=NULL)
 ## Shorten the column names
 names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
