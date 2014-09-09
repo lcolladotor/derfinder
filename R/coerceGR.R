@@ -25,19 +25,25 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link[GenomicRanges]{GRanges}
 #' @export
-#' @aliases coerce_granges
+#' @aliases coerce_gr
 #'
 #' @importFrom BiocParallel SnowParam SerialParam bpmapply
 #' @importFrom GenomicRanges GRangesList
-#' @importMethodsFrom GenomicRanges unlist
 #' 
 #' @examples
-#' \dontrun{
-#' }
+#' ## Create a small fullCov object with data only for chr21
+#' fullCov <- list('chr21' = genomeDataRaw)
+#'
+#' ## Coerce to a GRanges the first sample
+#' gr <- createBwSample('ERR009101', fullCov = fullCov,
+#'     seqlengths = c('chr21' = 48129895))
+#'
+#' ## Explore the output
+#' gr
 #'
 
 ## Coerces fullCoverage() output to GRanges for a given sample
-coerceGRanges <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow), 
+coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow), 
     mc.cores = getOption("mc.cores", 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     
@@ -53,8 +59,6 @@ coerceGRanges <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow),
             
     ## Coerce to a list of GRanges (1 element per chr)
     gr.sample <- bpmapply(function(chr, DF, sample, seqlengths) {
-        suppressPackageStartupMessages(library('GenomicRanges'))
-        
         ## Extract sample Rle info
         if("coverage" %in% names(DF)) {
             rle <- DF$coverage[[sample]]
@@ -88,4 +92,4 @@ coerceGRanges <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow),
 }
 
 #' @export
-coerce_granges <- coerceGRanges
+coerce_gr <- coerceGR

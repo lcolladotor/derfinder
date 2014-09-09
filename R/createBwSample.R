@@ -34,16 +34,23 @@
 #' @importMethodsFrom rtracklayer export
 #' 
 #' @examples
-#' \dontrun{
-#' }
+#' ## Create a small fullCov object with data only for chr21
+#' fullCov <- list('chr21' = genomeDataRaw)
 #'
+#' ## Create a BigWig for the first sample in a test directory
+#' dir.create('createBwSample-example')
+#' bw <- createBwSample('ERR009101', 'createBwSample-example', 
+#'     fullCov = fullCov, seqlengths = c('chr21' = 48129895))
+#'
+#' ## Explore the output
+#' bw
 
 ## Exports a single sample to a BigWig file
 createBwSample <- function(sample, path = '.', fullCov, seqlengths,
     keepGR = TRUE, mc.cores = getOption("mc.cores", 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     ## Coerce to GRanges
-    gr.sample <- coerceGRanges(sample = sample, fullCov = fullCov,
+    gr.sample <- coerceGR(sample = sample, fullCov = fullCov,
         seqlengths = seqlengths, mc.cores = mc.cores, mc.outfile = mc.outfile, 
         verbose = verbose)
     

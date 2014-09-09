@@ -37,8 +37,21 @@ Using output from \link{fullCoverage}, export the coverage from all the
 samples to BigWig files using \link{createBwSample}.
 }
 \examples{
-\dontrun{
-}
+## Create a small fullCov object with data only for chr21
+fullCov <- list('chr21' = genomeDataRaw)
+
+## Create the BigWig files for all samples in a test dir
+dir.create('createBw-example')
+bws <- createBw(fullCov, 'createBw-example')
+
+## Explore the output
+bws
+## First sample
+bws[[1]]
+
+## Note that if a sample has no bases with coverage > 0, the GRanges object
+## is empty and no BigWig file is created for that sample.
+bws[[31]]
 }
 \author{
 Leonardo Collado-Torres
