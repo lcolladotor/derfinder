@@ -1,5 +1,5 @@
-derfinder
-==========
+derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg)](https://travis-ci.org/lcolladotor/derfinder)
+=========
 
 Fast differential expression analysis of RNA-seq data at base-pair resolution. 
 You can generate HTML reports from the results using __derfinderReport__ 
@@ -12,34 +12,34 @@ For a full example on how to use __derfinder__ check
 
 Get R 3.1 or newer from [CRAN](http://cran.r-project.org/).
 
-```S
+```R
 ## If needed
-install.packages("devtools")
+install.packages('devtools')
 
 ## Pre-requisites from CRAN
-install.packages(c("ggplot2", "microbenchmark", "Hmisc"))
+install.packages(c('ggplot2', 'microbenchmark', 'Hmisc'))
 
 ## Pre-requisites from Bioconductor
-source("http://bioconductor.org/biocLite.R")
-biocLite(c("S4Vectors", "IRanges", "GenomicRanges", "Rsamtools", "bumphunter", "biovizBase", "qvalue",
-    "TxDb.Hsapiens.UCSC.hg19.knownGene", "AnnotationDbi", "GenomicFeatures", "GenomeInfoDb",
-    "rtracklayer", "BiocParallel", "GenomicFiles"))
+source('http://bioconductor.org/biocLite.R')
+biocLite(c('S4Vectors', 'IRanges', 'GenomicRanges', 'Rsamtools', 'bumphunter', 'biovizBase', 'qvalue',
+    'TxDb.Hsapiens.UCSC.hg19.knownGene', 'AnnotationDbi', 'GenomicFeatures', 'GenomeInfoDb',
+    'rtracklayer', 'BiocParallel', 'GenomicFiles'))
     
 ## derfinderHelper
-library("devtools")
-install_github("lcolladotor/derfinderHelper")
+library('devtools')
+install_github('lcolladotor/derfinderHelper')
 
 ## derfinder itself
 
 ## If you are using BioC-devel use:
-install_github("lcolladotor/derfinder@master")
+install_github('lcolladotor/derfinder@master')
 
 ## If you are using BioC-release use:
-install_github("lcolladotor/derfinder@release")
+install_github('lcolladotor/derfinder@release')
 
 ## Suggested:
-biocLite("ggbio")
-install_github("lcolladotor/derfinderPlot")
+biocLite('ggbio')
+install_github('lcolladotor/derfinderPlot')
 ```
 
 # 'Watch' for updates
@@ -53,7 +53,7 @@ You will need a GitHub account to be able to `Watch` the repository.
 
 # Citation
 
-Below is the citation output from using `citation("derfinder")` in R. Please 
+Below is the citation output from using `citation('derfinder')` in R. Please 
 run this yourself to check for any updates on how to cite __derfinder__.
 
 ---
@@ -90,6 +90,20 @@ available at [derfinder-release](https://github.com/lcolladotor/derfinder-releas
 
 * [__BioC-2.13__](https://github.com/lcolladotor/derfinder/tree/BioC-2.13) 
 Version working with [BioC 2.13](http://master.bioconductor.org/packages/2.13)
+
+## Travis CI
+
+This package is automatically tested thanks to [Travis CI](travis-ci.org) and [r-travis](https://github.com/craigcitro/r-travis). If you want to add this to your own package use:
+
+```R
+## Use devtools to create the .travis.yml file
+library('devtools')
+use_travis('yourPackage')
+
+## Read https://github.com/craigcitro/r-travis/wiki to configure .travis.yml appropriately
+
+## Add a status image by following the info at http://docs.travis-ci.com/user/status-images/
+```
 
 # Origins
 

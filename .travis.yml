@@ -9,6 +9,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
+  - ./travis-tool.sh install_github lcolladotor/derfinderHelper@master
   - ./travis-tool.sh install_bioc_deps_devel
 
 script: ./travis-tool.sh run_tests
