@@ -4,11 +4,14 @@ language: c
 
 before_install:
 #  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - curl -OL http://raw.github.com/siddharthab/r-travis/master/scripts/travis-tool.sh
+  - curl -OL http://raw.github.com/lcolladotor/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
 
 install:
+  - ./travis-tool.sh install_bioc_devel S4vectors
+  - ./travis-tool.sh install_bioc_devel IRanges
+  - ./travis-tool.sh install_r Matrix
   - ./travis-tool.sh install_github lcolladotor/derfinderHelper@master
   - ./travis-tool.sh install_bioc_deps_devel
 
