@@ -25,9 +25,9 @@
 #'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
-#' @importFrom IRanges CharacterList elementLengths DataFrame IntegerList 
+#' @importFrom IRanges CharacterList elementLengths IntegerList 
 #' queryHits subjectHits
-#' @importFrom S4Vectors Rle
+#' @importFrom S4Vectors Rle DataFrame
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-' seqlevelsStyle 
 #' 'seqlevelsStyle<-'

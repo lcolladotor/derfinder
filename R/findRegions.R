@@ -56,8 +56,8 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @aliases find_regions
-#' @importFrom IRanges IRanges start end width Views ranges DataFrame
-#' @importFrom S4Vectors Rle runLength  runValue 'runValue<-'
+#' @importFrom IRanges IRanges start end width Views ranges
+#' @importFrom S4Vectors Rle runLength  runValue 'runValue<-' DataFrame
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importFrom GenomeInfoDb mapSeqlevels
 #' @importMethodsFrom IRanges quantile which length mean rbind

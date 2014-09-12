@@ -51,9 +51,9 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #' @aliases filter_data
-#' @importFrom IRanges DataFrame
+#'
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
-#' @importFrom S4Vectors Rle
+#' @importFrom S4Vectors Rle DataFrame
 #' @importMethodsFrom S4Vectors Reduce
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}

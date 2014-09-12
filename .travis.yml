@@ -9,7 +9,7 @@ before_install:
   - ./travis-tool.sh bootstrap
 
 install:
-  - ./travis-tool.sh install_bioc_devel S4vectors
+  - ./travis-tool.sh install_bioc_devel S4Vectors
   - ./travis-tool.sh install_bioc_devel IRanges
   - ./travis-tool.sh install_r Matrix
   - ./travis-tool.sh install_github lcolladotor/derfinderHelper@master

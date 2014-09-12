@@ -76,8 +76,8 @@
 #' @aliases calculate_pvalues
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' '$<-' cbind
-#' @importFrom IRanges Views RleList DataFrame values 'values<-' nrow
-#' @importFrom S4Vectors Rle
+#' @importFrom IRanges Views RleList values 'values<-' nrow
+#' @importFrom S4Vectors Rle DataFrame
 #' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom BiocParallel SnowParam SerialParam bplapply
 #' @importFrom qvalue qvalue
