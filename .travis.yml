@@ -24,3 +24,7 @@ notifications:
   email:
     on_success: change
     on_failure: change
+
+env:
+  global:
+    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings" 
