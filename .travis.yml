@@ -29,3 +29,4 @@ notifications:
 env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
+    - R_CHECK_TIME="TRUE"
