@@ -11,7 +11,7 @@ install:
   - ./travis-tool.sh install_bioc S4Vectors
   - ./travis-tool.sh install_bioc IRanges
   - ./travis-tool.sh install_r Matrix
-  - ./travis-tool.sh install_github lcolladotor/derfinderHelper@master
+  - ./travis-tool.sh install_github lcolladotor/derfinderHelper
   - ./travis-tool.sh install_bioc_deps
 
 script: ./travis-tool.sh run_tests
