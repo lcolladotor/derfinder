@@ -47,7 +47,7 @@
 
 ## Exports a single sample to a BigWig file
 createBwSample <- function(sample, path = '.', fullCov, seqlengths,
-    keepGR = TRUE, mc.cores = getOption("mc.cores", 1L), 
+    keepGR = TRUE, mc.cores = getOption('mc.cores', 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     ## Coerce to GRanges
     gr.sample <- coerceGR(sample = sample, fullCov = fullCov,
@@ -56,15 +56,15 @@ createBwSample <- function(sample, path = '.', fullCov, seqlengths,
     
     ## Export bw file
     if(verbose) 
-        message(paste(Sys.time(), "createBwSample: exporting bw for sample",
+        message(paste(Sys.time(), 'createBwSample: exporting bw for sample',
             sample))
     
     ## Check that there is something to write
     if(length(gr.sample) > 0) {
-        export(gr.sample, file.path(path, paste0(sample, ".bw")))
+        export(gr.sample, file.path(path, paste0(sample, '.bw')))
     } else {
-        warning(paste0("There are no bases with coverage > 0 for sample ",
-            sample, ". Thus no bw file will be created for this sample."))
+        warning(paste0('There are no bases with coverage > 0 for sample ',
+            sample, '. Thus no bw file will be created for this sample.'))
     }    
     
     ## Keep the GRanges?

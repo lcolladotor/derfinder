@@ -5,7 +5,7 @@
 #' sample is the number of bases with coverage 0, 1, etc. It is similar to 
 #' using table() on a regular vector. This information is then used by 
 #' \link{sampleDepth} for calculating the sample depth adjustments. The data 
-#' set can loaded to R using (see \link{fullCoverage} and optionally filtered 
+#' set can loaded to R using (see \link{fullCoverage}) and optionally filtered 
 #' using \link{filterData}. 
 #' 
 #' @param fullCov A list where each element is the result from 
@@ -29,7 +29,7 @@
 #' @importFrom S4Vectors runValue runLength
 #' @examples
 #' ## Collapse the coverage information for the filtered data
-#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
+#' collapsedFull <- collapseFullCoverage(list(genomeData), 
 #'     verbose=TRUE)
 #' collapsedFull
 #' 

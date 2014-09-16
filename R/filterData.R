@@ -14,7 +14,7 @@
 #' \link{filterData} and thus no previous index exists.
 #' @param colnames Specifies the column names to be used for the results 
 #' DataFrame. If \code{NULL}, names from \code{data} are used.
-#' @param filter Has to be either \code{"one"} (default) or \code{"mean"}. In 
+#' @param filter Has to be either \code{'one'} (default) or \code{'mean'}. In 
 #' the first case, at least one sample has to have coverage above \code{cutoff}.
 #' In the second case, the mean coverage has to be greater than \code{cutoff}.
 #' @param returnMean If \code{TRUE} the mean coverage is included in the result.
@@ -58,25 +58,28 @@
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples
+#' ## Construct some toy data
 #' library('IRanges')
 #' x <- Rle(round(runif(1e4, max=10)))
 #' y <- Rle(round(runif(1e4, max=10)))
 #' z <- Rle(round(runif(1e4, max=10)))
 #' DF <- DataFrame(x, y, z)
+#'
+#' ## Filter the data
 #' filt1 <- filterData(DF, 5)
 #' filt1
+#'
+#' ## Filter again but only using the first two samples
 #' filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
 #' filt2
-#' ## The number of TRUE values in 'position' is the same as the number of rows 
-#' ## as in 'coverage'.
-#' identical(sum(filt2$pos), nrow(filt2$cov))
+#'
 
 filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
-    filter = "one", returnMean = FALSE, returnCoverage = TRUE,
+    filter = 'one', returnMean = FALSE, returnCoverage = TRUE,
     totalMapped = NULL, targetSize = 80e6, verbose = TRUE) {
         
     ## Check filter
-    stopifnot(filter %in% c("one", "mean"))
+    stopifnot(filter %in% c('one', 'mean'))
     
     ## Initialize meanCov
     meanCov <- NULL
@@ -87,10 +90,10 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
         
         ## Normalize to a given library size
         if (verbose) 
-            message(paste(Sys.time(), "filterData: normalizing coverage"))
+            message(paste(Sys.time(), 'filterData: normalizing coverage'))
         data <- mapply(function(x, d) x / d, data, mappedPerXM)
         if (verbose) 
-            message(paste(Sys.time(), "filterData: done normalizing coverage"))
+            message(paste(Sys.time(), 'filterData: done normalizing coverage'))
     }
     
     ## If there is no cutoff to apply, just build the DataFrame
@@ -99,7 +102,7 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
         finalidx <- index
     } else {
         ## Construct the filtering index
-        if(filter == "one") {
+        if(filter == 'one') {
             for (i in seq_len(length(data))) {
                 if (i == 1) {
                     newindex <- data[[i]] > cutoff
@@ -107,7 +110,7 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
                     newindex <- newindex | data[[i]] > cutoff
                 }
             }
-        } else if (filter == "mean") {
+        } else if (filter == 'mean') {
             meanCov <- Reduce('+', data) / length(data)
             newindex <- meanCov > cutoff
         }
@@ -135,7 +138,7 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     }
     
     if(returnCoverage) {
-        if (is(data, "DataFrame")) {
+        if (is(data, 'DataFrame')) {
             if (!is.null(newindex)) {
                 DF <- data[newindex, ]
             } else {
@@ -156,16 +159,16 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
     ## Info for the user
     if (verbose) {
         if(returnCoverage) {
-            message(paste(Sys.time(), "filterData: originally there were", 
-                length(data[[1]]), "rows, now there are", nrow(DF), 
-                "rows. Meaning that", 100 - round(nrow(DF)/length(data[[1]]) * 
-                    100, 2), "percent was filtered."))
+            message(paste(Sys.time(), 'filterData: originally there were', 
+                length(data[[1]]), 'rows, now there are', nrow(DF), 
+                'rows. Meaning that', 100 - round(nrow(DF)/length(data[[1]]) * 
+                    100, 2), 'percent was filtered.'))
         } else if (returnMean) {
-            message(paste(Sys.time(), "filterData: originally there were", 
-                length(data[[1]]), "rows, now there are", 
-                length(meanCovFiltered), "rows. Meaning that", 100 - 
+            message(paste(Sys.time(), 'filterData: originally there were', 
+                length(data[[1]]), 'rows, now there are', 
+                length(meanCovFiltered), 'rows. Meaning that', 100 - 
                 round(length(meanCovFiltered)/length(data[[1]]) * 
-                    100, 2), "percent was filtered."))
+                    100, 2), 'percent was filtered.'))
         }
     }
     

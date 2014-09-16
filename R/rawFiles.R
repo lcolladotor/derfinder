@@ -35,7 +35,7 @@
 #' dirs
 
 rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL, 
-    fileterm = "accepted_hits.bam") {
+    fileterm = 'accepted_hits.bam') {
     ## Determine the full paths to the sample directories
     if (!is.null(sampledirs)) {
         if (!is.null(datadir)) {
@@ -52,7 +52,7 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     } else if (!is.null(samplepatt)) {
         if (is.null(datadir)) {
             ## This case assumes that the datadir is the current directory
-            datadir <- "."
+            datadir <- '.'
         }
         ## Identify the directories with this pattern
         dirs <- dir(path = datadir, pattern = samplepatt, full.names = TRUE)

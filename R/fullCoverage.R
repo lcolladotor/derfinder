@@ -7,7 +7,7 @@
 #' with one such DataFrame objects per chromosome.
 #' 
 #' @param dirs A character vector with the full path to the sample BAM files
-#' (or bigWig files). 
+#' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a 
 #' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
@@ -31,7 +31,7 @@
 #' @param cutoff This argument is passed to \link{filterData}. If set to 
 #' \code{NULL}, then the data is loaded and only the \code{$coverage} is 
 #' returned.
-#' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
+#' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
 #' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
@@ -91,18 +91,18 @@
 #' }
 
 fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
-    outputs = NULL, mc.cores = getOption("mc.cores", 1L), 
+    outputs = NULL, mc.cores = getOption('mc.cores', 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), cutoff = NULL, 
-    inputType = "bam", isMinusStrand = NA, filter = "one", returnMean = FALSE,
+    inputType = 'bam', isMinusStrand = NA, filter = 'one', returnMean = FALSE,
     returnCoverage = TRUE, totalMapped = NULL, targetSize = 80e6,
-    chrsStyle = "UCSC", tilewidth = NULL, mc.cores.load = mc.cores, 
+    chrsStyle = 'UCSC', tilewidth = NULL, mc.cores.load = mc.cores, 
     verbose = TRUE) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     if (!is.null(outputs)) {
-        stopifnot(length(outputs) == length(chrs) | outputs == "auto")
-        if (outputs == "auto") {
-            outputs <- rep("auto", length(chrs))
+        stopifnot(length(outputs) == length(chrs) | outputs == 'auto')
+        if (outputs == 'auto') {
+            outputs <- rep('auto', length(chrs))
         }
     }
     
@@ -119,7 +119,7 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
         targetSize, tilewidth, mc.cores.load, mc.outfile, verbose) {
         
         if (verbose) 
-            message(paste(Sys.time(), "fullCoverage: processing chromosome", 
+            message(paste(Sys.time(), 'fullCoverage: processing chromosome', 
                 chrs[idx]))
         if (is.null(cutoff)) {
             res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = NULL, 

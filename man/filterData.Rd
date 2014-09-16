@@ -22,7 +22,7 @@ the cutoff. If \code{NULL} it is assumed that this is the first time using
 \item{colnames}{Specifies the column names to be used for the results
 DataFrame. If \code{NULL}, names from \code{data} are used.}
 
-\item{filter}{Has to be either \code{"one"} (default) or \code{"mean"}. In
+\item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In
 the first case, at least one sample has to have coverage above \code{cutoff}.
 In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
@@ -70,18 +70,20 @@ given region. You can always specify the \code{colsubset} argument in
 statistics.
 }
 \examples{
+## Construct some toy data
 library('IRanges')
 x <- Rle(round(runif(1e4, max=10)))
 y <- Rle(round(runif(1e4, max=10)))
 z <- Rle(round(runif(1e4, max=10)))
 DF <- DataFrame(x, y, z)
+
+## Filter the data
 filt1 <- filterData(DF, 5)
 filt1
+
+## Filter again but only using the first two samples
 filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
 filt2
-## The number of TRUE values in 'position' is the same as the number of rows
-## as in 'coverage'.
-identical(sum(filt2$pos), nrow(filt2$cov))
 }
 \author{
 Leonardo Collado-Torres

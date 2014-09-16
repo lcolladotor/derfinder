@@ -53,12 +53,12 @@
 
 ## Exports fullCoverage() output to BigWig files
 createBw <- function(fullCov, path = '.', keepGR = TRUE, 
-    mc.cores = getOption("mc.cores", 1L), 
+    mc.cores = getOption('mc.cores', 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     
     ## Determine seqlengths and sample names
     samples <- names(fullCov[[1]])
-    if("coverage" %in% samples) {
+    if('coverage' %in% samples) {
         seqlengths <- sapply(fullCov, function(x) { nrow(x$coverage )})
         samples <- names(fullCov[[1]]$coverage)
     } else {

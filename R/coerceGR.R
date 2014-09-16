@@ -44,11 +44,11 @@
 
 ## Coerces fullCoverage() output to GRanges for a given sample
 coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow), 
-    mc.cores = getOption("mc.cores", 1L), 
+    mc.cores = getOption('mc.cores', 1L), 
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
     
     if(verbose) 
-        message(paste(Sys.time(), "coerceGR: coercing sample", sample))
+        message(paste(Sys.time(), 'coerceGR: coercing sample', sample))
     
     ## Define cluster
     if(mc.cores > 1) {
@@ -60,7 +60,7 @@ coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow),
     ## Coerce to a list of GRanges (1 element per chr)
     gr.sample <- bpmapply(function(chr, DF, sample, seqlengths) {
         ## Extract sample Rle info
-        if("coverage" %in% names(DF)) {
+        if('coverage' %in% names(DF)) {
             rle <- DF$coverage[[sample]]
         } else {
             rle <- DF[[sample]]
@@ -80,7 +80,7 @@ coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow),
             IR <- IRanges(start = cumsum(c(1, lens))[idx], width = lens[idx])
             
             ## Finish
-            res <- GRanges(seqnames = rep(chr, length(IR)), ranges = IR, strand = "*", seqlengths = seqlengths, score = vals[idx])
+            res <- GRanges(seqnames = rep(chr, length(IR)), ranges = IR, strand = '*', seqlengths = seqlengths, score = vals[idx])
         }  
     
         return(res)

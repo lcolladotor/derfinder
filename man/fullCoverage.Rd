@@ -15,7 +15,7 @@ fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
-(or bigWig files).
+(or BigWig files).
 The names are used for the column names of the DataFrame. Check
 \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
@@ -47,7 +47,7 @@ to specify the \code{outfile} for any output from the workers.}
 \code{NULL}, then the data is loaded and only the \code{$coverage} is
 returned.}
 
-\item{inputType}{Has to be either \code{bam} or \code{bigWig}. It specifies
+\item{inputType}{Has to be either \code{bam} or \code{BigWig}. It specifies
 the format of the raw data files.}
 
 \item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,

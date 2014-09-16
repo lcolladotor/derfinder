@@ -17,7 +17,7 @@ Get R 3.1.1 or newer from [CRAN](http://cran.r-project.org/).
 install.packages('devtools')
 
 ## Pre-requisites from CRAN
-install.packages(c('ggplot2', 'microbenchmark', 'Hmisc'))
+install.packages(c('ggplot2', 'microbenchmark', 'Hmisc', 'testthat'))
 
 ## Pre-requisites from Bioconductor
 source('http://bioconductor.org/biocLite.R')
@@ -62,7 +62,7 @@ To cite package __derfinder__ in publications use:
 
 Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2014). 
 derfinder: Fast differential expression analysis of RNA-seq data at base-pair 
-resolution. R package version 0.0.72. https://github.com/lcolladotor/derfinder
+resolution. R package version 0.0.73. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
@@ -72,7 +72,7 @@ A BibTeX entry for LaTeX users is
     author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe 
         and Jeffrey Leek},
     year = {2014},
-    note = {R package version 0.0.72},
+    note = {R package version 0.0.73},
     url = {https://github.com/lcolladotor/derfinder},
 }
 

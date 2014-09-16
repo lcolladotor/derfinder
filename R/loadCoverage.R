@@ -5,7 +5,7 @@
 #' DataFrame and removes the bases that do not pass the cutoff.
 #' 
 #' @param dirs A character vector with the full path to the sample BAM files
-#' (or bigWig files). 
+#' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a 
 #' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
@@ -16,13 +16,13 @@
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
 #' and that they have the .bai extension. Ignored if \code{dirs} is a 
-#' \code{BamFileList} object or if \code{inputType=='bigWig'}.
+#' \code{BamFileList} object or if \code{inputType=='BigWig'}.
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the 
 #' chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} 
 #' then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
 #' for example). If another character is specified, then that name is used for #' the output file.
-#' @param inputType Has to be either \code{bam} or \code{bigWig}. It specifies
+#' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
 #' the format of the raw data files.
 #' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
 #' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
@@ -61,7 +61,7 @@
 #' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path scanBamFlag
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
-#' @importFrom rtracklayer BigWigFileList
+#' @importFrom rtracklayer BigWigFileList path
 #' @importFrom GenomeInfoDb mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
@@ -72,90 +72,52 @@
 #' @importMethodsFrom rtracklayer import import.bw
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
-#'     fileterm=NULL)
+#' dirs <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
+#'     fileterm = NULL)
 #' ## Shorten the column names
 #' names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 #'  
 #' ## Read and filter the data, only for 2 files
-#' dataSmall <- loadCoverage(dirs=dirs[1:2], chr='21', cutoff=0)
+#' dataSmall <- loadCoverage(dirs = dirs[1:2], chr = '21', cutoff = 0)
 #'
 #' \dontrun{
-#' ## Read all the data
-#' dataAll <- loadCoverage(dirs=dirs, chr='21', cutoff=0)
+#' ## Export to BigWig files
+#' createBw(list('chr21' = dataSmall))
 #'
-#' ## For other examples this data is included in the package
-#' identical(dataAll, genomeData)
-#'
-#' ## Read the coverage without applying any cutoff.
-#' ## This can be useful for downstream analysis including coverage plots.
-#' dataRaw <- loadCoverage(dirs=dirs, chr='21', cutoff=NULL)
-#'
-#' ## Compare vs raw data provided in the package
-#' identical(dataRaw, genomeDataRaw)
-#' 
-#' ## Note that the object size is pretty much the same due to the Rle
-#' ## compression
-#' print(object.size(dataRaw), units='Kb')
-#' 
-#'
-#' #################################################################
-#' 
-#' ## The following code shows how to export the coverage to a BigWig file
-#' library('rtracklayer')
-#' sample1 <- RleList("chr21" = dataSmall$coverage[[1]])
-#' export(sample1, "sample1.bw")
-#' 
-#' ## Re-load it in R
-#' sample1.new <- import("sample1.bw", selection = GRanges("chr21", IRanges(1, 
-#'    48129895)), as = "RleList")
+#' ## Load data from BigWig files
+#' dataSmall.bw <- loadCoverage(c(ERR009101 = 'ERR009101.bw', ERR009102 = 
+#'     'ERR009102.bw'), chr = 'chr21', inputType = 'BigWig')
 #' 
 #' ## Compare them
-#' sample1 - sample1.new
-#' ## Note that the original one is a RleList of integer-Rle while the new one 
-#' ## is a RleList of numeric-Rle
+#' mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)
 #'
-#' #################################################################
-#' ## Below is an example of using loadCoverage(inputType='bigWig')
-#' 
-#' ## First we need to export the second sample too
-#' sample2 <- RleList("chr21" = dataSmall$coverage[[2]])
-#' export(sample2, "sample2.bw")
-#'
-#' ## Now we can use loadCoverage
-#' dataSmall.bigWig <- loadCoverage(c(ERR009101 = 'sample1.bw', ERR009102 = 
-#'     'sample2.bw'), chr="chr21", inputType="bigWig")
-#' 
-#' ## We can compare the results
-#' mapply(function(x, y) { x - y}, dataSmall$coverage, 
-#'     dataSmall.bigWig$coverage)
 #' ## Note that the only difference is the type of Rle (integer vs numeric) used
 #' ## to store the data.
 #'
 #' }
 
 loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
-    chrlen = NULL, output = NULL, inputType = "bam", isMinusStrand = NA,
-    filter = "one", returnMean = FALSE, returnCoverage = TRUE,
+    chrlen = NULL, output = NULL, inputType = 'bam', isMinusStrand = NA,
+    filter = 'one', returnMean = FALSE, returnCoverage = TRUE,
     totalMapped = NULL, targetSize = 80e6, tilewidth = NULL, mc.cores = 1,
     mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
-    stopifnot(inputType %in% c("bam", "bigWig"))
+    stopifnot(inputType %in% c('bam', 'BigWig'))
         
     ## Do the indexes exist?
-    if (is(dirs, "BamFileList") & inputType == "bam") {
+    if (is(dirs, 'BamFileList') & inputType == 'bam') {
         bList <- dirs
-    } else if (is(dirs, "BigWigFileList") & inputType == "bigWig") {
+    } else if (is(dirs, 'BigWigFileList') & inputType == 'BigWig') {
         bList <- dirs
-    } else if (inputType == "bam"){
+    } else if (inputType == 'bam'){
         if (is.null(bai)) {
-            bai <- paste0(dirs, ".bai")
+            bai <- paste0(dirs, '.bai')
         }
         if (all(file.exists(bai))) {
             bList <- BamFileList(dirs, bai)
         } else {
             stop("Not all BAM files have a BAM index. If the BAM index files are in a separate directory from the BAM files or are not named as 'bamFile.bam.bai' then consider using the 'bai' argument.")
         }
-    } else if (inputType == "bigWig") {
+    } else if (inputType == 'BigWig') {
         bList <- BigWigFileList(dirs)
     }
     
@@ -166,16 +128,16 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
         ## organism.
         if (verbose) 
             message(paste(Sys.time(),
-                "loadCoverage: finding chromosome lengths"))
-        if (inputType == "bam") {
+                'loadCoverage: finding chromosome lengths'))
+        if (inputType == 'bam') {
             clengths <- scanBamHeader(bList[[1]])$targets
-        } else if (inputType == "bigWig") {
+        } else if (inputType == 'BigWig') {
             clengths <- seqlengths(bList[[1]])
         }
        
         if (!chr %in% names(clengths)) {
             stop(paste("'chr' is not correctly specified. Valid options are:", 
-                paste(names(clengths), collapse = ", ")))
+                paste(names(clengths), collapse = ', ')))
         }
         chrlen <- clengths[chr]
     }
@@ -193,9 +155,9 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     }    
     
     ## Construct the objects so only the chr of interest is read
-    ## from the BAM/bigWig file
+    ## from the BAM/BigWig file
     which <- GRanges(seqnames=chr, ranges=IRanges(1, chrlen))
-    if(inputType == "bam") {
+    if(inputType == 'bam') {
         param <- ScanBamParam(which = which, 
             flag = scanBamFlag(isMinusStrand = isMinusStrand))
         
@@ -209,7 +171,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
                 BPPARAM = BPPARAM)
         }
         
-    } else if (inputType == "bigWig") {
+    } else if (inputType == 'BigWig') {
         ## Read in the data for all the chrs
         if(is.null(tilewidth)) {
             data <- lapply(bList, .loadCoverageBigWig, range = which,
@@ -224,10 +186,10 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     ## Identify which bases pass the cutoff
     if (verbose) 
         message(paste(Sys.time(),
-            "loadCoverage: applying the cutoff to the merged data"))
+            'loadCoverage: applying the cutoff to the merged data'))
     
     ## Rename the object to a name that will make more sense later
-    varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
+    varname <- paste0(mapSeqlevels(chr, 'UCSC'), 'CovInfo')
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
         colnames = names(dirs), filter = filter, returnMean = returnMean,
         returnCoverage = returnCoverage, totalMapped = totalMapped, 
@@ -237,17 +199,17 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     ## Save if output is specified
     if (!is.null(output)) {
         ## Automatic output name
-        if (output == "auto") {
-            output <- paste0(varname, ".Rdata")
+        if (output == 'auto') {
+            output <- paste0(varname, '.Rdata')
         }
         
         ## Print output name
         if (verbose) 
-            message(paste(Sys.time(), "loadCoverage: saving the output file", 
+            message(paste(Sys.time(), 'loadCoverage: saving the output file', 
                 output))
         
         ## Save the DataFrame
-        save(list = varname, file = output, compress = "gzip")
+        save(list = varname, file = output, compress = 'gzip')
     }
     
     ## Done
@@ -257,7 +219,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
 #' @export
 load_coverage <- loadCoverage
 
-## GenomicFiles functions for BAM/bigWig files
+## GenomicFiles functions for BAM/BigWig files
 .bamMAPPER <- function(range, file, chr, verbose, isMinusStrand, ...) {
     param <- ScanBamParam(which = range, 
         flag = scanBamFlag(isMinusStrand = isMinusStrand))
@@ -271,7 +233,7 @@ load_coverage <- loadCoverage
 
 .loadCoverageBAM <- function(file, param, chr, verbose) {
     if (verbose) 
-        message(paste(Sys.time(), "loadCoverage: loading BAM file", 
+        message(paste(Sys.time(), 'loadCoverage: loading BAM file', 
             path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
@@ -282,14 +244,14 @@ load_coverage <- loadCoverage
     return(output)
 }
 
-.loadCoverageBigWig <- function(file, range, chr, verbose) {
+.loadCoverageBigWig <- function(range, file, chr, verbose) {
     if (verbose) 
-        message(paste(Sys.time(), "loadCoverage: loading BigWig file", 
+        message(paste(Sys.time(), 'loadCoverage: loading BigWig file', 
             path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- import(file, selection = range, as = "RleList")[[chr]]
+    output <- import(file, selection = range, as = 'RleList')[[chr]]
         
     ## Done
     return(output)

@@ -12,7 +12,7 @@ loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
-(or bigWig files).
+(or BigWig files).
 The names are used for the column names of the DataFrame. Check
 \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
@@ -26,7 +26,7 @@ in the raw data.}
 \item{bai}{The full path to the BAM index files. If \code{NULL} it is
 assumed that the BAM index files are in the same location as the BAM files
 and that they have the .bai extension. Ignored if \code{dirs} is a
-\code{BamFileList} object or if \code{inputType=='bigWig'}.}
+\code{BamFileList} object or if \code{inputType=='BigWig'}.}
 
 \item{chrlen}{The chromosome length in base pairs. If it's \code{NULL}, the
 chromosome length is extracted from the BAM files.}
@@ -35,7 +35,7 @@ chromosome length is extracted from the BAM files.}
 then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
 for example). If another character is specified, then that name is used for #' the output file.}
 
-\item{inputType}{Has to be either \code{bam} or \code{bigWig}. It specifies
+\item{inputType}{Has to be either \code{bam} or \code{BigWig}. It specifies
 the format of the raw data files.}
 
 \item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,
@@ -86,63 +86,25 @@ DataFrame and removes the bases that do not pass the cutoff.
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
-    fileterm=NULL)
+dirs <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',
+    fileterm = NULL)
 ## Shorten the column names
 names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
 
 ## Read and filter the data, only for 2 files
-dataSmall <- loadCoverage(dirs=dirs[1:2], chr='21', cutoff=0)
+dataSmall <- loadCoverage(dirs = dirs[1:2], chr = '21', cutoff = 0)
 
 \dontrun{
-## Read all the data
-dataAll <- loadCoverage(dirs=dirs, chr='21', cutoff=0)
+## Export to BigWig files
+createBw(list('chr21' = dataSmall))
 
-## For other examples this data is included in the package
-identical(dataAll, genomeData)
-
-## Read the coverage without applying any cutoff.
-## This can be useful for downstream analysis including coverage plots.
-dataRaw <- loadCoverage(dirs=dirs, chr='21', cutoff=NULL)
-
-## Compare vs raw data provided in the package
-identical(dataRaw, genomeDataRaw)
-
-## Note that the object size is pretty much the same due to the Rle
-## compression
-print(object.size(dataRaw), units='Kb')
-
-
-#################################################################
-
-## The following code shows how to export the coverage to a BigWig file
-library('rtracklayer')
-sample1 <- RleList("chr21" = dataSmall$coverage[[1]])
-export(sample1, "sample1.bw")
-
-## Re-load it in R
-sample1.new <- import("sample1.bw", selection = GRanges("chr21", IRanges(1,
-   48129895)), as = "RleList")
+## Load data from BigWig files
+dataSmall.bw <- loadCoverage(c(ERR009101 = 'ERR009101.bw', ERR009102 =
+    'ERR009102.bw'), chr = 'chr21', inputType = 'BigWig')
 
 ## Compare them
-sample1 - sample1.new
-## Note that the original one is a RleList of integer-Rle while the new one
-## is a RleList of numeric-Rle
+mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)
 
-#################################################################
-## Below is an example of using loadCoverage(inputType='bigWig')
-
-## First we need to export the second sample too
-sample2 <- RleList("chr21" = dataSmall$coverage[[2]])
-export(sample2, "sample2.bw")
-
-## Now we can use loadCoverage
-dataSmall.bigWig <- loadCoverage(c(ERR009101 = 'sample1.bw', ERR009102 =
-    'sample2.bw'), chr="chr21", inputType="bigWig")
-
-## We can compare the results
-mapply(function(x, y) { x - y}, dataSmall$coverage,
-    dataSmall.bigWig$coverage)
 ## Note that the only difference is the type of Rle (integer vs numeric) used
 ## to store the data.
 

@@ -30,12 +30,12 @@ for each sample from all the chromosomes. The resulting information per
 sample is the number of bases with coverage 0, 1, etc. It is similar to
 using table() on a regular vector. This information is then used by
 \link{sampleDepth} for calculating the sample depth adjustments. The data
-set can loaded to R using (see \link{fullCoverage} and optionally filtered
+set can loaded to R using (see \link{fullCoverage}) and optionally filtered
 using \link{filterData}.
 }
 \examples{
 ## Collapse the coverage information for the filtered data
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+collapsedFull <- collapseFullCoverage(list(genomeData),
     verbose=TRUE)
 collapsedFull
 
