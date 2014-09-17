@@ -4,8 +4,8 @@
 \alias{annotate_regions}
 \title{Assign genomic states to regions}
 \usage{
-annotateRegions(regions, genomicState, fullOrCoding = "full",
-  annotate = TRUE, chrsStyle = "UCSC", verbose = TRUE, ...)
+annotateRegions(regions, genomicState, annotate = TRUE, chrsStyle = "UCSC",
+  verbose = TRUE, ...)
 }
 \arguments{
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
@@ -54,7 +54,7 @@ details.
 \examples{
 ## Annotate regions, first two only
 annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2],
-    genomicState=genomicState, minoverlap=1)
+    genomicState=genomicState$fullGenome, minoverlap=1)
 annotatedRegions
 }
 \author{

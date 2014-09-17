@@ -49,16 +49,14 @@
 #' @examples
 #' ## Annotate regions, first two only
 #' annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2], 
-#'     genomicState=genomicState, minoverlap=1)
+#'     genomicState=genomicState$fullGenome, minoverlap=1)
 #' annotatedRegions
 
-annotateRegions <- function(regions, genomicState, fullOrCoding = 'full',
+annotateRegions <- function(regions, genomicState,
     annotate = TRUE, chrsStyle = 'UCSC', verbose = TRUE, ...) {
     stopifnot(is(genomicState, 'GRanges'))
     stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
         'tx_name', 'gene')))
-    stopifnot(length(intersect(fullOrCoding, c('full', 'coding'))) == 
-        1)
     
     ## Fix row names
     names(regions) <- seq_len(length(regions))
