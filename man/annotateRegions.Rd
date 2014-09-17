@@ -4,25 +4,18 @@
 \alias{annotate_regions}
 \title{Assign genomic states to regions}
 \usage{
-annotateRegions(regions, genomicState, minoverlap = 20,
-  fullOrCoding = "full", annotate = TRUE, chrsStyle = "UCSC",
-  verbose = TRUE)
+annotateRegions(regions, genomicState, fullOrCoding = "full",
+  annotate = TRUE, chrsStyle = "UCSC", verbose = TRUE, ...)
 }
 \arguments{
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
 
-\item{genomicState}{The output from \link{makeGenomicState}.}
-
-\item{minoverlap}{This parameter is passed to \link[IRanges]{countOverlaps}
-and determines the minimum overlap of a region to be assined a genomic
-state. Set to 1 if you want all the genomic states that overlap the regions.}
-
-\item{fullOrCoding}{If \code{full} then the \code{genomicState$fullGenome}
-genomic state information is used. If \code{coding}, then the
-\code{genomicState$codingGenome} genomic state information is used.}
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
+\code{genomicState$codingGenome} component.}
 
 \item{annotate}{If \code{TRUE} then the regions are annotated by the genomic
-state. Othewise, only the overlaps between the regions and the genomic
+state. Otherwise, only the overlaps between the regions and the genomic
 states are computed.}
 
 \item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
@@ -30,6 +23,8 @@ states are computed.}
 
 \item{verbose}{If \code{TRUE} basic status updates will be printed along the
 way.}
+
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with elements \code{countTable} and \code{annotationList}
@@ -50,6 +45,11 @@ This function takes the regions found in \link{calculatePvalues} and assigns
 them genomic states contructed with \link{makeGenomicState}. The main
 workhorse functions are \link[IRanges]{countOverlaps} and
 \link[IRanges]{findOverlaps}.
+}
+\details{
+You might want to specify arguments such as \code{minoverlap} to control
+how the overlaps are determined. See \link[IRanges]{findOverlaps} for further
+details.
 }
 \examples{
 ## Annotate regions, first two only

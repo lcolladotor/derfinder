@@ -6,20 +6,17 @@
 #' \link[IRanges]{findOverlaps}.
 #' 
 #' @param regions The \code{$regions} output from \link{calculatePvalues}.
-#' @param genomicState The output from \link{makeGenomicState}.
-#' @param minoverlap This parameter is passed to \link[IRanges]{countOverlaps} 
-#' and determines the minimum overlap of a region to be assined a genomic 
-#' state. Set to 1 if you want all the genomic states that overlap the regions.
-#' @param fullOrCoding If \code{full} then the \code{genomicState$fullGenome} 
-#' genomic state information is used. If \code{coding}, then the 
-#' \code{genomicState$codingGenome} genomic state information is used.
+#' @param genomicState A GRanges object created with \link{makeGenomicState}. 
+#' It can be either the \code{genomicState$fullGenome} or 
+#' \code{genomicState$codingGenome} component.
 #' @param annotate If \code{TRUE} then the regions are annotated by the genomic 
-#' state. Othewise, only the overlaps between the regions and the genomic 
+#' state. Otherwise, only the overlaps between the regions and the genomic 
 #' states are computed.
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A list with elements \code{countTable} and \code{annotationList} 
 #' (only if \code{annotate=TRUE}). 
@@ -44,48 +41,48 @@
 #' countOverlaps findOverlaps '['
 #' @importMethodsFrom S4Vectors sapply
 #'
+#' @details
+#' You might want to specify arguments such as \code{minoverlap} to control
+#' how the overlaps are determined. See \link[IRanges]{findOverlaps} for further
+#' details.
+#'
 #' @examples
 #' ## Annotate regions, first two only
 #' annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2], 
 #'     genomicState=genomicState, minoverlap=1)
 #' annotatedRegions
 
-annotateRegions <- function(regions, genomicState, minoverlap = 20, 
-    fullOrCoding = "full", annotate = TRUE, chrsStyle = "UCSC", verbose = TRUE) {
-    stopifnot(length(intersect(names(genomicState), c("fullGenome", 
-        "codingGenome"))) == 2)
-    stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 
+annotateRegions <- function(regions, genomicState, fullOrCoding = 'full',
+    annotate = TRUE, chrsStyle = 'UCSC', verbose = TRUE, ...) {
+    stopifnot(is(genomicState, 'GRanges'))
+    stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
+        'tx_name', 'gene')))
+    stopifnot(length(intersect(fullOrCoding, c('full', 'coding'))) == 
         1)
     
     ## Fix row names
     names(regions) <- seq_len(length(regions))
-    
-    if (fullOrCoding == "full") {
-        gs <- genomicState$fullGenome
-    } else if (fullOrCoding == "coding") {
-        gs <- genomicState$codingGenome
-    }
-    
+
     ## Use UCSC names by default
-    seqlevelsStyle(gs) <- chrsStyle
+    seqlevelsStyle(genomicState) <- chrsStyle
     seqlevelsStyle(regions) <- chrsStyle
     
-    gsl <- split(gs, gs$theRegion)
+    genomicState.list <- split(genomicState, genomicState$theRegion)
     
     if (verbose) 
-        message(paste(Sys.time(), "annotateRegions: counting"))
+        message(paste(Sys.time(), 'annotateRegions: counting'))
     
-    countTable <- sapply(gsl, function(x) countOverlaps(regions, 
-        x, minoverlap = minoverlap))
+    countTable <- sapply(genomicState.list, function(x, ...) countOverlaps(regions, 
+        x, ...))
     countTable <- data.frame(countTable)
     out <- list(countTable = countTable)
     
     if (annotate) {
         if (verbose) 
-            message(paste(Sys.time(), "annotateRegions: annotating"))
+            message(paste(Sys.time(), 'annotateRegions: annotating'))
         
-        oo <- findOverlaps(regions, gs)  # don't care about min overlap here
-        glist <- split(gs[subjectHits(oo)], queryHits(oo))
+        oo <- findOverlaps(regions, genomicState, ...)  # don't care about min overlap here
+        glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }
     return(out)
