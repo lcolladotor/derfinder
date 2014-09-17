@@ -5,7 +5,8 @@
 \title{Find non-zero regions in a Rle}
 \usage{
 findRegions(position = NULL, fstats, chr, oneTable = TRUE,
-  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), ...)
+  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
+  ...)
 }
 \arguments{
 \item{position}{A logical Rle of genomic positions. This is generated in
@@ -25,6 +26,10 @@ regions with positive values and one for the negative values.}
 It should be greater than \code{maxRegionGap} (0 by default).}
 
 \item{cutoff}{Threshold applied to the \code{fstats} used to determine the #' regions.}
+
+\item{segmentIR}{An IRanges object with the genomic positions that are
+potentials DERs. This is used in \link{calculatePvalues} to speed up
+permutation calculations.}
 
 \item{...}{Arguments passed to other methods.}
 }

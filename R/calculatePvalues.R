@@ -174,7 +174,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     
     ## Avoid re-calculating possible candidate DERs for every
     ## permutation
-    segmentIR <- .clusterMakerRle(position = position, ranges = TRUE, ...)
+    segmentIR <- .clusterMakerRle(position = position, maxGap = 
+        .advanced_argument('maxRegionGap', 300L, ...), ranges = TRUE)
     
     ## Find the regions
     regs <- findRegions(position = position, chr = chr, fstats = fstats,

@@ -107,7 +107,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
 #' @param lowMemDir The directory where the processed chunks are saved when
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-    lowMemDir <- .advanced_argument('lowMemDir', 'chunksDir', ...)
+    lowMemDir <- .advanced_argument('lowMemDir', file.path(chr, 'chunksDir'),
+        ...)
     
 #' @param returnOutput If \code{TRUE}, it returns a list with the results from 
 #' each step. Otherwise, it returns \code{NULL}.

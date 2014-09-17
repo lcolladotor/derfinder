@@ -51,8 +51,9 @@
 #'     which(smallGenomicState$fullGenome$theRegion == 'exon')[1:2] ]
 #' 
 #' ## Finally, get the coverage information for each exon
-#' exonCov <- coverageToExon(fullCov=fullCov, genomicState=smallGenomicState, 
-#'     L=36)
+#' exonCov <- coverageToExon(fullCov=fullCov,
+#'     genomicState=smallGenomicState$fullGenome, L=36)
+#'
 
 
 coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
@@ -99,8 +100,8 @@ coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
         ...), length(unique(runValue(strand(etab)))))
 
     ## Define cluster
-    BPPARAM <- .define_cluster(cores = 'strandCores', ...,
-        strandCores = strandCores)
+    BPPARAM <- .advanced_argument('BPPARAM',
+        .define_cluster(cores = 'strandCores', strandCores), ...)
 
     # Use at most n cores where n is the number of unique strands
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
@@ -148,7 +149,7 @@ coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
 
     ## Define cluster
     BPPARAM.chrStep <- .advanced_argument('BPPARAM.chrStep', 
-        .define_cluster(cores = 'exonCores', ..., exonCores = exonCores), ...)
+        .define_cluster(cores = 'exonCores', exonCores), ...)
     
     ## Define ChrStep function
     .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {

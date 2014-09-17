@@ -57,8 +57,8 @@ test_that('Load BigWig data', {
     expect_that(dataRaw.bw, equals(dataBW))
     expect_that(loadCoverage(bigwigs, chr = '21', cutoff = NULL,
         inputType = "BigWig", verbose = FALSE), throws_error())
-    expect_that(loadCoverage(bigwigs, chr = 'chr21', verbose = FALSE),
-        throws_error())
+    expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL, 
+        verbose = FALSE), equals(dataRaw.bw))
 })
 
 ## Loading with GenomicFiles

@@ -163,7 +163,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one',
     }    
     if(inputType == 'bam') {
         param <- ScanBamParam(which = which, 
-            flag = scanBamFlag(...))
+            flag = .scan_bam_flag(...))
         
         ## Read in the data for all the chrs
         if(is.null(tilewidth)) {
@@ -220,9 +220,26 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one',
 #' @export
 load_coverage <- loadCoverage
 
+## Build flag
+.scan_bam_flag <- function(...) {
+    scanBamFlag(
+        'isPaired' = .advanced_argument('isPaired', NA, ...),
+        'isProperPair' = .advanced_argument('isProperPair', NA, ...),
+        'isUnmappedQuery' = .advanced_argument('isUnmappedQuery', NA, ...),
+        'hasUnmappedMate' = .advanced_argument('hasUnmappedMate', NA, ...),
+        'isMinusStrand' = .advanced_argument('isMinusStrand', NA, ...),
+        'isMateMinusStrand' = .advanced_argument('isMateMinusStrand', NA, ...),
+        'isFirstMateRead' = .advanced_argument('isFirstMateRead', NA, ...),
+        'isSecondMateRead' = .advanced_argument('isSecondMateRead', NA, ...),
+        'isNotPrimaryRead' = .advanced_argument('isNotPrimaryRead', NA, ...),
+        'isNotPassingQualityControls' = .advanced_argument('isNotPassingQualityControls', NA, ...),
+        'isDuplicate' = .advanced_argument('isDuplicate', NA, ...)
+    )
+}
+
 ## GenomicFiles functions for BAM/BigWig files
 .bamMAPPER <- function(range, file, chr, verbose, ...) {
-    param <- ScanBamParam(which = range, flag = scanBamFlag(...))
+    param <- ScanBamParam(which = range, flag = .scan_bam_flag(...))
     .loadCoverageBAM(file, param, chr, verbose)
 }
 

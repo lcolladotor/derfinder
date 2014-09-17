@@ -42,8 +42,7 @@
 createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
     
     ## Coerce to GRanges
-    gr.sample <- coerceGR(sample = sample, fullCov = fullCov,
-        seqlengths = seqlengths, ...)
+    gr.sample <- coerceGR(sample = sample, fullCov = fullCov, ...)
     
     ## Export bw file
     if(.advanced_argument('verbose', TRUE, ...)) 

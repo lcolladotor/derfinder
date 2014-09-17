@@ -52,8 +52,8 @@ smallGenomicState$fullGenome <- smallGenomicState$fullGenome[
     which(smallGenomicState$fullGenome$theRegion == 'exon')[1:2] ]
 
 ## Finally, get the coverage information for each exon
-exonCov <- coverageToExon(fullCov=fullCov, genomicState=smallGenomicState,
-    L=36)
+exonCov <- coverageToExon(fullCov=fullCov,
+    genomicState=smallGenomicState$fullGenome, L=36)
 }
 \author{
 Andrew Jaffe, Leonardo Collado-Torres

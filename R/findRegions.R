@@ -18,6 +18,9 @@
 #' @param maxClusterGap This determines the maximum gap between candidate DERs. 
 #' It should be greater than \code{maxRegionGap} (0 by default).
 #' @param cutoff Threshold applied to the \code{fstats} used to determine the #' regions.
+#' @param segmentIR An IRanges object with the genomic positions that are
+#' potentials DERs. This is used in \link{calculatePvalues} to speed up
+#' permutation calculations.
 #' @param ... Arguments passed to other methods.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
@@ -79,7 +82,8 @@
 #' }
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
-    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), ...){
+    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
+    ...){
     
     ## Advanged arguments
 #' @param basic If \code{TRUE} a DataFrame is returned that has only basic
@@ -87,11 +91,6 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' to speed up permutation calculations.
     basic <- .advanced_argument('basic', FALSE, ...)
 
-#' @param segmentIR An IRanges object with the genomic positions that are
-#' potentials DERs. This is used in \link{calculatePvalues} to speed up
-#' permutation calculations.
-    segmentIR <- .advanced_argument('segmentIR', NULL, ...)
-    
 #' @param maxRegionGap This determines the maximum number of gaps between two 
 #' genomic positions to be considered part of the same candidate Differentially 
 #' Expressed Region (candidate DER). 
@@ -119,7 +118,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         if (verbose) 
             message(paste(Sys.time(),
                 'findRegions: identifying potential segments'))
-        segmentIR <- .clusterMakerRle(position, maxRegionGap, 
+        segmentIR <- .clusterMakerRle(position, maxGap = maxRegionGap,
             ranges = TRUE)
     }
     
@@ -127,7 +126,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     if (verbose) 
         message(paste(Sys.time(),
             'findRegions: segmenting F-stats information'))
-    segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
+    segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, ...)
     
     ## Work only with those that have some information
     hasInfo <- sapply(segments, length) != 0
@@ -254,8 +253,7 @@ find_regions <- findRegions
 #' will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The 
 #' function will furthermore always use the minimum of cutoff for L and the 
 #' maximum for U.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A list of IRanges objects, one for the up segments and one for the 
 #' down segments.
@@ -303,7 +301,12 @@ find_regions <- findRegions
 #' }
 #'
 
-.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
+.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), ...) {
+    
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', FALSE, ...)
     
     ## Select the cutoff
     if (verbose) message(paste(Sys.time(),
@@ -357,6 +360,7 @@ find_regions <- findRegions
 #' other are labeled as part of the same cluster.
 #' @param ranges If \code{TRUE} then an IRanges object is returned instead of 
 #' the usual integer Rle.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it 
 #' is an IRanges object with one range per cluster.
@@ -380,7 +384,7 @@ find_regions <- findRegions
 #' cluster
 #'
 
-.clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
+.clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE, ...) {
     ## Instead of using which(), identify the regions of the chr
     ## with data
     ir <- IRanges(start = start(position)[runValue(position)], 

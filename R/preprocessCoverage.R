@@ -183,7 +183,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     split.idx <- Rle(seq_len(lastloop + 1), split.len)
     if (!is.null(lowMemDir)) {
         chunks <- split(coverage, split.idx)
-        dir.create(lowMemDir)
+        dir.create(lowMemDir, recursive = TRUE)
         
         for (i in seq_len(length(chunks))) {
             if(toMatrix) {

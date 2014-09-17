@@ -100,7 +100,7 @@ setwd(initialPath)
 ## Merge the results from the different chromosomes. In this case, there's
 ## only one: chr21
 mergeResults(chrs='21', prefix='generateReport-example',
-genomicState=genomicState)
+genomicState=genomicState$fullGenome)
 
 \dontrun{
 ## You can then explore the wallclock time spent on each step

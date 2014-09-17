@@ -84,7 +84,7 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
         if (verbose) 
             message(paste(Sys.time(), 'annotateRegions: annotating'))
         
-        oo <- findOverlaps(regions, genomicState, minoverlap = 0L, ...)  # don't care about min overlap here
+        oo <- findOverlaps(regions, genomicState, minoverlap = 1L)  # don't care about min overlap here
         glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }
