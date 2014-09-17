@@ -30,12 +30,11 @@ Expressed Region (candidate DER).}
 \item{maxClusterGap}{This determines the maximum gap between candidate DERs.
 It should be greater than \code{maxRegionGap}.}
 
-\item{cutoff}{This argument is passed to \link{getSegmentsRle}.}
+\item{cutoff}{Threshold used to determine the regions.}
 
 \item{segmentIR}{An IRanges object with the genomic positions that are
-potentials DERs, normally given by \link{clusterMakerRle} with
-\code{maxGap=maxRegionGap} and \code{ranges=TRUE}. This is used in
-\link{calculatePvalues} to speed up permutation calculations.}
+potentials DERs. This is used in \link{calculatePvalues} to speed up
+permutation calculations.}
 
 \item{basic}{If \code{TRUE} a DataFrame is returned that has only basic
 information on the candidate DERs. This is used in \link{calculatePvalues}

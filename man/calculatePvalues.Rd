@@ -38,7 +38,7 @@ This argument is passed to \link{findRegions}.}
 
 \item{maxClusterGap}{This argument is passed to \link{findRegions}.}
 
-\item{cutoff}{This argument is passed to \link{getSegmentsRle}.}
+\item{cutoff}{F-statistic cutoff to use to determine segments.}
 
 \item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
 to define the number of \code{workers} used for running
@@ -175,7 +175,7 @@ head(annotation)
 Leonardo Collado-Torres
 }
 \seealso{
-\link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle},
-\link[derfinderHelper]{fstats.apply}, \link[qvalue]{qvalue}
+\link{findRegions}, \link[derfinderHelper]{fstats.apply},
+\link[qvalue]{qvalue}
 }
 

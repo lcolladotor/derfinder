@@ -37,11 +37,11 @@
 #' library('IRanges')
 #' set.seed(20130725)
 #' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
-#' cluster <- clusterMakerRle(pos, 100L)
+#' cluster <- .clusterMakerRle(pos, 100L)
 #' cluster
 #'
 
-clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
+.clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
     ## Instead of using which(), identify the regions of the chr
     ## with data
     ir <- IRanges(start = start(position)[runValue(position)], 
@@ -70,5 +70,4 @@ clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
     return(result)
 } 
 
-#' @export
-cluster_maker_rle <- clusterMakerRle
+cluster_maker_rle <- .clusterMakerRle

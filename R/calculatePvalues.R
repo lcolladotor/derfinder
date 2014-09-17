@@ -22,7 +22,7 @@
 #' This argument is passed to \link{findRegions}.
 #' @param maxRegionGap This argument is passed to \link{findRegions}.
 #' @param maxClusterGap This argument is passed to \link{findRegions}.
-#' @param cutoff This argument is passed to \link{getSegmentsRle}.
+#' @param cutoff F-statistic cutoff to use to determine segments.
 #' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
 #' to define the number of \code{workers} used for running 
 #' \link[derfinderHelper]{fstats.apply}.
@@ -70,8 +70,8 @@
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{findRegions}, \link{clusterMakerRle}, \link{getSegmentsRle}, 
-#' \link[derfinderHelper]{fstats.apply}, \link[qvalue]{qvalue}
+#' @seealso \link{findRegions}, \link[derfinderHelper]{fstats.apply}, 
+#' \link[qvalue]{qvalue}
 #' @export
 #' @aliases calculate_pvalues
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
@@ -193,7 +193,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     
     ## Avoid re-calculating possible candidate DERs for every
     ## permutation
-    segmentIR <- clusterMakerRle(position, maxRegionGap, ranges = TRUE)
+    segmentIR <- .clusterMakerRle(position, maxRegionGap, ranges = TRUE)
     
     ## Find the regions
     regs <- findRegions(position = position, chr = chr,

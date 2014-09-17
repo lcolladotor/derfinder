@@ -17,11 +17,11 @@
 #' down segments.
 #'
 #' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice}, 
-#' \link{clusterMakerRle}, \link{findRegions}
+#' \link{findRegions}
 #'
 #' @author Leonardo Collado-Torres
-#' @export
-#' @aliases get_segments_rle
+#'
+#'
 #' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
 #' @importMethodsFrom S4Vectors as.numeric
@@ -33,15 +33,15 @@
 #' cutoff <- quantile(data, .99)
 #'
 #' ## It's quite fast
-#' system.time(segs <- getSegmentsRle(data, cutoff, verbose=TRUE))
+#' system.time(segs <- .getSegmentsRle(data, cutoff, verbose=TRUE))
 #' 
 #' \dontrun{
 #' ## The output is different in look than the one from getSegments() but it's 
 #' ## use is similar.
 #' ## Plus it can be transformed into the same format as the ouptut from 
-#' ## getSegmentsRle().
+#' ## .getSegmentsRle().
 #' library("bumphunter")
-#' cluster <- clusterMakerRle(pos, 100L)
+#' cluster <- .clusterMakerRle(pos, 100L)
 #' foo <- function() {
 #'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, 
 #'     assumeSorted=TRUE)[c("upIndex", "dnIndex")]
@@ -59,11 +59,11 @@
 #' }
 #'
 
-getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
+.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
     
     ## Select the cutoff
     if (verbose) message(paste(Sys.time(),
-        "getSegmentsRle: segmenting with cutoff(s)",
+        ".getSegmentsRle: segmenting with cutoff(s)",
         paste(cutoff, collapse=", ")))
     stopifnot(length(cutoff) <= 2)
     if (length(cutoff) == 1) {
@@ -85,6 +85,3 @@ getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
     ## Done!
     return(result)
 }
-
-#' @export
-get_segments_rle <- getSegmentsRle

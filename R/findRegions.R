@@ -20,11 +20,10 @@
 #' Expressed Region (candidate DER).
 #' @param maxClusterGap This determines the maximum gap between candidate DERs. 
 #' It should be greater than \code{maxRegionGap}.
-#' @param cutoff This argument is passed to \link{getSegmentsRle}.
+#' @param cutoff Threshold used to determine the regions.
 #' @param segmentIR An IRanges object with the genomic positions that are 
-#' potentials DERs, normally given by \link{clusterMakerRle} with 
-#' \code{maxGap=maxRegionGap} and \code{ranges=TRUE}. This is used in 
-#' \link{calculatePvalues} to speed up permutation calculations.
+#' potentials DERs. This is used in \link{calculatePvalues} to speed up 
+#' permutation calculations.
 #' @param basic If \code{TRUE} a DataFrame is returned that has only basic 
 #' information on the candidate DERs. This is used in \link{calculatePvalues} 
 #' to speed up permutation calculations.
@@ -54,6 +53,7 @@
 #' 1.1.10.
 #'
 #' @author Leonardo Collado-Torres
+#'
 #' @export
 #' @aliases find_regions
 #' @importFrom IRanges IRanges start end width Views ranges
@@ -106,7 +106,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         if (verbose) 
             message(paste(Sys.time(),
                 "findRegions: identifying potential segments"))
-        segmentIR <- clusterMakerRle(position, maxRegionGap, 
+        segmentIR <- .clusterMakerRle(position, maxRegionGap, 
             ranges = TRUE)
     }
     
@@ -114,7 +114,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     if (verbose) 
         message(paste(Sys.time(),
             "findRegions: segmenting F-stats information"))
-    segments <- getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
+    segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
     
     ## Work only with those that have some information
     hasInfo <- sapply(segments, length) != 0
@@ -178,7 +178,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
                     "findRegions: identifying DER clusters"))
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
-            cluster <- clusterMakerRle(regionPos, maxClusterGap)
+            cluster <- .clusterMakerRle(regionPos, maxClusterGap)
             
             ## Extract DERs ranges and shift the IR to the cluster' scale
             derCWs <- cumsum(width(ranges(ders[[i]])))
