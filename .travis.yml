@@ -4,7 +4,6 @@ before_install:
 #  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
   - curl -OL http://raw.github.com/lcolladotor/r-travis/master/scripts/travis-tool.sh
   - chmod 755 ./travis-tool.sh
-  - chmod 755 ./travis-tool.sh
   - ./travis-tool.sh bootstrap
  
 install:
@@ -30,4 +29,4 @@ env:
   global:
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
     - R_CHECK_TIME="TRUE"
-    - RUN_ALL_TESTS="TRUE"
+    - R_CHECK_TESTS="TRUE"
