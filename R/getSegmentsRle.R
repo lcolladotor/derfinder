@@ -85,3 +85,5 @@
     ## Done!
     return(result)
 }
+
+.get_segments_rle <- .getSegmentsRle

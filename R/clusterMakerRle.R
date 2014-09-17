@@ -49,7 +49,6 @@
     
     ## Apply the gap reduction
     ir.red <- reduce(ir, min.gapwidth = maxGap + 1)
-    rm(ir)
     
     ## Identify the clusters
     clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position, 
@@ -70,4 +69,4 @@
     return(result)
 } 
 
-cluster_maker_rle <- .clusterMakerRle
+.cluster_maker_rle <- .clusterMakerRle
