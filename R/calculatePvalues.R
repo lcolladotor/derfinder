@@ -5,11 +5,7 @@
 #' The area of the statistics from these segments are then used to calculate 
 #' p-values for the original regions.
 #' 
-#' @param coveragePrep A list with \code{$coverageProcessed}, 
-#' \code{mclapplyIndeex}, and \code{$position} normally generated using 
-#' \link{preprocessCoverage}.
-#' @param models A list with \code{$mod} and \code{$mod0} normally generated 
-#' using \link{makeModels}.
+#' @inheritParams calculateStats
 #' @param fstats A numerical Rle with the F-statistics normally generated using 
 #' \link{calculateStats}.
 #' @param nPermute The number of permutations. Note that for a full chromosome, 
@@ -20,32 +16,11 @@
 #' seeds to be used for each permutation. If \code{NULL} no seeds are used.
 #' @param chr A single element character vector specifying the chromosome name. 
 #' This argument is passed to \link{findRegions}.
-#' @param maxRegionGap This argument is passed to \link{findRegions}.
-#' @param maxClusterGap This argument is passed to \link{findRegions}.
 #' @param cutoff F-statistic cutoff to use to determine segments.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers} used for running 
-#' \link[derfinderHelper]{fstats.apply}.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
 #' for the p-values and the second element is used for the q-values.
-#' @param adjustF A single value to adjust that is added in the denominator of 
-#' the F-stat calculation. Useful when the Residual Sum of Squares of the 
-#' alternative model is very small.
-#' @param lowMemDir The directory where the processed chunks are saved when 
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param method This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply}. Check the details there for more 
-#' information.
-#' @param scalefac This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-#' in \link{preprocessCoverage}.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A list with four components:
 #' \describe{
@@ -79,29 +54,28 @@
 #' @importFrom IRanges Views RleList values 'values<-' nrow
 #' @importFrom S4Vectors Rle DataFrame
 #' @importMethodsFrom S4Vectors as.numeric '$'
-#' @importFrom BiocParallel SnowParam SerialParam bplapply
+#' @importFrom BiocParallel bplapply
 #' @importFrom qvalue qvalue
 #' @importFrom derfinderHelper fstats.apply
 #'
 #' @examples
 #' ## Collapse the coverage information
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-#'     verbose=TRUE)
+#'     verbose = TRUE)
 #' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, 
-#'     verbose=TRUE)
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
 #' 
 #' ## Build the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+#' models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 #'
 #' ## Preprocess the data
 #' ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run'
 #' ## section
-#' prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0, 
-#'     scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+#' prep <- preprocessCoverage(genomeData, groupInfo = group, cutoff = 0, 
+#'     scalefac = 32, chunksize = NULL, colsubset = NULL, mc.cores = 4)
 #' 
 #' ## Get the F statistics
 #' fstats <- genomeFstats
@@ -119,7 +93,7 @@
 #'
 #' ## Calculate the p-values and define the regions of interest.
 #' regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1, 
-#'     chr='chr21', cutoff=cutoff, mc.cores=1, method='regular')
+#'     chr = 'chr21', cutoff = cutoff, mc.cores = 1, method = 'regular')
 #' regsWithP
 #'
 #' \dontrun{
@@ -156,11 +130,8 @@
 
 calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
-    chr, maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
-        0.99), mc.cores = getOption("mc.cores", 1L),
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE, 
-    significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
-    method = 'Matrix', scalefac = 32, chrsStyle = "UCSC") {
+    chr, cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1), ...) {
+        
     ## Setup
     if (is.null(seeds)) {
         seeds <- rep(NA, nPermute)
@@ -175,6 +146,15 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         2)
     stopifnot(length(significantCut) == 2 & all(significantCut >= 
         0 & significantCut <= 1))
+        
+    ## Advanged arguments
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     ## Identify the data segments
     if (verbose) 
@@ -187,19 +167,18 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     groupMeans <- coveragePrep$groupMeans
     mclapplyIndex <- coveragePrep$mclapplyIndex
     coverageProcessed <- coveragePrep$coverageProcessed
+    lowMemDir <- .advanced_argument('lowMemDir', NULL, ...)
     if (is.null(lowMemDir) & is.null(coverageProcessed)) 
         stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
     rm(coveragePrep)
     
     ## Avoid re-calculating possible candidate DERs for every
     ## permutation
-    segmentIR <- .clusterMakerRle(position, maxRegionGap, ranges = TRUE)
+    segmentIR <- .clusterMakerRle(position = position, ranges = TRUE, ...)
     
     ## Find the regions
-    regs <- findRegions(position = position, chr = chr,
-        maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap,
-        fstats = fstats, cutoff = cutoff, segmentIR = segmentIR,
-        chrsStyle = chrsStyle, verbose = verbose)
+    regs <- findRegions(position = position, chr = chr, fstats = fstats,
+        cutoff = cutoff, segmentIR = segmentIR, ...)
     if (is.null(regs)) {
         final <- list(regions = NULL, nullStats = NULL, nullWidths = NULL, 
             nullPermutation = NULL)
@@ -263,25 +242,18 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         mod0.p <- models$mod0[idx.permute, , drop = FALSE]
         
         ## Define cluster
-        if(mc.cores > 1) {
-            BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
-        } else {
-            BPPARAM <- SerialParam()
-        }
+        BPPARAM <- .define_cluster(...)
         
         
         ## Get the F-statistics
         fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
-            adjustF = adjustF, lowMemDir = lowMemDir, method = method, 
-            scalefac = scalefac, BPPARAM = BPPARAM)
+            BPPARAM = BPPARAM, ...)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
         
         ## Find the segments
-        regs.perm <- findRegions(chr = chr, maxRegionGap = maxRegionGap, 
-            maxClusterGap = maxClusterGap, fstats = fstats.output, 
-            cutoff = cutoff, segmentIR = segmentIR, basic = TRUE, 
-            verbose = verbose)
+        regs.perm <- findRegions(chr = chr, fstats = fstats.output, 
+            cutoff = cutoff, segmentIR = segmentIR, basic = TRUE, ...)
         
         ## Calculate mean statistics
         if (!is.null(regs.perm)) {

@@ -1,3 +1,12 @@
+CHANGES IN VERSION 0.0.74
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Most functions had their arguments changed to increase usability. Some
+        have advanced arguments inside the code.
+
+
 CHANGES IN VERSION 0.0.71
 -------------------------
 

@@ -4,8 +4,7 @@
 \alias{collapse_full_coverage}
 \title{Collapse full coverage information for efficient quantile computations}
 \usage{
-collapseFullCoverage(fullCov, colsubset = NULL, save = FALSE,
-  verbose = FALSE)
+collapseFullCoverage(fullCov, colsubset = NULL, save = FALSE, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -16,8 +15,7 @@ generated using \link{fullCoverage}.}
 
 \item{save}{If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.}
 
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with one element per sample. Then per sample, a list with two vector

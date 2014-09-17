@@ -8,8 +8,7 @@
 #' @param txdb A \link[GenomicFeatures]{TxDb} object.
 #' @param chrs The names of the chromosomes to use as denoted in the 
 #' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A \code{GRangesList} object with two elements: \code{fullGenome} and 
 #' \code{codingGenome}. Both have metadata information for the type of region 
@@ -80,8 +79,13 @@
 #' }
 
 makeGenomicState <- function(txdb, chrs = paste0('chr', c(1:22, 
-    'X', 'Y')), chrsStyle = 'UCSC') {
-    stopifnot(is(txdb, "TxDb"))    
+    'X', 'Y')), ...) {
+    stopifnot(is(txdb, "TxDb"))
+    
+    ## Advanged argumentsa
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
     
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs

@@ -9,28 +9,16 @@
 #' @param position A logical Rle of genomic positions. This is generated in 
 #' \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage} 
 #' if \code{colsubset} is not \code{NULL}.
-#' @param fstats A numeric Rle with the F-statistics. Normally obtained using 
+#' @param fstats A numeric Rle with the F-statistics. Usually obtained using 
 #' \link{calculateStats}.
 #' @param chr A single element character vector specifying the chromosome name.
-#' @param oneTable If \code{TRUE} only one results GRanges is returned. 
+#' @param oneTable If \code{TRUE} only one GRanges is returned. 
 #' Otherwise, a GRangesList with two components is returned: one for the 
 #' regions with positive values and one for the negative values.
-#' @param maxRegionGap This determines the maximum number of gaps between two 
-#' genomic positions to be considered part of the same candidate Differentially 
-#' Expressed Region (candidate DER).
 #' @param maxClusterGap This determines the maximum gap between candidate DERs. 
-#' It should be greater than \code{maxRegionGap}.
-#' @param cutoff Threshold used to determine the regions.
-#' @param segmentIR An IRanges object with the genomic positions that are 
-#' potentials DERs. This is used in \link{calculatePvalues} to speed up 
-#' permutation calculations.
-#' @param basic If \code{TRUE} a DataFrame is returned that has only basic 
-#' information on the candidate DERs. This is used in \link{calculatePvalues} 
-#' to speed up permutation calculations.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' It should be greater than \code{maxRegionGap} (0 by default).
+#' @param cutoff Threshold applied to the \code{fstats} used to determine the #' regions.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
 #' Each of them has the following metadata variables.
@@ -47,7 +35,9 @@
 #' }
 #'
 #' @details \link[bumphunter]{regionFinder} adapted to Rle world.
+#'
 #' @seealso \link[bumphunter]{regionFinder}, \link{calculatePvalues}
+#'
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
 #' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
 #' 1.1.10.
@@ -89,9 +79,32 @@
 #' }
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
-    maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats, 
-        0.99), segmentIR = NULL, basic = FALSE, chrsStyle = "UCSC", 
-        verbose = TRUE) {
+    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), ...){
+    
+    ## Advanged arguments
+#' @param basic If \code{TRUE} a DataFrame is returned that has only basic
+#' information on the candidate DERs. This is used in \link{calculatePvalues}
+#' to speed up permutation calculations.
+    basic <- .advanced_argument('basic', FALSE, ...)
+
+#' @param segmentIR An IRanges object with the genomic positions that are
+#' potentials DERs. This is used in \link{calculatePvalues} to speed up
+#' permutation calculations.
+    segmentIR <- .advanced_argument('segmentIR', NULL, ...)
+    
+#' @param maxRegionGap This determines the maximum number of gaps between two 
+#' genomic positions to be considered part of the same candidate Differentially 
+#' Expressed Region (candidate DER). 
+    maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
+        
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
     if (!basic) {
         if (is.null(segmentIR)) {
             stopifnot(!is.null(position))
@@ -105,7 +118,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     if (is.null(segmentIR)) {
         if (verbose) 
             message(paste(Sys.time(),
-                "findRegions: identifying potential segments"))
+                'findRegions: identifying potential segments'))
         segmentIR <- .clusterMakerRle(position, maxRegionGap, 
             ranges = TRUE)
     }
@@ -113,7 +126,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Create the F-stats segments
     if (verbose) 
         message(paste(Sys.time(),
-            "findRegions: segmenting F-stats information"))
+            'findRegions: segmenting F-stats information'))
     segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, verbose = verbose)
     
     ## Work only with those that have some information
@@ -123,7 +136,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     if (!any(hasInfo)) {
         if (verbose) 
             message(paste(Sys.time(),
-                "findRegions: found no segments to work with!!"))
+                'findRegions: found no segments to work with!!'))
         return(NULL)
     }
     
@@ -133,7 +146,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Find the actual DERs
     if (verbose) 
         message(paste(Sys.time(),
-            "findRegions: identifying candidate DERs"))
+            'findRegions: identifying candidate DERs'))
     ders <- lapply(segments, function(fcut) {
         ## Merge with segment ranges
         all <- c(fcut, segmentIR)
@@ -154,7 +167,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     }
     
     ## Build the output shell
-    res <- vector("list", sum(hasInfo))
+    res <- vector('list', sum(hasInfo))
     names(res) <- names(hasInfo)[hasInfo]
     
     ## Use UCSC names by default
@@ -175,7 +188,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
             ## Identify clusters
             if (verbose) 
                 message(paste(Sys.time(),
-                    "findRegions: identifying DER clusters"))
+                    'findRegions: identifying DER clusters'))
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
             cluster <- .clusterMakerRle(regionPos, maxClusterGap)
@@ -205,7 +218,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     
     if (!basic) {
         ## Fix names and format
-        names(res) <- gsub("Index", "", names(res))
+        names(res) <- gsub('Index', '', names(res))
         res <- GRangesList(res)
         
         ## Finish up
@@ -252,12 +265,12 @@ find_regions <- findRegions
 #'
 #' @author Leonardo Collado-Torres
 #'
-#'
+#' @keywords internal 
 #' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
 #' @importMethodsFrom S4Vectors as.numeric
 #' @examples
-#' library("IRanges")
+#' library('IRanges')
 #' set.seed(20130725)
 #' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
 #' data <- Rle(rnorm(sum(pos)))
@@ -271,17 +284,17 @@ find_regions <- findRegions
 #' ## use is similar.
 #' ## Plus it can be transformed into the same format as the ouptut from 
 #' ## .getSegmentsRle().
-#' library("bumphunter")
+#' library('bumphunter')
 #' cluster <- .clusterMakerRle(pos, 100L)
 #' foo <- function() {
 #'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, 
-#'     assumeSorted=TRUE)[c("upIndex", "dnIndex")]
+#'     assumeSorted=TRUE)[c('upIndex', 'dnIndex')]
 #'     segs.ir <- lapply(segs2, function(ind) {
 #'         tmp <- lapply(ind, function(segment) {
-#'             c("start"=min(segment), "end"=max(segment))
+#'             c('start'=min(segment), 'end'=max(segment))
 #'         })
 #'         info <- do.call(rbind, tmp)
-#'         IRanges(start=info[,"start"], end=info[,"end"])
+#'         IRanges(start=info[,'start'], end=info[,'end'])
 #'     })
 #'     return(segs.ir)
 #' }
@@ -294,8 +307,8 @@ find_regions <- findRegions
     
     ## Select the cutoff
     if (verbose) message(paste(Sys.time(),
-        ".getSegmentsRle: segmenting with cutoff(s)",
-        paste(cutoff, collapse=", ")))
+        '.getSegmentsRle: segmenting with cutoff(s)',
+        paste(cutoff, collapse=', ')))
     stopifnot(length(cutoff) <= 2)
     if (length(cutoff) == 1) {
         cutoff <- c(-cutoff, cutoff)
@@ -303,15 +316,15 @@ find_regions <- findRegions
     cutoff <- sort(cutoff)
     
     ## Find the segments
-    result <- lapply(c("upIndex", "dnIndex"), function(ind) {
-        if(ind == "upIndex") {
+    result <- lapply(c('upIndex', 'dnIndex'), function(ind) {
+        if(ind == 'upIndex') {
             fcut <- slice(x=x, lower=cutoff[2], rangesOnly=TRUE)
         } else {
             fcut <- slice(x=x, upper=cutoff[1], rangesOnly=TRUE)
         }
         return(fcut)
     })
-    names(result) <- c("upIndex", "dnIndex")
+    names(result) <- c('upIndex', 'dnIndex')
 
     ## Done!
     return(result)
@@ -341,20 +354,20 @@ find_regions <- findRegions
 #' 
 #' @param position A logical Rle indicating the chromosome positions.
 #' @param maxGap An integer. Genomic locations within \code{maxGap} from each 
-#' other are placed into the same cluster.
+#' other are labeled as part of the same cluster.
 #' @param ranges If \code{TRUE} then an IRanges object is returned instead of 
 #' the usual integer Rle.
 #'
 #' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it 
 #' is an IRanges object with one range per cluster.
 #'
+#' @keywords internal 
 #' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
 #' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
 #' 1.1.10.
 #' @author Leonardo Collado-Torres
 #'
-#' @aliases cluster_maker_rle
 #' @importFrom IRanges IRanges start end reduce Views runLength
 #' @importMethodsFrom IRanges length sum
 #' @importFrom S4Vectors Rle runValue

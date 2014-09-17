@@ -4,8 +4,7 @@
 \alias{sample_depth}
 \title{Calculate adjustments for library size}
 \usage{
-sampleDepth(collapsedFull, probs = c(0.5, 1), nonzero = TRUE,
-  scalefac = 32, center = FALSE, verbose = FALSE)
+sampleDepth(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...)
 }
 \arguments{
 \item{collapsedFull}{The full coverage data collapsed by sample as produced
@@ -14,17 +13,10 @@ by \link{collapseFullCoverage}.}
 \item{probs}{Number(s) between 0 and 1 representing the quantile(s) of
 interest. For example, 0.5 is the median.}
 
-\item{nonzero}{If \code{TRUE} only the nonzero counts are used to calculate
-the library size adjustment.}
-
 \item{scalefac}{Number added to the sample coverage adjustments before the
 log2 transformation.}
 
-\item{center}{If \code{TRUE} the sample coverage adjustements are centered.
-In some cases, this could be helpful for interpretation purposes.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A matrix (vector of \code{length(probs) == 1}) with the library size depth
@@ -48,8 +40,7 @@ collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
     verbose=TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), nonzero=TRUE,
-    verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), verbose=TRUE)
 sampleDepths
 }
 \author{

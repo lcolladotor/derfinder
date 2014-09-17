@@ -4,9 +4,7 @@
 \alias{create_bw}
 \title{Export coverage to BigWig files}
 \usage{
-createBw(fullCov, path = ".", keepGR = TRUE,
-  mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE)
+createBw(fullCov, path = ".", keepGR = TRUE, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -19,14 +17,7 @@ using \link{fullCoverage}.}
 created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList}
 are returned. Otherwise they are discarded.}
 
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers}. Use at most one core per chromosome.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}
@@ -35,6 +26,9 @@ with the output for \link{coerceGR} for each of the samples.
 \description{
 Using output from \link{fullCoverage}, export the coverage from all the
 samples to BigWig files using \link{createBwSample}.
+}
+\details{
+Use at most one core per chromosome.
 }
 \examples{
 ## Create a small fullCov object with data only for chr21

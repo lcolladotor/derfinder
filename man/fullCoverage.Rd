@@ -6,12 +6,7 @@
 list of chromosomes}
 \usage{
 fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
-  mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), cutoff = NULL,
-  inputType = "bam", isMinusStrand = NA, filter = "one",
-  returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
-  targetSize = 8e+07, chrsStyle = "UCSC", tilewidth = NULL,
-  mc.cores.load = mc.cores, verbose = TRUE)
+  cutoff = NULL, ...)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -36,52 +31,9 @@ have the same length as \code{chrs}.}
 \item{outputs}{This argument is passed to the \code{output} argument of
 \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.}
 
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers}. You should use at most one core per
-chromosome.}
+\item{cutoff}{This argument is passed to \link{filterData}.}
 
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
-\item{cutoff}{This argument is passed to \link{filterData}. If set to
-\code{NULL}, then the data is loaded and only the \code{$coverage} is
-returned.}
-
-\item{inputType}{Has to be either \code{bam} or \code{BigWig}. It specifies
-the format of the raw data files.}
-
-\item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,
-\code{FALSE} for positive strands and \code{NA} for both. This argument is
-passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.}
-
-\item{filter}{This argument is passed to \link{filterData}. It is only used
-when \code{cutoff} is non-NULL.}
-
-\item{returnMean}{This argument is passed to \link{filterData}. It is only
-used when \code{cutoff} is non-NULL.}
-
-\item{returnCoverage}{This argument is passed to \link{filterData}. It is
-only used when \code{cutoff} is non-NULL.}
-
-\item{totalMapped}{The total number of reads mapped for each sample.
-Providing this data adjusts the coverage to reads in \code{targetSize}
-library prior to filtering. By default, to reads per 80 million reads.}
-
-\item{targetSize}{The target library size to adjust the coverage to. Used
-only when \code{totalMapped} is specified.}
-
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
-
-\item{tilewidth}{This argument is passed to \link{loadCoverage}.
-When specified, \link[GenomicRanges]{tileGenome} is used to
-break up the chromosome into chunks.}
-
-\item{mc.cores.load}{Controls the number of cores to be used per chr for
-loading the data in chunks. Only used when \code{tilewidth} is specified.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with one element per chromosome.

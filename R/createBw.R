@@ -10,15 +10,12 @@
 #' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} objects 
 #' created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList} 
 #' are returned. Otherwise they are discarded.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers}. Use at most one core per chromosome.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}
 #' with the output for \link{coerceGR} for each of the samples.
+#'
+#' @details Use at most one core per chromosome.
 #'
 #' @author Leonardo Collado-Torres
 #' @seealso \link[GenomicRanges]{GRangesList}, \link[rtracklayer]{export}, 
@@ -52,23 +49,17 @@
 #'
 
 ## Exports fullCoverage() output to BigWig files
-createBw <- function(fullCov, path = '.', keepGR = TRUE, 
-    mc.cores = getOption('mc.cores', 1L), 
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
+createBw <- function(fullCov, path = '.', keepGR = TRUE, ...) {
     
-    ## Determine seqlengths and sample names
+    ## Determine sample names
     samples <- names(fullCov[[1]])
     if('coverage' %in% samples) {
-        seqlengths <- sapply(fullCov, function(x) { nrow(x$coverage )})
         samples <- names(fullCov[[1]]$coverage)
-    } else {
-        seqlengths <- sapply(fullCov, nrow)    
     }
     
     ## Coerce to GR
     gr.samples <- lapply(samples, createBwSample, path = path,
-        fullCov = fullCov, seqlengths = seqlengths, keepGR = keepGR,
-        mc.cores = mc.cores, mc.outfile = mc.outfile, verbose = verbose)
+        fullCov = fullCov, keepGR = keepGR, ...)
     
     ## Done
     if(keepGR) {

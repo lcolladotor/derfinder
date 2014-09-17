@@ -15,15 +15,7 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers}. You should use at most one core per 
-#' chromosome.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return a list of data.frame where each data.frame has the coverage 
 #' information (nrow = width of region, ncol = number of samples) for a given 
@@ -42,13 +34,15 @@
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @importFrom IRanges IRanges
 #' @importMethodsFrom S4Vectors as.factor
-#' @importFrom BiocParallel SnowParam SerialParam bpmapply
+#' @importFrom BiocParallel bpmapply
 #'
 #' @details When \code{fullCov} is the output of \link{loadCoverage} with
 #' \code{cutoff} non-NULL, \link{getRegionCoverage} assumes that the regions
 #' come from the same data. Meaning that \link{filterData} was not used again.
 #' This ensures that the regions are a subset of the data available in 
 #' \code{fullCov}.
+#'
+#' You should use at most one core per chromosome.
 #' 
 #'
 #' @examples
@@ -65,15 +59,24 @@
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
 getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
-    targetSize = 80e6, mc.cores = 1,
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), chrsStyle = "UCSC",
-    verbose = TRUE) {
+    targetSize = 80e6, ...) {
+        
+    ## Advanged arguments
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     names(regions) <- seq_len(length(regions))  # add names
     
     ## Use UCSC style names by default
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     seqlevelsStyle(regions) <- chrsStyle
+    
+    ## TODO check seqlengths are properly given in 'regions'
         
     # split by chromosome
     regions.chrs <- as.factor(seqnames(regions))
@@ -85,20 +88,16 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
     moreArgs <- list(totalMapped = totalMapped, verbose = verbose)
     
     ## Define cluster
-    if(mc.cores > 1) {
-        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
-    } else {
-        BPPARAM <- SerialParam()
-    }
+    BPPARAM <- .define_cluster(...)
     
     counts <- bpmapply(function(chr, covInfo, g, totalMapped, verbose) {
         
         ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
         if (verbose) 
-            message(paste(Sys.time(), "getRegionCoverage: processing", chr))
+            message(paste(Sys.time(), 'getRegionCoverage: processing', chr))
         
         ## Check whether fullCov has been filtered, then subset
-        if(all(c("coverage", "position") %in% names(covInfo))) {
+        if(all(c('coverage', 'position') %in% names(covInfo))) {
             yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
         } else {
             yy <- covInfo[ranges(g), ]  # better subset
@@ -117,22 +116,22 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
         res <- split(as.data.frame(yy), ind)
         
         if (verbose) 
-            message(paste(Sys.time(), "getRegionCoverage: done processing", 
+            message(paste(Sys.time(), 'getRegionCoverage: done processing', 
                 chr))
                 
         ## Done
         return(res)
     }, names(fullCov), fullCov, grl, MoreArgs = moreArgs, BPPARAM = BPPARAM,
     SIMPLIFY = FALSE)
-    covList <- do.call("c", counts)  # collect list elements into one large list
+    covList <- do.call('c', counts)  # collect list elements into one large list
     
     # put in original order
-    names(covList) <- sapply(strsplit(names(covList), "\\."), 
-        "[", 2)
+    names(covList) <- sapply(strsplit(names(covList), '\\.'), 
+        '[', 2)
     theData <- covList[order(as.numeric(names(covList)))]
     
     if (sum(sapply(theData, nrow)) != sum(width(regions))) {
-        stop("The total width of the regions did not match with the dimensions of the extracted coverage data.")
+        stop('The total width of the regions did not match with the dimensions of the extracted coverage data.')
     }
     
     return(theData)

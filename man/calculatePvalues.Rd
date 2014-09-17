@@ -6,15 +6,11 @@
 \usage{
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
-  maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE,
-  significantCut = c(0.05, 0.1), adjustF = 0, lowMemDir = NULL,
-  method = "Matrix", scalefac = 32, chrsStyle = "UCSC")
+  cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1), ...)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
-\code{mclapplyIndeex}, and \code{$position} normally generated using
+\code{$mclapplyIndex}, and \code{$position} normally generated using
 \link{preprocessCoverage}.}
 
 \item{models}{A list with \code{$mod} and \code{$mod0} normally generated
@@ -34,43 +30,13 @@ seeds to be used for each permutation. If \code{NULL} no seeds are used.}
 \item{chr}{A single element character vector specifying the chromosome name.
 This argument is passed to \link{findRegions}.}
 
-\item{maxRegionGap}{This argument is passed to \link{findRegions}.}
-
-\item{maxClusterGap}{This argument is passed to \link{findRegions}.}
-
 \item{cutoff}{F-statistic cutoff to use to determine segments.}
-
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers} used for running
-\link[derfinderHelper]{fstats.apply}.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
 
 \item{significantCut}{A vector of length two specifiying the cutoffs used to
 determine significance. The first element is used to determine significance
 for the p-values and the second element is used for the q-values.}
 
-\item{adjustF}{A single value to adjust that is added in the denominator of
-the F-stat calculation. Useful when the Residual Sum of Squares of the
-alternative model is very small.}
-
-\item{lowMemDir}{The directory where the processed chunks are saved when
-using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
-
-\item{method}{This argument is passed to
-\link[derfinderHelper]{fstats.apply}. Check the details there for more
-information.}
-
-\item{scalefac}{This argument is passed to
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used
-in \link{preprocessCoverage}.}
-
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with four components:
@@ -104,22 +70,21 @@ p-values for the original regions.
 \examples{
 ## Collapse the coverage information
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-    verbose=TRUE)
+    verbose = TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
-    verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 
 ## Preprocess the data
 ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run'
 ## section
-prep <- preprocessCoverage(genomeData, groupInfo=group, cutoff=0,
-    scalefac=32, chunksize=NULL, colsubset=NULL, mc.cores=4)
+prep <- preprocessCoverage(genomeData, groupInfo = group, cutoff = 0,
+    scalefac = 32, chunksize = NULL, colsubset = NULL, mc.cores = 4)
 
 ## Get the F statistics
 fstats <- genomeFstats
@@ -137,7 +102,7 @@ cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1,
-    chr='chr21', cutoff=cutoff, mc.cores=1, method='regular')
+    chr = 'chr21', cutoff = cutoff, mc.cores = 1, method = 'regular')
 regsWithP
 
 \dontrun{

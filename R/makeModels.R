@@ -69,29 +69,29 @@ makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
     mod <- mod0 <- NULL
     
     ## Build the adjusted variables if needed
-    string1 <- ""
+    string1 <- ''
     if (!is.null(adjustvars)) {
         if (NCOL(adjustvars) == 1) {
             ## Only if a vector was supplied
             adjustvars <- as.data.frame(adjustvars)
         }
         for (i in seq_len(NCOL(adjustvars))) {
-            eval(parse(text = paste0("adjustVar", i, " <- adjustvars[,", 
-                i, "]")))
-            string1 <- paste(string1, paste0("adjustVar", i), 
-                sep = "+")
+            eval(parse(text = paste0('adjustVar', i, ' <- adjustvars[,', 
+                i, ']')))
+            string1 <- paste(string1, paste0('adjustVar', i), 
+                sep = '+')
         }
     }
     if (!testIntercept) {
-        eval(parse(text = paste0("mod = model.matrix(~ testvars + sampleDepths", 
-            string1, ")")))
-        eval(parse(text = paste0("mod0 = model.matrix(~ + sampleDepths", 
-            string1, ")")))
+        eval(parse(text = paste0('mod = model.matrix(~ testvars + sampleDepths', 
+            string1, ')')))
+        eval(parse(text = paste0('mod0 = model.matrix(~ + sampleDepths', 
+            string1, ')')))
     } else {
-        eval(parse(text = paste0("mod = model.matrix(~ sampleDepths", 
-            string1, ")")))
-        eval(parse(text = paste0("mod0 = model.matrix(~ 0 + sampleDepths", 
-            string1, ")")))
+        eval(parse(text = paste0('mod = model.matrix(~ sampleDepths', 
+            string1, ')')))
+        eval(parse(text = paste0('mod0 = model.matrix(~ 0 + sampleDepths', 
+            string1, ')')))
     }
     
     ## Check that the matrices are full rank
@@ -99,9 +99,9 @@ makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
         r <- qr(mod)$rank
         drop.mod.col <- colnames(mod)[(r + 1):ncol(mod)]
         warning(paste(
-            "Dropping from the alternative model matrix (mod) the column(s)", 
-            paste(drop.mod.col, collapse = ", "),
-            "as the matrix is not full rank."))
+            'Dropping from the alternative model matrix (mod) the column(s)', 
+            paste(drop.mod.col, collapse = ', '),
+            'as the matrix is not full rank.'))
         mod <- mod[, seq_len(r), drop = FALSE]
         stopifnot(ncol(mod) > 0)
         
@@ -112,9 +112,9 @@ makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
             mod0 <- mod0[, !colnames(mod0) %in% drop.mod0.col, 
                 drop = FALSE]
             warning(paste(
-                "Dropping from the null model matrix (mod0) the column(s)", 
-                paste(drop.mod0.col, collapse = ", "),
-                "as they were dropped in the alternative model matrix (mod)."))
+                'Dropping from the null model matrix (mod0) the column(s)', 
+                paste(drop.mod0.col, collapse = ', '),
+                'as they were dropped in the alternative model matrix (mod).'))
         }
         stopifnot(ncol(mod0) > 0)
     }

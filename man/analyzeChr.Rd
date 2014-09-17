@@ -4,36 +4,23 @@
 \alias{analyze_chr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-analyzeChr(chr, coverageInfo, models, cutoffPre = 5, colsubset = NULL,
-  scalefac = 32, chunksize = NULL, adjustF = 0, cutoffFstat = 1e-08,
+analyzeChr(chr, coverageInfo, models, cutoffPre = 5, cutoffFstat = 1e-08,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
-  "", Sys.Date())) + seq_len(nPermute), maxRegionGap = 0L,
-  maxClusterGap = 300L, groupInfo, subject = "hg19",
-  mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), writeOutput = TRUE,
-  returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
-  method = "Matrix", chrsStyle = "UCSC", verbose = TRUE)
+  "", Sys.Date())) + seq_len(nPermute), groupInfo, subject = "hg19",
+  writeOutput = TRUE, runAnnotation = TRUE, ...)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE}
 and for \link[bumphunter]{annotateNearest}.}
 
-\item{coverageInfo}{The output from \link{loadCoverage}.}
+\item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
+the coverage data and a logical Rle --\code{$position}-- with the positions
+that passed the cutoff. This object is generated using \link{loadCoverage}.}
 
 \item{models}{The output from \link{makeModels}.}
 
 \item{cutoffPre}{This argument is passed to \link{preprocessCoverage}
 (\code{cutoff}).}
-
-\item{colsubset}{This argument is passed to \link{preprocessCoverage}.}
-
-\item{scalefac}{This argument is passed to \link{preprocessCoverage}.}
-
-\item{chunksize}{This argument is passed to \link{preprocessCoverage}.}
-
-\item{adjustF}{A single value to adjust that is added in the denominator of
-the F-stat calculation. Useful when the Residual Sum of Squares of the
-alternative model is very small.}
 
 \item{cutoffFstat}{This is used to determine the cutoff argument of
 \link{calculatePvalues} and it's behaviour is determined by
@@ -45,13 +32,13 @@ alternative model is very small.}
 calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is
 passed to \link{calculatePvalues} without any other calculation.}
 
-\item{nPermute}{This argument is passed to \link{calculatePvalues}.}
+\item{nPermute}{The number of permutations. Note that for a full chromosome,
+a small amount (10) of permutations is sufficient. If set to 0, no
+permutations are performed and thus no null regions are used, however, the
+\code{$regions} component is created.}
 
-\item{seeds}{This argument is passed to \link{calculatePvalues}.}
-
-\item{maxRegionGap}{This argument is passed to \link{calculatePvalues}.}
-
-\item{maxClusterGap}{This argument is passed to \link{calculatePvalues}.}
+\item{seeds}{An integer vector of length \code{nPermute} specifying the
+seeds to be used for each permutation. If \code{NULL} no seeds are used.}
 
 \item{groupInfo}{A factor specifying the group membership of each sample
 that can later be used with the plotting functions in the
@@ -61,35 +48,15 @@ that can later be used with the plotting functions in the
 \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right
 now.}
 
-\item{mc.cores}{This argument is passed to \link{preprocessCoverage} (useful
-if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
 \item{writeOutput}{If \code{TRUE}, output Rdata files are created at each
 step inside a directory with the chromosome name (example: 'chr21' if
 \code{chrnum='21'}). One Rdata files is created for each component described
 in the return section.}
 
-\item{returnOutput}{If \code{TRUE}, it returns a list with the results from
-each step. Otherwise, it returns \code{NULL}.}
-
 \item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateNearest} is
 run. Otherwise this step is skipped.}
 
-\item{lowMemDir}{The directory where the processed chunks are saved when
-using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
-
-\item{method}{This argument is passed to
-\link[derfinderHelper]{fstats.apply}. Check the details there for more
-information.}
-
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 If \code{returnOutput=TRUE}, a list with six components:
@@ -114,10 +81,10 @@ and \link[bumphunter]{annotateNearest}.
 \examples{
 ## Collapse the coverage information
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-    verbose=TRUE)
+    verbose = TRUE)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
+sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), nonzero=TRUE,
     verbose=TRUE)
 
 ## Build the models

@@ -11,7 +11,7 @@
 #' \code{NULL} no group mean coverages are calculated. If the factor has more 
 #' than one level, the first one will be used to calculate the log2 fold change 
 #' in \link{calculatePvalues}.
-#' @param cutoff This argument is passed to \link{filterData}.
+#' @inheritParams filterData
 #' @param colsubset Optional vector of column indices of 
 #' \code{coverageInfo$coverage} that denote samples you wish to include in 
 #' analysis. 
@@ -19,20 +19,14 @@
 #' counts present a problem.  What number should we add to the entire matrix?
 #' @param chunksize How many rows of \code{coverageInfo$coverage} should be 
 #' processed at a time?
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
 #' @param lowMemDir If specified, each chunk is saved into a separate Rdata 
-#' file under \code{lowMemDir} and later loaded in \link{fstats.apply} when 
+#' file under \code{lowMemDir} and later loaded in 
+#' \link[derfinderHelper]{fstats.apply} when 
 #' running \link{calculateStats} and \link{calculatePvalues}. Using this option 
 #' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
 #' loads only the data needed for the chunk processing. The downside is a bit 
-#' longer computation time due to input/output. NOTE: this might need to be
-#' udpated after transitioning from parallel to BiocParallel.
-#' @param toMatrix Determines whether the data in the chunk should already be 
-#' saved as a Matrix object, which can be useful to reduce the computation time 
-#' of the F-statistics. Only used when \code{lowMemDir} is not NULL. 
-#' @param mc.cores This argument is passed to \link[BiocParallel]{bplapply} to 
-#' run \link{fstats.apply}.
+#' longer computation time due to input/output.
+#' @param ... Arguments passed to other methods.
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to 
 #' determine the \code{chunksize}. This is useful if you want to split the data 
@@ -78,19 +72,31 @@
 #'
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()
-#' dataReady <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, 
-#'     chunksize=1e3, colsubset=NULL, verbose=TRUE)
+#' dataReady <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32, 
+#'     chunksize = 1e3, colsubset = NULL, verbose = TRUE)
 #' names(dataReady)
 #' dataReady
 
 preprocessCoverage <- function(coverageInfo, groupInfo = NULL, 
     cutoff = 5, scalefac = 32, chunksize = 5e+06, colsubset = NULL, 
-    mc.cores = getOption("mc.cores", 1L), lowMemDir = NULL,
-    toMatrix = !is.null(lowMemDir), verbose = FALSE) {
+    lowMemDir = NULL, ...) {
     ## Check that the input is from loadCoverage()
-    stopifnot(length(intersect(names(coverageInfo), c("coverage", 
-        "position"))) == 2)
+    stopifnot(length(intersect(names(coverageInfo), c('coverage', 
+        'position'))) == 2)
     stopifnot(is.factor(groupInfo) | is.null(groupInfo))
+    
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', FALSE, ...)
+    
+#' @param toMatrix Determines whether the data in the chunk should already be 
+#' saved as a Matrix object, which can be useful to reduce the computation time 
+#' of the F-statistics. Only used when \code{lowMemDir} is not NULL.
+    toMatrix <- .advanced_argument('toMatrix', !is.null(lowMemDir), ...) 
+    
+#' @param mc.cores Number of cores you will use for calculating the statistics.
+    mc.cores <- .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...)
     
     ## Use pre-calculated mean coverage if available
     means <- coverageInfo$meanCoverage
@@ -108,10 +114,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     if (!is.null(colsubset)) {
         ## Re-filter
         if (verbose) 
-            message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
+            message(paste(Sys.time(), 'preprocessCoverage: filtering the data'))
         coverageInfo <- filterData(data = coverageInfo$coverage[, 
             colsubset], cutoff = cutoff, index = coverageInfo$position, 
-            returnMean=TRUE, verbose = verbose)
+            returnMean=TRUE, ...)
         coverage <- coverageInfo$coverage
         position <- coverageInfo$position
         means <- coverageInfo$meanCoverage
@@ -125,7 +131,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     if (is.null(chunksize)) {
         chunksize <- ceiling(numrow/mc.cores)
         if (verbose) 
-            message(paste(Sys.time(), "preprocessCoverage: using chunksize", 
+            message(paste(Sys.time(), 'preprocessCoverage: using chunksize', 
                 chunksize))
     }
     
@@ -134,13 +140,13 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     
     ## Fix the lastloop in case that the N is a factor of
     ## chunksize
-    if (numrow%%chunksize == 0 & lastloop > 0) {
+    if (numrow %% chunksize == 0 & lastloop > 0) {
         lastloop <- lastloop - 1
     }
     
     ## Find the overall mean coverage
     if(is.null(means)) {
-        means <- Reduce("+", coverage)/length(coverage)
+        means <- Reduce('+', coverage)/length(coverage)
     }
     
     
@@ -148,10 +154,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     if (is.null(groupInfo)) {
         groupMeans <- list()
     } else {
-        groupMeans <- vector("list", length(levels(groupInfo)))
+        groupMeans <- vector('list', length(levels(groupInfo)))
         names(groupMeans) <- levels(groupInfo)
         for (group in levels(groupInfo)) {
-            groupMeans[[group]] <- Reduce("+", coverage[groupInfo == 
+            groupMeans[[group]] <- Reduce('+', coverage[groupInfo == 
                 group])/sum(groupInfo == group)
         }
     }
@@ -164,7 +170,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
     
     ## Split the data into appropriate chunks
     if (verbose) 
-        message(paste(Sys.time(), "preprocessCoverage: splitting the data"))
+        message(paste(Sys.time(), 'preprocessCoverage: splitting the data'))
     if (lastloop == 0) {
         split.len <- numrow
     } else {
@@ -187,7 +193,7 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
                 chunkProcessed <- chunks[[i]]
             }
             save(chunkProcessed, file = file.path(lowMemDir, 
-                paste0("chunk", i, ".Rdata")))
+                paste0('chunk', i, '.Rdata')))
         }
         coverage <- NULL
         coverage.split <- seq_len(lastloop + 1)

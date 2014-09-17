@@ -8,23 +8,11 @@
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using 
 #' \link{fullCoverage}.
-#' @param genomicState The output from \link{makeGenomicState}.
-#' @param fullOrCoding If \code{full} then the \code{genomicState$fullGenome} 
-#' genomic state information is used. If \code{coding}, then the 
-#' \code{genomicState$codingGenome} genomic state information is used.
+#' @inheritParams annotateRegions
 #' @param L The width of the reads used.
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' twice. First, it is used by strand. Second, for processing the exons by 
-#' chromosome. So there is no gain in using \code{mc.cores} greater than the 
-#' maximum of the number of strands and number of chromosomes.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A matrix (nrow = number of exons in \code{genomicState} 
 #' corresponding to the chromosomes in \code{fullCov}, ncol = number of 
@@ -32,6 +20,12 @@
 #' correspond to the row indexes of \code{genomicState$fullGenome}  (if 
 #' \code{fullOrCoding='full'}) or \code{genomicState$codingGenome} (if 
 #' \code{fullOrCoding='coding'}).
+#'
+#' @details
+#' Parallelization is used twice.
+#' First, it is used by strand. Second, for processing the exons by 
+#' chromosome. So there is no gain in using \code{mc.cores} greater than the 
+#' maximum of the number of strands and number of chromosomes.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
@@ -45,7 +39,7 @@
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @importMethodsFrom S4Vectors as.character '%in%'
 #' @importFrom S4Vectors runValue
-#' @importFrom BiocParallel SnowParam SerialParam bplapply bpmapply
+#' @importFrom BiocParallel bplapply bpmapply
 #'
 #' @examples
 #' ## Obtain fullCov object
@@ -61,33 +55,34 @@
 #'     L=36)
 
 
-coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full", 
-    L = NULL, returnType = "raw", mc.cores = getOption("mc.cores", 1L),
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), chrsStyle = "UCSC",
-    verbose = TRUE) {
-    
+coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
+    ...) {
+        
     ## Run some checks
-    stopifnot(length(intersect(names(genomicState), c("fullGenome", 
-        "codingGenome"))) == 2)
-    stopifnot(length(intersect(fullOrCoding, c("full", "coding"))) == 
-        1)
     stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 
         1)
+    stopifnot(is(genomicState, 'GRanges'))
+    stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
+        'tx_name', 'gene')))
+
     if (is.null(L)) 
         stop("'L' has to be specified")
     
-    if (fullOrCoding == "full") {
-        gs <- genomicState$fullGenome
-    } else if (fullOrCoding == "coding") {
-        gs <- genomicState$codingGenome
-    }
+    ## Advanged argumentsa
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     ## Use UCSC names by default
-    seqlevelsStyle(gs) <- chrsStyle
+    seqlevelsStyle(genomicState) <- chrsStyle
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     
     # just the reduced exons
-    etab <- gs[gs$theRegion == "exon"]
+    etab <- genomicState[genomicState$theRegion == "exon"]
     
     ## Check that the names are unique
     stopifnot(length(etab) == length(unique(names(etab))))
@@ -100,20 +95,18 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     strandIndexes <- split(seq_len(length(etab)), as.character(strand(etab)))
     
     # count reads covering exon on each strand
-    nCores <- min(mc.cores, length(unique(runValue(strand(etab)))))
+    strandCores <- min(.advanced_argument('mc.cores', getOption('mc.cores', 1L),
+        ...), length(unique(runValue(strand(etab)))))
 
     ## Define cluster
-    if(nCores > 1) {
-        BPPARAM <- SnowParam(workers = nCores, outfile = mc.outfile)
-    } else {
-        BPPARAM <- SerialParam()
-    }
+    BPPARAM <- .define_cluster(cores = 'strandCores', ...,
+        strandCores = strandCores)
 
     # Use at most n cores where n is the number of unique strands
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
-        fullCov = fullCov, etab = etab, L = L, nCores = mc.cores,
-        mcOut = mc.outfile, chrs = chrKeep,
-        verbose = verbose, BPPARAM = BPPARAM)
+        fullCov = fullCov, etab = etab, L = L,
+        nCores = .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...),
+        chrs = chrKeep, verbose = verbose, BPPARAM = BPPARAM, ...)
     
     # combine two strands
     exons <- do.call("rbind", exonByStrand)
@@ -130,8 +123,8 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, mcOut, chrs,
-    verbose) {
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
+    verbose, ...) {
         
     e <- etab[ii]  # subset
     
@@ -151,12 +144,11 @@ coverageToExon <- function(fullCov, genomicState, fullOrCoding = "full",
     moreArgs <- list(e = e, L = L, verbose = verbose)
     
     ## Define cluster
-    nCores <- min(nCores, length(subsets))
-    if(nCores > 1) {
-        BPPARAM.chrStep <- SnowParam(workers = nCores, outfile = mcOut)
-    } else {
-        BPPARAM.chrStep <- SerialParam()
-    }
+    exonCores <- min(nCores, length(subsets))
+
+    ## Define cluster
+    BPPARAM.chrStep <- .advanced_argument('BPPARAM.chrStep', 
+        .define_cluster(cores = 'exonCores', ..., exonCores = exonCores), ...)
     
     ## Define ChrStep function
     .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {

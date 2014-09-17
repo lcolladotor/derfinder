@@ -8,14 +8,7 @@
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
-#' @param seqlengths A named vector with the sequence lengths of the 
-#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers}. Use at most one core per chromosome.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A \link[GenomicRanges]{GRanges} object with \code{score} metadata 
 #' vector containing the coverage information for the specified sample. The 
@@ -27,7 +20,7 @@
 #' @export
 #' @aliases coerce_gr
 #'
-#' @importFrom BiocParallel SnowParam SerialParam bpmapply
+#' @importFrom BiocParallel bpmapply
 #' @importFrom GenomicRanges GRangesList
 #' 
 #' @examples
@@ -43,19 +36,28 @@
 #'
 
 ## Coerces fullCoverage() output to GRanges for a given sample
-coerceGR <- function(sample, fullCov, seqlengths = sapply(fullCov, nrow), 
-    mc.cores = getOption('mc.cores', 1L), 
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
+coerceGR <- function(sample, fullCov, ...) {
+        
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+
+#' @param seqlengths A named vector with the sequence lengths of the 
+#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
+    if('coverage' %in% names(fullCov[[1]])) {
+        seqlengths.auto <- sapply(fullCov, function(x) { nrow(x$coverage )})
+    } else {
+        seqlengths.auto <- sapply(fullCov, nrow)
+    }
+    seqlengths <- .advanced_argument('seqlengths', seqlengths.auto, ...)
+
     
     if(verbose) 
         message(paste(Sys.time(), 'coerceGR: coercing sample', sample))
     
     ## Define cluster
-    if(mc.cores > 1) {
-        BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
-    } else {
-        BPPARAM <- SerialParam()
-    }
+    BPPARAM <- .define_cluster(...)
             
     ## Coerce to a list of GRanges (1 element per chr)
     gr.sample <- bpmapply(function(chr, DF, sample, seqlengths) {

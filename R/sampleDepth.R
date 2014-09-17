@@ -14,14 +14,9 @@
 #' by \link{collapseFullCoverage}.
 #' @param probs Number(s) between 0 and 1 representing the quantile(s) of 
 #' interest. For example, 0.5 is the median.
-#' @param nonzero If \code{TRUE} only the nonzero counts are used to calculate 
-#' the library size adjustment.
 #' @param scalefac Number added to the sample coverage adjustments before the 
 #' log2 transformation.
-#' @param center If \code{TRUE} the sample coverage adjustements are centered. 
-#' In some cases, this could be helpful for interpretation purposes.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return 
 #' A matrix (vector of \code{length(probs) == 1}) with the library size depth 
@@ -44,24 +39,35 @@
 #'     verbose=TRUE)
 #' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), nonzero=TRUE, 
-#'     verbose=TRUE)
+#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), verbose=TRUE)
 #' sampleDepths
 
-sampleDepth <- function(collapsedFull, probs = c(0.5, 1), nonzero = TRUE,
-    scalefac = 32, center = FALSE, verbose = FALSE) {
+sampleDepth <- function(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...) {
     
     ## Check probs are valid
     stopifnot(all(probs >= 0) & all(probs <= 1))
+
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
+#' @param nonzero If \code{TRUE} only the nonzero counts are used to calculate 
+#' the library size adjustment.
+    nonzero <- .advanced_argument('nonzero', TRUE, ...)
+    
+#' @param center If \code{TRUE} the sample coverage adjustements are centered. 
+#' In some cases, this could be helpful for interpretation purposes.
+    center <- .advanced_argument('center', FALSE, ...)
     
     if (verbose) 
-        message(paste(Sys.time(), "sampleDepth: Calculating sample quantiles"))
+        message(paste(Sys.time(), 'sampleDepth: Calculating sample quantiles'))
     sampleQuant <- lapply(collapsedFull, .calcQuantile, nonzero = nonzero, 
         probs = probs)
     
     if (verbose) 
         message(paste(Sys.time(),
-            "sampleDepth: Calculating sample adjustments"))
+            'sampleDepth: Calculating sample adjustments'))
     sampleDepths <- mapply(.sampleCorradaAdj, collapsedFull, 
         sampleQuant, MoreArgs = list(scalefac = scalefac, center = center))
     

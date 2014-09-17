@@ -5,15 +5,14 @@
 \title{Filter the positions of interest}
 \usage{
 filterData(data, cutoff = NULL, index = NULL, colnames = NULL,
-  filter = "one", returnMean = FALSE, returnCoverage = TRUE,
-  totalMapped = NULL, targetSize = 8e+07, verbose = TRUE)
+  filter = "one", totalMapped = NULL, targetSize = 8e+07, ...)
 }
 \arguments{
 \item{data}{Either a list of Rle objects or a DataFrame with the coverage
 information.}
 
-\item{cutoff}{Per base pair, at least one sample has to have coverage
-strictly greater than \code{cutoff} to be included in the result.}
+\item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled
+by \code{filter}.}
 
 \item{index}{A logical Rle with the positions of the chromosome that passed
 the cutoff. If \code{NULL} it is assumed that this is the first time using
@@ -26,10 +25,6 @@ DataFrame. If \code{NULL}, names from \code{data} are used.}
 the first case, at least one sample has to have coverage above \code{cutoff}.
 In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
-\item{returnMean}{If \code{TRUE} the mean coverage is included in the result.}
-
-\item{returnCoverage}{If \code{TRUE}, the coverage DataFrame is returned.}
-
 \item{totalMapped}{The total number of reads mapped for each sample.
 Providing this data adjusts the coverage to reads in \code{targetSize}
 library prior to filtering. By default, to reads per 80 million reads.}
@@ -37,12 +32,11 @@ library prior to filtering. By default, to reads per 80 million reads.}
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
 
-\item{verbose}{If \code{TRUE} it will report how many rows are remaining out
-of the original ones.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with up to three components.
-\code{returnMean = TRUE}.
+
 \describe{
 \item{coverage }{ is a DataFrame object where each column represents a
 sample. The number of rows depends on the number of base pairs that passed

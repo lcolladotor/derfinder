@@ -16,15 +16,13 @@
 #' determine significance. The first element is used to determine significance 
 #' for the p-values and the second element is used for the q-values just like 
 #' in \link{calculatePvalues}.
-#' @param genomicState This argument is passed to \link{annotateRegions}.
-#' @param minoverlap This argument is passed to \link{annotateRegions}.
-#' @param fullOrCoding This argument is passed to \link{annotateRegions}.
+#' @param minoverlap Determines the mininum overlap needed when annotating 
+#' regions with \link{annotateRegions}.
 #' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is 
 #' merged. 
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
+#' @inheritParams annotateRegions
+#'
 #'
 #' @return Seven Rdata files.
 #' \describe{
@@ -124,26 +122,34 @@
 #'     xlab('Step')
 #' }
 
-mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".", 
+mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.', 
     significantCut = c(0.05, 0.1), genomicState, minoverlap = 20, 
-    fullOrCoding = "full", mergePrep = FALSE, chrsStyle = "UCSC", 
-    verbose = TRUE) {
+    mergePrep = FALSE, ...) {
     ## For R CMD check
     prep <- fstats <- regions <- annotation <- timeinfo <- NULL
+    
+    ## Advanged argumentsa
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+    
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     ## Use UCSC names by default
     chrs <- mapSeqlevels(chrs, chrsStyle)
     
     ## save merging options used
     optionsMerge <- list(chrs = chrs, significantCut = significantCut, 
-        minoverlap = minoverlap, mergeCall = match.call())
+        minoverlap = minoverlap, mergeCall = match.call(), ...)
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving options used"))
-    save(optionsMerge, file = file.path(prefix, "optionsMerge.Rdata"))
+        message(paste(Sys.time(), 'mergeResults: Saving options used'))
+    save(optionsMerge, file = file.path(prefix, 'optionsMerge.Rdata'))
     
     ## Initialize
     fullCoveragePrep <- fullTime <- fullNullPermutation <- fullNullWidths <- 
-        fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector("list", 
+        fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector('list', 
         length(chrs))
     names(fullCoveragePrep) <- names(fullTime) <- names(fullNullPermutation) <-
         names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <-
@@ -152,30 +158,30 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
     ## Actual processing
     for (chr in chrs) {
         if (verbose) 
-            message(paste(Sys.time(), "Loading chromosome", chr))
+            message(paste(Sys.time(), 'Loading chromosome', chr))
         
         ## Process the F-statistics
-        load(file.path(prefix, chr, "fstats.Rdata"))
+        load(file.path(prefix, chr, 'fstats.Rdata'))
         fullFstats[[chr]] <- fstats
         
         ## Process the regions, nullstats and nullwidths
-        load(file.path(prefix, chr, "regions.Rdata"))
+        load(file.path(prefix, chr, 'regions.Rdata'))
         fullRegs[[chr]] <- regions$regions
         fullNullStats[[chr]] <- regions$nullStats
         fullNullWidths[[chr]] <- regions$nullWidths
         fullNullPermutation[[chr]] <- regions$nullPermutation
         
         ## Process the annotation results
-        load(file.path(prefix, chr, "annotation.Rdata"))
+        load(file.path(prefix, chr, 'annotation.Rdata'))
         fullAnno[[chr]] <- annotation
         
         ## Process the timing information
-        load(file.path(prefix, chr, "timeinfo.Rdata"))
+        load(file.path(prefix, chr, 'timeinfo.Rdata'))
         fullTime[[chr]] <- timeinfo
         
         ## Process the covPrep data
         if (mergePrep) {
-            load(file.path(prefix, chr, "coveragePrep.Rdata"))
+            load(file.path(prefix, chr, 'coveragePrep.Rdata'))
             fullCoveragePrep[[chr]] <- prep
         }
     }
@@ -187,7 +193,7 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
     fullAnnotation <- do.call(rbind, fullAnno)
     if (!is.null(fullAnnotation)) {
         colnames(fullAnnotation)[which(colnames(fullAnnotation) == 
-            "strand")] <- "annoStrand"
+            'strand')] <- 'annoStrand'
         rownames(fullAnnotation) <- NULL
         
         ## For some reason, signature 'AsIs' does not work when
@@ -223,12 +229,12 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
     }
     
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
-    save(fullNullSummary, file = file.path(prefix, "fullNullSummary.Rdata"))
+        message(paste(Sys.time(), 'mergeResults: Saving fullNullSummary'))
+    save(fullNullSummary, file = file.path(prefix, 'fullNullSummary.Rdata'))
     
     ## Re-calculate p-values and q-values
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
+        message(paste(Sys.time(), 'mergeResults: Re-calculating the p-values'))
     
     if (nrow(fullNullSummary) > 0) {
         ## Actual calculation
@@ -245,7 +251,7 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
         
         ## Sometimes qvalue() fails due to incorrect pi0 estimates
         qvalues <- qvalue(fullRegions$pvalues)
-        if (is(qvalues, "qvalue")) {
+        if (is(qvalues, 'qvalue')) {
             qvalues <- qvalues$qvalues
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))
@@ -261,35 +267,35 @@ mergeResults <- function(chrs = c(1:22, "X", "Y"), prefix = ".",
     
     ## save GRanges version
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
-    save(fullRegions, file = file.path(prefix, "fullRegions.Rdata"))
+        message(paste(Sys.time(), 'mergeResults: Saving fullRegions'))
+    save(fullRegions, file = file.path(prefix, 'fullRegions.Rdata'))
     
     ## Assign genomic states
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: assigning genomic states"))
+        message(paste(Sys.time(), 'mergeResults: assigning genomic states'))
     fullAnnotatedRegions <- annotateRegions(regions = fullRegions, 
         genomicState = genomicState, minoverlap = minoverlap, 
-        fullOrCoding = fullOrCoding, annotate = TRUE, verbose = verbose)
+        annotate = TRUE, ...)
     
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving fullAnnotatedRegions"))
+        message(paste(Sys.time(), 'mergeResults: Saving fullAnnotatedRegions'))
     save(fullAnnotatedRegions, file = file.path(prefix,
-        "fullAnnotatedRegions.Rdata"))
+        'fullAnnotatedRegions.Rdata'))
     
     ## Save Fstats, Nullstats, and time info
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving fullFstats"))
-    save(fullFstats, file = file.path(prefix, "fullFstats.Rdata"))
+        message(paste(Sys.time(), 'mergeResults: Saving fullFstats'))
+    save(fullFstats, file = file.path(prefix, 'fullFstats.Rdata'))
     
     if (verbose) 
-        message(paste(Sys.time(), "mergeResults: Saving fullTime"))
-    save(fullTime, file = file.path(prefix, "fullTime.Rdata"))
+        message(paste(Sys.time(), 'mergeResults: Saving fullTime'))
+    save(fullTime, file = file.path(prefix, 'fullTime.Rdata'))
     
     if (mergePrep) {
         if (verbose) 
-            message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
+            message(paste(Sys.time(), 'mergeResults: Saving fullCoveragePrep'))
         save(fullCoveragePrep, file = file.path(prefix,
-            "fullCoveragePrep.Rdata"))
+            'fullCoveragePrep.Rdata'))
     }
     
     ## Finish

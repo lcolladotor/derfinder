@@ -13,38 +13,17 @@
 #' @param chr Chromosome to read. Should be in the format matching the one used
 #' in the raw data.
 #' @param cutoff This argument is passed to \link{filterData}.
-#' @param bai The full path to the BAM index files. If \code{NULL} it is 
-#' assumed that the BAM index files are in the same location as the BAM files 
-#' and that they have the .bai extension. Ignored if \code{dirs} is a 
-#' \code{BamFileList} object or if \code{inputType=='BigWig'}.
+#' @inheritParams filterData
 #' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the 
 #' chromosome length is extracted from the BAM files.
 #' @param output If \code{NULL} then no output is saved in disk. If \code{auto} 
 #' then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
 #' for example). If another character is specified, then that name is used for #' the output file.
-#' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
-#' the format of the raw data files.
-#' @param isMinusStrand Use \code{TRUE} for negative strand alignments only, 
-#' \code{FALSE} for positive strands and \code{NA} for both. This argument is 
-#' passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.
-#' @param filter This argument is passed to \link{filterData}.
-#' @param returnMean This argument is passed to \link{filterData}.
-#' @param returnCoverage This argument is passed to \link{filterData}.
-#' @param totalMapped The total number of reads mapped for each sample. 
-#' Providing this data adjusts the coverage to reads in \code{targetSize} 
-#' library prior to filtering. By default, to reads per 80 million reads.
-#' @param targetSize The target library size to adjust the coverage to. Used
-#' only when \code{totalMapped} is specified.
-#' @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
-#' break up the chromosome into chunks.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers}. You may use up to one core per tile.
-#' Only used when \code{tilewidth} is specified.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' Only used when \code{tilewidth} is specified.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param bai The full path to the BAM index files. If \code{NULL} it is 
+#' assumed that the BAM index files are in the same location as the BAM files 
+#' and that they have the .bai extension. Ignored if \code{dirs} is a 
+#' \code{BamFileList} object or if \code{inputType=='BigWig'}.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -55,6 +34,14 @@
 #' that passed the cutoff.}
 #' }
 #'
+#' @details
+#' 
+#' The \code{...} argument can be used to control which alignments to consider
+#' when reading from BAM files. See \link[Rsamtools]{scanBamFlag}.
+#'
+#' Parallelization for loading the data in chunks is used only used when 
+#' \code{tilewidth} is specified. You may use up to one core per tile.
+#' 
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
 #' @aliases load_coverage
@@ -65,7 +52,6 @@
 #' @importFrom GenomeInfoDb mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
-#' @importFrom BiocParallel SnowParam SerialParam
 #' @importMethodsFrom S4Vectors Reduce
 #' @importMethodsFrom GenomicRanges coverage
 #' @importMethodsFrom Rsamtools names
@@ -86,7 +72,7 @@
 #'
 #' ## Load data from BigWig files
 #' dataSmall.bw <- loadCoverage(c(ERR009101 = 'ERR009101.bw', ERR009102 = 
-#'     'ERR009102.bw'), chr = 'chr21', inputType = 'BigWig')
+#'     'ERR009102.bw'), chr = 'chr21')
 #' 
 #' ## Compare them
 #' mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)
@@ -96,13 +82,33 @@
 #'
 #' }
 
-loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
-    chrlen = NULL, output = NULL, inputType = 'bam', isMinusStrand = NA,
-    filter = 'one', returnMean = FALSE, returnCoverage = TRUE,
-    totalMapped = NULL, targetSize = 80e6, tilewidth = NULL, mc.cores = 1,
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
+loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one', 
+    chrlen = NULL, output = NULL, bai = NULL, ...) {
+    
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
+#' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
+#' the format of the raw data files.
+    inputType <- .advanced_argument('inputType', 'bam', ...)
+    ## Guess the input type if it's not supplied
+    if(is(dirs, 'BigWigFileList')) {
+        inputType <- 'BigWig'
+    } else if (all(grepl('bw$|BigWig$', dirs))) {
+        inputType <- 'BigWig'
+    }    
     stopifnot(inputType %in% c('bam', 'BigWig'))
-        
+
+#' @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
+#' break up the chromosome into chunks.
+    tilewidth <- .advanced_argument('tilewidth', NULL, ...)
+    
+#' @param which \code{NULL} by default. When a \code{GRanges} is specified, 
+#" this specific region of the genome is loaded instead of the full chromosome.
+    which <- .advanced_argument('which', NULL, ...)
+
     ## Do the indexes exist?
     if (is(dirs, 'BamFileList') & inputType == 'bam') {
         bList <- dirs
@@ -147,19 +153,17 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
         tiles <- tileGenome(chrlen, tilewidth = tilewidth)
         
         ## Define cluster
-        if(mc.cores > 1) {
-            BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
-        } else {
-            BPPARAM <- SerialParam()
-        }
+        BPPARAM <- .define_cluster(...)
     }    
     
     ## Construct the objects so only the chr of interest is read
     ## from the BAM/BigWig file
-    which <- GRanges(seqnames=chr, ranges=IRanges(1, chrlen))
+    if(is.null(which) | !is(which, 'GRanges')) {
+        which <- GRanges(seqnames=chr, ranges=IRanges(1, chrlen))
+    }    
     if(inputType == 'bam') {
         param <- ScanBamParam(which = which, 
-            flag = scanBamFlag(isMinusStrand = isMinusStrand))
+            flag = scanBamFlag(...))
         
         ## Read in the data for all the chrs
         if(is.null(tilewidth)) {
@@ -167,8 +171,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
                 verbose=verbose)
         } else {
             data <- reduceByFile(tiles, bList, .bamMAPPER, .REDUCER, 
-                chr = chr, verbose = verbose, isMinusStrand = isMinusStrand, 
-                BPPARAM = BPPARAM)
+                chr = chr, verbose = verbose, BPPARAM = BPPARAM, ...)
         }
         
     } else if (inputType == 'BigWig') {
@@ -191,9 +194,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
     ## Rename the object to a name that will make more sense later
     varname <- paste0(mapSeqlevels(chr, 'UCSC'), 'CovInfo')
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
-        colnames = names(dirs), filter = filter, returnMean = returnMean,
-        returnCoverage = returnCoverage, totalMapped = totalMapped, 
-        targetSize = targetSize, verbose = verbose))
+        colnames = names(dirs), filter = filter, ...))
     rm(data)    
     
     ## Save if output is specified
@@ -220,9 +221,8 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, bai = NULL,
 load_coverage <- loadCoverage
 
 ## GenomicFiles functions for BAM/BigWig files
-.bamMAPPER <- function(range, file, chr, verbose, isMinusStrand, ...) {
-    param <- ScanBamParam(which = range, 
-        flag = scanBamFlag(isMinusStrand = isMinusStrand))
+.bamMAPPER <- function(range, file, chr, verbose, ...) {
+    param <- ScanBamParam(which = range, flag = scanBamFlag(...))
     .loadCoverageBAM(file, param, chr, verbose)
 }
 

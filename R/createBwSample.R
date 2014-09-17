@@ -10,16 +10,9 @@
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
-#' @param seqlengths A named vector with the sequence lengths of the 
-#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
 #' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} object 
 #' created by \link{coerceGR} is returned. Otherwise it is discarded.
-#' @param mc.cores This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to define the number of \code{workers}. Use at most one core per chromosome.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return Creates a BigWig file with the coverage information (regions with
 #' coverage greater than zero) for a given sample. If \code{keepGR} it returns
@@ -46,16 +39,14 @@
 #' bw
 
 ## Exports a single sample to a BigWig file
-createBwSample <- function(sample, path = '.', fullCov, seqlengths,
-    keepGR = TRUE, mc.cores = getOption('mc.cores', 1L), 
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), verbose = TRUE) {
+createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
+    
     ## Coerce to GRanges
     gr.sample <- coerceGR(sample = sample, fullCov = fullCov,
-        seqlengths = seqlengths, mc.cores = mc.cores, mc.outfile = mc.outfile, 
-        verbose = verbose)
+        seqlengths = seqlengths, ...)
     
     ## Export bw file
-    if(verbose) 
+    if(.advanced_argument('verbose', TRUE, ...)) 
         message(paste(Sys.time(), 'createBwSample: exporting bw for sample',
             sample))
     

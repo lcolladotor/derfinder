@@ -13,8 +13,7 @@
 #' generated using \link{fullCoverage}.
 #' @param colsubset Which columns of \code{coverageInfo$coverage} to use.
 #' @param save If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return 
 #' A list with one element per sample. Then per sample, a list with two vector 
@@ -38,12 +37,17 @@
 #' collapsedFullRaw <- collapseFullCoverage(list(genomeDataRaw), verbose=TRUE)
 #' }
 
-collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, 
-    verbose = FALSE) {
+collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
+    
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', FALSE, ...)
+    
     ## Remove un-used columns
     if (!is.null(colsubset)) {
         fullCov <- lapply(fullCov, function(x) {
-            if ("coverage" %in% names(x)) {
+            if ('coverage' %in% names(x)) {
                 ## Extract coverage info if fullCov is the result from using
                 ## lapply filterData() on the output of fullCoverage()
                 res <- x$coverage[, colsubset]
@@ -52,7 +56,7 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE,
             }
             return(res)
         })
-    } else if ("coverage" %in% names(fullCov[[1]])) {
+    } else if ('coverage' %in% names(fullCov[[1]])) {
         ## Extract coverage info if fullCov is the result from using
         ## lapply filterData() on the output of fullCoverage()
         fullCov <- lapply(fullCov, function(x) x$coverage)
@@ -60,7 +64,7 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE,
     
     ## Sort to reduce run lengths
     if (verbose) 
-        message(paste(Sys.time(), "sampleDepth: Sorting fullCov"))
+        message(paste(Sys.time(), 'collapseFullCoverage: Sorting fullCov'))
     sortedFull <- lapply(fullCov, function(x) {
         sapply(x, sort)
     })
@@ -68,9 +72,9 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE,
     ## Collapse chrs by sample
     if (verbose) 
         message(paste(Sys.time(),
-            "sampleDepth: Collapsing chromosomes information by sample"))
+            'collapseFullCoverage: Collapsing chromosomes information by sample'))
     samples <- names(sortedFull[[1]])
-    collapsedFull <- vector("list", length(samples))
+    collapsedFull <- vector('list', length(samples))
     names(collapsedFull) <- samples
     for (sample in samples) {
         ## Extract the data
@@ -88,8 +92,8 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE,
     ## Save for future use if you want to use another quantile
     if (save) {
         if (verbose) 
-            message(paste(Sys.time(), "sampleDepth: Saving collapsedFull"))
-        save(collapsedFull, file = "collapsedFull.Rdata")
+            message(paste(Sys.time(), 'collapseFullCoverage: Saving collapsedFull'))
+        save(collapsedFull, file = 'collapsedFull.Rdata')
     }
     
     return(collapsedFull)

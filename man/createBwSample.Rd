@@ -4,9 +4,7 @@
 \alias{create_bw_sample}
 \title{Create a BigWig file with the coverage information for a given sample}
 \usage{
-createBwSample(sample, path = ".", fullCov, seqlengths, keepGR = TRUE,
-  mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE)
+createBwSample(sample, path = ".", fullCov, keepGR = TRUE, ...)
 }
 \arguments{
 \item{sample}{The name or integer index of the sample of interest to coerce
@@ -18,20 +16,10 @@ to a \code{GRanges} object.}
 \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}.}
 
-\item{seqlengths}{A named vector with the sequence lengths of the
-chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.}
-
 \item{keepGR}{If \code{TRUE}, the \link[GenomicRanges]{GRanges} object
 created by \link{coerceGR} is returned. Otherwise it is discarded.}
 
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers}. Use at most one core per chromosome.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 Creates a BigWig file with the coverage information (regions with

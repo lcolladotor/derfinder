@@ -4,11 +4,8 @@
 \alias{load_coverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-loadCoverage(dirs, chr, cutoff = NULL, bai = NULL, chrlen = NULL,
-  output = NULL, inputType = "bam", isMinusStrand = NA, filter = "one",
-  returnMean = FALSE, returnCoverage = TRUE, totalMapped = NULL,
-  targetSize = 8e+07, tilewidth = NULL, mc.cores = 1,
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), verbose = TRUE)
+loadCoverage(dirs, chr, cutoff = NULL, filter = "one", chrlen = NULL,
+  output = NULL, bai = NULL, ...)
 }
 \arguments{
 \item{dirs}{A character vector with the full path to the sample BAM files
@@ -23,10 +20,9 @@ in the raw data.}
 
 \item{cutoff}{This argument is passed to \link{filterData}.}
 
-\item{bai}{The full path to the BAM index files. If \code{NULL} it is
-assumed that the BAM index files are in the same location as the BAM files
-and that they have the .bai extension. Ignored if \code{dirs} is a
-\code{BamFileList} object or if \code{inputType=='BigWig'}.}
+\item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In
+the first case, at least one sample has to have coverage above \code{cutoff}.
+In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
 \item{chrlen}{The chromosome length in base pairs. If it's \code{NULL}, the
 chromosome length is extracted from the BAM files.}
@@ -35,39 +31,12 @@ chromosome length is extracted from the BAM files.}
 then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
 for example). If another character is specified, then that name is used for #' the output file.}
 
-\item{inputType}{Has to be either \code{bam} or \code{BigWig}. It specifies
-the format of the raw data files.}
+\item{bai}{The full path to the BAM index files. If \code{NULL} it is
+assumed that the BAM index files are in the same location as the BAM files
+and that they have the .bai extension. Ignored if \code{dirs} is a
+\code{BamFileList} object or if \code{inputType=='BigWig'}.}
 
-\item{isMinusStrand}{Use \code{TRUE} for negative strand alignments only,
-\code{FALSE} for positive strands and \code{NA} for both. This argument is
-passed to \link[Rsamtools]{scanBamFlag} when \code{inputType='bam'}.}
-
-\item{filter}{This argument is passed to \link{filterData}.}
-
-\item{returnMean}{This argument is passed to \link{filterData}.}
-
-\item{returnCoverage}{This argument is passed to \link{filterData}.}
-
-\item{totalMapped}{The total number of reads mapped for each sample.
-Providing this data adjusts the coverage to reads in \code{targetSize}
-library prior to filtering. By default, to reads per 80 million reads.}
-
-\item{targetSize}{The target library size to adjust the coverage to. Used
-only when \code{totalMapped} is specified.}
-
-\item{tilewidth}{When specified, \link[GenomicRanges]{tileGenome} is used to
-break up the chromosome into chunks.}
-
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-to define the number of \code{workers}. You may use up to one core per tile.
-Only used when \code{tilewidth} is specified.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.
-Only used when \code{tilewidth} is specified.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with two components.
@@ -83,6 +52,13 @@ that passed the cutoff.}
 For a group of samples this function reads the coverage information for a
 specific chromosome directly from the BAM files. It then merges them into a
 DataFrame and removes the bases that do not pass the cutoff.
+}
+\details{
+The \code{...} argument can be used to control which alignments to consider
+when reading from BAM files. See \link[Rsamtools]{scanBamFlag}.
+
+Parallelization for loading the data in chunks is used only used when
+\code{tilewidth} is specified. You may use up to one core per tile.
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
@@ -100,7 +76,7 @@ createBw(list('chr21' = dataSmall))
 
 ## Load data from BigWig files
 dataSmall.bw <- loadCoverage(c(ERR009101 = 'ERR009101.bw', ERR009102 =
-    'ERR009102.bw'), chr = 'chr21', inputType = 'BigWig')
+    'ERR009102.bw'), chr = 'chr21')
 
 ## Compare them
 mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)

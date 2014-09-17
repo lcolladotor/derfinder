@@ -4,40 +4,23 @@
 \alias{coverage_to_exon}
 \title{Extract coverage information for exons}
 \usage{
-coverageToExon(fullCov, genomicState, fullOrCoding = "full", L = NULL,
-  returnType = "raw", mc.cores = getOption("mc.cores", 1L),
-  mc.outfile = Sys.getenv("SGE_STDERR_PATH"), chrsStyle = "UCSC",
-  verbose = TRUE)
+coverageToExon(fullCov, genomicState, L = NULL, returnType = "raw", ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
 \link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
 \link{fullCoverage}.}
 
-\item{genomicState}{The output from \link{makeGenomicState}.}
-
-\item{fullOrCoding}{If \code{full} then the \code{genomicState$fullGenome}
-genomic state information is used. If \code{coding}, then the
-\code{genomicState$codingGenome} genomic state information is used.}
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
+\code{genomicState$codingGenome} component.}
 
 \item{L}{The width of the reads used.}
 
 \item{returnType}{If \code{raw}, then the raw coverage information per exon
 is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
 
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{SnowParam}
-twice. First, it is used by strand. Second, for processing the exons by
-chromosome. So there is no gain in using \code{mc.cores} greater than the
-maximum of the number of strands and number of chromosomes.}
-
-\item{mc.outfile}{This argument is passed to \link[BiocParallel]{SnowParam}
-to specify the \code{outfile} for any output from the workers.}
-
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A matrix (nrow = number of exons in \code{genomicState}
@@ -52,6 +35,12 @@ This function extracts the coverage information calculated by
 \link{fullCoverage} for a set of exons determined by
 \link{makeGenomicState}. The underlying code is similar to
 \link{getRegionCoverage} with additional tweaks for calculating RPKM values.
+}
+\details{
+Parallelization is used twice.
+First, it is used by strand. Second, for processing the exons by
+chromosome. So there is no gain in using \code{mc.cores} greater than the
+maximum of the number of strands and number of chromosomes.
 }
 \examples{
 ## Obtain fullCov object

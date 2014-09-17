@@ -8,16 +8,10 @@
 #' 
 #' @param chr Used for naming the output files when \code{writeOutput=TRUE} 
 #' and for \link[bumphunter]{annotateNearest}.
-#' @param coverageInfo The output from \link{loadCoverage}.
 #' @param models The output from \link{makeModels}.
 #' @param cutoffPre This argument is passed to \link{preprocessCoverage} 
 #' (\code{cutoff}).
-#' @param colsubset This argument is passed to \link{preprocessCoverage}.
-#' @param scalefac This argument is passed to \link{preprocessCoverage}.
-#' @param chunksize This argument is passed to \link{preprocessCoverage}.
-#' @param adjustF A single value to adjust that is added in the denominator of 
-#' the F-stat calculation. Useful when the Residual Sum of Squares of the 
-#' alternative model is very small.
+#' @inheritParams preprocessCoverage
 #' @param cutoffFstat This is used to determine the cutoff argument of 
 #' \link{calculatePvalues} and it's behaviour is determined by 
 #' \code{cutoffType}.
@@ -26,37 +20,20 @@
 #' \code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is 
 #' calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is 
 #' passed to \link{calculatePvalues} without any other calculation.
-#' @param nPermute This argument is passed to \link{calculatePvalues}.
-#' @param seeds This argument is passed to \link{calculatePvalues}.
-#' @param maxRegionGap This argument is passed to \link{calculatePvalues}.
-#' @param maxClusterGap This argument is passed to \link{calculatePvalues}.
+#' @inheritParams calculatePvalues
 #' @param groupInfo A factor specifying the group membership of each sample 
 #' that can later be used with the plotting functions in the 
 #' \code{derfinderPlot} package.
 #' @param subject This argument is passed to 
 #' \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right 
 #' now.
-#' @param mc.cores This argument is passed to \link{preprocessCoverage} (useful 
-#' if \code{chunksize=NULL}), \link{calculateStats} and \link{calculatePvalues}.
-#' @param mc.outfile This argument is passed to \link[BiocParallel]{SnowParam} 
-#' to specify the \code{outfile} for any output from the workers.
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 
 #' \code{chrnum='21'}). One Rdata files is created for each component described 
 #' in the return section.
-#' @param returnOutput If \code{TRUE}, it returns a list with the results from 
-#' each step. Otherwise, it returns \code{NULL}.
 #' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateNearest} is 
 #' run. Otherwise this step is skipped.
-#' @param lowMemDir The directory where the processed chunks are saved when 
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param method This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply}. Check the details there for more 
-#' information.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:
 #' \describe{
@@ -83,10 +60,10 @@
 #' @examples
 #' ## Collapse the coverage information
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-#'     verbose=TRUE)
+#'     verbose = TRUE)
 #' 
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, 
+#' sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), nonzero=TRUE, 
 #'     verbose=TRUE)
 #' 
 #' ## Build the models
@@ -101,23 +78,41 @@
 #' names(results)
 
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
-    colsubset = NULL, scalefac = 32, chunksize = NULL, adjustF = 0, 
-    cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1, 
-    seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
-    maxRegionGap = 0L, maxClusterGap = 300L, groupInfo, subject = "hg19", 
-    mc.cores = getOption("mc.cores", 1L),
-    mc.outfile = Sys.getenv('SGE_STDERR_PATH'), writeOutput = TRUE, 
-    returnOutput = FALSE, runAnnotation = TRUE, lowMemDir = NULL,
-    method = 'Matrix', chrsStyle = "UCSC", verbose = TRUE) {
+    cutoffFstat = 1e-08, cutoffType = 'theoretical', nPermute = 1, 
+    seeds = as.integer(gsub('-', '', Sys.Date())) + seq_len(nPermute), 
+    groupInfo, subject = 'hg19', writeOutput = TRUE, runAnnotation = TRUE, ...){
         
     ## Run some checks
-    stopifnot(length(intersect(cutoffType, c("empirical", "theoretical", 
-        "manual"))) == 1)
+    stopifnot(length(intersect(cutoffType, c('empirical', 'theoretical', 
+        'manual'))) == 1)
     stopifnot(is.factor(groupInfo))
+    
+    ## Advanged argumentsa
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
     
     ## Use UCSC names by default
     chr <- mapSeqlevels(chr, chrsStyle)
+
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
+#' @param scalefac This argument is passed to \link{preprocessCoverage}.
+    scalefac <- .advanced_argument('scalefac', 32, ...)
+    
+#' @param chunksize This argument is passed to \link{preprocessCoverage}.
+    chunksize <- .advanced_argument('chunksize', NULL, ...)
+    
+#' @param lowMemDir The directory where the processed chunks are saved when
+#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+    lowMemDir <- .advanced_argument('lowMemDir', 'chunksDir', ...)
+    
+#' @param returnOutput If \code{TRUE}, it returns a list with the results from 
+#' each step. Otherwise, it returns \code{NULL}.
+    returnOutput <- .advanced_argument('returnOutput', !writeOutput, ...)
+        
     ## Begin timing
     timeinfo <- NULL
     ## Init
@@ -128,19 +123,17 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Save parameters used for running calculateStats
     optionsStats <- list(models = models, cutoffPre = cutoffPre, 
-        colsubset = colsubset, scalefac = scalefac, chunksize = chunksize, 
+        scalefac = scalefac, chunksize = chunksize, 
         cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
-        nPermute = nPermute, seeds = seeds, maxRegionGap = maxRegionGap,
-        maxClusterGap = maxClusterGap, groupInfo = groupInfo, adjustF = adjustF,
-        lowMemDir = lowMemDir, method = method, chrsStyle = chrsStyle, 
-        analyzeCall = match.call())
+        nPermute = nPermute, seeds = seeds, groupInfo = groupInfo,
+        lowMemDir = lowMemDir, analyzeCall = match.call(), ...)
     
     ## Setup
     timeinfo <- c(timeinfo, list(Sys.time()))
     
     if (writeOutput) {
         dir.create(chr, showWarnings = FALSE, recursive = TRUE)
-        save(optionsStats, file = file.path(chr, "optionsStats.Rdata"))
+        save(optionsStats, file = file.path(chr, 'optionsStats.Rdata'))
     }
     ## saveStatsOpts
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -149,11 +142,11 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## depending on the number of cores
     if (verbose) 
         message(paste(Sys.time(),
-            "analyzeChr: Pre-processing the coverage data"))
+            'analyzeChr: Pre-processing the coverage data'))
     prep <- preprocessCoverage(coverageInfo = coverageInfo,
-        groupInfo = groupInfo, cutoff = cutoffPre, colsubset = colsubset,
-        scalefac = scalefac, chunksize = chunksize, mc.cores = mc.cores,
-        lowMemDir = lowMemDir, verbose = verbose)
+        groupInfo = groupInfo, cutoff = cutoffPre,
+        scalefac = scalefac, chunksize = chunksize,
+        lowMemDir = lowMemDir, ...)
     rm(coverageInfo)
     
     ## prepData
@@ -161,25 +154,23 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Save the prepared data
     if (writeOutput) {
-        save(prep, file = file.path(chr, "coveragePrep.Rdata"))
+        save(prep, file = file.path(chr, 'coveragePrep.Rdata'))
     }
     ## savePrep
     timeinfo <- c(timeinfo, list(Sys.time()))
     
     ## Run calculateStats
     if (verbose) 
-        message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
+        message(paste(Sys.time(), 'analyzeChr: Calculating statistics'))
     fstats <- calculateStats(coveragePrep = prep, models = models, 
-        mc.cores = mc.cores, mc.outfile = mc.outfile, adjustF = adjustF,
-        lowMemDir = lowMemDir, method = method, scalefac = scalefac, 
-        verbose = verbose)
+        lowMemDir = lowMemDir, scalefac = scalefac, ...)
     
     ## calculateStats
     timeinfo <- c(timeinfo, list(Sys.time()))
     
     ## Save the output from calculateStats
     if (writeOutput) {
-        save(fstats, file = file.path(chr, "fstats.Rdata"))
+        save(fstats, file = file.path(chr, 'fstats.Rdata'))
     }
     
     ## saveStats
@@ -187,34 +178,32 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Calculate p-values and find regions
     if (verbose) 
-        message(paste(Sys.time(), "analyzeChr: Calculating pvalues"))
+        message(paste(Sys.time(), 'analyzeChr: Calculating pvalues'))
     
     ## Choose the cutoff
-    if (cutoffType == "empirical") {
+    if (cutoffType == 'empirical') {
         if(cutoffFstat == 1e-08) {
             cutoffFstat <- 0.99
             warning("Switching 'cutoffFstat' to 0.99 as the user probably forgot to change its default value.")
         }
         cutoff <- quantile(as.numeric(fstats), cutoffFstat)
-    } else if (cutoffType == "theoretical") {
+    } else if (cutoffType == 'theoretical') {
         n <- dim(models$mod)[1]
         df1 <- dim(models$mod)[2]
         df0 <- dim(models$mod0)[2]
         cutoff <- qf(cutoffFstat, df1 - df0, n - df1, lower.tail = FALSE)
-    } else if (cutoffType == "manual") {
+    } else if (cutoffType == 'manual') {
         cutoff <- cutoffFstat
     }
     
     if (verbose) 
-        message(paste(Sys.time(), "analyzeChr: Using the following", 
-            cutoffType, "cutoff for the F-statistics", cutoff))
+        message(paste(Sys.time(), 'analyzeChr: Using the following', 
+            cutoffType, 'cutoff for the F-statistics', cutoff))
     
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
-        chr = chr, maxRegionGap = maxRegionGap, maxClusterGap = maxClusterGap, 
-        cutoff = cutoff, mc.cores = mc.cores, mc.outfile = mc.outfile, 
-        verbose = verbose, adjustF = adjustF, lowMemDir = lowMemDir,
-        method = method, scalefac = scalefac, chrsStyle = chrsStyle)
+        chr = chr, cutoff = cutoff, lowMemDir = lowMemDir,
+        scalefac = scalefac, ...)
     if (!returnOutput) {
         rm(prep)
     }
@@ -224,7 +213,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Save the output from calculatePvalues
     if (writeOutput) {
-        save(regions, file = file.path(chr, "regions.Rdata"))
+        save(regions, file = file.path(chr, 'regions.Rdata'))
     }
     
     ## saveRegs
@@ -232,7 +221,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Annotate
     if (verbose) 
-        message(paste(Sys.time(), "analyzeChr: Annotating regions"))
+        message(paste(Sys.time(), 'analyzeChr: Annotating regions'))
     
     if (!is.null(regions$regions) & runAnnotation) {
         annotation <- annotateNearest(regions$regions, subject)
@@ -244,7 +233,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     timeinfo <- c(timeinfo, list(Sys.time()))
     
     if (writeOutput) {
-        save(annotation, file = file.path(chr, "annotation.Rdata"))
+        save(annotation, file = file.path(chr, 'annotation.Rdata'))
     }
     
     ## saveAnnotation
@@ -252,11 +241,11 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Save timing information
     timeinfo <- do.call(c, timeinfo)
-    names(timeinfo) <- c("init", "setup", "saveStatsOpts", "prepData", 
-        "savePrep", "calculateStats", "saveStats", "calculatePvalues", 
-        "saveRegs", "annotate", "saveAnno")
+    names(timeinfo) <- c('init', 'setup', 'saveStatsOpts', 'prepData', 
+        'savePrep', 'calculateStats', 'saveStats', 'calculatePvalues', 
+        'saveRegs', 'annotate', 'saveAnno')
     if (writeOutput) {
-        save(timeinfo, file = file.path(chr, "timeinfo.Rdata"))
+        save(timeinfo, file = file.path(chr, 'timeinfo.Rdata'))
     }
     
     if (returnOutput) {

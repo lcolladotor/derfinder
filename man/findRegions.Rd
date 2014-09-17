@@ -5,46 +5,28 @@
 \title{Find non-zero regions in a Rle}
 \usage{
 findRegions(position = NULL, fstats, chr, oneTable = TRUE,
-  maxRegionGap = 0L, maxClusterGap = 300L, cutoff = quantile(fstats,
-  0.99), segmentIR = NULL, basic = FALSE, chrsStyle = "UCSC",
-  verbose = TRUE)
+  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), ...)
 }
 \arguments{
 \item{position}{A logical Rle of genomic positions. This is generated in
 \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage}
 if \code{colsubset} is not \code{NULL}.}
 
-\item{fstats}{A numeric Rle with the F-statistics. Normally obtained using
+\item{fstats}{A numeric Rle with the F-statistics. Usually obtained using
 \link{calculateStats}.}
 
 \item{chr}{A single element character vector specifying the chromosome name.}
 
-\item{oneTable}{If \code{TRUE} only one results GRanges is returned.
+\item{oneTable}{If \code{TRUE} only one GRanges is returned.
 Otherwise, a GRangesList with two components is returned: one for the
 regions with positive values and one for the negative values.}
 
-\item{maxRegionGap}{This determines the maximum number of gaps between two
-genomic positions to be considered part of the same candidate Differentially
-Expressed Region (candidate DER).}
-
 \item{maxClusterGap}{This determines the maximum gap between candidate DERs.
-It should be greater than \code{maxRegionGap}.}
+It should be greater than \code{maxRegionGap} (0 by default).}
 
-\item{cutoff}{Threshold used to determine the regions.}
+\item{cutoff}{Threshold applied to the \code{fstats} used to determine the #' regions.}
 
-\item{segmentIR}{An IRanges object with the genomic positions that are
-potentials DERs. This is used in \link{calculatePvalues} to speed up
-permutation calculations.}
-
-\item{basic}{If \code{TRUE} a DataFrame is returned that has only basic
-information on the candidate DERs. This is used in \link{calculatePvalues}
-to speed up permutation calculations.}
-
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 Either a GRanges or a GRangesList as determined by \code{oneTable}.

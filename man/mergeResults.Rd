@@ -6,8 +6,7 @@
 \usage{
 mergeResults(chrs = c(1:22, "X", "Y"), prefix = ".",
   significantCut = c(0.05, 0.1), genomicState, minoverlap = 20,
-  fullOrCoding = "full", mergePrep = FALSE, chrsStyle = "UCSC",
-  verbose = TRUE)
+  mergePrep = FALSE, ...)
 }
 \arguments{
 \item{chrs}{The chromosomes of the files to be merged.}
@@ -21,20 +20,17 @@ determine significance. The first element is used to determine significance
 for the p-values and the second element is used for the q-values just like
 in \link{calculatePvalues}.}
 
-\item{genomicState}{This argument is passed to \link{annotateRegions}.}
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
+\code{genomicState$codingGenome} component.}
 
-\item{minoverlap}{This argument is passed to \link{annotateRegions}.}
-
-\item{fullOrCoding}{This argument is passed to \link{annotateRegions}.}
+\item{minoverlap}{Determines the mininum overlap needed when annotating
+regions with \link{annotateRegions}.}
 
 \item{mergePrep}{If \code{TRUE} the output from \link{preprocessCoverage} is
 merged.}
 
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 Seven Rdata files.

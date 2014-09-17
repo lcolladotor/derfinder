@@ -7,8 +7,8 @@
 #' 
 #' @param data Either a list of Rle objects or a DataFrame with the coverage 
 #' information.
-#' @param cutoff Per base pair, at least one sample has to have coverage 
-#' strictly greater than \code{cutoff} to be included in the result.
+#' @param cutoff The base-pair level cutoff to use. It's behavior is controlled 
+#' by \code{filter}.
 #' @param index A logical Rle with the positions of the chromosome that passed 
 #' the cutoff. If \code{NULL} it is assumed that this is the first time using 
 #' \link{filterData} and thus no previous index exists.
@@ -17,18 +17,15 @@
 #' @param filter Has to be either \code{'one'} (default) or \code{'mean'}. In 
 #' the first case, at least one sample has to have coverage above \code{cutoff}.
 #' In the second case, the mean coverage has to be greater than \code{cutoff}.
-#' @param returnMean If \code{TRUE} the mean coverage is included in the result.
-#' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
 #' @param totalMapped The total number of reads mapped for each sample. 
 #' Providing this data adjusts the coverage to reads in \code{targetSize} 
 #' library prior to filtering. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
-#' @param verbose If \code{TRUE} it will report how many rows are remaining out 
-#' of the original ones.
+#' @param ... Arguments passed to other methods.
 #'
 #' @return A list with up to three components.
-#' \code{returnMean = TRUE}. 
+#'
 #' \describe{
 #' \item{coverage }{ is a DataFrame object where each column represents a 
 #' sample. The number of rows depends on the number of base pairs that passed 
@@ -75,11 +72,21 @@
 #'
 
 filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
-    filter = 'one', returnMean = FALSE, returnCoverage = TRUE,
-    totalMapped = NULL, targetSize = 80e6, verbose = TRUE) {
+    filter = 'one', totalMapped = NULL, targetSize = 80e6, ...) {
         
     ## Check filter
     stopifnot(filter %in% c('one', 'mean'))
+    
+    ## Advanged arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+        
+#' @param returnMean If \code{TRUE} the mean coverage is included in the result.
+    returnMean <- .advanced_argument('returnMean', FALSE, ...)
+
+#' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
+    returnCoverage <- .advanced_argument('returnCoverage', TRUE, ...)
     
     ## Initialize meanCov
     meanCov <- NULL

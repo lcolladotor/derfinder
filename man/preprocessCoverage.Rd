@@ -5,9 +5,8 @@
 \title{Transform and split the data}
 \usage{
 preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
-  scalefac = 32, chunksize = 5e+06, colsubset = NULL,
-  mc.cores = getOption("mc.cores", 1L), lowMemDir = NULL,
-  toMatrix = !is.null(lowMemDir), verbose = FALSE)
+  scalefac = 32, chunksize = 5e+06, colsubset = NULL, lowMemDir = NULL,
+  ...)
 }
 \arguments{
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
@@ -19,7 +18,8 @@ that passed the cutoff. This object is generated using \link{loadCoverage}.}
 than one level, the first one will be used to calculate the log2 fold change
 in \link{calculatePvalues}.}
 
-\item{cutoff}{This argument is passed to \link{filterData}.}
+\item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled
+by \code{filter}.}
 
 \item{scalefac}{A log transformation is used on the count tables, so zero
 counts present a problem.  What number should we add to the entire matrix?}
@@ -31,23 +31,15 @@ processed at a time?}
 \code{coverageInfo$coverage} that denote samples you wish to include in
 analysis.}
 
-\item{mc.cores}{This argument is passed to \link[BiocParallel]{bplapply} to
-run \link{fstats.apply}.}
-
 \item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
-file under \code{lowMemDir} and later loaded in \link{fstats.apply} when
+file under \code{lowMemDir} and later loaded in
+\link[derfinderHelper]{fstats.apply} when
 running \link{calculateStats} and \link{calculatePvalues}. Using this option
 helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
 loads only the data needed for the chunk processing. The downside is a bit
-longer computation time due to input/output. NOTE: this might need to be
-udpated after transitioning from parallel to BiocParallel.}
+longer computation time due to input/output.}
 
-\item{toMatrix}{Determines whether the data in the chunk should already be
-saved as a Matrix object, which can be useful to reduce the computation time
-of the F-statistics. Only used when \code{lowMemDir} is not NULL.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the
-way.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A list with five components.
@@ -91,8 +83,8 @@ If \code{lowMemDir} is specified then \code{$coverageProcessed} is NULL and
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()
-dataReady <- preprocessCoverage(genomeData, cutoff=0, scalefac=32,
-    chunksize=1e3, colsubset=NULL, verbose=TRUE)
+dataReady <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32,
+    chunksize = 1e3, colsubset = NULL, verbose = TRUE)
 names(dataReady)
 dataReady
 }

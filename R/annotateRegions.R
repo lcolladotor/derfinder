@@ -12,10 +12,6 @@
 #' @param annotate If \code{TRUE} then the regions are annotated by the genomic 
 #' state. Otherwise, only the overlaps between the regions and the genomic 
 #' states are computed.
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
 #' @param ... Arguments passed to other methods.
 #'
 #' @return A list with elements \code{countTable} and \code{annotationList} 
@@ -52,11 +48,19 @@
 #'     genomicState=genomicState$fullGenome, minoverlap=1)
 #' annotatedRegions
 
-annotateRegions <- function(regions, genomicState,
-    annotate = TRUE, chrsStyle = 'UCSC', verbose = TRUE, ...) {
+annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
     stopifnot(is(genomicState, 'GRanges'))
     stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
         'tx_name', 'gene')))
+
+    ## Advanged arguments
+#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+#' \link[GenomeInfoDb]{seqlevelsStyle}.    
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+    
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     ## Fix row names
     names(regions) <- seq_len(length(regions))
@@ -80,7 +84,7 @@ annotateRegions <- function(regions, genomicState,
         if (verbose) 
             message(paste(Sys.time(), 'annotateRegions: annotating'))
         
-        oo <- findOverlaps(regions, genomicState, ...)  # don't care about min overlap here
+        oo <- findOverlaps(regions, genomicState, minoverlap = 0L, ...)  # don't care about min overlap here
         glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }

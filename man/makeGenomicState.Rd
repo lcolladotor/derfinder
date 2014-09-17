@@ -4,8 +4,7 @@
 \alias{make_genomic_state}
 \title{Obtain the genomic state per region from annotation}
 \usage{
-makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")),
-  chrsStyle = "UCSC")
+makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")), ...)
 }
 \arguments{
 \item{txdb}{A \link[GenomicFeatures]{TxDb} object.}
@@ -13,8 +12,7 @@ makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")),
 \item{chrs}{The names of the chromosomes to use as denoted in the
 \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
 
-\item{chrsStyle}{The naming style of the chromosomes. By default, UCSC. See
-\link[GenomeInfoDb]{seqlevelsStyle}.}
+\item{...}{Arguments passed to other methods.}
 }
 \value{
 A \code{GRangesList} object with two elements: \code{fullGenome} and
