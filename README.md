@@ -1,4 +1,4 @@
-derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg)](https://travis-ci.org/lcolladotor/derfinder)
+derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg?branch=master)](https://travis-ci.org/lcolladotor/derfinder)
 =========
 
 Fast differential expression analysis of RNA-seq data at base-pair resolution. 
