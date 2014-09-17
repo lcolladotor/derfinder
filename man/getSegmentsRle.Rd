@@ -57,10 +57,6 @@ foo <- function() {
 }
 identical(foo(), segs)
 
-## It's a bit faster
-library("microbenchmark")
-micro <- microbenchmark(getSegmentsRle(data, cutoff), foo())
-micro
 }
 }
 \author{

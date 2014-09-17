@@ -169,20 +169,6 @@ library('bumphunter')
 annotation <- annotateNearest(regsWithP$regions, 'hg19')
 head(annotation)
 
-## Compare speed between 1 and 4 cores (must have them!)
-library('microbenchmark')
-micro <- microbenchmark(
-    calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
-        chr='chr21', cutoff=c(2, 5), mc.cores=1, verbose=FALSE,
-        method='regular'),
-    calculatePvalues(prep, models, fstats, nPermute=10, seeds=NULL,
-        chr='chr21', cutoff=c(2, 5), mc.cores=4, verbose=FALSE,
-        method='regular'),
-    times=10)
-levels(micro$expr) <- c('one', 'four')
-micro
-## Using 4 cores doesn't help with this toy data, but it will (at the
-## expense of more RAM) if you have a larger data set.
 }
 }
 \author{

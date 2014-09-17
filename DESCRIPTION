@@ -30,7 +30,6 @@ Imports:
 Suggests:
     biovizBase,
     ggplot2,
-    microbenchmark,
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
 Description: Fast differential expression analysis of RNA-seq data at base-pair
