@@ -18,6 +18,10 @@ script: ./travis-tool.sh run_tests
 on_failure:
   - ./travis-tool.sh dump_logs
 
+after_script:
+  - ./travis-tool.sh dump_logs_by_extension "timings"
+  - ./travis-tool.sh dump_sysinfo
+
 notifications:
   email:
     on_success: change
@@ -27,6 +31,8 @@ notifications:
 
 env:
   global:
+    - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
     - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
+    - _R_CHECK_TIMINGS_="0"
