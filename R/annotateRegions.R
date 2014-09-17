@@ -37,7 +37,7 @@
 #' @aliases annotate_regions
 #' @importFrom IRanges queryHits subjectHits
 #' @importFrom GenomeInfoDb 'seqlevelsStyle<-'
-#' @importMethodsFrom GenomicRanges names 'names<-' length '$' split 
+#' @importMethodsFrom GenomicRanges names 'names<-' length '$' split mcols
 #' countOverlaps findOverlaps '['
 #' @importMethodsFrom S4Vectors sapply
 #'

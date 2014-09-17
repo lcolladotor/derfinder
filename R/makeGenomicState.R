@@ -79,8 +79,10 @@
 #'     file='GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata')
 #' }
 
-makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22, 
-    "X", "Y")), chrsStyle = "UCSC") {
+makeGenomicState <- function(txdb, chrs = paste0('chr', c(1:22, 
+    'X', 'Y')), chrsStyle = 'UCSC') {
+    stopifnot(is(txdb, "TxDb"))    
+    
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
     
@@ -88,8 +90,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     introns <- intronsByTranscript(txdb)
     
     ## Get gene_id and tx_name associated with tx_id
-    map <- select(txdb, keys = names(introns), keytype = "TXID", 
-        columns = c("TXID", "TXNAME", "GENEID"))  # for both R and R-devel
+    map <- select(txdb, keys = names(introns), keytype = 'TXID', 
+        columns = c('TXID', 'TXNAME', 'GENEID'))  # for both R and R-devel
     
     ## Subset on transcripts that have a GENEID
     map <- map[!is.na(map$GENEID), ]
@@ -111,17 +113,17 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     mcols(introns2) <- DataFrame(txidRep, txnameRep, geneRep)
     
     mapping <- mcols(intronsRed)$revmap
-    addTx <- relist(mcols(introns2)[unlist(mapping), "txidRep"], 
+    addTx <- relist(mcols(introns2)[unlist(mapping), 'txidRep'], 
         mapping)
-    addTxName <- relist(mcols(introns2)[unlist(mapping), "txnameRep"], 
+    addTxName <- relist(mcols(introns2)[unlist(mapping), 'txnameRep'], 
         mapping)
-    addGene <- relist(mcols(introns2)[unlist(mapping), "geneRep"], 
+    addGene <- relist(mcols(introns2)[unlist(mapping), 'geneRep'], 
         mapping)
-    iRegion <- rep("intronic", length(addTx))
+    iRegion <- rep('intronic', length(addTx))
     values(intronsRed) <- DataFrame(iRegion, addTx, addTxName, 
         addGene)
-    names(mcols(intronsRed)) <- c("region", "TxID", "TxName", 
-        "Gene")
+    names(mcols(intronsRed)) <- c('region', 'TxID', 'TxName', 
+        'Gene')
     
     ## promoters next
     promoters <- promoters(txdb)
@@ -131,18 +133,18 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     promotersRed <- reduce(promoters, with.revmap = TRUE)
     mapping <- mcols(promotersRed)$revmap
     
-    addTx <- relist(mcols(promoters)[unlist(mapping), "tx_id"], 
+    addTx <- relist(mcols(promoters)[unlist(mapping), 'tx_id'], 
         mapping)
-    addTxName <- relist(mcols(promoters)[unlist(mapping), "tx_name"], 
+    addTxName <- relist(mcols(promoters)[unlist(mapping), 'tx_name'], 
         mapping)
-    addGene <- relist(mcols(promoters)[unlist(mapping), "Gene"], 
+    addGene <- relist(mcols(promoters)[unlist(mapping), 'Gene'], 
         mapping)
-    pRegion <- rep("promoter", length(addTx))
+    pRegion <- rep('promoter', length(addTx))
     
     values(promotersRed) <- DataFrame(pRegion, addTx, addTxName, 
         addGene)
-    names(mcols(promotersRed)) <- c("region", "TxID", "TxName", 
-        "Gene")
+    names(mcols(promotersRed)) <- c('region', 'TxID', 'TxName', 
+        'Gene')
     
     ##### UTRs 5'
     utr5 <- fiveUTRsByTranscript(txdb)
@@ -156,15 +158,15 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     utr5red <- reduce(utr5a, with.revmap = TRUE)
     
     mapping <- mcols(utr5red)$revmap
-    addTx <- relist(mcols(utr5a)[unlist(mapping), "txidRep5"], 
+    addTx <- relist(mcols(utr5a)[unlist(mapping), 'txidRep5'], 
         mapping)
-    addTxName <- relist(mcols(utr5a)[unlist(mapping), "txnameRep5"], 
+    addTxName <- relist(mcols(utr5a)[unlist(mapping), 'txnameRep5'], 
         mapping)
-    addGene <- relist(mcols(utr5a)[unlist(mapping), "geneRep5"], 
+    addGene <- relist(mcols(utr5a)[unlist(mapping), 'geneRep5'], 
         mapping)
-    uRegion <- rep("5UTR", length(addTx))
+    uRegion <- rep('5UTR', length(addTx))
     values(utr5red) <- DataFrame(uRegion, addTx, addTxName, addGene)
-    names(mcols(utr5red)) <- c("region", "TxID", "TxName", "Gene")
+    names(mcols(utr5red)) <- c('region', 'TxID', 'TxName', 'Gene')
     
     # 3'
     utr3 <- threeUTRsByTranscript(txdb)
@@ -178,15 +180,15 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     utr3red <- reduce(utr3a, with.revmap = TRUE)
     
     mapping <- mcols(utr3red)$revmap
-    addTx <- relist(mcols(utr3a)[unlist(mapping), "txidRep3"], 
+    addTx <- relist(mcols(utr3a)[unlist(mapping), 'txidRep3'], 
         mapping)
-    addTxName <- relist(mcols(utr3a)[unlist(mapping), "txnameRep3"], 
+    addTxName <- relist(mcols(utr3a)[unlist(mapping), 'txnameRep3'], 
         mapping)
-    addGene <- relist(mcols(utr3a)[unlist(mapping), "geneRep3"], 
+    addGene <- relist(mcols(utr3a)[unlist(mapping), 'geneRep3'], 
         mapping)
-    uRegion <- rep("3UTR", length(addTx))
+    uRegion <- rep('3UTR', length(addTx))
     values(utr3red) <- DataFrame(uRegion, addTx, addTxName, addGene)
-    names(mcols(utr3red)) <- c("region", "TxID", "TxName", "Gene")
+    names(mcols(utr3red)) <- c('region', 'TxID', 'TxName', 'Gene')
     
     ### exons
     exons <- exonsBy(txdb)
@@ -200,16 +202,16 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     exonsRed <- reduce(exonsa, with.revmap = TRUE)
     
     mapping <- mcols(exonsRed)$revmap
-    addTx <- relist(mcols(exonsa)[unlist(mapping), "txidRep"], 
+    addTx <- relist(mcols(exonsa)[unlist(mapping), 'txidRep'], 
         mapping)
-    addTxName <- relist(mcols(exonsa)[unlist(mapping), "txnameRep"], 
+    addTxName <- relist(mcols(exonsa)[unlist(mapping), 'txnameRep'], 
         mapping)
-    addGene <- relist(mcols(exonsa)[unlist(mapping), "geneRep"], 
+    addGene <- relist(mcols(exonsa)[unlist(mapping), 'geneRep'], 
         mapping)
-    eRegion <- rep("exon", length(addTx))
+    eRegion <- rep('exon', length(addTx))
     values(exonsRed) <- DataFrame(eRegion, addTx, addTxName, 
         addGene)
-    names(mcols(exonsRed)) <- c("region", "TxID", "TxName", "Gene")
+    names(mcols(exonsRed)) <- c('region', 'TxID', 'TxName', 'Gene')
     
     ############ merge
     codingGR <- c(intronsRed, exonsRed, promotersRed, utr3red, 
@@ -219,13 +221,13 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     ######## disjoin
     dGR <- disjoin(codingGR)
     
-    theTx <- theGene <- IntegerList(vector("list", length(dGR)))
-    theTxName <- CharacterList(vector("list", length(dGR)))
+    theTx <- theGene <- IntegerList(vector('list', length(dGR)))
+    theTxName <- CharacterList(vector('list', length(dGR)))
     theRegion <- rep(NA, length(dGR))
     
     ## introns
-    ooIntrons <- findOverlaps(dGR, intronsRed, type = "within")
-    theRegion[unique(queryHits(ooIntrons))] <- "intron"
+    ooIntrons <- findOverlaps(dGR, intronsRed, type = 'within')
+    theRegion[unique(queryHits(ooIntrons))] <- 'intron'
     theTx[unique(queryHits(ooIntrons))] <-
         intronsRed$TxID[subjectHits(ooIntrons)]
     theTxName[unique(queryHits(ooIntrons))] <-
@@ -234,8 +236,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
         intronsRed$Gene[subjectHits(ooIntrons)]
     
     ## promoters
-    ooPromoters <- findOverlaps(dGR, promotersRed, type = "within")
-    theRegion[unique(queryHits(ooPromoters))] <- "promoter"
+    ooPromoters <- findOverlaps(dGR, promotersRed, type = 'within')
+    theRegion[unique(queryHits(ooPromoters))] <- 'promoter'
     theTx[unique(queryHits(ooPromoters))] <-
         promotersRed$TxID[subjectHits(ooPromoters)]
     theTxName[unique(queryHits(ooPromoters))] <-
@@ -244,8 +246,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
         promotersRed$Gene[subjectHits(ooPromoters)]
     
     ## Exons
-    ooExons <- findOverlaps(dGR, exonsRed, type = "within")
-    theRegion[unique(queryHits(ooExons))] <- "exon"
+    ooExons <- findOverlaps(dGR, exonsRed, type = 'within')
+    theRegion[unique(queryHits(ooExons))] <- 'exon'
     theTx[unique(queryHits(ooExons))] <- exonsRed$TxID[subjectHits(ooExons)]
     theTxName[unique(queryHits(ooExons))] <-
         exonsRed$TxName[subjectHits(ooExons)]
@@ -253,15 +255,15 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     
     
     ## 5' UTRs
-    oo5UTR <- findOverlaps(dGR, utr5red, type = "within")
-    theRegion[unique(queryHits(oo5UTR))] <- "5UTR"
+    oo5UTR <- findOverlaps(dGR, utr5red, type = 'within')
+    theRegion[unique(queryHits(oo5UTR))] <- '5UTR'
     theTx[unique(queryHits(oo5UTR))] <- utr5red$TxID[subjectHits(oo5UTR)]
     theTxName[unique(queryHits(oo5UTR))] <- utr5red$TxName[subjectHits(oo5UTR)]
     theGene[unique(queryHits(oo5UTR))] <- utr5red$Gene[subjectHits(oo5UTR)]
     
     ## 3' UTRs
-    oo3UTR <- findOverlaps(dGR, utr3red, type = "within")
-    theRegion[unique(queryHits(oo3UTR))] <- "3UTR"
+    oo3UTR <- findOverlaps(dGR, utr3red, type = 'within')
+    theRegion[unique(queryHits(oo3UTR))] <- '3UTR'
     theTx[unique(queryHits(oo3UTR))] <- utr3red$TxID[subjectHits(oo3UTR)]
     theTxName[unique(queryHits(oo3UTR))] <- utr3red$TxName[subjectHits(oo3UTR)]
     theGene[unique(queryHits(oo3UTR))] <- utr3red$Gene[subjectHits(oo3UTR)]
@@ -273,8 +275,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     
     
     values(dGR) <- DataFrame(theRegion, theTx, theTxName, theGene)
-    names(values(dGR)) <- c("theRegion", "tx_id", "tx_name", 
-        "gene")
+    names(values(dGR)) <- c('theRegion', 'tx_id', 'tx_name', 
+        'gene')
     codingGR <- dGR
     
     ######## introns, exons, promoters
@@ -282,13 +284,13 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     ######## disjoin
     dGR <- disjoin(fullGR)
     
-    theTx <- theGene <- IntegerList(vector("list", length(dGR)))
-    theTxName <- CharacterList(vector("list", length(dGR)))
+    theTx <- theGene <- IntegerList(vector('list', length(dGR)))
+    theTxName <- CharacterList(vector('list', length(dGR)))
     theRegion <- rep(NA, length(dGR))
     
     ## introns
-    ooIntrons <- findOverlaps(dGR, intronsRed, type = "within")
-    theRegion[unique(queryHits(ooIntrons))] <- "intron"
+    ooIntrons <- findOverlaps(dGR, intronsRed, type = 'within')
+    theRegion[unique(queryHits(ooIntrons))] <- 'intron'
     theTx[unique(queryHits(ooIntrons))] <-
         intronsRed$TxID[subjectHits(ooIntrons)]
     theTxName[unique(queryHits(ooIntrons))] <-
@@ -297,8 +299,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
         intronsRed$Gene[subjectHits(ooIntrons)]
     
     ## Exons
-    ooExons <- findOverlaps(dGR, exonsRed, type = "within")
-    theRegion[unique(queryHits(ooExons))] <- "exon"
+    ooExons <- findOverlaps(dGR, exonsRed, type = 'within')
+    theRegion[unique(queryHits(ooExons))] <- 'exon'
     theTx[unique(queryHits(ooExons))] <- exonsRed$TxID[subjectHits(ooExons)]
     theTxName[unique(queryHits(ooExons))] <-
         exonsRed$TxName[subjectHits(ooExons)]
@@ -311,8 +313,8 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     theGene <- IntegerList(lapply(theGene, function(x) sort(unique(x))))
     
     values(dGR) <- DataFrame(theRegion, theTx, theTxName, theGene)
-    names(values(dGR)) <- c("theRegion", "tx_id", "tx_name", 
-        "gene")
+    names(values(dGR)) <- c('theRegion', 'tx_id', 'tx_name', 
+        'gene')
     fullGR <- dGR
     
     ######## reduce segments of the same type
@@ -321,7 +323,7 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
         r <- fullGR[i]
         rr <- reduce(r, with.revmap = TRUE)
         
-        mapping <- sapply(mcols(rr)$revmap, "[", 1)
+        mapping <- sapply(mcols(rr)$revmap, '[', 1)
         values(rr) <- mcols(r)[mapping, ]
         return(rr)
     })
@@ -333,7 +335,7 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
         r <- codingGR[i]
         rr <- reduce(r, with.revmap = TRUE)
         
-        mapping <- sapply(mcols(rr)$revmap, "[", 1)
+        mapping <- sapply(mcols(rr)$revmap, '[', 1)
         values(rr) <- mcols(r)[mapping, ]
         return(rr)
     })
@@ -344,7 +346,7 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     
     ## full
     mcols(fullGR)$Gene_Strand <- strand(fullGR)
-    strand(fullGR) <- Rle("*")
+    strand(fullGR) <- Rle('*')
     
     fullIntraGR <- gaps(fullGR)
     strand(fullGR) <- as.character(mcols(fullGR)$Gene_Strand)
@@ -357,9 +359,9 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     }
     fullIntraGR <- unlist(fList)
     
-    addTxName <- CharacterList(vector("list", length(fullIntraGR)))
-    addTx <- addGene <- IntegerList(vector("list", length(fullIntraGR)))
-    gRegion <- rep("intragenic", length(fullIntraGR))
+    addTxName <- CharacterList(vector('list', length(fullIntraGR)))
+    addTx <- addGene <- IntegerList(vector('list', length(fullIntraGR)))
+    gRegion <- rep('intragenic', length(fullIntraGR))
     values(fullIntraGR) <- DataFrame(gRegion, addTx, addTxName, 
         addGene)
     names(mcols(fullIntraGR)) <- names(mcols(fullGR))
@@ -371,7 +373,7 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     
     ## coding
     mcols(codingGR)$Gene_Strand <- strand(codingGR)
-    strand(codingGR) <- Rle("*")
+    strand(codingGR) <- Rle('*')
     
     codingIntraGR <- gaps(codingGR)
     strand(codingGR) <- as.character(mcols(codingGR)$Gene_Strand)
@@ -384,9 +386,9 @@ makeGenomicState <- function(txdb, chrs = paste0("chr", c(1:22,
     }
     codingIntraGR <- unlist(fList)
     
-    addTxName <- CharacterList(vector("list", length(codingIntraGR)))
-    addTx <- addGene <- IntegerList(vector("list", length(codingIntraGR)))
-    gRegion <- rep("intragenic", length(codingIntraGR))
+    addTxName <- CharacterList(vector('list', length(codingIntraGR)))
+    addTx <- addGene <- IntegerList(vector('list', length(codingIntraGR)))
+    gRegion <- rep('intragenic', length(codingIntraGR))
     values(codingIntraGR) <- DataFrame(gRegion, addTx, addTxName, 
         addGene)
     names(mcols(codingIntraGR)) <- names(mcols(codingGR))
