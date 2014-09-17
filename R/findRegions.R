@@ -221,3 +221,179 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
 #' @export
 find_regions <- findRegions
+
+
+
+
+
+
+
+
+#' Segment a Rle into positive, zero, and negative regions
+#'
+#' Given two cutoffs, L and U, this function slices a numerical Rle into up and 
+#' down sections. It is a wrapper for \link[IRanges]{slice} with functionality 
+#' inspired from \link[bumphunter]{getSegments}.
+#'
+#' 
+#' @param x A numeric Rle.
+#' @param cutoff A numeric vector of length either 1 or 2. If length is 1, U 
+#' will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The 
+#' function will furthermore always use the minimum of cutoff for L and the 
+#' maximum for U.
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+#'
+#' @return A list of IRanges objects, one for the up segments and one for the 
+#' down segments.
+#'
+#' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice}, 
+#' \link{findRegions}
+#'
+#' @author Leonardo Collado-Torres
+#'
+#'
+#' @importMethodsFrom IRanges quantile
+#' @importFrom IRanges slice
+#' @importMethodsFrom S4Vectors as.numeric
+#' @examples
+#' library("IRanges")
+#' set.seed(20130725)
+#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
+#' data <- Rle(rnorm(sum(pos)))
+#' cutoff <- quantile(data, .99)
+#'
+#' ## It's quite fast
+#' system.time(segs <- .getSegmentsRle(data, cutoff, verbose=TRUE))
+#' 
+#' \dontrun{
+#' ## The output is different in look than the one from getSegments() but it's 
+#' ## use is similar.
+#' ## Plus it can be transformed into the same format as the ouptut from 
+#' ## .getSegmentsRle().
+#' library("bumphunter")
+#' cluster <- .clusterMakerRle(pos, 100L)
+#' foo <- function() {
+#'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, 
+#'     assumeSorted=TRUE)[c("upIndex", "dnIndex")]
+#'     segs.ir <- lapply(segs2, function(ind) {
+#'         tmp <- lapply(ind, function(segment) {
+#'             c("start"=min(segment), "end"=max(segment))
+#'         })
+#'         info <- do.call(rbind, tmp)
+#'         IRanges(start=info[,"start"], end=info[,"end"])
+#'     })
+#'     return(segs.ir)
+#' }
+#' identical(foo(), segs) 
+#'
+#' }
+#'
+
+.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), verbose = FALSE) {
+    
+    ## Select the cutoff
+    if (verbose) message(paste(Sys.time(),
+        ".getSegmentsRle: segmenting with cutoff(s)",
+        paste(cutoff, collapse=", ")))
+    stopifnot(length(cutoff) <= 2)
+    if (length(cutoff) == 1) {
+        cutoff <- c(-cutoff, cutoff)
+    }
+    cutoff <- sort(cutoff)
+    
+    ## Find the segments
+    result <- lapply(c("upIndex", "dnIndex"), function(ind) {
+        if(ind == "upIndex") {
+            fcut <- slice(x=x, lower=cutoff[2], rangesOnly=TRUE)
+        } else {
+            fcut <- slice(x=x, upper=cutoff[1], rangesOnly=TRUE)
+        }
+        return(fcut)
+    })
+    names(result) <- c("upIndex", "dnIndex")
+
+    ## Done!
+    return(result)
+}
+
+.get_segments_rle <- .getSegmentsRle
+
+
+
+
+
+
+#' Make clusters of genomic locations based on distance in Rle() world
+#'
+#' Genomic locations are grouped into clusters based on distance: locations 
+#' that are close to each other are assigned to the same cluster. The operation 
+#' is performed on each chromosome independently. This is very similar to 
+#' \link[bumphunter]{clusterMaker}.
+#'
+#' @details
+#' \link[bumphunter]{clusterMaker} adapted to Rle world. Assumes that the data 
+#' is sorted and that everything is in a single chromosome.
+#' It is also almost as fast as the original version with the advantage that 
+#' everything is in Rle() world.
+#' 
+#' It is a a helper function for \link{findRegions}.
+#' 
+#' @param position A logical Rle indicating the chromosome positions.
+#' @param maxGap An integer. Genomic locations within \code{maxGap} from each 
+#' other are placed into the same cluster.
+#' @param ranges If \code{TRUE} then an IRanges object is returned instead of 
+#' the usual integer Rle.
+#'
+#' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it 
+#' is an IRanges object with one range per cluster.
+#'
+#' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
+#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
+#' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
+#' 1.1.10.
+#' @author Leonardo Collado-Torres
+#'
+#' @aliases cluster_maker_rle
+#' @importFrom IRanges IRanges start end reduce Views runLength
+#' @importMethodsFrom IRanges length sum
+#' @importFrom S4Vectors Rle runValue
+#'
+#' @examples
+#' library('IRanges')
+#' set.seed(20130725)
+#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
+#' cluster <- .clusterMakerRle(pos, 100L)
+#' cluster
+#'
+
+.clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE) {
+    ## Instead of using which(), identify the regions of the chr
+    ## with data
+    ir <- IRanges(start = start(position)[runValue(position)], 
+        end = end(position)[runValue(position)])
+    
+    ## Apply the gap reduction
+    ir.red <- reduce(ir, min.gapwidth = maxGap + 1)
+    
+    ## Identify the clusters
+    clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position, 
+        ir.red)))
+    ## Note that sum(Views(pos, ir.red)) is faster than
+    ## sapply(ir.red, function(x) sum(pos[x]))
+    
+    ## Group the information into an IRanges object
+    if (ranges) {
+        csum <- cumsum(runLength(clusterIDs))
+        result <- IRanges(start = c(1, csum[-length(csum)] + 
+            1), end = csum)
+    } else {
+        result <- clusterIDs
+    }
+    
+    ## Done
+    return(result)
+} 
+
+.cluster_maker_rle <- .clusterMakerRle
+
