@@ -39,21 +39,28 @@
 #'
 #' @importMethodsFrom IRanges nrow '$<-'
 #' @importFrom BiocParallel bpmapply
+#' @importFrom GenomeInfoDb 'seqlengths<-'
 #'
 #' @examples
+#' ## Create some toy data
 #' library('IRanges')
 #' x <- Rle(round(runif(1e4, max=10)))
 #' y <- Rle(round(runif(1e4, max=10)))
 #' z <- Rle(round(runif(1e4, max=10)))
 #' fullCov <- list('chr21' = DataFrame(x, y, z))
+#'
+#' ## Calculate a proxy of library size
+#' libSize <- sapply(fullCov$chr21, sum)
+#'
+#' ## Run region matrix normalizing the coverage
 #' regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L, 
-#'     maxClusterGap = 300L, L = 36)
+#'     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
 #'
 #' \dontrun{
 #' ## You can alternatively use filterData() on fullCov to reduce the required
 #' ## memory before using regionMatrix(). This can be useful when mc.cores > 1
 #' filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean', 
-#'     cutoff=5)
+#'     cutoff=5, totalMapped = libSize, targetSize = 4e4)
 #' regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
 #'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 #' identical(regionMat2, regionMat)
@@ -90,7 +97,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     maxClusterGap = 300L, L, runFilter, ...) {
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    chrsStyle <- .advance_argument('chrsStyle', 'UCSC', ...)
+    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
     if (verbose) 
         message(paste(Sys.time(), 'regionMatrix: processing', chr))
         
@@ -111,6 +118,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
             
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(filt)
+        seqlengths <- length(filt$position)
     } else {        
         ## Identify regions
         regs <- findRegions(position = covInfo$position, 
@@ -118,18 +126,23 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(covInfo)
+        seqlengths <- length(covInfo$position)
     }     
     
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
     
+    ## Set the length
+    names(seqlengths) <- chr
+    seqlengths(regs) <- seqlengths
+
     ## Prepare for getRegionCoverage
     names(fullCovTmp) <- chr
         
     ## Get region coverage    
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
         totalMapped = NULL, targetSize = 0, verbose = verbose,
-        chrsStyle = chrStyle)
+        chrsStyle = chrsStyle)
         
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat) / L

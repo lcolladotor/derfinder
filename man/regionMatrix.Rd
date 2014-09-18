@@ -54,19 +54,25 @@ functions. Inspect the code if interested.
 You should use at most one core per chromosome.
 }
 \examples{
+## Create some toy data
 library('IRanges')
 x <- Rle(round(runif(1e4, max=10)))
 y <- Rle(round(runif(1e4, max=10)))
 z <- Rle(round(runif(1e4, max=10)))
 fullCov <- list('chr21' = DataFrame(x, y, z))
+
+## Calculate a proxy of library size
+libSize <- sapply(fullCov$chr21, sum)
+
+## Run region matrix normalizing the coverage
 regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
-    maxClusterGap = 300L, L = 36)
+    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
 
 \dontrun{
 ## You can alternatively use filterData() on fullCov to reduce the required
 ## memory before using regionMatrix(). This can be useful when mc.cores > 1
 filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
-    cutoff=5)
+    cutoff=5, totalMapped = libSize, targetSize = 4e4)
 regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 identical(regionMat2, regionMat)

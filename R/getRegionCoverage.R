@@ -73,6 +73,8 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
     names(regions) <- seq_len(length(regions))  # add names
     
     ## Use UCSC style names by default
+    print(names(fullCov))
+    print(chrsStyle)
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     seqlevelsStyle(regions) <- chrsStyle
     

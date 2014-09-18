@@ -1,3 +1,22 @@
+CHANGES IN VERSION 0.0.75
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o regionMatrix() now returns the output of getRegionCoverage() so you don't
+        have to run it twice if you are interested in using 
+        derfinderPlot::plotRegionCoverage()
+    o regionMatrix()$regions now guesses the seqlengths
+
+BUG FIXES
+
+    o Fixed .advanced_argument() to work in nested functions
+    o Fixed a case in getRegionCoverage() where fullCov$position was provided
+        but it was NULL.
+    o Fixed regionMatrix(totalMapped, targetSize) case which would previously
+        lead to an error in the getRegionCoverage() step.
+
+
 CHANGES IN VERSION 0.0.74
 -------------------------
 
