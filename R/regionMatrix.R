@@ -19,10 +19,11 @@
 #' @param ... Arguments passed to other methods.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
-#' with two components.
+#' with three components.
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
 #' returned by \link{findRegions}.}
+#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions.}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
@@ -87,8 +88,10 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, 
     maxClusterGap = 300L, L, runFilter, ...) {
-            
-    if (.advanced_argument('verbose', TRUE, ...)) 
+    
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    chrsStyle <- .advance_argument('chrsStyle', 'UCSC', ...)
+    if (verbose) 
         message(paste(Sys.time(), 'regionMatrix: processing', chr))
         
     ## Filter by 'one' or 'mean' and get mean coverage
@@ -125,13 +128,14 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         
     ## Get region coverage    
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
-        totalMapped = NULL, ...)
+        totalMapped = NULL, targetSize = 0, verbose = verbose,
+        chrsStyle = chrStyle)
         
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat) / L
 
     ## Finish
-    res <- list(regions = regs, coverageMatrix = covMat)
+    res <- list(regions = regs, bpCoverage = regionCov, coverageMatrix = covMat)
     return(res)
     
 }

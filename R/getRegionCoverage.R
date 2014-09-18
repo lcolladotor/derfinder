@@ -98,7 +98,15 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
         
         ## Check whether fullCov has been filtered, then subset
         if(all(c('coverage', 'position') %in% names(covInfo))) {
-            yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
+            if(!is.null(g$indexStart) & !is.null(g$indexEnd)) {
+                ## Subset if appropriate
+                yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
+            } else if (is.null(covInfo$position)){
+                yy <- covInfo$coverage[ranges(g), ]
+            } else {
+                stop("It seems that you have filtered the coverage but your 'regions' object is missing the 'indexStart' and 'indexEnd' information produced by findRegions().")
+            }
+            
         } else {
             yy <- covInfo[ranges(g), ]  # better subset
         }

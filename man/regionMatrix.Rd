@@ -30,10 +30,11 @@ create each element of \code{fullCov}.}
 }
 \value{
 A list with one entry per chromosome. Then per chromosome, a list
-with two components.
+with three components.
 \describe{
 \item{regions }{ A set of regions based on the coverage filter cutoff as
 returned by \link{findRegions}.}
+\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions.}
 \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 candidate region.}
 }
