@@ -34,9 +34,12 @@ install_github('lcolladotor/derfinderHelper')
 
 ## If you are using BioC-devel use:
 install_github('lcolladotor/derfinder@master')
+## If you want to build the vignette use:
+# install_github('lcolladotor/derfinder@master', build_vignettes = TRUE)
+## Note that this can take more time!
 
 ## If you are using BioC-release use:
-install_github('lcolladotor/derfinder@release')
+# install_github('lcolladotor/derfinder@release')
 
 ## Suggested:
 biocLite('ggbio')
