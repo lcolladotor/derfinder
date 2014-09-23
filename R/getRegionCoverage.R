@@ -91,8 +91,8 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     
     ## Load data if 'fullCov' is not specified
     if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(regions),
-            fun = 'getRegionCoverage', verbose = verbose, ...)        
+        fullCov <- .load_fullCov(files = files, regs = regions,
+            fun = 'getRegionCoverage', ...)        
     }
     ## Fix naming style
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
@@ -169,21 +169,22 @@ get_region_coverage <- getRegionCoverage
 
 
 ## Helper function that runs fullCoverage
-.load_fullCov <- function(files, chrs, fun, verbose, ...) {
+.load_fullCov <- function(files, regs, fun, ...) {
     stopifnot(!is.null(files))
-    if(verbose)
+    if(.advanced_argument('verbose', TRUE, ...))
         message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
 
     ## If no protection was specified for calculating the coverage, then
     ## specify it. Details in loadCoverage()
     protectWhich <- .advanced_argument('protectWhich', NULL, ...)
+    chrs <- seqlevelsInUse(regs)
     
         
     if(is.null(protectWhich)) {
         fullCov <- fullCoverage(files = files, chrs = chrs, protectWhich = 3e4,
-            ...)
+            which = regs, ...)
     } else {
-        fullCov <- fullCoverage(files = files, chrs = chrs, ...)
+        fullCov <- fullCoverage(files = files, chrs = chrs, which = regs, ...)
     }
     return(fullCov)
 }

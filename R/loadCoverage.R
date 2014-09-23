@@ -134,7 +134,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         seqlevelsStyle(which) <- fileStyle
         
         if(!is.null(protectWhich)) {
-            stopifnot(protectWhich > 0)
+            stopifnot(protectWhich >= 0)
             which <- resize(which, width(which) + protectWhich, fix = 'center')
         }     
         

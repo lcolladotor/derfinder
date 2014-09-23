@@ -94,8 +94,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
     ## Load data if 'fullCov' is not specified
     if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(etab),
-            fun = 'coverageToExon', verbose = verbose, ...)        
+        fullCov <- .load_fullCov(files = files, regs = etab,
+            fun = 'coverageToExon', ...)        
     }
     ## Fix naming style
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
@@ -124,7 +124,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
         fullCov = fullCov, etab = etab, L = L,
         nCores = .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...),
-        chrs = chrKeep, verbose = verbose, BPPARAM = BPPARAM, ...)
+        chrs = chrKeep, BPPARAM = BPPARAM, ...)
     
     # combine two strands
     exons <- do.call("rbind", exonByStrand)
@@ -141,8 +141,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
-    verbose, ...) {
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs, ...) {
         
     e <- etab[ii]  # subset
     
@@ -159,7 +158,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         fullCov, chrs, SIMPLIFY = FALSE)
     
     # now count exons
-    moreArgs <- list(e = e, L = L, verbose = verbose)
+    moreArgs <- list(e = e, L = L)
     
     ## Define cluster
     exonCores <- min(nCores, length(subsets))
@@ -169,8 +168,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         .define_cluster(cores = 'exonCores', exonCores), ...)
     
     ## Define ChrStep function
-    .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
-        if (verbose) 
+    .coverageToExonChrStep <- function(z.DF, chr, e, L) {
+        if (.advanced_argument('verbose', TRUE, ...)) 
             message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
     
         ## Transform to regular data.frame   

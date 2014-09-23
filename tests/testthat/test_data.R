@@ -98,3 +98,42 @@ test_that('Filtering', {
     expect_that(nrow(filt$coverage), is_identical_to(sum(filt$position)))
     
 })
+
+
+## Test getRegionCoverage() and coverageToExon()
+
+## Assign chr lengths using hg19 information, use only first two regions
+library('GenomicRanges')
+data(hg19Ideogram, package = 'biovizBase', envir = environment())
+regions <- genomeRegions$regions[1:2]
+seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
+## Get the region coverage
+regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
+
+## Load using which
+fullCov.regs <- fullCoverage(files, chrs = seqlevels(regions), fileStyle = 'NCBI', protectWhich = 3e4, which = regions, verbose = FALSE)
+
+## Load without using the default 'protectWhich'
+max.noP <- sapply(loadCoverage(files = files, chr = '21', verbose = FALSE, protectWhich = 0, cutoff = NULL, which = regions)$coverage, max)
+max.wP <- sapply(fullCov$chr21, max)
+
+## Use only the first two exons
+smallGenomicState <- genomicState
+smallGenomicState$fullGenome <- smallGenomicState$fullGenome[which(smallGenomicState$fullGenome$theRegion == 'exon')[1:2] ]
+
+## Get the coverage information for each exon
+exonCov <- coverageToExon(fullCov=fullCov,
+    genomicState=smallGenomicState$fullGenome, L=36)
+
+## Verify coverageToExon
+exonCov.verify <- do.call(rbind, lapply(getRegionCoverage(regions = smallGenomicState$fullGenome, files = files, fileStyle = 'NCBI', verbose = FALSE), function(x) { sapply(x, sum)})) / 36
+
+test_that('Obtaining region coverage', {
+    expect_that(fullCov, is_identical_to(fullCov.regs))
+    expect_that(regionCov, is_identical_to(getRegionCoverage(regions = regions, files = files, fileStyle = 'NCBI', verbose = FALSE)))
+    expect_that(exonCov, is_identical_to(coverageToExon(genomicState = smallGenomicState$fullGenome, L=36, files = files, fileStyle = 'NCBI', verbose = FALSE)))
+    expect_that(getRegionCoverage(regions = regions, files = files, fileStyle = 'NCBI', verbose = FALSE)
+    expect_that(max.noP - max.wP, is_equivalent_to(rep(c(0,-1,0,-1,-2,-1,-3,0,-3,-1,-3,0,-1,0,-1,0), c(4,1,1,1,3,2,2,1,3,1,2,1,1,3,1,4))))
+    expect_that(exonCov, equals(exonCov.verify))
+}
+)
