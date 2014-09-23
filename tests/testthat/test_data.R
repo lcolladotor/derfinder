@@ -132,7 +132,6 @@ test_that('Obtaining region coverage', {
     expect_that(fullCov, is_identical_to(fullCov.regs))
     expect_that(regionCov, is_identical_to(getRegionCoverage(regions = regions, files = files, fileStyle = 'NCBI', verbose = FALSE)))
     expect_that(exonCov, is_identical_to(coverageToExon(genomicState = smallGenomicState$fullGenome, L=36, files = files, fileStyle = 'NCBI', verbose = FALSE)))
-    expect_that(getRegionCoverage(regions = regions, files = files, fileStyle = 'NCBI', verbose = FALSE)
     expect_that(max.noP - max.wP, is_equivalent_to(rep(c(0,-1,0,-1,-2,-1,-3,0,-3,-1,-3,0,-1,0,-1,0), c(4,1,1,1,3,2,2,1,3,1,2,1,1,3,1,4))))
     expect_that(exonCov, equals(exonCov.verify))
 }
