@@ -30,6 +30,14 @@ Note that in general, \link[BiocParallel]{SnowParam} is more memory efficient
 than link[BiocParallel]{MulticoreParam}. If you so desire, use your favorite
 cluster type by specifying \code{BPPARAM}.
 }
+\examples{
+## Open the advanced argument docs for loadCoverage()
+if(interactive()) {
+    advancedArg('loadCoverage')
+} else {
+    (advancedArg('loadCoverage', browse = FALSE))
+}
+}
 \author{
 Leonardo Collado-Torres
 }

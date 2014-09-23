@@ -23,6 +23,13 @@
 #' 
 #' @return A vector of URLs with the GitHub search queries.
 #'
+#' @examples
+#' ## Open the advanced argument docs for loadCoverage()
+#' if(interactive()) {
+#'     advancedArg('loadCoverage')
+#' } else {
+#'     (advancedArg('loadCoverage', browse = FALSE))
+#' }
 
 advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
     stopifnot(package %in% c('derfinder', 'derfinderPlot'))
