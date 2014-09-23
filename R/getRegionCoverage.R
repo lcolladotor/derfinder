@@ -15,7 +15,7 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return a list of data.frame where each data.frame has the coverage 
 #' information (nrow = width of region, ncol = number of samples) for a given 

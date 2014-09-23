@@ -4,14 +4,14 @@
 \alias{load_coverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-loadCoverage(dirs, chr, cutoff = NULL, filter = "one", chrlen = NULL,
+loadCoverage(files, chr, cutoff = NULL, filter = "one", chrlen = NULL,
   output = NULL, bai = NULL, ...)
 }
 \arguments{
-\item{dirs}{A character vector with the full path to the sample BAM files
+\item{files}{A character vector with the full path to the sample BAM files
 (or BigWig files).
 The names are used for the column names of the DataFrame. Check
-\link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a
+\link{rawFiles} for constructing \code{files}. \code{files} can also be a
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
@@ -33,10 +33,10 @@ for example). If another character is specified, then that name is used for #' t
 
 \item{bai}{The full path to the BAM index files. If \code{NULL} it is
 assumed that the BAM index files are in the same location as the BAM files
-and that they have the .bai extension. Ignored if \code{dirs} is a
+and that they have the .bai extension. Ignored if \code{files} is a
 \code{BamFileList} object or if \code{inputType=='BigWig'}.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with two components.
@@ -62,13 +62,13 @@ Parallelization for loading the data in chunks is used only used when
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',
+files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',
     fileterm = NULL)
 ## Shorten the column names
-names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
+names(files) <- gsub('_accepted_hits.bam', '', names(files))
 
 ## Read and filter the data, only for 2 files
-dataSmall <- loadCoverage(dirs = dirs[1:2], chr = '21', cutoff = 0)
+dataSmall <- loadCoverage(files = files[1:2], chr = '21', cutoff = 0)
 
 \dontrun{
 ## Export to BigWig files

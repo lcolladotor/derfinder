@@ -26,7 +26,7 @@ In the second case, the mean coverage has to be greater than \code{cutoff}.}
 set to \code{FALSE} then \code{returnMean = TRUE} must have been used to
 create each element of \code{fullCov}.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with one entry per chromosome. Then per chromosome, a list

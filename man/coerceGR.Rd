@@ -14,7 +14,7 @@ to a \code{GRanges} object.}
 \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A \link[GenomicRanges]{GRanges} object with \code{score} metadata

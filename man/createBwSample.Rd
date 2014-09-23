@@ -19,7 +19,7 @@ using \link{fullCoverage}.}
 \item{keepGR}{If \code{TRUE}, the \link[GenomicRanges]{GRanges} object
 created by \link{coerceGR} is returned. Otherwise it is discarded.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 Creates a BigWig file with the coverage information (regions with

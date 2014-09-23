@@ -40,9 +40,9 @@ This function can also be used to identify a set of BigWig files.
 \examples{
 ## Get list of BAM files included in derfinder
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
+files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
     fileterm=NULL)
-dirs
+files
 }
 \author{
 Leonardo Collado-Torres

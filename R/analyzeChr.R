@@ -33,7 +33,7 @@
 #' in the return section.
 #' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateNearest} is 
 #' run. Otherwise this step is skipped.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:
 #' \describe{

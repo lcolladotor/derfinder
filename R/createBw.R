@@ -10,7 +10,7 @@
 #' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} objects 
 #' created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList} 
 #' are returned. Otherwise they are discarded.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}
 #' with the output for \link{coerceGR} for each of the samples.

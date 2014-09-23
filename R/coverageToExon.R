@@ -12,7 +12,7 @@
 #' @param L The width of the reads used.
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A matrix (nrow = number of exons in \code{genomicState} 
 #' corresponding to the chromosomes in \code{fullCov}, ncol = number of 

@@ -1,3 +1,11 @@
+CHANGES IN VERSION 0.0.76
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o loadCoverage() and fullCoverage() argument 'dirs' has been renamed to 
+        'files' for greater consistency with what it represents.
+ 
 CHANGES IN VERSION 0.0.75
 -------------------------
 

@@ -31,7 +31,7 @@ It should be greater than \code{maxRegionGap} (0 by default).}
 potentials DERs. This is used in \link{calculatePvalues} to speed up
 permutation calculations.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 Either a GRanges or a GRangesList as determined by \code{oneTable}.

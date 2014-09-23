@@ -36,7 +36,7 @@ This argument is passed to \link{findRegions}.}
 determine significance. The first element is used to determine significance
 for the p-values and the second element is used for the q-values.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with four components:

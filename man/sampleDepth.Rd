@@ -16,7 +16,7 @@ interest. For example, 0.5 is the median.}
 \item{scalefac}{Number added to the sample coverage adjustments before the
 log2 transformation.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A matrix (vector of \code{length(probs) == 1}) with the library size depth

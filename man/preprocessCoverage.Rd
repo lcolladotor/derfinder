@@ -39,7 +39,7 @@ helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
 loads only the data needed for the chunk processing. The downside is a bit
 longer computation time due to input/output.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with five components.

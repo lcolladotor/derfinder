@@ -32,7 +32,7 @@ library prior to filtering. By default, to reads per 80 million reads.}
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with up to three components.

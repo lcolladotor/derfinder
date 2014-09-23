@@ -20,7 +20,7 @@
 #' regions with \link{annotateRegions}.
 #' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is 
 #' merged. 
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #' @inheritParams annotateRegions
 #'
 #'

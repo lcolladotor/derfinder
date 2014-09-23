@@ -16,7 +16,7 @@
 #' interest. For example, 0.5 is the median.
 #' @param scalefac Number added to the sample coverage adjustments before the 
 #' log2 transformation.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return 
 #' A matrix (vector of \code{length(probs) == 1}) with the library size depth 

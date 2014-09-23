@@ -56,7 +56,7 @@ in the return section.}
 \item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateNearest} is
 run. Otherwise this step is skipped.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 If \code{returnOutput=TRUE}, a list with six components:

@@ -6,17 +6,17 @@
 #' the unfiltered coverage by sample into a DataFrame. The end result is a list 
 #' with one such DataFrame objects per chromosome.
 #' 
-#' @param dirs A character vector with the full path to the sample BAM files
+#' @param files A character vector with the full path to the sample BAM files
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
-#' \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a 
+#' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
 #' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 #' \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.
 #' @param chrs The chromosome of the files to read. The format has to match the
 #' one used in the input files.
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
-#' and that they have the .bai extension. Ignored if \code{dirs} is a 
+#' and that they have the .bai extension. Ignored if \code{files} is a 
 #' \code{BamFileList} object.
 #' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, 
 #' the chromosome length is extracted from the BAM files. Otherwise, it should 
@@ -24,7 +24,7 @@
 #' @param outputs This argument is passed to the \code{output} argument of 
 #' \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.
 #' @inheritParams loadCoverage
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with one element per chromosome.
 #' \describe{ Each element is a DataFrame with the coverage information 
@@ -41,13 +41,13 @@
 #'
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
+#' files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
 #'     fileterm=NULL)
 #' ## Shorten the column names
-#' names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
+#' names(files) <- gsub('_accepted_hits.bam', '', names(files))
 #' 
 #' ## Read and filter the data, only for 1 file
-#' fullCov <- fullCoverage(dirs=dirs[1], chrs=c('21', '22'))
+#' fullCov <- fullCoverage(files=files[1], chrs=c('21', '22'))
 #' fullCov
 #'
 #' \dontrun{
@@ -59,7 +59,7 @@
 #'     library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
 #' }
 
-fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL, 
+fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL, 
     outputs = NULL, cutoff = NULL, ...) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
@@ -88,24 +88,24 @@ fullCoverage <- function(dirs, chrs, bai = NULL, chrlens = NULL,
     BPPARAM <- .define_cluster(...)
     
     ## Subsetting function that runs loadCoverage
-    loadChr <- function(idx, dirs, chrs, bai, chrlens, outputs, cutoff,
+    loadChr <- function(idx, files, chrs, bai, chrlens, outputs, cutoff,
         mc.cores.load, ...) {
         
         if (verbose) 
             message(paste(Sys.time(), 'fullCoverage: processing chromosome', 
                 chrs[idx]))
         if (is.null(cutoff)) {
-            res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = NULL, 
+            res <- loadCoverage(files = files, chr = chrs[idx], cutoff = NULL, 
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 mc.cores = mc.cores.load, ...)$coverage
         } else {
-            res <- loadCoverage(dirs = dirs, chr = chrs[idx], cutoff = cutoff, 
+            res <- loadCoverage(files = files, chr = chrs[idx], cutoff = cutoff, 
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 mc.cores = mc.cores.load, ...)
         }
         return(res)        
     }
-    result <- bplapply(seq_len(length(chrs)), loadChr, dirs = dirs, 
+    result <- bplapply(seq_len(length(chrs)), loadChr, files = files, 
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         cutoff = cutoff, mc.cores.load = mc.cores.load,
         ..., BPPARAM = BPPARAM)

@@ -12,7 +12,7 @@
 #' @param annotate If \code{TRUE} then the regions are annotated by the genomic 
 #' state. Otherwise, only the overlaps between the regions and the genomic 
 #' states are computed.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with elements \code{countTable} and \code{annotationList} 
 #' (only if \code{annotate=TRUE}). 

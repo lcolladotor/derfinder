@@ -30,9 +30,9 @@
 #' @examples
 #' ## Get list of BAM files included in derfinder
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
+#' files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
 #'     fileterm=NULL)
-#' dirs
+#' files
 
 rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL, 
     fileterm = 'accepted_hits.bam') {
@@ -40,14 +40,14 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     if (!is.null(sampledirs)) {
         if (!is.null(datadir)) {
             ## Using sampledirs with datadir
-            dirs <- sapply(sampledirs, function(x) {
+            files <- sapply(sampledirs, function(x) {
                 file.path(datadir, x)
             })
-            names(dirs) <- sampledirs
+            names(files) <- sampledirs
         } else {
             ## Using only the sampledirs since datadir is NULL
-            dirs <- sampledirs
-            names(dirs) <- sampledirs
+            files <- sampledirs
+            names(files) <- sampledirs
         }
     } else if (!is.null(samplepatt)) {
         if (is.null(datadir)) {
@@ -55,8 +55,8 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
             datadir <- '.'
         }
         ## Identify the directories with this pattern
-        dirs <- dir(path = datadir, pattern = samplepatt, full.names = TRUE)
-        names(dirs) <- dir(path = datadir, pattern = samplepatt, 
+        files <- dir(path = datadir, pattern = samplepatt, full.names = TRUE)
+        names(files) <- dir(path = datadir, pattern = samplepatt, 
             full.names = FALSE)
     } else {
         stop("Either 'samplepatt' or 'sampledirs' must be non-NULL.")
@@ -64,13 +64,13 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     
     ## Tell R which are the BAM files
     if (!is.null(fileterm)) {
-        tmp <- file.path(dirs, fileterm)
-        names(tmp) <- names(dirs)
-        dirs <- tmp
+        tmp <- file.path(files, fileterm)
+        names(tmp) <- names(files)
+        files <- tmp
     }
     
     ## Done
-    return(dirs)
+    return(files)
 } 
 
 #' @export

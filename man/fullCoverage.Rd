@@ -5,14 +5,14 @@
 \title{Load the unfiltered coverage information from a group of BAM files and a
 list of chromosomes}
 \usage{
-fullCoverage(dirs, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
+fullCoverage(files, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
   cutoff = NULL, ...)
 }
 \arguments{
-\item{dirs}{A character vector with the full path to the sample BAM files
+\item{files}{A character vector with the full path to the sample BAM files
 (or BigWig files).
 The names are used for the column names of the DataFrame. Check
-\link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a
+\link{rawFiles} for constructing \code{files}. \code{files} can also be a
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
@@ -21,7 +21,7 @@ one used in the input files.}
 
 \item{bai}{The full path to the BAM index files. If \code{NULL} it is
 assumed that the BAM index files are in the same location as the BAM files
-and that they have the .bai extension. Ignored if \code{dirs} is a
+and that they have the .bai extension. Ignored if \code{files} is a
 \code{BamFileList} object.}
 
 \item{chrlens}{The chromosome lengths in base pairs. If it's \code{NULL},
@@ -33,7 +33,7 @@ have the same length as \code{chrs}.}
 
 \item{cutoff}{This argument is passed to \link{filterData}.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with one element per chromosome.
@@ -49,13 +49,13 @@ with one such DataFrame objects per chromosome.
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
+files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
     fileterm=NULL)
 ## Shorten the column names
-names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
+names(files) <- gsub('_accepted_hits.bam', '', names(files))
 
 ## Read and filter the data, only for 1 file
-fullCov <- fullCoverage(dirs=dirs[1], chrs=c('21', '22'))
+fullCov <- fullCoverage(files=files[1], chrs=c('21', '22'))
 fullCov
 
 \dontrun{

@@ -21,7 +21,7 @@ using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 \link[derfinderHelper]{fstats.apply} and should be the same as the one used
 in \link{preprocessCoverage}.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A numeric Rle with the F-statistics per base pair that passed the

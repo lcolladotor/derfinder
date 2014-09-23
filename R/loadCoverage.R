@@ -4,10 +4,10 @@
 #' specific chromosome directly from the BAM files. It then merges them into a 
 #' DataFrame and removes the bases that do not pass the cutoff.
 #' 
-#' @param dirs A character vector with the full path to the sample BAM files
+#' @param files A character vector with the full path to the sample BAM files
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
-#' \link{rawFiles} for constructing \code{dirs}. \code{dirs} can also be a 
+#' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
 #' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 #' \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.
 #' @param chr Chromosome to read. Should be in the format matching the one used
@@ -21,9 +21,9 @@
 #' for example). If another character is specified, then that name is used for #' the output file.
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
-#' and that they have the .bai extension. Ignored if \code{dirs} is a 
+#' and that they have the .bai extension. Ignored if \code{files} is a 
 #' \code{BamFileList} object or if \code{inputType=='BigWig'}.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -58,13 +58,13 @@
 #' @importMethodsFrom rtracklayer import import.bw
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' dirs <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
+#' files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
 #'     fileterm = NULL)
 #' ## Shorten the column names
-#' names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
+#' names(files) <- gsub('_accepted_hits.bam', '', names(files))
 #'  
 #' ## Read and filter the data, only for 2 files
-#' dataSmall <- loadCoverage(dirs = dirs[1:2], chr = '21', cutoff = 0)
+#' dataSmall <- loadCoverage(files = files[1:2], chr = '21', cutoff = 0)
 #'
 #' \dontrun{
 #' ## Export to BigWig files
@@ -82,7 +82,7 @@
 #'
 #' }
 
-loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one', 
+loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one', 
     chrlen = NULL, output = NULL, bai = NULL, ...) {
     
     ## Advanged arguments
@@ -94,9 +94,9 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one',
 #' the format of the raw data files.
     inputType <- .advanced_argument('inputType', 'bam', ...)
     ## Guess the input type if it's not supplied
-    if(is(dirs, 'BigWigFileList')) {
+    if(is(files, 'BigWigFileList')) {
         inputType <- 'BigWig'
-    } else if (all(grepl('bw$|BigWig$', dirs))) {
+    } else if (all(grepl('bw$|BigWig$', files))) {
         inputType <- 'BigWig'
     }    
     stopifnot(inputType %in% c('bam', 'BigWig'))
@@ -110,21 +110,21 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one',
     which <- .advanced_argument('which', NULL, ...)
 
     ## Do the indexes exist?
-    if (is(dirs, 'BamFileList') & inputType == 'bam') {
-        bList <- dirs
-    } else if (is(dirs, 'BigWigFileList') & inputType == 'BigWig') {
-        bList <- dirs
+    if (is(files, 'BamFileList') & inputType == 'bam') {
+        bList <- files
+    } else if (is(files, 'BigWigFileList') & inputType == 'BigWig') {
+        bList <- files
     } else if (inputType == 'bam'){
         if (is.null(bai)) {
-            bai <- paste0(dirs, '.bai')
+            bai <- paste0(files, '.bai')
         }
         if (all(file.exists(bai))) {
-            bList <- BamFileList(dirs, bai)
+            bList <- BamFileList(files, bai)
         } else {
             stop("Not all BAM files have a BAM index. If the BAM index files are in a separate directory from the BAM files or are not named as 'bamFile.bam.bai' then consider using the 'bai' argument.")
         }
     } else if (inputType == 'BigWig') {
-        bList <- BigWigFileList(dirs)
+        bList <- BigWigFileList(files)
     }
     
     
@@ -194,7 +194,7 @@ loadCoverage <- function(dirs, chr, cutoff = NULL, filter = 'one',
     ## Rename the object to a name that will make more sense later
     varname <- paste0(mapSeqlevels(chr, 'UCSC'), 'CovInfo')
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
-        colnames = names(dirs), filter = filter, ...))
+        colnames = names(files), filter = filter, ...))
     rm(data)    
     
     ## Save if output is specified

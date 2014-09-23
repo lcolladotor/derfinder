@@ -17,7 +17,7 @@ It can be either the \code{genomicState$fullGenome} or
 state. Otherwise, only the overlaps between the regions and the genomic
 states are computed.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A list with elements \code{countTable} and \code{annotationList}

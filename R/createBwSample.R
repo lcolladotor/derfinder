@@ -12,7 +12,7 @@
 #' using \link{fullCoverage}.
 #' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} object 
 #' created by \link{coerceGR} is returned. Otherwise it is discarded.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return Creates a BigWig file with the coverage information (regions with
 #' coverage greater than zero) for a given sample. If \code{keepGR} it returns

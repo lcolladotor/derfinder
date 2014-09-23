@@ -20,7 +20,7 @@
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
 #' for the p-values and the second element is used for the q-values.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with four components:
 #' \describe{

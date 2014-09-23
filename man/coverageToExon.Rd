@@ -20,7 +20,7 @@ It can be either the \code{genomicState$fullGenome} or
 \item{returnType}{If \code{raw}, then the raw coverage information per exon
 is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 A matrix (nrow = number of exons in \code{genomicState}

@@ -21,7 +21,7 @@
 #' @param segmentIR An IRanges object with the genomic positions that are
 #' potentials DERs. This is used in \link{calculatePvalues} to speed up
 #' permutation calculations.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
 #' Each of them has the following metadata variables.
@@ -253,7 +253,7 @@ find_regions <- findRegions
 #' will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The 
 #' function will furthermore always use the minimum of cutoff for L and the 
 #' maximum for U.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list of IRanges objects, one for the up segments and one for the 
 #' down segments.
@@ -360,7 +360,7 @@ find_regions <- findRegions
 #' other are labeled as part of the same cluster.
 #' @param ranges If \code{TRUE} then an IRanges object is returned instead of 
 #' the usual integer Rle.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it 
 #' is an IRanges object with one range per cluster.

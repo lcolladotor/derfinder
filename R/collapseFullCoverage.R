@@ -13,7 +13,7 @@
 #' generated using \link{fullCoverage}.
 #' @param colsubset Which columns of \code{coverageInfo$coverage} to use.
 #' @param save If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return 
 #' A list with one element per sample. Then per sample, a list with two vector 

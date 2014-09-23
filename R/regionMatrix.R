@@ -16,7 +16,7 @@
 #' @param runFilter This controls whether to run \link{filterData} or not. If 
 #' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
 #' create each element of \code{fullCov}.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
 #' with three components.

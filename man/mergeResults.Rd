@@ -30,7 +30,7 @@ regions with \link{annotateRegions}.}
 \item{mergePrep}{If \code{TRUE} the output from \link{preprocessCoverage} is
 merged.}
 
-\item{...}{Arguments passed to other methods.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
 Seven Rdata files.

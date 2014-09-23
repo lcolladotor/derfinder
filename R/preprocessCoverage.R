@@ -26,7 +26,7 @@
 #' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
 #' loads only the data needed for the chunk processing. The downside is a bit 
 #' longer computation time due to input/output.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to 
 #' determine the \code{chunksize}. This is useful if you want to split the data 

@@ -14,7 +14,7 @@
 #' @param scalefac This argument is passed to 
 #' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
 #' in \link{preprocessCoverage}.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A numeric Rle with the F-statistics per base pair that passed the 
 #' cutoff.

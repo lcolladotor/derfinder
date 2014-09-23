@@ -8,7 +8,7 @@
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
-#' @param ... Arguments passed to other methods.
+#' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A \link[GenomicRanges]{GRanges} object with \code{score} metadata 
 #' vector containing the coverage information for the specified sample. The 
