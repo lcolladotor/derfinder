@@ -57,7 +57,7 @@ will attempt to read the coverage from the files. Note that if you used
 'totalMapped' and 'targetSize' before, you will have to specify them again
 to get the same results.
 
-See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
+See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 }
 \examples{
 ## Obtain fullCov object

@@ -31,7 +31,7 @@
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 
 #'
-#' See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
+#' See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
@@ -94,8 +94,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
     ## Load data if 'fullCov' is not specified
     if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, regs = etab,
-            fun = 'coverageToExon', ...)        
+        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(etab),
+            fun = 'coverageToExon', verbose = verbose, ...)        
     }
     ## Fix naming style
     names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
@@ -124,7 +124,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
         fullCov = fullCov, etab = etab, L = L,
         nCores = .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...),
-        chrs = chrKeep, BPPARAM = BPPARAM, ...)
+        chrs = chrKeep, verbose = verbose, BPPARAM = BPPARAM, ...)
     
     # combine two strands
     exons <- do.call("rbind", exonByStrand)
@@ -141,7 +141,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs, ...) {
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
+    verbose, ...) {
         
     e <- etab[ii]  # subset
     
@@ -158,7 +159,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         fullCov, chrs, SIMPLIFY = FALSE)
     
     # now count exons
-    moreArgs <- list(e = e, L = L)
+    moreArgs <- list(e = e, L = L, verbose = verbose)
     
     ## Define cluster
     exonCores <- min(nCores, length(subsets))
@@ -168,8 +169,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         .define_cluster(cores = 'exonCores', exonCores), ...)
     
     ## Define ChrStep function
-    .coverageToExonChrStep <- function(z.DF, chr, e, L) {
-        if (.advanced_argument('verbose', TRUE, ...)) 
+    .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
+        if (verbose) 
             message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
     
         ## Transform to regular data.frame   

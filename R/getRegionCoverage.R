@@ -50,7 +50,7 @@
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 
 #'
-#' See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
+#' See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 #'
 #' You should use at most one core per chromosome.
 #' 
