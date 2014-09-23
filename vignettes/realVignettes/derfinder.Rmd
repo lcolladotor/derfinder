@@ -36,6 +36,9 @@ write.bibtex(c(derfinder = citation('derfinder'),
     rmarkdown = citation('rmarkdown')),
     file = 'derfinderRef.bib')
 bib <- read.bibtex('derfinderRef.bib')
+
+## Fix some names to work with CRAN and GitHub versions
+names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstrap'
 ```
 
 
@@ -65,9 +68,12 @@ if(knitrBootstrapFlag) {
 } else {
     ## GitHub version
     library('rmarkdown')
-    system.time(render('derfinder.Rmd',
-        'knitrBootstrap::bootstrap_document'))
+    system.time(render('derfinder.Rmd', 'knitrBootstrap::bootstrap_document'))
 }
+## Note: if you prefer the knitr version use:
+# library('rmarkdown')
+# system.time(render('derfinder.Rmd', 'html_document'))
+
 
 ## Extract the R code
 library('knitr')

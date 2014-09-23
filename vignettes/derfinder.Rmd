@@ -46,8 +46,8 @@ names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstra
 
 This is a stub vignette. The real one can be found at:
 
-```{r 'realVignette'}
-system.file('extdata', package = 'derfinder')
+```{r 'realVignette', eval = FALSE}
+browseURL(system.file('doc', 'derfinder.html', package = 'derfinder'))
 ```
 
 
@@ -72,9 +72,11 @@ if(knitrBootstrapFlag) {
 } else {
     ## GitHub version
     library('rmarkdown')
-    system.time(render('derfinder.Rmd',
-        'knitrBootstrap::bootstrap_document'))
+    system.time(render('derfinder.Rmd', 'knitrBootstrap::bootstrap_document'))
 }
+## Note: if you prefer the knitr version use:
+# library('rmarkdown')
+# system.time(render('derfinder.Rmd', 'html_document'))
 
 ## Extract the R code
 library('knitr')
