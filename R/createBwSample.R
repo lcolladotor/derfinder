@@ -40,12 +40,18 @@
 
 ## Exports a single sample to a BigWig file
 createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
+
+    ## Advanced arguments
+#' @param verbose If \code{TRUE} basic status updates will be printed along the 
+#' way.
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+
     
     ## Coerce to GRanges
     gr.sample <- coerceGR(sample = sample, fullCov = fullCov, ...)
-    
+
     ## Export bw file
-    if(.advanced_argument('verbose', TRUE, ...)) 
+    if(verbose) 
         message(paste(Sys.time(), 'createBwSample: exporting bw for sample',
             sample))
     

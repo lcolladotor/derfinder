@@ -4,12 +4,15 @@
 \alias{coverage_to_exon}
 \title{Extract coverage information for exons}
 \usage{
-coverageToExon(fullCov, genomicState, L = NULL, returnType = "raw", ...)
+coverageToExon(fullCov = NULL, genomicState, L = NULL, returnType = "raw",
+  files = NULL, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using
-\link{fullCoverage}.}
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
+using \link{fullCoverage}. Alternatively, specify \code{files} to extract
+the coverage information from the regions of interest. This can be
+helpful if you do not wish to store \code{fullCov} for memory reasons.}
 
 \item{genomicState}{A GRanges object created with \link{makeGenomicState}.
 It can be either the \code{genomicState$fullGenome} or
@@ -19,6 +22,13 @@ It can be either the \code{genomicState$fullGenome} or
 
 \item{returnType}{If \code{raw}, then the raw coverage information per exon
 is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
+
+\item{files}{A character vector with the full path to the sample BAM files
+(or BigWig files).
+The names are used for the column names of the DataFrame. Check
+\link{rawFiles} for constructing \code{files}. \code{files} can also be a
+\code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
+\code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
@@ -41,6 +51,13 @@ Parallelization is used twice.
 First, it is used by strand. Second, for processing the exons by
 chromosome. So there is no gain in using \code{mc.cores} greater than the
 maximum of the number of strands and number of chromosomes.
+
+If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+will attempt to read the coverage from the files. Note that if you used
+'totalMapped' and 'targetSize' before, you will have to specify them again
+to get the same results.
+
+See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
 }
 \examples{
 ## Obtain fullCov object

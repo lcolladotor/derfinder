@@ -81,13 +81,18 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-        
+
+
+
 #' @param returnMean If \code{TRUE} the mean coverage is included in the result.
     returnMean <- .advanced_argument('returnMean', FALSE, ...)
 
+
+
 #' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
     returnCoverage <- .advanced_argument('returnCoverage', TRUE, ...)
-    
+
+
     ## Initialize meanCov
     meanCov <- NULL
     

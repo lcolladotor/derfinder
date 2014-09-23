@@ -49,11 +49,12 @@
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList path
-#' @importFrom GenomeInfoDb mapSeqlevels
+#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
+#' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
 #' @importMethodsFrom S4Vectors Reduce
-#' @importMethodsFrom GenomicRanges coverage
+#' @importMethodsFrom GenomicRanges coverage isDisjoint reduce width resize
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
 #' @examples
@@ -89,10 +90,13 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
+
     
 #' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
 #' the format of the raw data files.
     inputType <- .advanced_argument('inputType', 'bam', ...)
+
+
     ## Guess the input type if it's not supplied
     if(is(files, 'BigWigFileList')) {
         inputType <- 'BigWig'
@@ -104,10 +108,41 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
 #' @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
 #' break up the chromosome into chunks.
     tilewidth <- .advanced_argument('tilewidth', NULL, ...)
-    
+
+  
 #' @param which \code{NULL} by default. When a \code{GRanges} is specified, 
 #" this specific region of the genome is loaded instead of the full chromosome.
     which <- .advanced_argument('which', NULL, ...)
+
+
+#' @param fileStyle The naming style of the chromosomes in the input files. By 
+#' default, it guesses from \code{chr}. See \link[GenomeInfoDb]{seqlevelsStyle}.
+    fileStyle <- .advanced_argument('fileStyle', seqlevelsStyle(chr), ...)
+
+
+#' @param protectWhich When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
+#' This helps get the same base level coverage you would get from reading the coverage for a full chromosome. Otherwise some reads might be excluded and thus the base level coverage will be lower.
+    protectWhich <- .advanced_argument('protectWhich', NULL, ...)
+
+
+    ## Assign naming style
+    chr <- mapSeqlevels(chr, fileStyle)
+    
+    ## Fix 'which'
+    if(!is.null(which)) {
+        stopifnot(is(which, 'GRanges'))
+        seqlevelsStyle(which) <- fileStyle
+        
+        if(!is.null(protectWhich)) {
+            stopifnot(protectWhich > 0)
+            which <- resize(which, width(which) + protectWhich, fix = 'center')
+        }     
+        
+        if(!isDisjoint(which)) {
+            ## Prevent counting more than once the coverage for a given region
+            which <- reduce(which)
+        }
+    }    
 
     ## Do the indexes exist?
     if (is(files, 'BamFileList') & inputType == 'bam') {

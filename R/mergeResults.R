@@ -132,11 +132,13 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-    
+
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     ## Use UCSC names by default
     chrs <- mapSeqlevels(chrs, chrsStyle)
     

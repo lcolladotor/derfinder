@@ -86,7 +86,8 @@ makeGenomicState <- function(txdb, chrs = paste0('chr', c(1:22,
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-    
+
+
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
     

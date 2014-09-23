@@ -87,22 +87,24 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     
     ## Advanged arguments
 #' @param basic If \code{TRUE} a DataFrame is returned that has only basic
-#' information on the candidate DERs. This is used in \link{calculatePvalues}
-#' to speed up permutation calculations.
+#' information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
     basic <- .advanced_argument('basic', FALSE, ...)
 
+
 #' @param maxRegionGap This determines the maximum number of gaps between two 
-#' genomic positions to be considered part of the same candidate Differentially 
-#' Expressed Region (candidate DER). 
+#' genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER). 
     maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
+
         
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
+
     
     if (!basic) {
         if (is.null(segmentIR)) {

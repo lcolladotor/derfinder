@@ -5,13 +5,12 @@
 #' \link{makeGenomicState}. The underlying code is similar to 
 #' \link{getRegionCoverage} with additional tweaks for calculating RPKM values.
 #' 
-#' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{cutoff=NULL}. Can be generated using 
-#' \link{fullCoverage}.
+#' @inheritParams getRegionCoverage
 #' @inheritParams annotateRegions
 #' @param L The width of the reads used.
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
+#' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A matrix (nrow = number of exons in \code{genomicState} 
@@ -27,13 +26,20 @@
 #' chromosome. So there is no gain in using \code{mc.cores} greater than the 
 #' maximum of the number of strands and number of chromosomes.
 #'
+#' If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+#' will attempt to read the coverage from the files. Note that if you used
+#' 'totalMapped' and 'targetSize' before, you will have to specify them again
+#' to get the same results. 
+#'
+#' See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
+#'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
 #' @aliases coverage_to_exon
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels seqlevelsStyle 'seqlevelsStyle<-'
-#' mapSeqlevels
+#' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame
@@ -56,8 +62,8 @@
 #'
 
 
-coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
-    ...) {
+coverageToExon <- function(fullCov = NULL, genomicState, L = NULL, 
+    returnType = "raw", files = NULL, ...) {
         
     ## Run some checks
     stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 
@@ -74,16 +80,27 @@ coverageToExon <- function(fullCov, genomicState, L = NULL, returnType = "raw",
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     ## Use UCSC names by default
     seqlevelsStyle(genomicState) <- chrsStyle
-    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     
     # just the reduced exons
     etab <- genomicState[genomicState$theRegion == "exon"]
+    
+    ## Load data if 'fullCov' is not specified
+    if(is.null(fullCov)) {
+        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(etab),
+            fun = 'coverageToExon', verbose = verbose, ...)        
+    }
+    ## Fix naming style
+    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
+    
+    
     
     ## Check that the names are unique
     stopifnot(length(etab) == length(unique(names(etab))))

@@ -95,9 +95,12 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, 
     maxClusterGap = 300L, L, runFilter, ...) {
+
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+
+
     if (verbose) 
         message(paste(Sys.time(), 'regionMatrix: processing', chr))
         

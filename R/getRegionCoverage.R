@@ -7,7 +7,9 @@
 #' 
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}.
+#' using \link{fullCoverage}. Alternatively, specify \code{files} to extract
+#' the coverage information from the regions of interest. This can be 
+#' helpful if you do not wish to store \code{fullCov} for memory reasons.
 #' @param regions The \code{$regions} output from \link{calculatePvalues}. It 
 #' is important that the seqlengths information is provided.
 #' @param totalMapped The total number of reads mapped for each sample. 
@@ -15,6 +17,7 @@
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
 #' only when \code{totalMapped} is specified.
+#' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return a list of data.frame where each data.frame has the coverage 
@@ -28,7 +31,7 @@
 #' @aliases get_region_coverage
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
-#' mapSeqlevels
+#' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c '$'
 #' @importMethodsFrom IRanges subset as.data.frame
@@ -41,6 +44,13 @@
 #' come from the same data. Meaning that \link{filterData} was not used again.
 #' This ensures that the regions are a subset of the data available in 
 #' \code{fullCov}.
+#'
+#' If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+#' will attempt to read the coverage from the files. Note that if you used
+#' 'totalMapped' and 'targetSize' before, you will have to specify them again
+#' to get the same results. 
+#'
+#' See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
 #'
 #' You should use at most one core per chromosome.
 #' 
@@ -58,25 +68,34 @@
 #' ## Finally, get the region coverage
 #' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 
-getRegionCoverage <- function(fullCov, regions, totalMapped = NULL, 
-    targetSize = 80e6, ...) {
+getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL, 
+    targetSize = 80e6, files = NULL, ...) {
         
     ## Advanged arguments
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     names(regions) <- seq_len(length(regions))  # add names
     
     ## Use UCSC style names by default
-    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
     seqlevelsStyle(regions) <- chrsStyle
     
     ## TODO check seqlengths are properly given in 'regions'
+    
+    ## Load data if 'fullCov' is not specified
+    if(is.null(fullCov)) {
+        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(regions),
+            fun = 'getRegionCoverage', verbose = verbose, ...)        
+    }
+    ## Fix naming style
+    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
         
     # split by chromosome
     regions.chrs <- as.factor(seqnames(regions))
@@ -147,3 +166,24 @@ getRegionCoverage <- function(fullCov, regions, totalMapped = NULL,
 
 #' @export
 get_region_coverage <- getRegionCoverage
+
+
+## Helper function that runs fullCoverage
+.load_fullCov <- function(files, chrs, fun, verbose, ...) {
+    stopifnot(!is.null(files))
+    if(verbose)
+        message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
+
+    ## If no protection was specified for calculating the coverage, then
+    ## specify it. Details in loadCoverage()
+    protectWhich <- .advanced_argument('protectWhich', NULL, ...)
+    
+        
+    if(is.null(protectWhich)) {
+        fullCov <- fullCoverage(files = files, chrs = chrs, protectWhich = 3e4,
+            ...)
+    } else {
+        fullCov <- fullCoverage(files = files, chrs = chrs, ...)
+    }
+    return(fullCov)
+}

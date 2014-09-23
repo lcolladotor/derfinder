@@ -43,7 +43,8 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', FALSE, ...)
-    
+
+
     ## Remove un-used columns
     if (!is.null(colsubset)) {
         fullCov <- lapply(fullCov, function(x) {

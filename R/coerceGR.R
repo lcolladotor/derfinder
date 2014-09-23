@@ -43,6 +43,7 @@ coerceGR <- function(sample, fullCov, ...) {
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
+
 #' @param seqlengths A named vector with the sequence lengths of the 
 #' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
     if('coverage' %in% names(fullCov[[1]])) {

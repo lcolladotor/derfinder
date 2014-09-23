@@ -2,24 +2,25 @@ context('Loading and exporting data')
 
 # Setup
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-dirs <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
+files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
     fileterm = NULL)
 ## Shorten the column names
-names(dirs) <- gsub('_accepted_hits.bam', '', names(dirs))
+names(files) <- gsub('_accepted_hits.bam', '', names(files))
 
 ## Find files
 bogus <- rawFiles(datadir = datadir, samplepatt = "bw")
 test_that('Finding files', {
-    expect_that(rawFiles(datadir = NULL, sampledirs = NULL),
-        throws_error("Either 'samplepatt' or 'sampledirs' must be non-NULL."))
+    expect_that(rawFiles(datadir = NULL, samplefiles = NULL),
+        throws_error("Either 'samplepatt' or 'samplefiles' must be non-NULL."))
     expect_that(length(bogus), equals(0))    
 })
 
 ## Load BAM data
-dataFilt <- loadCoverage(dirs = dirs, chr = '21', cutoff = 0)
-dataRaw <- loadCoverage(dirs = dirs, chr = '21', cutoff = NULL)
-dataFilt.mean <- loadCoverage(dirs = dirs, chr = '21', cutoff = 0,
+dataFilt <- loadCoverage(files = files, chr = '21', cutoff = 0)
+dataRaw <- loadCoverage(files = files, chr = '21', cutoff = NULL)
+dataFilt.mean <- loadCoverage(files = files, chr = '21', cutoff = 0,
     returnMean = TRUE)
+which <- GRanges('21', IRanges(47410303, 47418067))
 
 test_that('Load BAM data', {
     expect_that(dataFilt, is_identical_to(genomeData))
@@ -27,6 +28,7 @@ test_that('Load BAM data', {
     expect_that(names(dataFilt.mean), is_identical_to(c('coverage', 'position',
         'meanCoverage')))
     expect_that(sum(dataFilt.mean$meanCoverage), equals(357.838709677))
+    expect_that(loadCoverage(files = files[1:2], chr = '21', cutoff = 0), is_identical_to(loadCoverage(files = files[1:2], chr = '21', cutoff = 0, which = which)))
 })
 
 
@@ -62,7 +64,7 @@ test_that('Load BigWig data', {
 })
 
 ## Loading with GenomicFiles
-dataRaw.GF <- loadCoverage(dirs, chr = '21', tilewidth = 2e7, cutoff = NULL)
+dataRaw.GF <- loadCoverage(files, chr = '21', tilewidth = 2e7, cutoff = NULL)
 dataRaw.bw.GF <- loadCoverage(bigwigs, chr = 'chr21', tilewidth = 2e7,
     cutoff = NULL, inputType = 'BigWig')
 test_that('Load using GenomicFiles', {
@@ -71,14 +73,14 @@ test_that('Load using GenomicFiles', {
 })
 
 ## Loading with fullCoverage
-fullCov <- fullCoverage(dirs = dirs, chrs = '21')
-fullCov.bw <- fullCoverage(dirs = bigwigs, chrs = 'chr21', inputType = 'BigWig')
+fullCov <- fullCoverage(files = files, chrs = '21')
+fullCov.bw <- fullCoverage(files = bigwigs, chrs = 'chr21', inputType = 'BigWig')
 test_that('Load with fullCoverage()', {
     expect_that(list('chr21' = dataRaw$coverage), is_identical_to(fullCov))
     expect_that(list('chr21' = dataBW$coverage), is_identical_to(fullCov.bw))
-    expect_that(fullCoverage(dirs = dirs, chrs = '21', output = c('one',
+    expect_that(fullCoverage(files = files, chrs = '21', output = c('one',
         'two')), throws_error())
-    expect_that(fullCoverage(dirs = dirs, chrs = '21', chrlens = c(4e7,
+    expect_that(fullCoverage(files = files, chrs = '21', chrlens = c(4e7,
         5e7)), throws_error())
 })
 

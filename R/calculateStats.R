@@ -66,7 +66,8 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL,
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     coverageProcessed <- coveragePrep$coverageProcessed
     if (is.null(lowMemDir) & is.null(coverageProcessed)) 
         stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")

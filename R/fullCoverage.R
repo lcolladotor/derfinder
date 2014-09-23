@@ -75,14 +75,17 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-        
+
+
 #' @param mc.cores.load Controls the number of cores to be used per chr for 
 #' loading the data in chunks. Only used when \code{tilewidth} is specified.
     mc.cores.load <- .advanced_argument('mc.cores.load',
         .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...), ...)
+
     
     ## Define cluster
     BPPARAM <- .define_cluster(...)

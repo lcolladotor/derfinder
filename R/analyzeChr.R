@@ -91,29 +91,37 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-    
+
+
     ## Use UCSC names by default
     chr <- mapSeqlevels(chr, chrsStyle)
 
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
+
 #' @param scalefac This argument is passed to \link{preprocessCoverage}.
     scalefac <- .advanced_argument('scalefac', 32, ...)
-    
+
+
+
 #' @param chunksize This argument is passed to \link{preprocessCoverage}.
     chunksize <- .advanced_argument('chunksize', NULL, ...)
     
+
 #' @param lowMemDir The directory where the processed chunks are saved when
 #' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
     lowMemDir <- .advanced_argument('lowMemDir', file.path(chr, 'chunksDir'),
         ...)
-    
+        
+
 #' @param returnOutput If \code{TRUE}, it returns a list with the results from 
 #' each step. Otherwise, it returns \code{NULL}.
     returnOutput <- .advanced_argument('returnOutput', !writeOutput, ...)
         
+
     ## Begin timing
     timeinfo <- NULL
     ## Init

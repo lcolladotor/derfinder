@@ -57,11 +57,13 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
 #' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-    
+
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     ## Fix row names
     names(regions) <- seq_len(length(regions))
 

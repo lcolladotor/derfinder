@@ -4,13 +4,15 @@
 \alias{get_region_coverage}
 \title{Extract coverage information for a set of regions}
 \usage{
-getRegionCoverage(fullCov, regions, totalMapped = NULL, targetSize = 8e+07,
-  ...)
+getRegionCoverage(fullCov = NULL, regions, totalMapped = NULL,
+  targetSize = 8e+07, files = NULL, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
 \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
-using \link{fullCoverage}.}
+using \link{fullCoverage}. Alternatively, specify \code{files} to extract
+the coverage information from the regions of interest. This can be
+helpful if you do not wish to store \code{fullCov} for memory reasons.}
 
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}. It
 is important that the seqlengths information is provided.}
@@ -21,6 +23,13 @@ library. By default, to reads per 80 million reads.}
 
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified.}
+
+\item{files}{A character vector with the full path to the sample BAM files
+(or BigWig files).
+The names are used for the column names of the DataFrame. Check
+\link{rawFiles} for constructing \code{files}. \code{files} can also be a
+\code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
+\code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
@@ -42,6 +51,13 @@ When \code{fullCov} is the output of \link{loadCoverage} with
 come from the same data. Meaning that \link{filterData} was not used again.
 This ensures that the regions are a subset of the data available in
 \code{fullCov}.
+
+If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+will attempt to read the coverage from the files. Note that if you used
+'totalMapped' and 'targetSize' before, you will have to specify them again
+to get the same results.
+
+See also \link{advanedArg} with \code{fun='loadCoverage'} for other details.
 
 You should use at most one core per chromosome.
 }

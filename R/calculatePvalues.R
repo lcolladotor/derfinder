@@ -152,10 +152,12 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
     ## Identify the data segments
     if (verbose) 
         message(paste(Sys.time(),

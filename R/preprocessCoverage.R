@@ -89,15 +89,17 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', FALSE, ...)
-    
+
+
 #' @param toMatrix Determines whether the data in the chunk should already be 
-#' saved as a Matrix object, which can be useful to reduce the computation time 
-#' of the F-statistics. Only used when \code{lowMemDir} is not NULL.
+#' saved as a Matrix object, which can be useful to reduce the computation time of the F-statistics. Only used when \code{lowMemDir} is not NULL.
     toMatrix <- .advanced_argument('toMatrix', !is.null(lowMemDir), ...) 
-    
+
+
 #' @param mc.cores Number of cores you will use for calculating the statistics.
     mc.cores <- .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...)
-    
+
+
     ## Use pre-calculated mean coverage if available
     means <- coverageInfo$meanCoverage
     

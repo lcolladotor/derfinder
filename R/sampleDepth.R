@@ -51,15 +51,18 @@ sampleDepth <- function(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...) {
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
+
+
 #' @param nonzero If \code{TRUE} only the nonzero counts are used to calculate 
 #' the library size adjustment.
     nonzero <- .advanced_argument('nonzero', TRUE, ...)
-    
+
+
 #' @param center If \code{TRUE} the sample coverage adjustements are centered. 
 #' In some cases, this could be helpful for interpretation purposes.
     center <- .advanced_argument('center', FALSE, ...)
-    
+
+
     if (verbose) 
         message(paste(Sys.time(), 'sampleDepth: Calculating sample quantiles'))
     sampleQuant <- lapply(collapsedFull, .calcQuantile, nonzero = nonzero, 

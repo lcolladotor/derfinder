@@ -1,3 +1,24 @@
+CHANGES IN VERSION 0.0.77
+-------------------------
+
+NEW FEATURES
+
+    o Added advancedArg() [and its alias advanced_arg()] which links to the docs
+        for the advanced arguments by opening a browser window with the relevant
+        information from GitHub.
+    o getRegionCoverage() and coverageToExon() now have the 'files' argument
+        which is used only when 'fullCov' is NULL. Both functions will attempt
+        to extract the coverage data from the raw files for the regions of
+        interest in that case.
+        
+        Special care has to be taken in order to guarantee that the coverage is
+        the same as some reads might be discarded if the region is too narrow.
+        See the advanced argument 'protectWhich' in loadCoverage() for more
+        information. Also, if 'totalMapped' and 'targetSize' were used prior to
+        filtering, they should be used again.
+    o loadCoverage() has new advanced arguments that help when reading a
+        specific region (or regions) of the genome. 
+
 CHANGES IN VERSION 0.0.76
 -------------------------
 
