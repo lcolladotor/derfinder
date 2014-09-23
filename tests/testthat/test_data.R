@@ -10,8 +10,8 @@ names(files) <- gsub('_accepted_hits.bam', '', names(files))
 ## Find files
 bogus <- rawFiles(datadir = datadir, samplepatt = "bw")
 test_that('Finding files', {
-    expect_that(rawFiles(datadir = NULL, samplefiles = NULL),
-        throws_error("Either 'samplepatt' or 'samplefiles' must be non-NULL."))
+    expect_that(rawFiles(datadir = NULL, sampledirs = NULL),
+        throws_error("Either 'samplepatt' or 'sampledirs' must be non-NULL."))
     expect_that(length(bogus), equals(0))    
 })
 
