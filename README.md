@@ -1,7 +1,11 @@
 derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg?branch=master)](https://travis-ci.org/lcolladotor/derfinder)
 =========
 
-Fast differential expression analysis of RNA-seq data at base-pair resolution. 
+Annotation-agnostic fast differential expression analysis of RNA-seq data at base-pair resolution. For more information about `derfinder` check the vignettes [here](http://lcolladotor.github.io/derfinder/).
+
+
+# Further documentation
+
 You can generate HTML reports from the results using __derfinderReport__ 
 available [here](https://github.com/lcolladotor/derfinderReport).
 
@@ -34,9 +38,6 @@ install_github('lcolladotor/derfinderHelper')
 
 ## If you are using BioC-devel use:
 install_github('lcolladotor/derfinder@master')
-## If you want to build the vignette use:
-# install_github('lcolladotor/derfinder@master', build_vignettes = TRUE)
-## Note that this can take more time!
 
 ## If you are using BioC-release use:
 # install_github('lcolladotor/derfinder@release')
@@ -45,6 +46,17 @@ install_github('lcolladotor/derfinder@master')
 biocLite('ggbio')
 install_github('lcolladotor/derfinderPlot')
 ```
+
+# Vignette
+
+The vignette for this package can be viewed [here](http://lcolladotor.github.io/derfinder/). If you want to re-build the vignette when installing this package, you will need to use:
+
+```R
+## Install building the vignette
+install_github('lcolladotor/derfinder@master', build_vignettes = TRUE)
+```
+
+Note that this can take longer than installing the package without the vignette.
 
 # 'Watch' for updates
 

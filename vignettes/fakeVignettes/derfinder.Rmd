@@ -44,11 +44,7 @@ names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstra
 
 # Overview
 
-This is a stub vignette. The real one can be found at:
-
-```{r 'realVignette', eval = FALSE}
-browseURL(system.file('doc', 'derfinder.html', package = 'derfinder'))
-```
+This is a stub vignette. The real one can be viewed online [here](http://lcolladotor.github.io/derfinder/).
 
 
 
