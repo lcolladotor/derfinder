@@ -1,4 +1,4 @@
-# Makefile to use knitrBoostrap for package vignettes
+# Makefile to use knitrBootstrap for package vignettes
 # Modified from https://hedgehog.fhcrc.org/bioconductor/trunk/madman/Rpacks/ggbio/vignettes/Makefile
 # and
 # https://hedgehog.fhcrc.org/bioconductor/trunk/madman/Rpacks/BiocCheck/vignettes/Makefile

@@ -6,7 +6,7 @@
 #' @param fun The name of a function(s) that has advanced arguments in
 #' \code{package}.
 #' @param package The name of the package where the function is stored. Only
-#' 'derfinder' and 'derfinderPlot' are accepted.
+#' 'derfinder', 'derfinderPlot', and 'regionReport' are accepted.
 #' @param browse Whether to open the URLs in a browser.
 #'
 #' @author Leonardo Collado-Torres
@@ -32,7 +32,7 @@
 #' }
 
 advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
-    stopifnot(package %in% c('derfinder', 'derfinderPlot'))
+    stopifnot(package %in% c('derfinder', 'derfinderPlot', 'regionReport'))
     
     query_map <- data.frame(
         'fun' = c(
@@ -55,7 +55,8 @@ advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
             'regionMatrix', 'region_matrix',
             'sampleDepth', 'sample_depth',
             'plotCluster', 'plot_cluster',
-            'plotOverview', 'plot_overview'
+            'plotOverview', 'plot_overview',
+            'derfinderReport', 'derfinder_report'
         ),
         'query' = rep(c(
             'analyze',
@@ -77,9 +78,11 @@ advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
             'matrix',
             'depth',
             'cluster',
-            'overview'
+            'overview',
+            'derfinder'
         ), each = 2),
-        'repo' = rep(c('derfinder', 'derfinderPlot'), c(36, 4)),
+        'repo' = rep(c('derfinder', 'derfinderPlot', 'regionReport'), c(36, 4,
+            2)),
         stringsAsFactors = FALSE
     )
     repo <- NULL
