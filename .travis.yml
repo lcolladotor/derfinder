@@ -10,6 +10,10 @@ install:
   - ./travis-tool.sh install_bioc S4Vectors
   - ./travis-tool.sh install_bioc IRanges
   - ./travis-tool.sh install_r Matrix
+  - ./travis-tool.sh install_r knitr
+  - ./travis-tool.sh install_r rmarkdown
+  - ./travis-tool.sh install_r knitcitations
+  - ./travis-tool.sh install_r knitrBootstrap
   - ./travis-tool.sh install_github lcolladotor/derfinderHelper
   - ./travis-tool.sh install_bioc_deps
  
