@@ -16,7 +16,7 @@ output:
 Introduction to `derfinder`
 ===========================
 
-```{r vignetteSetup, echo=FALSE, message=FALSE}
+```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
 
@@ -30,10 +30,12 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-write.bibtex(c(derfinder = citation('derfinder'), 
+write.bibtex(c(knitcitations = citation('knitcitations'),
+    derfinder = citation('derfinder'), 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
-    rmarkdown = citation('rmarkdown')),
+    rmarkdown = citation('rmarkdown'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://developinghumanbrain.org')),
     file = 'derfinderRef.bib')
 bib <- read.bibtex('derfinderRef.bib')
 
@@ -45,6 +47,121 @@ names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstra
 # Overview
 
 This is a stub vignette.
+
+
+# Example
+
+
+As an example, we will analyze a small subset of the samples from the _BrainSpan Atlas of the Human Brain_ `r citep(bib[['brainspan']])` publicly available data. 
+
+We first load the required packages.
+
+```{r 'start', message=FALSE}
+## Load libraries
+library('derfinder')
+```
+
+
+## DER analysis
+
+For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years, the gender and the RNA Integrity Number (RIN). The data is shown below.
+
+```{r 'phenoData', bootstrap.show.code=FALSE, results = 'asis'}
+## To format
+library('xtable')
+
+## Construct pheno table
+pheno <- data.frame(
+    gender = c('F', 'M', 'M', 'M', 'F', 'F', 'F', 'M', 'F', 'M', 'M', 'F'),
+    lab = c('HSB97.AMY', 'HSB92.AMY', 'HSB178.AMY', 'HSB159.AMY', 'HSB153.AMY', 'HSB113.AMY', 'HSB130.AMY', 'HSB136.AMY', 'HSB126.AMY', 'HSB145.AMY', 'HSB123.AMY', 'HSB135.AMY'),
+    Age = c(-0.547619047619048, -0.452380952380952, -0.571428571428571, -0.380952380952381, -0.666666666666667, -0.666666666666667, 21, 23, 30, 36, 37, 40),
+    RIN = c(9.1, 9.2, 9.8, 9.9, 9.3, 9.4, 8.6, 8.1, 8.4, 7.4, 7.5, 8.5)
+)
+pheno$structure_acronym <- 'AMY'
+pheno$structure_name <- 'amygdaloid complex'
+pheno$file <- paste0('http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/', pheno$lab, '.bw')
+pheno$group <- factor(ifelse(pheno$Age < 0, 'fetal', 'adult'), levels = c('fetal', 'adult'))
+
+## Display the main information
+p <- pheno[, -which(colnames(pheno) %in% c('structure_acronym', 'structure_name', 'file'))]
+print(xtable(p), type = 'html')
+```
+
+Since the BigWig files are publicly available from _BrainSpan_ (see [here](http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/)), we can extract the relevant coverage data using `fullCoverage()`.
+
+```{r 'getData'}
+## Determine the files to use and fix the names
+files <- pheno$file
+names(files) <- gsub('.AMY', '', pheno$lab)
+
+## Load the data
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+```
+
+Once we have the base-level coverage data for all 12 samples, we can construct the models. In this case, we want to find differences between fetal and adult samples while adjusting for gender, RIN and a proxy of the library size.
+
+```{r 'models'}
+## Get some idea of the library sizes
+sampleDepths <- sampleDepth(collapseFullCoverage(fullCov), 1)
+
+## Define models
+models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, c('gender', 'RIN')])
+```
+
+Next, we can find candidate differentially expressed regions (DERs) using as input the segments of the genome where at least one sample has coverage greater than 3. In this particular example, we chose a low theoretical F-statistic cutoff and used 20 permutations.
+
+```{r 'analyze'}
+## Filter coverage
+filteredCov <- lapply(fullCov, filterData, cutoff = 2)
+
+## Create a analysis directory
+dir.create('analysisResults')
+originalWd <- getwd()
+setwd(file.path(originalWd, 'analysisResults'))
+
+## Perform differential expression analysis
+system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 1e-02, nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
+```
+
+```{r 'mergeResults'}
+## Go back to the original directory
+setwd(originalWd)
+
+
+## Merge results from several chromosomes. In this case we only have one.
+mergeResults(chrs='21', prefix="analysisResults",
+    genomicState = genomicState$fullGenome, 
+    optionsStats = results$optionsStats)
+
+```
+
+
+### Explore results
+
+```{r 'exploreResults'}
+names(results)
+
+## Quick access to the candidate DERs
+regions <- results$regions$regions
+
+load(file.path('analysisResults', 'fullRegions.Rdata'))
+
+suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+library(derfinderPlot)
+annoRegs <- annotateRegions(fullRegions, genomicState$fullGenome)
+regionCov <- getRegionCoverage(fullCov, fullRegions)
+
+plotOverview(regions = fullRegions, annotation = results$annotation, type = 'fwer')
+plotRegionCoverage(regions = fullRegions, regionCoverage = regionCov, 
+    groupInfo = pheno$group, nearestAnnotation = results$annotation, 
+    annotatedRegions = annoRegs, whichRegions=1:10, txdb = txdb, scalefac = 1, 
+    ask = FALSE)
+plotCluster(idx = 2, regions = fullRegions, annotation = results$annotation, coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group, titleUse = 'fwer')
+```
+
+
+## Alternative analysis
 
 
 
@@ -108,7 +225,7 @@ session_info()
 This vignette was generated using `knitrBootstrap` `r citep(bib[['hester2014knitrbootstrap']])`
 with `knitr` `r citep(bib[['xie2014knitr']])` and `rmarkdown` `r citep(bib[['allaire2014rmarkdown']])` running behind the scenes.
 
-Citations made with `knitcitations` `r citep('https://github.com/cboettig/knitcitations')`.
+Citations made with `knitcitations` `r citep(bib[[1]])`.
 
 ```{r vignetteBiblio, results='asis', echo=FALSE}
 ## Print bibliography

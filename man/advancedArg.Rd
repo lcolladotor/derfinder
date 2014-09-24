@@ -11,7 +11,7 @@ advancedArg(fun, package = "derfinder", browse = interactive())
 \code{package}.}
 
 \item{package}{The name of the package where the function is stored. Only
-'derfinder' and 'derfinderPlot' are accepted.}
+'derfinder', 'derfinderPlot', and 'regionReport' are accepted.}
 
 \item{browse}{Whether to open the URLs in a browser.}
 }

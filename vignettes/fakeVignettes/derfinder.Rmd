@@ -16,7 +16,7 @@ output:
 Introduction to `derfinder`
 ===========================
 
-```{r vignetteSetup, echo=FALSE, message=FALSE}
+```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
 
@@ -30,7 +30,8 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-write.bibtex(c(derfinder = citation('derfinder'), 
+write.bibtex(c(knitcitations = citation('knitcitations'),
+    derfinder = citation('derfinder'), 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown')),
@@ -107,7 +108,7 @@ session_info()
 This vignette was generated using `knitrBootstrap` `r citep(bib[['hester2014knitrbootstrap']])`
 with `knitr` `r citep(bib[['xie2014knitr']])` and `rmarkdown` `r citep(bib[['allaire2014rmarkdown']])` running behind the scenes.
 
-Citations made with `knitcitations` `r citep('https://github.com/cboettig/knitcitations')`.
+Citations made with `knitcitations` `r citep(bib[[1]])`.
 
 ```{r vignetteBiblio, results='asis', echo=FALSE}
 ## Print bibliography

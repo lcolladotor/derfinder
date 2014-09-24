@@ -62,6 +62,9 @@ regions from all chromosomes. Once the results have been merged,
 report of the results. The \code{derfinderReport} package is available at
 https://github.com/lcolladotor/derfinderReport.
 }
+\details{
+If you want to calculate the FWER, supply \code{optionsStats} which #' is produced by \link{analyzeChr}.
+}
 \examples{
 ## The output will be saved in the 'generateReport-example' directory
 dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)

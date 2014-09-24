@@ -130,21 +130,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## Drop unused levels in groupInfo
     groupInfo <- droplevels(groupInfo)
     
-    ## Save parameters used for running calculateStats
-    optionsStats <- list(models = models, cutoffPre = cutoffPre, 
-        scalefac = scalefac, chunksize = chunksize, 
-        cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
-        nPermute = nPermute, seeds = seeds, groupInfo = groupInfo,
-        lowMemDir = lowMemDir, analyzeCall = match.call(), ...)
-    
     ## Setup
-    timeinfo <- c(timeinfo, list(Sys.time()))
-    
-    if (writeOutput) {
-        dir.create(chr, showWarnings = FALSE, recursive = TRUE)
-        save(optionsStats, file = file.path(chr, 'optionsStats.Rdata'))
-    }
-    ## saveStatsOpts
     timeinfo <- c(timeinfo, list(Sys.time()))
     
     ## pre-process the coverage data with automatic chunks
@@ -185,25 +171,28 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## saveStats
     timeinfo <- c(timeinfo, list(Sys.time()))
     
+    ## Choose the cutoff
+    cutoff <- .calcFstatCutoff(cutoffType, cutoffFstat, fstats, models)
+    
+    ## Save parameters used for running calculateStats
+    optionsStats <- list(models = models, cutoffPre = cutoffPre, 
+        scalefac = scalefac, chunksize = chunksize, 
+        cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
+        nPermute = nPermute, seeds = seeds, groupInfo = groupInfo,
+        lowMemDir = lowMemDir, analyzeCall = match.call(), 
+        cutoffFstatUsed = cutoff, ...)
+        
+    if (writeOutput) {
+        dir.create(chr, showWarnings = FALSE, recursive = TRUE)
+        save(optionsStats, file = file.path(chr, 'optionsStats.Rdata'))
+    }
+    
+    ## saveStatsOpts
+    timeinfo <- c(timeinfo, list(Sys.time()))
+    
     ## Calculate p-values and find regions
     if (verbose) 
         message(paste(Sys.time(), 'analyzeChr: Calculating pvalues'))
-    
-    ## Choose the cutoff
-    if (cutoffType == 'empirical') {
-        if(cutoffFstat == 1e-08) {
-            cutoffFstat <- 0.99
-            warning("Switching 'cutoffFstat' to 0.99 as the user probably forgot to change its default value.")
-        }
-        cutoff <- quantile(as.numeric(fstats), cutoffFstat)
-    } else if (cutoffType == 'theoretical') {
-        n <- dim(models$mod)[1]
-        df1 <- dim(models$mod)[2]
-        df0 <- dim(models$mod0)[2]
-        cutoff <- qf(cutoffFstat, df1 - df0, n - df1, lower.tail = FALSE)
-    } else if (cutoffType == 'manual') {
-        cutoff <- cutoffFstat
-    }
     
     if (verbose) 
         message(paste(Sys.time(), 'analyzeChr: Using the following', 
@@ -271,3 +260,22 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 
 #' @export
 analyze_chr <- analyzeChr
+
+## Helper function for calculating the F-stat cutoff
+.calcFstatCutoff <- function(cutoffType, cutoffFstat, fstats, models) {
+    if (cutoffType == 'empirical') {
+        if(cutoffFstat == 1e-08) {
+            cutoffFstat <- 0.99
+            warning("Switching 'cutoffFstat' to 0.99 as the user probably forgot to change its default value.")
+        }
+        cutoff <- quantile(as.numeric(fstats), cutoffFstat)
+    } else if (cutoffType == 'theoretical') {
+        n <- dim(models$mod)[1]
+        df1 <- dim(models$mod)[2]
+        df0 <- dim(models$mod0)[2]
+        cutoff <- qf(cutoffFstat, df1 - df0, n - df1, lower.tail = FALSE)
+    } else if (cutoffType == 'manual') {
+        cutoff <- cutoffFstat
+    }
+    return(cutoff)
+}

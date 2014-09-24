@@ -59,6 +59,8 @@
 #' @importFrom qvalue qvalue
 #' @importFrom GenomeInfoDb mapSeqlevels
 #'
+#' @details If you want to calculate the FWER, supply \code{optionsStats} which #' is produced by \link{analyzeChr}.
+#'
 #' @examples
 #' ## The output will be saved in the 'generateReport-example' directory
 #' dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)
@@ -138,13 +140,23 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
+#' @param optionsStats The options used in \link{analyzeChr}.
+    optionsStats <- .advanced_argument('optionsStats', NULL, ...)
+    
+#' @param cutoffFstatUsed The actual F-statistic cutoff used. This can be 
+#' obtained from the logs or from the output of \link{analyzeChr}. If 
+#' \code{NULL} then this function will attempt to re-calculate it.
+    cutoffFstatUsed <- .advanced_argument('cutoffFstatUsed', optionsStats$cutoffFstatUsed, ...)
+
+
 
     ## Use UCSC names by default
     chrs <- mapSeqlevels(chrs, chrsStyle)
     
     ## save merging options used
     optionsMerge <- list(chrs = chrs, significantCut = significantCut, 
-        minoverlap = minoverlap, mergeCall = match.call(), ...)
+        minoverlap = minoverlap, mergeCall = match.call(),
+        cutoffFstatUsed = cutoffFstatUsed, ...)
     if (verbose) 
         message(paste(Sys.time(), 'mergeResults: Saving options used'))
     save(optionsMerge, file = file.path(prefix, 'optionsMerge.Rdata'))
@@ -230,6 +242,46 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
         fullNullSummary <- DataFrame(NULL)
     }
     
+    ## Determine F-stat cutoff if not supplied
+    if(is.null(cutoffFstatUsed)) {
+        if(!is.null(optionsStats)) {
+            stopifnot(all(c('cutoffType', 'cutoffFstat', 'models') %in% names(optionsStats)))
+            if (verbose) 
+                message(paste(Sys.time(), 
+                    'mergeResults: calculating F-stat cutoff'))
+            cutoffFstatUsed <- .calcFstatCutoff(
+                cutoffType = optionsStats$cutoffType,
+                cutoffFstat = optionsStats$cutoffFstat,
+                fstats = unlist(fullFstats),
+                models = optionsStats$models
+            )
+        } else {
+            if (verbose) 
+                message("Neither 'cutoffFstatUsed' nor 'optionsStats' were supplied, so the FWER calculation step will be skipped.")
+        }
+        
+    }
+    if(!is.null(cutoffFstatUsed)) {
+        if(nrow(fullNullSummary) > 0) {
+            if (verbose) 
+                message(paste(Sys.time(), 
+                    'mergeResults: calculating FWER'))
+            stopifnot(!is.null(optionsStats))
+            stopifnot('nPermute' %in% names(optionsStats))
+            fullRegions$fwer <- .calculateFWER(
+                cutoffFstatUsed = cutoffFstatUsed,
+                areaNull = fullNullSummary$area,
+                permutation = fullNullSummary$permutation, 
+                nPermute = optionsStats$nPermute,
+                areaReg = fullRegions$area)
+            fullRegions$significantFWER <- factor(fullRegions$fwer < significantCut[1],
+                levels = c(TRUE, FALSE))
+        } else {
+            if (verbose)
+                warning('No null regions were found, so the FWER calculation step will be skipped.')
+        }
+    }
+    
     if (verbose) 
         message(paste(Sys.time(), 'mergeResults: Saving fullNullSummary'))
     save(fullNullSummary, file = file.path(prefix, 'fullNullSummary.Rdata'))
@@ -306,3 +358,12 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
 
 #' @export
 merge_results <- mergeResults
+
+## Calculate FWER adjustments as used in the brainDERs project
+.calculateFWER <- function(cutoffFstatUsed, areaNull, permutation, nPermute, areaReg) {
+    nullList <- split(as.numeric(areaNull), factor(as.numeric(permutation), levels = seq_len(nPermute)))
+    nullList[sapply(nullList, length) == 0] <- cutoffFstatUsed
+    maxArea <- sapply(nullList, max)
+    fwer <- sapply(areaReg, function(x) sum(maxArea > x)) / length(maxArea)
+    return(fwer)
+}
