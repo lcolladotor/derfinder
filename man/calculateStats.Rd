@@ -4,7 +4,7 @@
 \alias{calculate_stats}
 \title{Calculate F-statistics at base pair resolution from a loaded BAM files}
 \usage{
-calculateStats(coveragePrep, models, lowMemDir = NULL, scalefac = 32, ...)
+calculateStats(coveragePrep, models, ...)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -13,13 +13,6 @@ calculateStats(coveragePrep, models, lowMemDir = NULL, scalefac = 32, ...)
 
 \item{models}{A list with \code{$mod} and \code{$mod0} normally generated
 using \link{makeModels}.}
-
-\item{lowMemDir}{The directory where the processed chunks are saved when
-using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
-
-\item{scalefac}{This argument is passed to
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used
-in \link{preprocessCoverage}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

@@ -139,9 +139,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         message(paste(Sys.time(),
             'analyzeChr: Pre-processing the coverage data'))
     prep <- preprocessCoverage(coverageInfo = coverageInfo,
-        groupInfo = groupInfo, cutoff = cutoffPre,
-        scalefac = scalefac, chunksize = chunksize,
-        lowMemDir = lowMemDir, ...)
+        groupInfo = groupInfo, cutoff = cutoffPre, ...)
     rm(coverageInfo)
     
     ## prepData
@@ -157,8 +155,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## Run calculateStats
     if (verbose) 
         message(paste(Sys.time(), 'analyzeChr: Calculating statistics'))
-    fstats <- calculateStats(coveragePrep = prep, models = models, 
-        lowMemDir = lowMemDir, scalefac = scalefac, ...)
+    fstats <- calculateStats(coveragePrep = prep, models = models, ...)
     
     ## calculateStats
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -200,8 +197,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
-        chr = chr, cutoff = cutoff, lowMemDir = lowMemDir,
-        scalefac = scalefac, ...)
+        chr = chr, cutoff = cutoff, ...)
     if (!returnOutput) {
         rm(prep)
     }

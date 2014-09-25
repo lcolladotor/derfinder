@@ -15,17 +15,6 @@
 #' @param colsubset Optional vector of column indices of 
 #' \code{coverageInfo$coverage} that denote samples you wish to include in 
 #' analysis. 
-#' @param scalefac A log transformation is used on the count tables, so zero 
-#' counts present a problem.  What number should we add to the entire matrix?
-#' @param chunksize How many rows of \code{coverageInfo$coverage} should be 
-#' processed at a time?
-#' @param lowMemDir If specified, each chunk is saved into a separate Rdata 
-#' file under \code{lowMemDir} and later loaded in 
-#' \link[derfinderHelper]{fstats.apply} when 
-#' running \link{calculateStats} and \link{calculatePvalues}. Using this option 
-#' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
-#' loads only the data needed for the chunk processing. The downside is a bit 
-#' longer computation time due to input/output.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to 
@@ -77,9 +66,8 @@
 #' names(dataReady)
 #' dataReady
 
-preprocessCoverage <- function(coverageInfo, groupInfo = NULL, 
-    cutoff = 5, scalefac = 32, chunksize = 5e+06, colsubset = NULL, 
-    lowMemDir = NULL, ...) {
+preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5, 
+    colsubset = NULL, ...) {
     ## Check that the input is from loadCoverage()
     stopifnot(length(intersect(names(coverageInfo), c('coverage', 
         'position'))) == 2)
@@ -98,6 +86,26 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL,
 
 #' @param mc.cores Number of cores you will use for calculating the statistics.
     mc.cores <- .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...)
+
+
+#' @param scalefac A log transformation is used on the count tables, so zero 
+#' counts present a problem.  What number should we add to the entire matrix?
+    scalefac <- .advanced_argument('scalefac', 32, ...)
+
+
+#' @param chunksize How many rows of \code{coverageInfo$coverage} should be 
+#' processed at a time?
+    chunksize <- .advanced_argument('chunksize', 5e+06, ...)
+
+
+#' @param lowMemDir If specified, each chunk is saved into a separate Rdata 
+#' file under \code{lowMemDir} and later loaded in 
+#' \link[derfinderHelper]{fstats.apply} when 
+#' running \link{calculateStats} and \link{calculatePvalues}. Using this option 
+#' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
+#' loads only the data needed for the chunk processing. The downside is a bit 
+#' longer computation time due to input/output.
+    lowMemDir <- .advanced_argument('lowMemDir', NULL, ...)
 
 
     ## Use pre-calculated mean coverage if available

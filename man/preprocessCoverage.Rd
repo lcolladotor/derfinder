@@ -5,8 +5,7 @@
 \title{Transform and split the data}
 \usage{
 preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
-  scalefac = 32, chunksize = 5e+06, colsubset = NULL, lowMemDir = NULL,
-  ...)
+  colsubset = NULL, ...)
 }
 \arguments{
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
@@ -21,23 +20,9 @@ in \link{calculatePvalues}.}
 \item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled
 by \code{filter}.}
 
-\item{scalefac}{A log transformation is used on the count tables, so zero
-counts present a problem.  What number should we add to the entire matrix?}
-
-\item{chunksize}{How many rows of \code{coverageInfo$coverage} should be
-processed at a time?}
-
 \item{colsubset}{Optional vector of column indices of
 \code{coverageInfo$coverage} that denote samples you wish to include in
 analysis.}
-
-\item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
-file under \code{lowMemDir} and later loaded in
-\link[derfinderHelper]{fstats.apply} when
-running \link{calculateStats} and \link{calculatePvalues}. Using this option
-helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
-loads only the data needed for the chunk processing. The downside is a bit
-longer computation time due to input/output.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

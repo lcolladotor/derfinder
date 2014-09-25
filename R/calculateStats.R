@@ -9,11 +9,6 @@
 #' \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated 
 #' using \link{makeModels}.
-#' @param lowMemDir The directory where the processed chunks are saved when 
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-#' @param scalefac This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-#' in \link{preprocessCoverage}.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A numeric Rle with the F-statistics per base pair that passed the 
@@ -54,8 +49,7 @@
 #' summary(fstats - genomeFstats)
 #' }
 
-calculateStats <- function(coveragePrep, models, lowMemDir = NULL,
-    scalefac = 32, ...) {
+calculateStats <- function(coveragePrep, models, ...) {
     
     stopifnot(length(intersect(names(coveragePrep), c('coverageProcessed', 
         'mclapplyIndex', 'position'))) == 3)
@@ -66,6 +60,27 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL,
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
+    
+#' @param lowMemDir The directory where the processed chunks are saved when 
+#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+    lowMemDir <- .advanced_argument('lowMemDir', NULL, ...)
+
+
+#' @param scalefac This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+#' in \link{preprocessCoverage}.
+    scalefac <- .advanced_argument('scalefac', 32, ...)    
+
+
+#' @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
+#' details in derfinderHelper::fstats.apply().
+    method <- .advanced_argument('method', 'Matrix', ...)
+
+
+#' @param adjustF A single value to adjust that is added in the denominator of 
+#' the F-stat calculation. Useful when the Residual Sum of Squares of the 
+#' alternative model is very small.
+    adjustF <- .advanced_argument('adjustF', 0, ...)
 
 
     coverageProcessed <- coveragePrep$coverageProcessed
@@ -94,7 +109,8 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL,
         message(paste(Sys.time(), 'calculateStats: calculating the F-statistics'))
     fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
         data = coverageProcessed, mod = models$mod, mod0 = models$mod0,
-        lowMemDir = lowMemDir, scalefac = scalefac, ..., BPPARAM = BPPARAM)
+        lowMemDir = lowMemDir, scalefac = scalefac, method = method,
+        adjustF = adjustF, BPPARAM = BPPARAM)
     result <- unlist(RleList(fstats.output), use.names = FALSE)
     
     ## Done =)
