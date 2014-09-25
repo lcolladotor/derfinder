@@ -114,12 +114,15 @@ How much padding you need to use will depend on your specific data set, and you 
 
 This figure shows in more detail the processing flow in `analyzeChr()`, which is the main function for identifying candidate differentially expressed regions (DERs) from the base-level F-statistics.
 
-Many fine-tunning arguments can be passed to `analyzeChr()` to feed into the other functions. For example, you might want to use a smaller chunksize when pre-processing the coverage data (the default is 5 million): specially if you have hundreds of samples. 
+Many fine-tunning arguments can be passed to `analyzeChr()` to feed into the other functions. For example, you might want to use a smaller `chunksize` when pre-processing the coverage data (the default is 5 million): specially if you have hundreds of samples. 
 
-Another useful argument 
+Another useful argument is `scalefac` (by default it's 32) which controls the scaling factor to use before the log2 transformation. 
 
+
+## `regionMatrix()` detail
 
 <img src="http://lcolladotor.github.io/derfinder/fig/regionMatrix.png" alt="Drawing" style="width: 500px;"/>
+
 
 
 
