@@ -34,7 +34,6 @@ Suggests:
     knitcitations (>= 1.0.1),
     knitr (>= 1.6),
     knitrBootstrap (>= 0.9.0),
-    RefManageR,
     rmarkdown (>= 0.3.3),
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
