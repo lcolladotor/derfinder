@@ -269,8 +269,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         ## Get the F-statistics
         fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
-            BPPARAM = BPPARAM, method = method, adjustF = adjustF,
-            scalefac = scalefac)
+            method = method, adjustF = adjustF, scalefac = scalefac,
+            lowMemDir = lowMemDir, BPPARAM = BPPARAM)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
         
         ## Find the segments
