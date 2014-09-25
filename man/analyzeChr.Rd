@@ -7,7 +7,8 @@
 analyzeChr(chr, coverageInfo, models, cutoffPre = 5, cutoffFstat = 1e-08,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
   "", Sys.Date())) + seq_len(nPermute), groupInfo, subject = "hg19",
-  writeOutput = TRUE, runAnnotation = TRUE, ...)
+  writeOutput = TRUE, runAnnotation = TRUE, lowMemDir = file.path(chr,
+  "chunksDir"), ...)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE}
@@ -55,6 +56,14 @@ in the return section.}
 
 \item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateNearest} is
 run. Otherwise this step is skipped.}
+
+\item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
+file under \code{lowMemDir} and later loaded in
+\link[derfinderHelper]{fstats.apply} when
+running \link{calculateStats} and \link{calculatePvalues}. Using this option
+helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
+loads only the data needed for the chunk processing. The downside is a bit
+longer computation time due to input/output.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

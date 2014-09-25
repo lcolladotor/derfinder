@@ -5,7 +5,7 @@
 \title{Transform and split the data}
 \usage{
 preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
-  colsubset = NULL, ...)
+  colsubset = NULL, lowMemDir = NULL, ...)
 }
 \arguments{
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
@@ -23,6 +23,14 @@ by \code{filter}.}
 \item{colsubset}{Optional vector of column indices of
 \code{coverageInfo$coverage} that denote samples you wish to include in
 analysis.}
+
+\item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
+file under \code{lowMemDir} and later loaded in
+\link[derfinderHelper]{fstats.apply} when
+running \link{calculateStats} and \link{calculatePvalues}. Using this option
+helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
+loads only the data needed for the chunk processing. The downside is a bit
+longer computation time due to input/output.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

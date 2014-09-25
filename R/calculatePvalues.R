@@ -130,7 +130,8 @@
 
 calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
-    chr, cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1), ...) {
+    chr, cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1),
+    lowMemDir = NULL, ...) {
         
     ## Setup
     if (is.null(seeds)) {
@@ -169,7 +170,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     groupMeans <- coveragePrep$groupMeans
     mclapplyIndex <- coveragePrep$mclapplyIndex
     coverageProcessed <- coveragePrep$coverageProcessed
-    lowMemDir <- .advanced_argument('lowMemDir', NULL, ...)
+
     if (is.null(lowMemDir) & is.null(coverageProcessed)) 
         stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
     rm(coveragePrep)

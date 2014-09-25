@@ -6,7 +6,8 @@
 \usage{
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
-  cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1), ...)
+  cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1),
+  lowMemDir = NULL, ...)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed},
@@ -35,6 +36,9 @@ This argument is passed to \link{findRegions}.}
 \item{significantCut}{A vector of length two specifiying the cutoffs used to
 determine significance. The first element is used to determine significance
 for the p-values and the second element is used for the q-values.}
+
+\item{lowMemDir}{The directory where the processed chunks are saved when
+using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

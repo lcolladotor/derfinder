@@ -80,7 +80,8 @@
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
     cutoffFstat = 1e-08, cutoffType = 'theoretical', nPermute = 1, 
     seeds = as.integer(gsub('-', '', Sys.Date())) + seq_len(nPermute), 
-    groupInfo, subject = 'hg19', writeOutput = TRUE, runAnnotation = TRUE, ...){
+    groupInfo, subject = 'hg19', writeOutput = TRUE, runAnnotation = TRUE,
+    lowMemDir =  file.path(chr, 'chunksDir'), ...){
         
     ## Run some checks
     stopifnot(length(intersect(cutoffType, c('empirical', 'theoretical', 
@@ -109,12 +110,6 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 
 #' @param chunksize This argument is passed to \link{preprocessCoverage}.
     chunksize <- .advanced_argument('chunksize', NULL, ...)
-    
-
-#' @param lowMemDir The directory where the processed chunks are saved when
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-    lowMemDir <- .advanced_argument('lowMemDir', file.path(chr, 'chunksDir'),
-        ...)
         
 
 #' @param returnOutput If \code{TRUE}, it returns a list with the results from 
@@ -139,7 +134,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         message(paste(Sys.time(),
             'analyzeChr: Pre-processing the coverage data'))
     prep <- preprocessCoverage(coverageInfo = coverageInfo,
-        groupInfo = groupInfo, cutoff = cutoffPre, ...)
+        groupInfo = groupInfo, cutoff = cutoffPre, lowMemDir = lowMemDir, ...)
     rm(coverageInfo)
     
     ## prepData
@@ -155,7 +150,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## Run calculateStats
     if (verbose) 
         message(paste(Sys.time(), 'analyzeChr: Calculating statistics'))
-    fstats <- calculateStats(coveragePrep = prep, models = models, ...)
+    fstats <- calculateStats(coveragePrep = prep, models = models, 
+        lowMemDir = lowMemDir, ...)
     
     ## calculateStats
     timeinfo <- c(timeinfo, list(Sys.time()))
@@ -197,7 +193,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
-        chr = chr, cutoff = cutoff, ...)
+        chr = chr, cutoff = cutoff, lowMemDir = lowMemDir, ...)
     if (!returnOutput) {
         rm(prep)
     }

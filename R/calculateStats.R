@@ -9,6 +9,8 @@
 #' \link{preprocessCoverage}.
 #' @param models A list with \code{$mod} and \code{$mod0} normally generated 
 #' using \link{makeModels}.
+#' @param lowMemDir The directory where the processed chunks are saved when 
+#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A numeric Rle with the F-statistics per base pair that passed the 
@@ -49,7 +51,7 @@
 #' summary(fstats - genomeFstats)
 #' }
 
-calculateStats <- function(coveragePrep, models, ...) {
+calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
     
     stopifnot(length(intersect(names(coveragePrep), c('coverageProcessed', 
         'mclapplyIndex', 'position'))) == 3)
@@ -60,10 +62,6 @@ calculateStats <- function(coveragePrep, models, ...) {
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    
-#' @param lowMemDir The directory where the processed chunks are saved when 
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
-    lowMemDir <- .advanced_argument('lowMemDir', NULL, ...)
 
 
 #' @param scalefac This argument is passed to 
