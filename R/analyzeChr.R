@@ -239,8 +239,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Save timing information
     timeinfo <- do.call(c, timeinfo)
-    names(timeinfo) <- c('init', 'setup', 'saveStatsOpts', 'prepData', 
-        'savePrep', 'calculateStats', 'saveStats', 'calculatePvalues', 
+    names(timeinfo) <- c('init', 'setup', 'prepData', 'savePrep',
+        'calculateStats', 'saveStats', 'saveStatsOpts', 'calculatePvalues', 
         'saveRegs', 'annotate', 'saveAnno')
     if (writeOutput) {
         save(timeinfo, file = file.path(chr, 'timeinfo.Rdata'))

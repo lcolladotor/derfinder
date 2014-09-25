@@ -27,9 +27,9 @@
 #' \item{regions }{ is a GRanges with metadata columns given by 
 #' \link{findRegions} with the additional metadata column \code{pvalues}: 
 #' p-value of the region calculated via permutations of the samples; 
-#' \code{padj}: the qvalues calculated using \link[qvalue]{qvalue}; 
+#' \code{qvalues}: the qvalues calculated using \link[qvalue]{qvalue}; 
 #' \code{significant}: whether the p-value is less than 0.05 (by default); 
-#' \code{significantPadj}: whether the q-value is less than 0.10 (by default). 
+#' \code{significantQval}: whether the q-value is less than 0.10 (by default). 
 #' It also includes the mean coverage of the region (mean from the mean 
 #' coverage at each base calculated in \link{preprocessCoverage}). Furthermore,
 #' if \code{groupInfo} was not \code{NULL} in \link{preprocessCoverage}, then 

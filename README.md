@@ -22,7 +22,7 @@ install.packages('devtools')
 
 ## Pre-requisites from CRAN
 install.packages(c('ggplot2', 'Hmisc', 'testthat', 'knitr', 'rmarkdown',
-    'knitrBoostrap', 'knitcitations'))
+    'knitrBoostrap', 'RefManageR', 'knitcitations'))
 
 ## Pre-requisites from Bioconductor
 source('http://bioconductor.org/biocLite.R')
