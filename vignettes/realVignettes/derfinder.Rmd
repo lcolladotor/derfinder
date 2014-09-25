@@ -16,6 +16,8 @@ output:
 Introduction to `derfinder`
 ===========================
 
+If you wish, you can view this vignette online [here](http://lcolladotor.github.io/derfinder/).
+
 ```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
@@ -653,7 +655,8 @@ if(knitrBootstrapFlag) {
 # system.time(render('derfinder.Rmd', 'html_document'))
 ## Clean up
 unlink('analysisResults', recursive = TRUE)
-
+file.remove('HSB97.bw')
+file.remove('derfinderRef.bib')
 
 ## Extract the R code
 library('knitr')
