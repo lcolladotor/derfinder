@@ -16,6 +16,8 @@ output:
 `derfinder` advanced details and usage
 ======================================
 
+If you wish, you can view this vignette online [here](http://lcolladotor.github.io/derfinder/).
+
 ```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
@@ -35,8 +37,8 @@ write.bibtex(c(knitcitations = citation('knitcitations'),
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown')),
-    file = 'derfinderRef.bib')
-bib <- read.bibtex('derfinderRef.bib')
+    file = 'derfinderAdvRef.bib')
+bib <- read.bibtex('derfinderAdvRef.bib')
 
 ## Fix some names to work with CRAN and GitHub versions
 names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstrap'
@@ -45,7 +47,79 @@ names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstra
 
 # Overview
 
-This is a stub vignette. The real one can be viewed online [here](http://lcolladotor.github.io/derfinder/).
+This vignette explains in more detail the relationship between the different functions in `derfinder` `r citep(bib[['colladotorres2014derfinder']])` as well as add-on packages `derfinderPlot` ([vignette](http://lcolladotor.github.io/derfinderPlot/)), `derfinderHelper` ([vignette](http://lcolladotor.github.io/derfinderHelper/)) and `regionReport` ([vignette](http://lcolladotor.github.io/regionReport/)). The vignette also includes some bash scripts for running `derfinder` in a cluster, although there are probably other ways to do so using only R scripts. For example, by using `BatchJobsParam()` from [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html).
+
+This vignette assumes that you have read through the introductory vignette.
+
+Lets start by loading the `derfinder` package.
+
+```{r 'start', message=FALSE}
+## Load libraries
+library('derfinder')
+```
+
+# Functions
+
+## DER analysis flow
+
+The following figure illustrates how most of `derfinder`'s functions interact when performing a base-level differential expression analysis by calculating base-level F-statistics.
+
+<img src="http://lcolladotor.github.io/derfinder/fig/DERpathway.png" alt="Drawing" style="width: 500px;"/>
+
+Flow chart of the different processing steps (black boxes) that can be carried out using `derfinder` and the functions that perform these actions (in red). Input and output is shown in green boxes. Functions in blue are those applied to the results from multiple chromosomes (`mergeResults()` and `derfinderReport`). `regionReport` functions are shown in orange while `derfinderPlot` functions are shown in dark purple. Purple dotted arrow marks functions that require unfiltered base-level coverage.
+
+### Unfiltered base-level coverage
+
+Note that in most scenarios, the `fullCov` object illustrated in the introductory vignette can be large in memory. When making plots or calculating the region level coverage, we don't need the full information. In such situations, it might pay off to create a smaller version by loading only the required data. This can be achieved using the advanced argument `which` to `fullCoverage()` or `loadCoverage()`. 
+
+However, note that when reading the data from BAM files, a read might align partially inside the region of interest. By default such a read would be discarded and thus the base-level coverage would be lower than what it is in reality. The advanced argument `protectWhich` extends regions by 30 kbp (15 kbp each side) to help mitigate this issue. 
+
+We can illustrate this issue with the example data from `derfinder`. First, we load in the data and generate some regions of interest.
+
+```{r 'runExample', bootstrap.show.output=FALSE, bootstrap.show.message=FALSE}
+## Find some regions to work with
+example('loadCoverage', 'derfinder')
+example('getRegionCoverage', 'derfinder')
+```
+
+Next, we load the coverage again using `which` but without any padding. We can see how the coverage is not the same by looking at the maximum coverage for each sample.
+
+```{r 'loadWhich', bootstrap.show.message=FALSE}
+## Illustrate reading data from a set of regions
+test <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = regions, protectWhich = 0)
+
+## Some reads were ignored and thus the coverage is lower as can be seen below:
+sapply(test$coverage, max) - sapply(genomeDataRaw$coverage, max)
+```
+
+When we re-load the data using some padding to the regions, we find that the coverage matches at all the bases.
+
+```{r 'loadWhich2', bootstrap.show.message=FALSE}
+## Illustrate reading data from a set of regions
+test2 <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = regions, protectWhich = 3e4)
+
+## Adding some padding to the regions helps get the same coverage
+identical(sapply(test2$coverage, max), sapply(genomeDataRaw$coverage, max))
+
+## A more detailed test reveals that the coverage matches at every base
+all(mapply(function(x, y) { identical(x, y) }, test2$coverage, genomeDataRaw$coverage))
+```
+
+How much padding you need to use will depend on your specific data set, and you might be comfortable getting approximately the same coverage values for the sake of greatly reducing the memory resources needed.
+
+## `analyzeChr()` in detail
+
+
+<img src="http://lcolladotor.github.io/derfinder/fig/analyzeChr.png" alt="Drawing" style="width: 500px;"/>
+
+This figure shows in more detail the processing flow in `analyzeChr()`, which is the main function for identifying candidate differentially expressed regions (DERs) from the base-level F-statistics.
+
+Many fine-tunning arguments can be passed to `analyzeChr()` to feed into the other functions. For example, you might want to use a smaller chunksize when pre-processing the coverage data (the default is 5 million): specially if you have hundreds of samples. 
+
+Another useful argument 
+
+
+<img src="http://lcolladotor.github.io/derfinder/fig/regionMatrix.png" alt="Drawing" style="width: 500px;"/>
 
 
 
@@ -74,6 +148,8 @@ if(knitrBootstrapFlag) {
 ## Note: if you prefer the knitr version use:
 # library('rmarkdown')
 # system.time(render('derfinderAdvanced.Rmd', 'html_document'))
+## Clean up
+file.remove('derfinderAdvRef.bib')
 
 ## Extract the R code
 library('knitr')

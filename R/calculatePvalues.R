@@ -159,6 +159,23 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
+#' @param scalefac This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+#' in \link{preprocessCoverage}.
+    scalefac <- .advanced_argument('scalefac', 32, ...)    
+
+
+#' @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
+#' details in derfinderHelper::fstats.apply().
+    method <- .advanced_argument('method', 'Matrix', ...)
+
+
+#' @param adjustF A single value to adjust that is added in the denominator of 
+#' the F-stat calculation. Useful when the Residual Sum of Squares of the 
+#' alternative model is very small.
+    adjustF <- .advanced_argument('adjustF', 0, ...)
+
+
     ## Identify the data segments
     if (verbose) 
         message(paste(Sys.time(),
@@ -252,7 +269,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         ## Get the F-statistics
         fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
-            BPPARAM = BPPARAM, ...)
+            BPPARAM = BPPARAM, method = method, adjustF = adjustF,
+            scalefac = scalefac)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
         
         ## Find the segments
