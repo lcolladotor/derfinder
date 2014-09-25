@@ -1,3 +1,26 @@
+CHANGES IN VERSION 0.0.81
+-------------------------
+
+NEW FEATURES
+
+    o Advanced vignette added
+
+CHANGES IN VERSION 0.0.80
+-------------------------
+
+NEW FEATURES
+
+    o Introductory vignette added
+    
+CHANGES IN VERSION 0.0.79
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+    
+    o mergeResults() can now calculate FWER adjusted p-values when provided with
+        'optionsStats'. Updated analyzeChr() to supply the required information.
+
+
 CHANGES IN VERSION 0.0.78
 -------------------------
 
