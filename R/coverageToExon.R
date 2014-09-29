@@ -94,8 +94,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
     ## Load data if 'fullCov' is not specified
     if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, regs = etab, 
-            chrs = seqlevelsInUse(etab),
+        fullCov <- .load_fullCov(files = files, regs = etab,
             fun = 'coverageToExon', verbose = verbose, ...)        
     }
     ## Fix naming style
@@ -125,7 +124,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
         fullCov = fullCov, etab = etab, L = L,
         nCores = .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...),
-        chrs = chrKeep, verbose = verbose, BPPARAM = BPPARAM, ...)
+        chromosomes = chrKeep, BPPARAM = BPPARAM, ...)
     
     # combine two strands
     exons <- do.call("rbind", exonByStrand)
@@ -142,9 +141,11 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chrs,
-    verbose, ...) {
+.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chromosomes,
+    ...) {
         
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
     e <- etab[ii]  # subset
     
     ## use logical rle to subset large coverage matrix
@@ -157,7 +158,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     ## Subset data
     # subset using logical rle (fastest way)
     subsets <- mapply(function(covInfo, chr) { subset(covInfo, cc[[chr]]) },
-        fullCov, chrs, SIMPLIFY = FALSE)
+        fullCov, chromosomes, SIMPLIFY = FALSE)
     
     # now count exons
     moreArgs <- list(e = e, L = L, verbose = verbose)
@@ -185,10 +186,10 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
         # done
         return(res)
-    }    
+    }
     
     ## Now run it
-    exonList <- bpmapply(.coverageToExonChrStep, subsets, chrs, 
+    exonList <- bpmapply(.coverageToExonChrStep, subsets, chromosomes, 
         MoreArgs = moreArgs, BPPARAM = BPPARAM.chrStep, SIMPLIFY = FALSE)
         
     # combine
