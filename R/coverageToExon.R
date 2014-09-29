@@ -94,7 +94,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
     ## Load data if 'fullCov' is not specified
     if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, chrs = seqlevelsInUse(etab),
+        fullCov <- .load_fullCov(files = files, regs = etab, 
+            chrs = seqlevelsInUse(etab),
             fun = 'coverageToExon', verbose = verbose, ...)        
     }
     ## Fix naming style
