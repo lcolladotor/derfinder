@@ -38,8 +38,9 @@ write.bibtex(c(knitcitations = citation('knitcitations'),
     file = 'derfinderRef.bib')
 bib <- read.bibtex('derfinderRef.bib')
 
-## Fix some names to work with CRAN and GitHub versions
-names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstrap'
+## Assign short names
+names(bib) <- c('knitcitations', 'derfinder', 'knitrBootstrap',
+    'knitr', 'rmarkdown')
 ```
 
 
@@ -105,10 +106,10 @@ session_info()
 
 # Bibliography
 
-This vignette was generated using `knitrBootstrap` `r citep(bib[['hester2014knitrbootstrap']])`
-with `knitr` `r citep(bib[['xie2014knitr']])` and `rmarkdown` `r citep(bib[['allaire2014rmarkdown']])` running behind the scenes.
+This vignette was generated using `knitrBootstrap` `r citep(bib[['knitrBootstrap']])`
+with `knitr` `r citep(bib[['knitr']])` and `rmarkdown` `r citep(bib[['rmarkdown']])` running behind the scenes.
 
-Citations made with `knitcitations` `r citep(bib[[1]])`.
+Citations made with `knitcitations` `r citep(bib[['knitcitations']])`.
 
 ```{r vignetteBiblio, results='asis', echo=FALSE}
 ## Print bibliography

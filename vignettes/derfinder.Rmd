@@ -16,7 +16,7 @@ output:
 Introduction to `derfinder`
 ===========================
 
-```{r vignetteSetup, echo=FALSE, message=FALSE}
+```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
 startTime <- Sys.time()
 
@@ -30,25 +30,23 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-write.bibtex(c(derfinder = citation('derfinder'), 
+write.bibtex(c(knitcitations = citation('knitcitations'),
+    derfinder = citation('derfinder'), 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown')),
     file = 'derfinderRef.bib')
 bib <- read.bibtex('derfinderRef.bib')
 
-## Fix some names to work with CRAN and GitHub versions
-names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstrap'
+## Assign short names
+names(bib) <- c('knitcitations', 'derfinder', 'knitrBootstrap',
+    'knitr', 'rmarkdown')
 ```
 
 
 # Overview
 
-This is a stub vignette. The real one can be found at:
-
-```{r 'realVignette', eval = FALSE}
-browseURL(system.file('doc', 'derfinder.html', package = 'derfinder'))
-```
+This is a stub vignette. The real one can be viewed online [here](http://lcolladotor.github.io/derfinder/).
 
 
 
@@ -108,10 +106,10 @@ session_info()
 
 # Bibliography
 
-This vignette was generated using `knitrBootstrap` `r citep(bib[['hester2014knitrbootstrap']])`
-with `knitr` `r citep(bib[['xie2014knitr']])` and `rmarkdown` `r citep(bib[['allaire2014rmarkdown']])` running behind the scenes.
+This vignette was generated using `knitrBootstrap` `r citep(bib[['knitrBootstrap']])`
+with `knitr` `r citep(bib[['knitr']])` and `rmarkdown` `r citep(bib[['rmarkdown']])` running behind the scenes.
 
-Citations made with `knitcitations` `r citep('https://github.com/cboettig/knitcitations')`.
+Citations made with `knitcitations` `r citep(bib[['knitcitations']])`.
 
 ```{r vignetteBiblio, results='asis', echo=FALSE}
 ## Print bibliography

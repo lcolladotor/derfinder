@@ -32,22 +32,49 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-write.bibtex(c(knitcitations = citation('knitcitations'),
+bibs <- c(knitcitations = citation('knitcitations'),
     derfinder = citation('derfinder'), 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
-    rmarkdown = citation('rmarkdown')),
+    rmarkdown = citation('rmarkdown'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://developinghumanbrain.org'),
+    originalder = RefManageR::BibEntry(bibtype = 'article', key = 'originalder', title = 'Differential expression analysis of RNA-seq data at single-base resolution', author = 'Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizzary and Jeffrey T. Leek', year = 2013, journal = 'Biostatistics'),
+    R = citation(),
+    IRanges = citation('IRanges'),
+    devtools = citation('devtools'),
+    testthat = citation('testthat'),
+    GenomeInfoDb = citation('GenomeInfoDb'),
+    GenomicRanges = citation('GenomicRanges'),
+    ggplot2 = citation('ggplot2'),
+    biovizBase = citation('biovizBase'),
+    bumphunter = citation('bumphunter'),
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
+    AnnotationDbi = citation('AnnotationDbi'),
+    BiocParallel = citation('BiocParallel'),
+    derfinderHelper = citation('derfinderHelper'),
+    GenomicAlignments = citation('GenomicAlignments'),
+    GenomicFeatures = citation('GenomicFeatures'),
+    GenomicFiles = citation('GenomicFiles'),
+    Hmisc = citation('Hmisc'),
+    qvalue = citation('qvalue'),
+    Rsamtools = citation('Rsamtools'),
+    rtracklayer = citation('rtracklayer'),
+    S4Vectors = citation('S4Vectors'),
+    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article', key = 'bumphunterPaper', title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies', author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A', year = 2012, journal = 'International Journal of Epidemiology')
+)
+
+write.bibtex(bibs,
     file = 'derfinderAdvRef.bib')
 bib <- read.bibtex('derfinderAdvRef.bib')
 
-## Fix some names to work with CRAN and GitHub versions
-names(bib)[names(bib) == 'hester2013knitrbootstrap'] <- 'hester2014knitrbootstrap'
+## Assign short names
+names(bib) <- names(bibs)
 ```
 
 
 # Overview
 
-This vignette explains in more detail the relationship between the different functions in `derfinder` `r citep(bib[['colladotorres2014derfinder']])` as well as add-on packages `derfinderPlot` ([vignette](http://lcolladotor.github.io/derfinderPlot/)), `derfinderHelper` ([vignette](http://lcolladotor.github.io/derfinderHelper/)) and `regionReport` ([vignette](http://lcolladotor.github.io/regionReport/)). The vignette also includes some bash scripts for running `derfinder` in a cluster, although there are probably other ways to do so using only R scripts. For example, by using `BatchJobsParam()` from [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html).
+This vignette explains in more detail the relationship between the different functions in `derfinder` `r citep(bib[['derfinder']])` as well as add-on packages `derfinderPlot` ([vignette](http://lcolladotor.github.io/derfinderPlot/)), `derfinderHelper` ([vignette](http://lcolladotor.github.io/derfinderHelper/)) and `regionReport` ([vignette](http://lcolladotor.github.io/regionReport/)). The vignette also includes some bash scripts for running `derfinder` in a cluster, although there are probably other ways to do so using only R scripts. For example, by using `BatchJobsParam()` from [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html).
 
 This vignette assumes that you have read through the introductory vignette.
 
@@ -488,6 +515,34 @@ citation('derfinder')
 
 # Reproducibility
 
+This package was made possible thanks to:
+
+* R `r citep(bib[['R']])`
+* AnnotationDbi `r citep(bib[['AnnotationDbi']])`
+* BiocParallel `r citep(bib[['BiocParallel']])`
+* bumphunter `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
+* derfinderHelper `r citep(bib[['derfinderHelper']])`
+* GenomeInfoDb `r citep(bib[['GenomeInfoDb']])`
+* GenomicAlignments `r citep(bib[['GenomicAlignments']])`
+* GenomicFeatures `r citep(bib[['GenomicFeatures']])`
+* GenomicFiles `r citep(bib[['GenomicFiles']])`
+* GenomicRanges `r citep(bib[['GenomicRanges']])`
+* Hmisc `r citep(bib[['Hmisc']])`
+* IRanges `r citep(bib[['IRanges']])`
+* qvalue `r citep(bib[['qvalue']])`
+* Rsamtools `r citep(bib[['Rsamtools']])`
+* rtracklayer `r citep(bib[['rtracklayer']])`
+* S4Vectors `r citep(bib[['S4Vectors']])`
+* biovizBase `r citep(bib[['biovizBase']])`
+* devtools `r citep(bib[['devtools']])`
+* ggplot2 `r citep(bib[['ggplot2']])`
+* knitcitations `r citep(bib[['knitcitations']])`
+* knitr `r citep(bib[['knitr']])`
+* knitrBootstrap `r citep(bib[['knitrBootstrap']])`
+* rmarkdown `r citep(bib[['rmarkdown']])`
+* testthat `r citep(bib[['testthat']])`
+* TxDb.Hsapiens.UCSC.hg19.knownGene `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
+
 Code for creating the vignette
 
 ```{r createVignette, eval=FALSE, bootstrap.show.code=FALSE}
@@ -541,12 +596,12 @@ session_info()
 
 # Bibliography
 
-This vignette was generated using `knitrBootstrap` `r citep(bib[['hester2014knitrbootstrap']])`
-with `knitr` `r citep(bib[['xie2014knitr']])` and `rmarkdown` `r citep(bib[['allaire2014rmarkdown']])` running behind the scenes.
+This vignette was generated using `knitrBootstrap` `r citep(bib[['knitrBootstrap']])`
+with `knitr` `r citep(bib[['knitr']])` and `rmarkdown` `r citep(bib[['rmarkdown']])` running behind the scenes.
 
-Citations made with `knitcitations` `r citep(bib[[1]])`.
+Citations made with `knitcitations` `r citep(bib[['knitcitations']])`.
 
-```{r vignetteBiblio, results='asis', echo=FALSE}
+```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE}
 ## Print bibliography
 bibliography()
 ```
