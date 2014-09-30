@@ -88,7 +88,7 @@ A BibTeX entry for LaTeX users is
     author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe 
         and Jeffrey Leek},
     year = {2014},
-    note = {R package version 0.99.0},
+    note = {R package version 0.99.2},
     url = {https://github.com/lcolladotor/derfinder},
 }
 

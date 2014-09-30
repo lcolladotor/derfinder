@@ -94,6 +94,7 @@ library('derfinder')
 For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years, the gender and the RNA Integrity Number (RIN). The data is shown below.
 
 ```{r 'phenoData', bootstrap.show.code=FALSE, results = 'asis'}
+library('knitr')
 ## Construct pheno table
 pheno <- data.frame(
     gender = c('F', 'M', 'M', 'M', 'F', 'F', 'F', 'M', 'F', 'M', 'M', 'F'),

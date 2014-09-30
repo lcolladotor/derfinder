@@ -503,6 +503,11 @@ This vignette covered the most commonly used advanced arguments, details on how 
 
 
 
+# Origins
+
+This implementation of `derfinder` `r citep(bib[['derfinder']])` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
+
+
 # Citing `derfinder`
 
 Please use:
