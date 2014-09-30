@@ -30,9 +30,10 @@ biocLite(c('S4Vectors', 'IRanges', 'GenomicRanges', 'Rsamtools', 'bumphunter', '
     'TxDb.Hsapiens.UCSC.hg19.knownGene', 'AnnotationDbi', 'GenomicFeatures', 'GenomeInfoDb',
     'rtracklayer', 'BiocParallel', 'qvalue', 'GenomicFiles'))
     
-## derfinderHelper
+## GitHub dependencies
 library('devtools')
 install_github('lcolladotor/derfinderHelper')
+install_github('lcolladotor/derfinderData')
 
 ## derfinder itself
 

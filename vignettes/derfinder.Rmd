@@ -48,6 +48,9 @@ names(bib) <- c('knitcitations', 'derfinder', 'knitrBootstrap',
 
 This is a stub vignette. The real one can be viewed online [here](http://lcolladotor.github.io/derfinder/).
 
+```{r}
+library('derfinderData')
+```
 
 
 
