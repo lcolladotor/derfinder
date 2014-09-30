@@ -70,6 +70,9 @@ bib <- read.bibtex('derfinderRef.bib')
 
 ## Assign short names
 names(bib) <- names(bibs)
+
+## Working on Windows?
+windowsFlag <- .Platform$OS.type == 'windows'
 ```
 
 
@@ -93,7 +96,7 @@ library('derfinderData')
 
 ## Phenotype data
 
-For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years, the gender and the RNA Integrity Number (RIN). The data is shown below.
+For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years and the gender. The data is shown below.
 
 ```{r 'phenoData', bootstrap.show.code=FALSE, results = 'asis'}
 library('knitr')
@@ -112,7 +115,7 @@ kable(p, format = 'html', row.names = TRUE)
 
 We can load the data from `derfinderData` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`.
 
-```{r 'getData'}
+```{r 'getData', eval = !windowsFlag}
 ## Determine the files to use and fix the names
 files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
 names(files) <- gsub('.bw', '', names(files))
@@ -121,7 +124,17 @@ names(files) <- gsub('.bw', '', names(files))
 system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
 ```
 
-Alternatively, since the BigWig files are publicly available from _BrainSpan_ (see [here](http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/)), we can extract the relevant coverage data using `fullCoverage()`.
+```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
+## Load data in Windows case
+foo <- function() { 
+    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData', package = 'derfinderData'))
+    return(fullCovAMY) 
+}
+fullCov <- foo()
+```
+
+
+Alternatively, since the BigWig files are publicly available from _BrainSpan_ (see [here](http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/)), we can extract the relevant coverage data using `fullCoverage()`. Note that as of `rtracklayer` 1.25.16 BigWig files are not supported on Windows: you can find the `fullCov` object inside `derfinderData` to follow the examples.
 
 ```{r 'webData', eval = FALSE}
 ## Determine the files to use and fix the names
@@ -179,7 +192,7 @@ One form of base-level differential expression analysis implemented in `derfinde
 
 ### Models
 
-Once we have the base-level coverage data for all 12 samples, we can construct the models. In this case, we want to find differences between fetal and adult samples while adjusting for gender, RIN and a proxy of the library size.
+Once we have the base-level coverage data for all 12 samples, we can construct the models. In this case, we want to find differences between fetal and adult samples while adjusting for gender and a proxy of the library size.
 
 We can use `sampleDepth()` and it's helper function `collapseFullCoverage()` to get a proxy of the library size. Note that you would normally use the unfiltered data from all the chromosomes in this step and not just one.
 
@@ -191,11 +204,11 @@ sampleDepths
 
 `sampleDepth()` is similar to `calcNormFactors()` from [metagenomeSeq](http://www.bioconductor.org/packages/release/bioc/html/metagenomeSeq.html) with some code underneath tailored for the type of data we are using. `collapseFullCoverage()` is only needed to deal with the size of the data. 
 
-We can then define the nested models we want to use using `makeModels()`. This is a helper function that assumes that you will always adjust for the library size. You then need to define the variable to test, in this case we are comparing fetal vs adult samples. Optionally, you can adjust for other sample covariates, such as the gender and RIN in this case.
+We can then define the nested models we want to use using `makeModels()`. This is a helper function that assumes that you will always adjust for the library size. You then need to define the variable to test, in this case we are comparing fetal vs adult samples. Optionally, you can adjust for other sample covariates, such as the gender in this case.
 
 ```{r 'makeModels'}
 ## Define models
-models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, c('gender', 'RIN')]) 
+models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, c('gender')]) 
 
 ## Explore the models
 lapply(models, head)
@@ -210,7 +223,7 @@ Next, we can find candidate differentially expressed regions (DERs) using as inp
 
 The __main__ function in `derfinder` for this type of analysis is `analyzeChr()`. It works at a chromosome level and runs behinds the scenes several other `derfinder` functions. To use it, you have to provide the models, the grouping information, how to calculate the F-statistic cutoff and most importantly, the number of permutations.
 
-By default `analyzeChr()` will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.01. To assign p-values to the candidate DERs, `derfinder` permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.
+By default `analyzeChr()` will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.05. To assign p-values to the candidate DERs, `derfinder` permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.
 
 In this example we will use twenty permutations, although in a real case scenario you might consider using up to a thousand.
 
@@ -223,7 +236,7 @@ originalWd <- getwd()
 setwd(file.path(originalWd, 'analysisResults'))
 
 ## Perform differential expression analysis
-system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 1e-02, nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
+system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 5e-02, nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
 ```
 
 To speed up `analyzeChr()`, you might need to use several cores via the `mc.cores` argument. If memory is limiting, you might want to use a smaller `chunksize` (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.

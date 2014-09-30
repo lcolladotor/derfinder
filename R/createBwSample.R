@@ -57,6 +57,9 @@ createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
     
     ## Check that there is something to write
     if(length(gr.sample) > 0) {
+        if(.Platform$OS.type == 'windows') {
+            warning('As of rtracklayer 1.25.16, BigWig is not supported on Windows. Thus exporting to BigWig will most likely fail!')
+        }
         export(gr.sample, file.path(path, paste0(sample, '.bw')))
     } else {
         warning(paste0('There are no bases with coverage > 0 for sample ',

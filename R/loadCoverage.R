@@ -160,6 +160,9 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         }
     } else if (inputType == 'BigWig') {
         bList <- BigWigFileList(files)
+        if(.Platform$OS.type == 'windows') {
+            warning('As of rtracklayer 1.25.16, BigWig is not supported on Windows. Thus loading data from BigWig files will most likely fail!')
+        }
     }
     
     
