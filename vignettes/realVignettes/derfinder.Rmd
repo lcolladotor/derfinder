@@ -1,0 +1,771 @@
+---
+output:
+  html_document:
+    toc: true
+    theme: united
+  knitrBootstrap::bootstrap_document:
+    theme.chooser: TRUE
+    highlight.chooser: TRUE
+---
+
+<!--
+%\VignetteEngine{knitr::rmarkdown}
+%\VignetteIndexEntry{Introduction to derfinder}
+-->
+
+Introduction to `derfinder`
+===========================
+
+If you wish, you can view this vignette online [here](http://lcolladotor.github.io/derfinder/).
+
+```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
+## Track time spent on making the vignette
+startTime <- Sys.time()
+
+## Bib setup
+library('knitcitations')
+
+## Load knitcitations with a clean bibliography
+cleanbib()
+cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+# Note links won't show for now due to the following issue
+# https://github.com/cboettig/knitcitations/issues/63
+
+## Write bibliography information
+bibs <- c(knitcitations = citation('knitcitations'),
+    derfinder = citation('derfinder'), 
+    knitrBootstrap = citation('knitrBootstrap'), 
+    knitr = citation('knitr')[3],
+    rmarkdown = citation('rmarkdown'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://developinghumanbrain.org'),
+    originalder = RefManageR::BibEntry(bibtype = 'article', key = 'originalder', title = 'Differential expression analysis of RNA-seq data at single-base resolution', author = 'Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizzary and Jeffrey T. Leek', year = 2013, journal = 'Biostatistics'),
+    R = citation(),
+    IRanges = citation('IRanges'),
+    devtools = citation('devtools'),
+    testthat = citation('testthat'),
+    GenomeInfoDb = citation('GenomeInfoDb'),
+    GenomicRanges = citation('GenomicRanges'),
+    ggplot2 = citation('ggplot2'),
+    biovizBase = citation('biovizBase'),
+    bumphunter = citation('bumphunter'),
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
+    AnnotationDbi = citation('AnnotationDbi'),
+    BiocParallel = citation('BiocParallel'),
+    derfinderHelper = citation('derfinderHelper'),
+    GenomicAlignments = citation('GenomicAlignments'),
+    GenomicFeatures = citation('GenomicFeatures'),
+    GenomicFiles = citation('GenomicFiles'),
+    Hmisc = citation('Hmisc'),
+    qvalue = citation('qvalue'),
+    Rsamtools = citation('Rsamtools'),
+    rtracklayer = citation('rtracklayer'),
+    S4Vectors = citation('S4Vectors'),
+    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article', key = 'bumphunterPaper', title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies', author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A', year = 2012, journal = 'International Journal of Epidemiology'),
+    derfinderData = citation('derfinderData')
+)
+
+write.bibtex(bibs,
+    file = 'derfinderRef.bib')
+bib <- read.bibtex('derfinderRef.bib')
+
+## Assign short names
+names(bib) <- names(bibs)
+
+## Working on Windows?
+windowsFlag <- .Platform$OS.type == 'windows'
+```
+
+
+# Overview
+
+In this vignette we present `derfinder` `r citep(bib[['derfinder']])` which enables annotation-agnostic differential expression analysis at base-pair resolution. A example with publicly available data is showcased in this vignette. With it, the two main type of analyses that can be performed with `derfinder` are illustrated. 
+
+
+# Example
+
+
+As an example, we will analyze a small subset of the samples from the _BrainSpan Atlas of the Human Brain_ `r citep(bib[['brainspan']])` publicly available data. 
+
+We first load the required packages.
+
+```{r 'start', message=FALSE}
+## Load libraries
+library('derfinder')
+library('derfinderData')
+```
+
+## Phenotype data
+
+For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years and the gender. The data is shown below.
+
+```{r 'phenoData', bootstrap.show.code=FALSE, results = 'asis'}
+library('knitr')
+## Get pheno table
+pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
+
+## Display the main information
+p <- pheno[, -which(colnames(pheno) %in% c('structure_acronym', 'structure_name', 'file'))]
+rownames(p) <- NULL
+kable(p, format = 'html', row.names = TRUE)
+```
+
+## Load the data
+
+`derfinder` offers three functions related to loading data. The first one, `rawFiles()`, is a helper function for identifying the full paths to the input files. Next, `loadCoverage()` loads the base-level coverage data from either BAM or BigWig files for a specific chromosome. Finally, `fullCoverage()` will load the coverage for a set of chromosomes using `loadCoverage()`.
+
+We can load the data from `derfinderData` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`.
+
+```{r 'getData', eval = !windowsFlag}
+## Determine the files to use and fix the names
+files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
+names(files) <- gsub('.bw', '', names(files))
+
+## Load the data from disk
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+```
+
+```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
+## Load data in Windows case
+foo <- function() { 
+    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData', package = 'derfinderData'))
+    return(fullCovAMY) 
+}
+fullCov <- foo()
+```
+
+
+Alternatively, since the BigWig files are publicly available from _BrainSpan_ (see [here](http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/)), we can extract the relevant coverage data using `fullCoverage()`. Note that as of `rtracklayer` 1.25.16 BigWig files are not supported on Windows: you can find the `fullCov` object inside `derfinderData` to follow the examples.
+
+```{r 'webData', eval = FALSE}
+## Determine the files to use and fix the names
+files <- pheno$file
+names(files) <- gsub('.AMY', '', pheno$lab)
+
+## Load the data from the web
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+```
+
+
+Note how loading the coverage for 12 samples from the web was quite fast. Although in this case we only retained the information for chromosome 21.
+
+
+The result of `fullCov` is a list with one element per chromosome. If no filtering was performed, each chromosome has a `DataFrame` with the number of rows equaling the number of bases in the chromosome with one column per sample.
+
+```{r 'exploreFullCov'}
+## Lets explore it
+fullCov
+```
+
+If filtering was performed, each chromosome also has a logical `Rle` indicating which bases of the chromosome passed the filtering. This information is useful later on to map back the results to the genome coordinates.
+
+
+## Filter coverage
+
+Depending on the use case, you might want to filter the base level coverage at the time of reading it, or you might want to keep an unfiltered version. By default both `loadCoverage()` and `fullCoverage()` will not filter.
+
+If you decide to filter, set the `cutoff` argument to a positive value. This will run `filterData()`. Note that you might want to standardize the library sizes prior to filtering, which can be done by supplying the `totalMapped` and `targetSize` arguments.
+
+In this example, we prefer to keep both an unfiltered and filtered version. For the filtered version, we will retain the bases where at least one sample has coverage greater than 2.
+
+```{r 'filterCov'}
+## Filter coverage
+filteredCov <- lapply(fullCov, filterData, cutoff = 2)
+```
+
+The result is similar to `fullCov` but with the genomic position index as shown below.
+
+```{r 'exploreFilteredCov'}
+## Similar to fullCov but with $position
+filteredCov
+```
+
+In terms of memory, the filtered version requires less resources. Although this will depend on how rich the data set is and how aggressive was the filtering step.
+
+```{r 'compareCov'}
+## Compare the size in Mb
+round(c(fullCov = object.size(fullCov), filteredCov = object.size(filteredCov)) / 1024^2, 1)
+```
+
+## DER analysis
+
+One form of base-level differential expression analysis implemented in `derfinder` is to calculate F-statistics for every base and use them to define candidate differentially expressed regions. This type of analysis is further explained in this section.
+
+### Models
+
+Once we have the base-level coverage data for all 12 samples, we can construct the models. In this case, we want to find differences between fetal and adult samples while adjusting for gender and a proxy of the library size.
+
+We can use `sampleDepth()` and it's helper function `collapseFullCoverage()` to get a proxy of the library size. Note that you would normally use the unfiltered data from all the chromosomes in this step and not just one.
+
+```{r 'libSize'}
+## Get some idea of the library sizes
+sampleDepths <- sampleDepth(collapseFullCoverage(fullCov), 1)
+sampleDepths
+```
+
+`sampleDepth()` is similar to `calcNormFactors()` from [metagenomeSeq](http://www.bioconductor.org/packages/release/bioc/html/metagenomeSeq.html) with some code underneath tailored for the type of data we are using. `collapseFullCoverage()` is only needed to deal with the size of the data. 
+
+We can then define the nested models we want to use using `makeModels()`. This is a helper function that assumes that you will always adjust for the library size. You then need to define the variable to test, in this case we are comparing fetal vs adult samples. Optionally, you can adjust for other sample covariates, such as the gender in this case.
+
+```{r 'makeModels'}
+## Define models
+models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, c('gender')]) 
+
+## Explore the models
+lapply(models, head)
+```
+
+Note how the null model (`mod0`) is nested in the alternative model (`mod`). `derfinder` is very flexible and works with any type of nested model.
+
+
+### Find candidate DERs
+
+Next, we can find candidate differentially expressed regions (DERs) using as input the segments of the genome where at least one sample has coverage greater than 2. That is, the filtered coverage version we created previously.
+
+The __main__ function in `derfinder` for this type of analysis is `analyzeChr()`. It works at a chromosome level and runs behinds the scenes several other `derfinder` functions. To use it, you have to provide the models, the grouping information, how to calculate the F-statistic cutoff and most importantly, the number of permutations.
+
+By default `analyzeChr()` will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.05. To assign p-values to the candidate DERs, `derfinder` permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.
+
+In this example we will use twenty permutations, although in a real case scenario you might consider using up to a thousand.
+
+In real scenario, you might consider saving the results from all the chromosomes in a given directory. Here we will use _analysisResults_. For each chromosome you analyze, a new directory with the chromosome-specific data will be created. So in this case, we will have _analysisResults/chr21_.
+
+```{r 'analyze'}
+## Create a analysis directory
+dir.create('analysisResults')
+originalWd <- getwd()
+setwd(file.path(originalWd, 'analysisResults'))
+
+## Perform differential expression analysis
+system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 5e-02, nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
+```
+
+To speed up `analyzeChr()`, you might need to use several cores via the `mc.cores` argument. If memory is limiting, you might want to use a smaller `chunksize` (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.
+
+Before using a large number of permutations we recommend exploring how long each permutation cycle takes using a single permutation. 
+
+### Explore results
+
+When using `returnOutput = TRUE`, `analyzeChr()` will return a list with the results to explore interactively. However, by default it writes the results to disk (one .Rdata file per result).
+
+The following code explores the results.
+
+```{r 'exploreResults'}
+## Explore
+names(results)
+```
+
+#### optionStats
+
+`optionStats` stores the main options used in the `analyzeChr()` call including the models used, the type of cutoff, number of permutations, seeds for the permutations. All this information can be useful to reproduce the analysis.
+
+```{r 'exploreOptionsStats'}
+## Explore optionsStats
+names(results$optionsStats)
+
+## Call used
+results$optionsStats$analyzeCall
+```
+
+#### coveragePrep
+
+`coveragePrep` has the result from the `preprocessCoverage()` step. This includes the genomic position index, the mean coverage (after scaling and the log2 transformation) for all the samples, and the group mean coverages. By default, the chunks are written to disk in `optionsStats$lowMemDir` (`r results$optionsStats$lowMemDir` in this example) to help reduce the required memory resources. Otherwise it is stored in `coveragePrep$coverageProcessed`.
+
+```{r 'exploreCovPrep'}
+## Explore coveragePrep
+names(results$coveragePrep)
+
+## Group means
+results$coveragePrep$groupMeans
+```
+
+#### fstats
+
+The F-statistics are then stored in `fstats`. These are calculated using `calculateStats()`.
+
+```{r 'exploreFstats'}
+## Explore optionsStats
+results$fstats
+
+## Note that the length matches the number of bases used
+identical(length(results$fstats), sum(results$coveragePrep$position))
+```
+
+#### regions
+
+The candidate DERs and summary results from the permutations is then stored in `regions`. This is the output from `calculatePvalues()` which uses several underneath other functions including `calculateStats()` and `findRegions()`. 
+
+```{r 'exploreRegs'}
+## Explore regions
+names(results$regions)
+```
+
+
+For the null regions, the summary information is composed of the mean F-statistic for the null regions (`regions$nullStats`), the width of the null regions (`regions$nullWidths`), and the permutation number under which they were identified (`regions$nullPermutation`).
+
+
+```{r 'exploreRegs2'}
+## Permutation summary information
+results$regions[2:4]
+```
+
+The most important part of the output is the `GRanges` object with the candidate DERs shown below.
+
+```{r 'exploreRegs3'}
+## Candidate DERs
+results$regions$regions
+```
+
+The metadata columns are:
+
+* _value_ is the mean F-statistics for the candidate DER.
+* _area_ is the sum of the F-statistics for the candidate DER.
+* _indexStart_ Relates the genomic start coordinate with the filtered genomic index start coordinate.
+* _indexEnd_ Similarly as above but for the end coordinates.
+* _cluster_ The cluster id to which this candidate DER belongs to.
+* _clusterL_ The length of the cluster to which this candidate DER belongs to.
+* _meanCoverage_ The base level mean coverage for the candidate DER.
+* _meanfetal_ In this example, the mean coverage for the fetal samples.
+* _meanadult_ In this example, the mean coverage for the adult samples.
+* _log2FoldChangeadultvsfetal_ In this example, the log2 fold change between adult vs fetal samples.
+* _pvalues_ The p-value for the candidate DER.
+* _significant_ By default, whether the p-value is less than 0.05 or not.
+* _qvalues_ The q-value for the candidate DER calculated with [qvalue](http://www.bioconductor.org/packages/release/bioc/html/qvalue.html).
+* _significantQval_ By default, whether the q-value is less than 0.10 or not.
+
+
+Note that for this type of analysis you might want to try a few coverage cutoffs and/or F-statistic cutoffs. One quick way to evaluate the results is to compare the width of the regions.
+
+```{r 'sensitivity'}
+## Width of potential DERs
+summary(width(results$regions$regions))
+sum(width(results$regions$regions) > 50)
+
+## Width of candidate DERs
+sig <- as.logical(results$regions$regions$significant)
+summary(width(results$regions$regions[ sig ]))
+sum(width(results$regions$regions[ sig ]) > 50)
+```
+
+
+#### Nearest annotation
+
+`analyzeChr()` will find the nearest annotation feature using `annotateNearest()` from [bumphunter](http://www.bioconductor.org/packages/release/bioc/html/bumphunter.html). This information is useful considering that the candidate DERs were identified without relying on annotation. Yet at the end, we are interested to check if they are inside a known exon, upstream a gene, etc.
+
+```{r 'exploreAnnotation'}
+## Nearest annotation
+head(results$annotation)
+```
+
+For more details on the output please check the [bumphunter](http://www.bioconductor.org/packages/release/bioc/html/bumphunter.html) package.
+
+#### Time spent
+
+The final piece is the wallclock time spent during each of the steps in `analyzeChr()`.
+
+```{r 'exploreTime'}
+## Time spent
+results$timeinfo
+
+## Use this information to make a plot
+timed <- diff(results$timeinfo)
+timed.df <- data.frame(Seconds = as.numeric(timed), Step = factor(names(timed),
+    levels = rev(names(timed))))
+library('ggplot2')
+ggplot(timed.df, aes(y = Step, x = Seconds)) + geom_point()
+```
+
+
+### Merge results
+
+Once you have analyzed each chromosome using `analyzeChr()`, you can use `mergeResults()` to merge the results. This function does not return an object in R but instead creates several Rdata files with the main results from the different chromosomes.
+
+```{r 'mergeResults'}
+## Go back to the original directory
+setwd(originalWd)
+
+## Merge results from several chromosomes. In this case we only have one.
+mergeResults(chrs='chr21', prefix="analysisResults",
+    genomicState = genomicState$fullGenome, 
+    optionsStats = results$optionsStats)
+
+## Files created by mergeResults()
+dir('analysisResults', pattern = '.Rdata')
+```
+
+* _fullFstats.Rdata_ contains a list with one element per chromosome. Per chromosome it has the F-statistics.
+* _fullNullSummary.Rdata_ is a list with the summary information from the null regions stored for each chromosome.
+* _fullTime.Rdata_ has the timing information for each chromosome as a list.
+
+#### optionsMerge
+
+For reproducibility purposes, the options used the merge the results are stored in `optionsMerge`.
+
+```{r 'optionsMerge'}
+## Options used to merge
+load(file.path('analysisResults', 'optionsMerge.Rdata'))
+
+## Contents
+names(optionsMerge)
+
+## Merge call
+optionsMerge$mergeCall
+```
+
+
+#### fullRegions
+
+The main result from `mergeResults()` is in `fullRegions`. This is a `GRanges` object with the candidate DERs from all the chromosomes. It also includes the nearest annotation metadata as well as FWER adjusted p-values (_fwer_) and whether the FWER adjusted p-value is less than 0.05 (_significantFWER_).
+
+```{r 'exploreFullRegs'}
+## Load all the regions
+load(file.path('analysisResults', 'fullRegions.Rdata'))
+
+## Metadata columns
+names(mcols(fullRegions))
+```
+
+Note that `analyzeChr()` only has the information for a given chromosome at a time, so `mergeResults()` re-calculates the p-values and q-values using the information from all the chromosomes.
+
+#### fullAnnotatedRegions
+
+In preparation for visually exploring the results, `mergeResults()` will run `annotateRegions()` which counts how many known exons, introns and intragenic segments each candidate DER overlaps (by default with a minimum overlap of 20bp). `annotateRegions()` uses a summarized version of the genome annotation created with `makeGenomicState()`. For this example, we can use the data included in `derfinder` which is the summarized annotation of hg19 for chromosome 21.
+
+```{r 'exploreFullAnnoRegs'}
+## Load annotateRegions() output
+load(file.path('analysisResults', 'fullAnnotatedRegions.Rdata'))
+
+## Information stored
+names(fullAnnotatedRegions)
+
+## Take a peak
+lapply(fullAnnotatedRegions, head)
+```
+
+
+### Visually explore results
+
+Optionally, we can use the addon package [derfinderPlot](https://github.com/lcolladotor/derfinderPlot) to visually explore the results. For more details, please check its [vignette](lcolladotor.github.io/derfinderPlot/).
+
+
+To make the region level plots, we will need to extract the region level coverage data. We can do so using `getRegionCoverage()` as shown below.
+
+```{r 'extra'}
+## Find overlaps between regions and summarized genomic annotation
+annoRegs <- annotateRegions(fullRegions, genomicState$fullGenome)
+
+## Indeed, the result is the same because we only used chr21
+identical(annoRegs, fullAnnotatedRegions)
+
+## Get the region coverage
+regionCov <- getRegionCoverage(fullCov, fullRegions)
+
+## Explore the result
+head(regionCov[[1]])
+```
+
+With this, we are all set to visually explore the results.
+
+```{r 'derfinderPlot', eval = FALSE}
+library('derfinderPlot')
+
+## Overview of the candidate DERs in the genome
+plotOverview(regions = fullRegions, annotation = results$annotation, type = 'fwer')
+
+suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+## Base-levle coverage plots for the first 10 regions
+plotRegionCoverage(regions = fullRegions, regionCoverage = regionCov, 
+    groupInfo = pheno$group, nearestAnnotation = results$annotation, 
+    annotatedRegions = annoRegs, whichRegions=1:10, txdb = txdb, scalefac = 1, 
+    ask = FALSE)
+
+## Cluster plot for the first region
+plotCluster(idx = 1, regions = fullRegions, annotation = results$annotation, coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group, titleUse = 'fwer')
+```
+
+
+### Results HTML report
+
+We have also developed an addon package called `regionReport` available via [GitHub](https://github.com/lcolladotor/regionReport). For more information check its [vignette](http://lcolladotor.github.io/regionReport/).
+
+The function `derfinderReport()` in `regionReport` basically takes advantage of the results from `mergeResults()` and plotting functions available in `derfinderPlot` as well as other neat features from [rCharts](http://rcharts.io/) and `knitrBoostrap` `r citep(bib[['knitrBootstrap']])`.
+
+The resulting HTML report promotes reproducibility of the analysis and allows you to explore in more detail the results through some diagnostic plots.
+
+
+## Region matrix analysis
+
+An alternative type of analysis is driven by `regionMatrix()`. The idea is to consider consecutive bases with mean coverage above a given cutoff as potentially differentially expressed regions. Then, get a matrix where each row is one of these regions and each column represents a sample. Each cell of the matrix has the mean coverage for the specific region - sample pair. Then, other packages specialized in differential expression at the counts level can be used, for example [limma](http://www.bioconductor.org/packages/release/bioc/html/limma.html).
+
+In this example, we will use `regionMatrix()` where we filter by mean coverage greater than 30 out of counts standardized to libraries of 40 million reads. Note that read of the _BrainSpan_ data are 76bp long.
+
+```{r 'regionMatrix'}
+## Use regionMatrix()
+system.time(regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76, totalMapped = 2^(sampleDepths), targetSize = 40e6))
+
+## Explore results
+names(regionMat$chr21)
+```
+
+`regionMatrix()` returns three pieces of output.
+
+* _regions_ is the result from filtering with `filterData()` and then defining the regions with `findRegions()`. Note that the metadata variable `value` represents the mean coverage for the given region while `area` is the sum of the base-level coverage (before adjusting for read length) from all samples.
+* _bpCoverage_ is a list with the base-level coverage from all the regions. This information can then be used with `plotRegionCoverage()` from `derfinderPlot`.
+* _coverageMatrix_ is the matrix with one row per region and one column per sample. The different matrices for each of the chromosomes can then be merged prior to using [limma](http://www.bioconductor.org/packages/release/bioc/html/limma.html) or other packages. Note that the counts are generally not integers, but can easily be rounded if necessary.
+
+Similar to what we saw earlier, the regions are arranged in a `GRanges` object. In this case, the metadata is simpler because no annotation information is included.
+
+```{r 'exploreRegMatRegs'}
+## regions output
+regionMat$chr21$regions
+
+## Number of regions
+length(regionMat$chr21$regions)
+```
+
+`bpCoverage` is the base level coverage list which can then be used for plotting.
+
+```{r 'exploreRegMatBP'}
+## Base-level coverage matrices for each of the regions
+## Useful for plotting
+lapply(regionMat$chr21$bpCoverage[1:2], head, n = 2)
+
+## Check dimensions. First region is 123 long, second one is 2 bp long.
+## The columns match the number of samples (12 in this case).
+lapply(regionMat$chr21$bpCoverage[1:2], dim)
+```
+
+The end result of the coverage matrix is shown below. Note that the coverage has been adjusted for read length. Because reads might not fully align inside a given region, the numbers are generally not integers but can be rounded if needed.
+
+```{r 'exploreRegMatrix'}
+## Dimensions of the coverage matrix
+dim(regionMat$chr21$coverageMatrix)
+
+## Coverage for each region. This matrix can then be used with limma or other pkgs
+head(regionMat$chr21$coverageMatrix)
+```
+
+## Feature level analysis
+
+Similar to the region level analysis, you might be interested in performing a feature level analysis. More specifically, this could be getting a count matrix at the exon level. `coverageToExon()` allows you to get such a matrix by taking advantage of the summarized annotation produced by `makeGenomicState()`.
+
+In this example, we use the genomic state included in the package which has the information for chr21 `TxDb.Hsapiens.UCSC.hg19.knownGene` annotation.
+
+```{r 'featureLevel'}
+## Get the exon level matrix
+system.time(exonCov <- coverageToExon(fullCov, genomicState$fullGenome, L = 76))
+
+## Dimensions of the matrix
+dim(exonCov)
+
+## Explore a little bit
+tail(exonCov)
+```
+
+With this matrix, rounded if necessary, you can proceed to use packages such as [limma](http://www.bioconductor.org/packages/release/bioc/html/limma.html), [DESeq](http://www.bioconductor.org/packages/release/bioc/html/DESeq.html), [edgeR](http://www.bioconductor.org/packages/release/bioc/html/edgeR.html), among others.
+
+## Compare results visually
+
+We can certainly make region level plots using `plotRegionCoverage()` or cluster plots using `plotCluster()` or overview plots using `plotOveview()`, all from `derfinderPlot`. 
+
+
+First we need to get the relevant annotation information.
+
+```{r 'regionMatAnnotate'}
+## Annotate regions as exonic, intronic or intragenic
+system.time(annoGenome <- annotateRegions(regionMat$chr21$regions, genomicState$fullGenome))
+## Note that the genomicState object included in derfinder only has information
+## for chr21 (hg19).
+
+## Identify closest genes to regions
+suppressPackageStartupMessages(library('bumphunter'))
+system.time(annoNear <- annotateNearest(regionMat$chr21$regions, subject = 'hg19'))
+```
+
+Now we can proceed to use `derfinderPlot` to make the region level plots for the top 100 regions.
+
+```{r 'static-vis', eval = FALSE}
+## Identify the top regions by highest total coverage
+top <- order(regionMat$chr21$regions$area, decreasing = TRUE)[1:100]
+
+## Base-level plots for the top 100 regions with transcript information
+suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+
+library('derfinderPlot')
+plotRegionCoverage(regionMat$chr21$regions, regionCoverage = regionMat$chr21$bpCoverage, groupInfo = pheno$group, nearestAnnotation = annoNear, annotatedRegions = annoGenome, whichRegions = top, scalefac = 1, txdb = txdb, ask = FALSE)
+```
+
+
+However, we can alternatively use [epivizr](http://www.bioconductor.org/packages/release/bioc/html/epivizr.html) to view the candidate DERs and the region matrix results in a genome browser.
+
+
+```{r 'epivizr', eval = FALSE}
+## Load epivizr, it's available from Bioconductor
+library('epivizr')
+
+## Load data to your browser
+mgr <- startEpiviz()
+ders_dev <- mgr$addDevice(
+    fullRegions[as.logical(fullRegions$significantFWER) ], "Candidate DERs")
+ders_potential_dev <- mgr$addDevice(
+    fullRegions[!as.logical(fullRegions$significantFWER) ], "Potential DERs")
+regs_dev <- mgr$addDevice(regionMat$chr21$regions, "Region Matrix")
+
+## Go to a place you like in the genome
+mgr$navigate("chr21", start(regionMat$chr21$regions[top[1]]) - 100, end(regionMat$chr21$regions[top[1]]) + 100)
+
+## Stop the navigation
+mgr$stopServer()
+```
+
+## Export coverage to BigWig files
+
+`derfinder` also includes `createBw()` with related functions `createBwSample()` and `coerceGR()` to export the output of `fullCoverage()` to BigWig files. These functions can be useful in the case where you start with BAM files and later on want to save the coverage data into BigWig files, which are generally smaller.
+
+```{r 'exportBigWig'}
+## Subset only the first sample
+fullCovSmall <- lapply(fullCov, '[', 1)
+
+## Export to BigWig
+bw <- createBw(fullCovSmall)
+
+## See the file. Note that the sample name is used to name the file.
+dir(pattern = '.bw')
+
+## Internally createBw() coerces each sample to a GRanges object before 
+## exporting to a BigWig file. If more than one sample was exported, the
+## GRangesList would have more elements.
+bw
+```
+
+
+# Advanced arguments
+
+If you are interested in using the advanced arguments, use `advancedArg()` as shown below:
+
+```{r 'advancedArg'}
+## URLs to advanced arguemtns
+sapply(c('analyzeChr', 'loadCoverage'), advancedArg, browse = FALSE)
+## Set browse = TRUE if you want to open them in your browser
+```
+
+The most common advanced arguments are `chrsStyle` (default is `UCSC`) and `verbose` (by default `TRUE`). `chrsStyle` is used to determine the chromosome naming style and is powered by [GenomeInfoDb](http://www.bioconductor.org/packages/release/bioc/html/GenomeInfoDb.html). `verbose` controls whether to print status updates for nearly all the functions.
+
+The third commonly used advanced argument is `mc.cores`. It controls the number of cores to use for the functions that can run with more than one core to speed up. In nearly all the cases, the maximum number of cores depends on the number of chromosomes. One notable exception is `analyzeChr()` where the maximum number of cores depends on the `chunksize` used and the dimensions of the data for the chromosome under study.
+
+# Summary
+
+We have illustrated how to identify candidate differentially expressed regions without using annotation in the identification process by using `analyzeChr()`. Furthermore, we covered how to perform the region matrix analysis with `regionMatrix()`. We also highlighted other uses of the `derfinder` package.
+
+# Origins
+
+This implementation of `derfinder` `r citep(bib[['derfinder']])` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
+
+# Citing `derfinder`
+
+Please use:
+
+```{r 'citation'}
+## Citation info
+citation('derfinder')
+```
+
+
+# Reproducibility
+
+This package was made possible thanks to:
+
+* R `r citep(bib[['R']])`
+* AnnotationDbi `r citep(bib[['AnnotationDbi']])`
+* BiocParallel `r citep(bib[['BiocParallel']])`
+* bumphunter `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
+* derfinderHelper `r citep(bib[['derfinderHelper']])`
+* GenomeInfoDb `r citep(bib[['GenomeInfoDb']])`
+* GenomicAlignments `r citep(bib[['GenomicAlignments']])`
+* GenomicFeatures `r citep(bib[['GenomicFeatures']])`
+* GenomicFiles `r citep(bib[['GenomicFiles']])`
+* GenomicRanges `r citep(bib[['GenomicRanges']])`
+* Hmisc `r citep(bib[['Hmisc']])`
+* IRanges `r citep(bib[['IRanges']])`
+* qvalue `r citep(bib[['qvalue']])`
+* Rsamtools `r citep(bib[['Rsamtools']])`
+* rtracklayer `r citep(bib[['rtracklayer']])`
+* S4Vectors `r citep(bib[['S4Vectors']])`
+* biovizBase `r citep(bib[['biovizBase']])`
+* derfinderData `r citep(bib[['derfinderData']])`
+* devtools `r citep(bib[['devtools']])`
+* ggplot2 `r citep(bib[['ggplot2']])`
+* knitcitations `r citep(bib[['knitcitations']])`
+* knitr `r citep(bib[['knitr']])`
+* knitrBootstrap `r citep(bib[['knitrBootstrap']])`
+* rmarkdown `r citep(bib[['rmarkdown']])`
+* testthat `r citep(bib[['testthat']])`
+* TxDb.Hsapiens.UCSC.hg19.knownGene `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
+
+Code for creating the vignette
+
+```{r createVignette, eval=FALSE, bootstrap.show.code=FALSE}
+## Create the vignette
+library('knitrBootstrap') 
+
+knitrBootstrapFlag <- packageVersion('knitrBootstrap') < '1.0.0'
+if(knitrBootstrapFlag) {
+    ## CRAN version
+    library('knitrBootstrap')
+    system.time(knit_bootstrap('derfinder.Rmd', chooser=c('boot', 'code'), show_code = TRUE))
+    unlink('derfinder.md')
+} else {
+    ## GitHub version
+    library('rmarkdown')
+    system.time(render('derfinder.Rmd', 'knitrBootstrap::bootstrap_document'))
+}
+## Note: if you prefer the knitr version use:
+# library('rmarkdown')
+# system.time(render('derfinder.Rmd', 'html_document'))
+## Clean up
+unlink('analysisResults', recursive = TRUE)
+file.remove('HSB113.bw')
+file.remove('derfinderRef.bib')
+
+## Extract the R code
+library('knitr')
+knit('derfinder.Rmd', tangle = TRUE)
+```
+
+Date the vignette was generated.
+
+```{r reproducibility1, echo=FALSE, bootstrap.show.code=FALSE}
+## Date the vignette was generated
+Sys.time()
+```
+
+Wallclock time spent generating the vignette.
+
+```{r reproducibility2, echo=FALSE, bootstrap.show.code=FALSE}
+## Processing time in seconds
+totalTime <- diff(c(startTime, Sys.time()))
+round(totalTime, digits=3)
+```
+
+`R` session information.
+
+```{r reproducibility3, echo=FALSE, bootstrap.show.code=FALSE, bootstrap.show.message=FALSE}
+## Session info
+library('devtools')
+session_info()
+```
+
+
+# Bibliography
+
+This vignette was generated using `knitrBootstrap` `r citep(bib[['knitrBootstrap']])`
+with `knitr` `r citep(bib[['knitr']])` and `rmarkdown` `r citep(bib[['rmarkdown']])` running behind the scenes.
+
+Citations made with `knitcitations` `r citep(bib[['knitcitations']])`.
+
+```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE}
+## Print bibliography
+bibliography()
+```
