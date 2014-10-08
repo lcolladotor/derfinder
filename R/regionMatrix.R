@@ -84,7 +84,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         
     ## Define args
     moreArgs <- list(cutoff = cutoff, filter = filter, L = L,
-        runFilter = runFilter, ...)
+        runFilter = runFilter, returnBP = returnBP, ...)
     
     ## Define cluster
     BPPARAM <- .define_cluster(...)
@@ -95,7 +95,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
 }
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, filter, 
-    maxClusterGap = 300L, L, runFilter, ...) {
+    maxClusterGap = 300L, L, runFilter, returnBP, ...) {
 
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
