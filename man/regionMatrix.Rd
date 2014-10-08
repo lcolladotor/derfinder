@@ -5,7 +5,7 @@
 \title{Identify regions data by a coverage filter and get a count matrix}
 \usage{
 regionMatrix(fullCov, cutoff = 5, filter = "mean", L, runFilter = TRUE,
-  ...)
+  returnBP = TRUE, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -26,6 +26,8 @@ In the second case, the mean coverage has to be greater than \code{cutoff}.}
 set to \code{FALSE} then \code{returnMean = TRUE} must have been used to
 create each element of \code{fullCov}.}
 
+\item{returnBP}{If \code{TRUE}, returns \code{$bpCoverage} explained below.}
+
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
 \value{
@@ -34,7 +36,7 @@ with three components.
 \describe{
 \item{regions }{ A set of regions based on the coverage filter cutoff as
 returned by \link{findRegions}.}
-\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions.}
+\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}.}
 \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 candidate region.}
 }

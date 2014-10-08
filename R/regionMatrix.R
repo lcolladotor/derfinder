@@ -16,6 +16,7 @@
 #' @param runFilter This controls whether to run \link{filterData} or not. If 
 #' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
 #' create each element of \code{fullCov}.
+#' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
@@ -23,7 +24,7 @@
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
 #' returned by \link{findRegions}.}
-#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions.}
+#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}.}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
@@ -67,7 +68,7 @@
 #' }
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
-    runFilter = TRUE, ...) {
+    runFilter = TRUE, returnBP = TRUE, ...) {
         
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
@@ -145,13 +146,18 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     ## Get region coverage    
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
         totalMapped = NULL, targetSize = 0, verbose = verbose,
-        chrsStyle = chrsStyle)
+        chrsStyle = chrsStyle, mc.cores = 1L)
         
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat) / L
 
     ## Finish
-    res <- list(regions = regs, bpCoverage = regionCov, coverageMatrix = covMat)
+    if(returnBP) {
+        res <- list(regions = regs, bpCoverage = regionCov, coverageMatrix = covMat)
+    } else {
+        res <- list(regions = regs, coverageMatrix = covMat)
+    }
+    
     return(res)
     
 }

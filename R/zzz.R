@@ -8,7 +8,7 @@
         paste("Find out what's changed in derfinder with\n",
             "news(Version == \"", utils::packageVersion("derfinder"),
             "\", package = \"derfinder\")", sep = ""),
-        "Create HTML reports from derfinder results using derfinderReport available at\nhttps://github.com/lcolladotor/derfinderReport",
+        "Create HTML reports from derfinder results using regionReport available at\nhttps://github.com/lcolladotor/regionReport",
         "Use suppressPackageStartupMessages to eliminate package startup messages."
     )
     
