@@ -153,7 +153,8 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
 
     ## Finish
     if(returnBP) {
-        res <- list(regions = regs, bpCoverage = regionCov, coverageMatrix = covMat)
+        res <- list(regions = regs, coverageMatrix = covMat, 
+            bpCoverage = regionCov)
     } else {
         res <- list(regions = regs, coverageMatrix = covMat)
     }
