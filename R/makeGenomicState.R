@@ -29,7 +29,7 @@
 #' @importFrom S4Vectors Rle DataFrame
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-' seqlevelsStyle 
-#' 'seqlevelsStyle<-'
+#' 'seqlevelsStyle<-' mapSeqlevels
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
@@ -43,7 +43,7 @@
 #' library('GenomicFeatures')
 #' samplefile <- system.file('extdata', 'UCSC_knownGene_sample.sqlite', 
 #'     package='GenomicFeatures')
-#' txdb <- loadDb(samplefile)
+#' txdb <- loadDb(samplefile, dbType = 'TxDb', dbPackage = 'GenomicFeatures')
 #'
 #' ## Generate genomic state object, only for chr21
 #' sampleGenomicState <- makeGenomicState(txdb, chrs='chr21')
@@ -78,8 +78,7 @@
 #'     file='GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata')
 #' }
 
-makeGenomicState <- function(txdb, chrs = paste0('chr', c(1:22, 
-    'X', 'Y')), ...) {
+makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     stopifnot(is(txdb, "TxDb"))
     
     ## Advanged argumentsa
@@ -87,6 +86,8 @@ makeGenomicState <- function(txdb, chrs = paste0('chr', c(1:22,
 #' \link[GenomeInfoDb]{seqlevelsStyle}.    
     chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
+    ## Use appropriate style
+    chrs <- mapSeqlevels(chrs, chrsStyle)
 
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs

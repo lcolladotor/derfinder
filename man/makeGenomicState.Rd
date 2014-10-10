@@ -4,7 +4,7 @@
 \alias{make_genomic_state}
 \title{Obtain the genomic state per region from annotation}
 \usage{
-makeGenomicState(txdb, chrs = paste0("chr", c(1:22, "X", "Y")), ...)
+makeGenomicState(txdb, chrs = c(1:22, "X", "Y"), ...)
 }
 \arguments{
 \item{txdb}{A \link[GenomicFeatures]{TxDb} object.}
@@ -33,7 +33,7 @@ same type into regions.
 library('GenomicFeatures')
 samplefile <- system.file('extdata', 'UCSC_knownGene_sample.sqlite',
     package='GenomicFeatures')
-txdb <- loadDb(samplefile)
+txdb <- loadDb(samplefile, dbType = 'TxDb', dbPackage = 'GenomicFeatures')
 
 ## Generate genomic state object, only for chr21
 sampleGenomicState <- makeGenomicState(txdb, chrs='chr21')
