@@ -41,12 +41,12 @@
 #' @examples
 #' ## Load the example data base from the GenomicFeatures vignette
 #' library('GenomicFeatures')
-#' samplefile <- system.file('extdata', 'UCSC_knownGene_sample.sqlite', 
+#' samplefile <- system.file('extdata', 'hg19_knownGene_sample.sqlite', 
 #'     package='GenomicFeatures')
-#' txdb <- loadDb(samplefile, dbType = 'TxDb', dbPackage = 'GenomicFeatures')
+#' txdb <- loadDb(samplefile)
 #'
-#' ## Generate genomic state object, only for chr21
-#' sampleGenomicState <- makeGenomicState(txdb, chrs='chr21')
+#' ## Generate genomic state object, only for chr6
+#' sampleGenomicState <- makeGenomicState(txdb, chrs='chr6')
 # 
 #' \dontrun{
 #' ## Create the GenomicState object for Hsapiens.UCSC.hg19.knownGene
