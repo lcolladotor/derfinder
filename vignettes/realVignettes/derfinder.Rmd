@@ -225,7 +225,7 @@ The __main__ function in `derfinder` for this type of analysis is `analyzeChr()`
 
 By default `analyzeChr()` will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.05. To assign p-values to the candidate DERs, `derfinder` permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.
 
-In this example we will use twenty permutations, although in a real case scenario you might consider using up to a thousand.
+In this example we will use twenty permutations, although in a real case scenario you might consider a larger number of permutations.
 
 In real scenario, you might consider saving the results from all the chromosomes in a given directory. Here we will use _analysisResults_. For each chromosome you analyze, a new directory with the chromosome-specific data will be created. So in this case, we will have _analysisResults/chr21_.
 

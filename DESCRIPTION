@@ -1,9 +1,9 @@
 Package: derfinder
 Type: Package
-Title: Fast differential expression analysis of RNA-seq data at base-pair
-    resolution
-Version: 0.99.8
-Date: 2014-10-10
+Title: Annotation-agnostic differential expression analysis of RNA-seq
+    data at base-pair resolution
+Version: 0.99.9
+Date: 2014-10-13
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person("Alyssa", "Frazee", role = c("aut"), email
     = "afrazee@jhsph.edu"), person("Andrew", "Jaffe", role = "aut", email =
@@ -39,8 +39,8 @@ Suggests:
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
 VignetteBuilder: knitr
-Description: Fast differential expression analysis of RNA-seq data at base-pair
-    resolution
+Description: Annotation-agnostic differential expression analysis of RNA-seq
+    data by calculating F-statistics at base-pair resolution
 License: Artistic-2.0
 LazyData: true
 URL: https://github.com/lcolladotor/derfinder

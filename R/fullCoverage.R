@@ -102,9 +102,9 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
                 bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
                 mc.cores = mc.cores.load, ...)$coverage
         } else {
-            res <- loadCoverage(files = files, chr = chrs[idx], cutoff = cutoff, 
-                bai = bai, chrlen = chrlens[idx], output = outputs[idx], 
-                mc.cores = mc.cores.load, ...)
+            res <- loadCoverage(files = files, chr = chrs[idx],
+                cutoff = cutoff, bai = bai, chrlen = chrlens[idx],
+                output = outputs[idx], mc.cores = mc.cores.load, ...)
         }
         return(res)        
     }
