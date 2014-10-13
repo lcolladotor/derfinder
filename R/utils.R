@@ -18,10 +18,14 @@
 #' useful for cases with nested parallelizations.
 #'
 #' @importFrom BiocParallel SnowParam SerialParam
-#' @keywords internal 
+#' @keywords internal
+#'
+#' @details
+#' Use If you define 'BPPARAM.custom' then this will be used instead of the
+#' default SnowParam() [if the number of cores is > 1] or SerialParam()
 .define_cluster <- function(cores = 'mc.cores', ...) {
     args <- list(...)
-    if('BPPARAM' %in% names(args)) {
+    if('BPPARAM.custom' %in% names(args)) {
         return(args$BPPARAM)
     } else {
         mc.cores <- .advanced_argument(cores, getOption('mc.cores', 1L), ...)
