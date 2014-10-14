@@ -51,7 +51,7 @@ now.}
 
 \item{writeOutput}{If \code{TRUE}, output Rdata files are created at each
 step inside a directory with the chromosome name (example: 'chr21' if
-\code{chrnum='21'}). One Rdata files is created for each component described
+\code{chrnum='21'}). One Rdata file is created for each component described
 in the return section.}
 
 \item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateNearest} is
