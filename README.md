@@ -10,54 +10,24 @@ You can generate HTML reports from the results using __derfinderReport__
 available [here](https://github.com/lcolladotor/derfinderReport).
 
 For a full example on how to use __derfinder__ check 
-[derfinderExample](https://github.com/lcolladotor/derfinderExample).
+[derfinderExample](https://github.com/lcolladotor/derfinderExample). TODO: update this.
 
 # Installation instructions
 
 Get R 3.1.1 or newer from [CRAN](http://cran.r-project.org/).
 
 ```R
-## If needed
-install.packages('devtools')
-
-## Pre-requisites from CRAN
-install.packages(c('ggplot2', 'Hmisc', 'testthat', 'knitr', 'rmarkdown',
-    'knitrBoostrap', 'RefManageR', 'knitcitations'))
-
-## Pre-requisites from Bioconductor
+## From Bioconductor
 source('http://bioconductor.org/biocLite.R')
-biocLite(c('S4Vectors', 'IRanges', 'GenomicRanges', 'Rsamtools', 'bumphunter', 'biovizBase',
-    'TxDb.Hsapiens.UCSC.hg19.knownGene', 'AnnotationDbi', 'GenomicFeatures', 'GenomeInfoDb',
-    'rtracklayer', 'BiocParallel', 'qvalue', 'GenomicFiles'))
-    
-## GitHub dependencies
-library('devtools')
-install_github('lcolladotor/derfinderHelper')
-install_github('lcolladotor/derfinderData')
-
-## derfinder itself
-
-## If you are using BioC-devel use:
-install_github('lcolladotor/derfinder@master')
-
-## If you are using BioC-release use:
-# install_github('lcolladotor/derfinder@release')
+biocLite('derfinder')
 
 ## Suggested:
-biocLite('ggbio')
-install_github('lcolladotor/derfinderPlot')
+biocLite(c('derfinderPlot', 'regionReport'))
 ```
 
 # Vignette
 
-The vignette for this package can be viewed [here](http://lcolladotor.github.io/derfinder/). If you want to re-build the vignette when installing this package, you will need to use:
-
-```R
-## Install building the vignette
-install_github('lcolladotor/derfinder@master', build_vignettes = TRUE)
-```
-
-Note that this can take longer than installing the package without the vignette.
+The vignette for this package can be viewed [here](http://lcolladotor.github.io/derfinder/) or via [Bioconductor's website](http://www.bioconductor.org/packages/devel/bioc/html/derfinder.html).
 
 # 'Watch' for updates
 
@@ -77,19 +47,16 @@ run this yourself to check for any updates on how to cite __derfinder__.
 
 To cite package __derfinder__ in publications use:
 
-Leonardo Collado-Torres, Alyssa Frazee, Andrew Jaffe and Jeffrey Leek (2014). 
-derfinder: Fast differential expression analysis of RNA-seq data at base-pair 
-resolution. R package version 0.99.0. https://github.com/lcolladotor/derfinder
+Leonardo Collado-Torres, Alyssa C. Frazee, Andrew E. Jaffe and Jeffrey T. Leek (2014). derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution. R package version 1.1.1. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
 @Manual{,
-    title = {derfinder: Fast differential expression analysis of RNA-seq data 
-        at base-pair resolution},
-    author = {Leonardo Collado-Torres and Alyssa Frazee and Andrew Jaffe 
-        and Jeffrey Leek},
+    title = {derfinder: Annotation-agnostic differential expression analysis of RNA-seq
+    data at base-pair resolution},
+    author = {Leonardo Collado-Torres and Alyssa C. Frazee and Andrew E. Jaffe and Jeffrey T. Leek},
     year = {2014},
-    note = {R package version 0.99.2},
+    note = {R package version 1.1.1},
     url = {https://github.com/lcolladotor/derfinder},
 }
 
