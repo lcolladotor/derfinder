@@ -92,6 +92,7 @@ We first load the required packages.
 ## Load libraries
 library('derfinder')
 library('derfinderData')
+library('GenomicRanges')
 ```
 
 ## Phenotype data
