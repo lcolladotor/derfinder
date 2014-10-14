@@ -175,6 +175,14 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 #' alternative model is very small.
     adjustF <- .advanced_argument('adjustF', 0, ...)
 
+#' @param writeOutput If \code{TRUE} then the regions are saved before 
+#' calculating q-values, and then overwritten once the q-values are written.
+#' This argument was introduced to save the results from the permutations (can 
+#' take some time) to investigate the problem described at
+#' https://support.bioconductor.org/p/62026/
+    writeOutput <- .advanced_argument('writeOutput', FALSE, ...)
+    
+
 
     ## Identify the data segments
     if (verbose) 
@@ -297,6 +305,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         is.null)])
     nullareas <- do.call(c, nullareas[!sapply(nullareas, is.null)])
     
+    ## Order by area
+    regs <- regs[order(regs$area, decreasing = TRUE), ]
+    
     if (length(nullstats) > 0) {
         ## Proceed only if there is at least one null stats
         
@@ -311,6 +322,10 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         regs$significant <- factor(regs$pvalues < significantCut[1], 
             levels = c(TRUE, FALSE))
         
+        .writeRegs(regs = list(regions = regs, nullStats = nullstats,
+            nullWidths = nullwidths, nullPermutation = nullpermutation),
+            writeOutput = writeOutput, chr = chr)
+        
         ## Sometimes qvalue() fails due to incorrect pi0 estimates
         qvalues <- qvalue(regs$pvalues)
         if (is(qvalues, "qvalue")) {
@@ -324,7 +339,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         regs$qvalues <- qvalues
         regs$significantQval <- sigQval
         
-        regs <- regs[order(regs$area, decreasing = TRUE), ]
     } else {
         if (verbose) 
             message(paste(Sys.time(),
@@ -338,6 +352,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     final <- list(regions = regs, nullStats = nullstats,
             nullWidths = nullwidths, nullPermutation = nullpermutation)
     
+    .writeRegs(final, writeOutput, chr)
     
     ## Done =)
     return(final)
@@ -345,3 +360,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
 #' @export
 calculate_pvalues <- calculatePvalues
+
+.writeRegs <- function(regs, writeOutput, chr) {
+    ## Save the output from calculatePvalues
+    if (writeOutput) {
+        regions <- regs
+        dir.create(chr, showWarnings = FALSE, recursive = TRUE)
+        save(regions, file = file.path(chr, 'regions.Rdata'))
+    }
+    return(invisible(NULL))
+}
