@@ -39,3 +39,25 @@
         return(BPPARAM)
     }
 }
+
+#' Run a function only using it's formal arguments. That is, stop using ...
+#' recursively.
+#'
+#' @param fun A function to use (the actual function, not the character)
+#' @param ... A set of arguments. Only those matching the formal definition of
+#' \code{fun} will be used when evaluating \code{fun}.
+#'
+#' @keywords internal
+.runFunFormal <- function(fun, ...) {
+    ## Identify the formal arguments and the supplied info
+    formal <- formalArgs(fun)
+    args <- list(...)
+    
+    ## Match any of the remaining formal arguments and drop any of the
+    ## extra stuff in ... which doesn't match the formal arguments
+    input <- args[names(args) %in% formal]
+    
+    ## Evaluate the function
+    result <- do.call(fun, input)
+    return(result)
+}
