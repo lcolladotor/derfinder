@@ -8,8 +8,8 @@
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-#' \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
-#' \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.
+#' \link[Rsamtools]{BamFileList}, \link[Rsamtools]{BamFile}, 
+#' \link[rtracklayer]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.
 #' @param chr Chromosome to read. Should be in the format matching the one used
 #' in the raw data.
 #' @param cutoff This argument is passed to \link{filterData}.
@@ -45,10 +45,11 @@
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
 #' @aliases load_coverage
-#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path scanBamFlag
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path 
+#' scanBamFlag BamFile
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
-#' @importFrom rtracklayer BigWigFileList path
+#' @importFrom rtracklayer BigWigFileList path BigWigFile
 #' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
 #' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
@@ -98,9 +99,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
 
 
     ## Guess the input type if it's not supplied
-    if(is(files, 'BigWigFileList')) {
+    if(is(files, 'BigWigFileList') | is(files, 'BigWigFile')) {
         inputType <- 'BigWig'
-    } else if (all(grepl('bw$|BigWig$', files))) {
+    } else if (is(files, 'BamFileList') | is(files, 'BamFile')) {
+        inputType <- 'bam'
+    } else if(all(grepl('bw$|BigWig$', files))) {
         inputType <- 'BigWig'
     }    
     stopifnot(inputType %in% c('bam', 'BigWig'))
@@ -145,10 +148,14 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     }    
 
     ## Do the indexes exist?
-    if (is(files, 'BamFileList') & inputType == 'bam') {
+    if (is(files, 'BamFileList')) {
         bList <- files
-    } else if (is(files, 'BigWigFileList') & inputType == 'BigWig') {
+    } else if (is(files, 'BamFile')) {
+        bList <- BamFileList(files)
+    } else if (is(files, 'BigWigFileList')) {
         bList <- files
+    } else if (is(files, 'BigWigFile')) {
+        bList <- BigWigFileList(path(files))
     } else if (inputType == 'bam'){
         if (is.null(bai)) {
             bai <- paste0(files, '.bai')
@@ -174,7 +181,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
             message(paste(Sys.time(),
                 'loadCoverage: finding chromosome lengths'))
         if (inputType == 'bam') {
-            clengths <- scanBamHeader(bList[[1]])$targets
+            clengths <- scanBamHeader(bList[[1]])$targets       
         } else if (inputType == 'BigWig') {
             clengths <- seqlengths(bList[[1]])
         }
@@ -231,8 +238,12 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     
     ## Rename the object to a name that will make more sense later
     varname <- paste0(mapSeqlevels(chr, 'UCSC'), 'CovInfo')
+
+#' @param sampleNames Column names to be used the samples
+    sampleNames <- .advanced_argument('sampleNames', names(files), ...)
+    
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 
-        colnames = names(files), filter = filter, ...))
+        colnames = sampleNames, filter = filter, ...))
     rm(data)    
     
     ## Save if output is specified

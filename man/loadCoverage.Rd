@@ -12,8 +12,8 @@ loadCoverage(files, chr, cutoff = NULL, filter = "one", chrlen = NULL,
 (or BigWig files).
 The names are used for the column names of the DataFrame. Check
 \link{rawFiles} for constructing \code{files}. \code{files} can also be a
-\code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
-\code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
+\link[Rsamtools]{BamFileList}, \link[Rsamtools]{BamFile},
+\link[rtracklayer]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.}
 
 \item{chr}{Chromosome to read. Should be in the format matching the one used
 in the raw data.}

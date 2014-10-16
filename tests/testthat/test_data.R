@@ -84,6 +84,24 @@ test_that('Load with fullCoverage()', {
         5e7)), throws_error())
 })
 
+## Loading with BamFile, BamFileList
+
+bam <- system.file('extdata', 'genomeData', 'ERR009101_accepted_hits.bam', package = 'derfinder')
+names(bam) <- 'sample1'
+library('Rsamtools')
+bFile <- BamFile(bam, index = paste0(bam, '.bai'))
+
+library('rtracklayer')
+big1 <- BigWigFile(bigwigs[1])
+big1.list <- BigWigFileList(bigwigs[1])
+
+test_that('BamFile and BamFileList', {
+    expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(bFile, chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
+    expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(BamFileList(bFile), chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
+    expect_that(fullCoverage(bam, chrs = '21', sampleNames = 'ERR009101', verbose = FALSE), equals(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE)))
+    expect_that(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE), is_identical_to(fullCoverage(big1, chrs = 'chr21', verbose = FALSE)))
+})
+
 ## Filtering
 filt <- filterData(dataRaw$coverage, cutoff = 0)
 test_that('Filtering', {
