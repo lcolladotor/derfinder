@@ -12,8 +12,6 @@
 #' @param index A logical Rle with the positions of the chromosome that passed 
 #' the cutoff. If \code{NULL} it is assumed that this is the first time using 
 #' \link{filterData} and thus no previous index exists.
-#' @param colnames Specifies the column names to be used for the results 
-#' DataFrame. If \code{NULL}, names from \code{data} are used.
 #' @param filter Has to be either \code{'one'} (default) or \code{'mean'}. In 
 #' the first case, at least one sample has to have coverage above \code{cutoff}.
 #' In the second case, the mean coverage has to be greater than \code{cutoff}.
@@ -71,8 +69,8 @@
 #' filt2
 #'
 
-filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
-    filter = 'one', totalMapped = NULL, targetSize = 80e6, ...) {
+filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
+    totalMapped = NULL, targetSize = 80e6, ...) {
         
     ## Check filter
     stopifnot(filter %in% c('one', 'mean'))
@@ -92,6 +90,10 @@ filterData <- function(data, cutoff = NULL, index = NULL, colnames = NULL,
 #' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
     returnCoverage <- .advanced_argument('returnCoverage', TRUE, ...)
 
+
+#' @param colnames Specifies the column names to be used for the results 
+#' DataFrame. If \code{NULL}, names from \code{data} are used.
+    colnames <- .advanced_argument('colnames', NULL, ...)
 
     ## Initialize meanCov
     meanCov <- NULL

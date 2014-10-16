@@ -1,3 +1,17 @@
+CHANGES IN VERSION 1.0.3
+------------------------
+
+NEW FEATURES
+
+    o loadCoverage() and fullCoverage() now support BamFile and BigWigFile 
+        objects
+
+BUG FIXES
+
+    o Fixed a bug in loadCoverage() when the input was a BamFileList. 
+        Implemented tests based on the bug.
+
+
 CHANGES IN VERSION 0.99.0
 -------------------------
 

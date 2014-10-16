@@ -4,8 +4,8 @@
 \alias{filter_data}
 \title{Filter the positions of interest}
 \usage{
-filterData(data, cutoff = NULL, index = NULL, colnames = NULL,
-  filter = "one", totalMapped = NULL, targetSize = 8e+07, ...)
+filterData(data, cutoff = NULL, index = NULL, filter = "one",
+  totalMapped = NULL, targetSize = 8e+07, ...)
 }
 \arguments{
 \item{data}{Either a list of Rle objects or a DataFrame with the coverage
@@ -17,9 +17,6 @@ by \code{filter}.}
 \item{index}{A logical Rle with the positions of the chromosome that passed
 the cutoff. If \code{NULL} it is assumed that this is the first time using
 \link{filterData} and thus no previous index exists.}
-
-\item{colnames}{Specifies the column names to be used for the results
-DataFrame. If \code{NULL}, names from \code{data} are used.}
 
 \item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In
 the first case, at least one sample has to have coverage above \code{cutoff}.
