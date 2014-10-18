@@ -209,14 +209,19 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     if(inputType == 'bam') {
         param <- ScanBamParam(which = which, 
             flag = .runFunFormal(scanBamFlag, ...))
+            
+        #' @param drop.D Whether to drop the bases with 'D' in the CIGAR strings
+        #' or to include them.
+        drop.D <- .advanced_argument('drop.D', FALSE, ...)
         
         ## Read in the data for all the chrs
         if(is.null(tilewidth)) {
             data <- lapply(bList, .loadCoverageBAM, param = param, chr = chr,
-                verbose=verbose)
+                verbose = verbose, drop.D.ranges = drop.D)
         } else {
             data <- reduceByFile(tiles, bList, .bamMAPPER, .REDUCER, 
-                chr = chr, verbose = verbose, BPPARAM = BPPARAM, ...)
+                chr = chr, verbose = verbose, BPPARAM = BPPARAM, 
+                drop.D.ranges = drop.D, ...)
         }
         
     } else if (inputType == 'BigWig') {
@@ -271,10 +276,10 @@ load_coverage <- loadCoverage
 
 
 ## GenomicFiles functions for BAM/BigWig files
-.bamMAPPER <- function(range, file, chr, verbose, ...) {
+.bamMAPPER <- function(range, file, chr, verbose, drop.D.ranges, ...) {
     param <- ScanBamParam(which = range, flag = .runFunFormal(scanBamFlag,
         ...))
-    .loadCoverageBAM(file, param, chr, verbose)
+    .loadCoverageBAM(file, param, chr, verbose, drop.D.ranges)
 }
 
 .REDUCER <- function(mapped, ...) {
@@ -282,14 +287,15 @@ load_coverage <- loadCoverage
 }
 
 
-.loadCoverageBAM <- function(file, param, chr, verbose) {
+.loadCoverageBAM <- function(file, param, chr, verbose, drop.D.ranges) {
     if (verbose) 
         message(paste(Sys.time(), 'loadCoverage: loading BAM file', 
             path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- coverage(readGAlignmentsFromBam(file, param = param))[[chr]]
+    output <- coverage(readGAlignmentsFromBam(file, param = param), 
+        drop.D.ranges = drop.D.ranges)[[chr]]
         
     ## Done
     return(output)
