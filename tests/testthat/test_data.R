@@ -95,11 +95,16 @@ library('rtracklayer')
 big1 <- BigWigFile(bigwigs[1])
 big1.list <- BigWigFileList(bigwigs[1])
 
-test_that('BamFile and BamFileList', {
+test_that('BamFile and BigWigFile', {
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(bFile, chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(BamFileList(bFile), chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
     expect_that(fullCoverage(bam, chrs = '21', sampleNames = 'ERR009101', verbose = FALSE), equals(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE)))
     expect_that(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE), is_identical_to(fullCoverage(big1, chrs = 'chr21', verbose = FALSE)))
+})
+
+## Dropping bases with 'D'
+test_that('CIGAR', {
+    expect_that(loadCoverage(files['ERR009167'], chr = '21', drop.D = TRUE, verbose = FALSE)$coverage[[1]] - loadCoverage(files['ERR009167'], chr = '21', drop.D = FALSE, verbose = FALSE)$coverage[[1]], is_identical_to(Rle(c(0L, -1L, 0L), c(47411967, 1, 717927))))
 })
 
 ## Filtering
