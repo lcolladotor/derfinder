@@ -38,7 +38,7 @@
 #' @export
 #' @aliases coverage_to_exon
 #' @importFrom GenomicRanges seqnames
-#' @importFrom GenomeInfoDb seqlevels seqlevelsStyle 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
@@ -76,18 +76,14 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         stop("'L' has to be specified")
     
     ## Advanged argumentsa
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
-
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
-    ## Use UCSC names by default
-    seqlevelsStyle(genomicState) <- chrsStyle
+    ## Use UCSC names for homo_sapiens by default
+    genomicState <- renameSeqlevels(genomicState,
+        extendedMapSeqlevels(seqlevels(genomicState), ...))
     
     # just the reduced exons
     etab <- genomicState[genomicState$theRegion == "exon"]
@@ -98,7 +94,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
             fun = 'coverageToExon', verbose = verbose, ...)        
     }
     ## Fix naming style
-    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
+    names(fullCov) <- extendedMapSeqlevels(names(fullCov), ...)
     
     
     

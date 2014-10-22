@@ -149,11 +149,6 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         0 & significantCut <= 1))
         
     ## Advanged arguments
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
-
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)

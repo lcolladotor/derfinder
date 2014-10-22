@@ -52,7 +52,6 @@
 #' @importFrom IRanges IRanges start end width Views ranges
 #' @importFrom S4Vectors Rle runLength  runValue 'runValue<-' DataFrame
 #' @importFrom GenomicRanges GRanges GRangesList
-#' @importFrom GenomeInfoDb mapSeqlevels
 #' @importMethodsFrom IRanges quantile which length mean rbind
 #' @examples
 #' ## Preprocess the data
@@ -94,12 +93,6 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' @param maxRegionGap This determines the maximum number of gaps between two 
 #' genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER). 
     maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
-
-        
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
 
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
@@ -171,8 +164,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     res <- vector('list', sum(hasInfo))
     names(res) <- names(hasInfo)[hasInfo]
     
-    ## Use UCSC names by default
-    chr <- mapSeqlevels(chr, chrsStyle)
+    ## Use UCSC names for homo_sapiens by default
+    chr <- extendedMapSeqlevels(chr, ...)
     
     for (i in names(hasInfo)[hasInfo]) {
         if (!basic) {

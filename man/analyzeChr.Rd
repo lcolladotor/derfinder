@@ -87,6 +87,13 @@ specific chromosome. The steps run include \link{makeModels},
 \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}
 and \link[bumphunter]{annotateNearest}.
 }
+\details{
+If you are working with data from an organism different from 'Homo sapiens'
+specify so by setting the global 'species' and 'chrsStyle' options. For
+example:
+\code{options(species = 'arabidopsis_thaliana')}
+\code{options(chrsStyle = 'NCBI')}
+}
 \examples{
 ## Collapse the coverage information
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),

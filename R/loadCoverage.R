@@ -41,6 +41,17 @@
 #'
 #' Parallelization for loading the data in chunks is used only used when 
 #' \code{tilewidth} is specified. You may use up to one core per tile.
+#'
+#' If you set the advanced argument \code{drop.D = TRUE}, bases with CIGAR 
+#' string "D" (deletion from reference) will be excluded from the base-level
+#' coverage calculation.
+#'
+#' If you are working with data from an organism different from 'Homo sapiens'
+#' specify so by setting the global 'species' and 'chrsStyle' options. For 
+#' example:
+#' \code{options(species = 'arabidopsis_thaliana')}
+#' \code{options(chrsStyle = 'NCBI')}
+#' 
 #' 
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
@@ -50,7 +61,7 @@
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList path BigWigFile
-#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb seqlevels
 #' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
@@ -118,9 +129,10 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     which <- .advanced_argument('which', NULL, ...)
 
 
-#' @param fileStyle The naming style of the chromosomes in the input files. By 
-#' default, it guesses from \code{chr}. See \link[GenomeInfoDb]{seqlevelsStyle}.
-    fileStyle <- .advanced_argument('fileStyle', seqlevelsStyle(chr), ...)
+#' @param fileStyle The naming style of the chromosomes in the input files. If 
+#' the global option 'chrsStyle' is not set, the naming style won't be changed.
+    fileStyle <- .advanced_argument('fileStyle', getOption('chrsStyle',
+        NULL), ...)
 
 
 #' @param protectWhich When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
@@ -129,12 +141,13 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
 
 
     ## Assign naming style
-    chr <- mapSeqlevels(chr, fileStyle)
+    chr <- extendedMapSeqlevels(chr, style = fileStyle, ...)
     
     ## Fix 'which'
     if(!is.null(which)) {
         stopifnot(is(which, 'GRanges'))
-        seqlevelsStyle(which) <- fileStyle
+        which <- renameSeqlevels(which, extendedMapSeqlevels(seqlevels(which),
+            style = fileStyle, ...))
         
         if(!is.null(protectWhich)) {
             stopifnot(protectWhich >= 0)

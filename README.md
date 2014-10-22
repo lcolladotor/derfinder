@@ -47,7 +47,7 @@ run this yourself to check for any updates on how to cite __derfinder__.
 
 To cite package __derfinder__ in publications use:
 
-Leonardo Collado-Torres, Alyssa C. Frazee, Andrew E. Jaffe and Jeffrey T. Leek (2014). derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution. R package version 1.1.1. https://github.com/lcolladotor/derfinder
+Leonardo Collado-Torres, Alyssa C. Frazee, Andrew E. Jaffe and Jeffrey T. Leek (2014). derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution. R package version 1.1.5. https://github.com/lcolladotor/derfinder
 
 A BibTeX entry for LaTeX users is
 
@@ -56,7 +56,7 @@ A BibTeX entry for LaTeX users is
     data at base-pair resolution},
     author = {Leonardo Collado-Torres and Alyssa C. Frazee and Andrew E. Jaffe and Jeffrey T. Leek},
     year = {2014},
-    note = {R package version 1.1.1},
+    note = {R package version 1.1.5},
     url = {https://github.com/lcolladotor/derfinder},
 }
 
