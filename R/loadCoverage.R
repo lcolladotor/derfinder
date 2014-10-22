@@ -41,6 +41,17 @@
 #'
 #' Parallelization for loading the data in chunks is used only used when 
 #' \code{tilewidth} is specified. You may use up to one core per tile.
+#'
+#' If you set the advanced argument \code{drop.D = TRUE}, bases with CIGAR 
+#' string "D" (deletion from reference) will be excluded from the base-level
+#' coverage calculation.
+#'
+#' If you are working with data from an organism different from 'Homo sapiens'
+#' specify so by setting the global 'species' and 'chrsStyle' options. For 
+#' example:
+#' \code{options(species = 'arabidopsis_thaliana')}
+#' \code{options(chrsStyle = 'NCBI')}
+#' 
 #' 
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
@@ -50,7 +61,7 @@
 #' @importFrom GenomicAlignments readGAlignmentsFromBam
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList path BigWigFile
-#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb seqlevels
 #' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
@@ -118,9 +129,10 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     which <- .advanced_argument('which', NULL, ...)
 
 
-#' @param fileStyle The naming style of the chromosomes in the input files. By 
-#' default, it guesses from \code{chr}. See \link[GenomeInfoDb]{seqlevelsStyle}.
-    fileStyle <- .advanced_argument('fileStyle', seqlevelsStyle(chr), ...)
+#' @param fileStyle The naming style of the chromosomes in the input files. If 
+#' the global option 'chrsStyle' is not set, the naming style won't be changed.
+    fileStyle <- .advanced_argument('fileStyle', getOption('chrsStyle',
+        NULL), ...)
 
 
 #' @param protectWhich When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
@@ -129,12 +141,13 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
 
 
     ## Assign naming style
-    chr <- mapSeqlevels(chr, fileStyle)
+    chr <- extendedMapSeqlevels(chr, style = fileStyle, ...)
     
     ## Fix 'which'
     if(!is.null(which)) {
         stopifnot(is(which, 'GRanges'))
-        seqlevelsStyle(which) <- fileStyle
+        which <- renameSeqlevels(which, extendedMapSeqlevels(seqlevels(which),
+            style = fileStyle, ...))
         
         if(!is.null(protectWhich)) {
             stopifnot(protectWhich >= 0)
@@ -209,14 +222,19 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     if(inputType == 'bam') {
         param <- ScanBamParam(which = which, 
             flag = .runFunFormal(scanBamFlag, ...))
+            
+        #' @param drop.D Whether to drop the bases with 'D' in the CIGAR strings
+        #' or to include them.
+        drop.D <- .advanced_argument('drop.D', FALSE, ...)
         
         ## Read in the data for all the chrs
         if(is.null(tilewidth)) {
             data <- lapply(bList, .loadCoverageBAM, param = param, chr = chr,
-                verbose=verbose)
+                verbose = verbose, drop.D.ranges = drop.D)
         } else {
             data <- reduceByFile(tiles, bList, .bamMAPPER, .REDUCER, 
-                chr = chr, verbose = verbose, BPPARAM = BPPARAM, ...)
+                chr = chr, verbose = verbose, BPPARAM = BPPARAM, 
+                drop.D.ranges = drop.D, ...)
         }
         
     } else if (inputType == 'BigWig') {
@@ -271,10 +289,10 @@ load_coverage <- loadCoverage
 
 
 ## GenomicFiles functions for BAM/BigWig files
-.bamMAPPER <- function(range, file, chr, verbose, ...) {
+.bamMAPPER <- function(range, file, chr, verbose, drop.D.ranges, ...) {
     param <- ScanBamParam(which = range, flag = .runFunFormal(scanBamFlag,
         ...))
-    .loadCoverageBAM(file, param, chr, verbose)
+    .loadCoverageBAM(file, param, chr, verbose, drop.D.ranges)
 }
 
 .REDUCER <- function(mapped, ...) {
@@ -282,14 +300,15 @@ load_coverage <- loadCoverage
 }
 
 
-.loadCoverageBAM <- function(file, param, chr, verbose) {
+.loadCoverageBAM <- function(file, param, chr, verbose, drop.D.ranges) {
     if (verbose) 
         message(paste(Sys.time(), 'loadCoverage: loading BAM file', 
             path(file)))
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- coverage(readGAlignmentsFromBam(file, param = param))[[chr]]
+    output <- coverage(readGAlignmentsFromBam(file, param = param), 
+        drop.D.ranges = drop.D.ranges)[[chr]]
         
     ## Done
     return(output)

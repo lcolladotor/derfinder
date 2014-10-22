@@ -32,7 +32,7 @@
 #' @export
 #' @aliases annotate_regions
 #' @importFrom IRanges queryHits subjectHits
-#' @importFrom GenomeInfoDb 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split mcols
 #' countOverlaps findOverlaps '['
 #' @importMethodsFrom S4Vectors sapply
@@ -54,10 +54,6 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
         'tx_name', 'gene')))
 
     ## Advanged arguments
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
 
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
@@ -67,9 +63,11 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
     ## Fix row names
     names(regions) <- seq_len(length(regions))
 
-    ## Use UCSC names by default
-    seqlevelsStyle(genomicState) <- chrsStyle
-    seqlevelsStyle(regions) <- chrsStyle
+    ## Use UCSC names for homo_sapiens by default
+    genomicState <- renameSeqlevels(genomicState,
+        extendedMapSeqlevels(seqlevels(genomicState), ...))
+    regions <- renameSeqlevels(regions,
+        extendedMapSeqlevels(seqlevels(regions), ...))
     
     genomicState.list <- split(genomicState, genomicState$theRegion)
     

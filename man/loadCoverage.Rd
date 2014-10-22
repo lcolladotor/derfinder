@@ -59,6 +59,16 @@ when reading from BAM files. See \link[Rsamtools]{scanBamFlag}.
 
 Parallelization for loading the data in chunks is used only used when
 \code{tilewidth} is specified. You may use up to one core per tile.
+
+If you set the advanced argument \code{drop.D = TRUE}, bases with CIGAR
+string "D" (deletion from reference) will be excluded from the base-level
+coverage calculation.
+
+If you are working with data from an organism different from 'Homo sapiens'
+specify so by setting the global 'species' and 'chrsStyle' options. For
+example:
+\code{options(species = 'arabidopsis_thaliana')}
+\code{options(chrsStyle = 'NCBI')}
 }
 \examples{
 datadir <- system.file('extdata', 'genomeData', package='derfinder')

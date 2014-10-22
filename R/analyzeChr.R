@@ -47,6 +47,13 @@
 #' These are the same components that are written to Rdata files if 
 #' \code{writeOutput=TRUE}.
 #'
+#' @details
+#' If you are working with data from an organism different from 'Homo sapiens'
+#' specify so by setting the global 'species' and 'chrsStyle' options. For 
+#' example:
+#' \code{options(species = 'arabidopsis_thaliana')}
+#' \code{options(chrsStyle = 'NCBI')}
+#'
 #' @author Leonardo Collado-Torres
 #' @seealso \link{makeModels}, \link{preprocessCoverage}, 
 #' \link{calculateStats}, \link{calculatePvalues}, 
@@ -55,7 +62,6 @@
 #' @aliases analyze_chr
 #' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom bumphunter annotateNearest
-#' @importFrom GenomeInfoDb mapSeqlevels
 #' 
 #' @examples
 #' ## Collapse the coverage information
@@ -89,13 +95,9 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     stopifnot(is.factor(groupInfo))
     
     ## Advanged argumentsa
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
-
-    ## Use UCSC names by default
-    chr <- mapSeqlevels(chr, chrsStyle)
+    ## Use UCSC names for homo_sapiens by default
+    chr <- extendedMapSeqlevels(chr, ...)
 
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.

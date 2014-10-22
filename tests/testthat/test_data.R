@@ -31,6 +31,12 @@ test_that('Load BAM data', {
     expect_that(loadCoverage(files = files[1:2], chr = '21', cutoff = 0), is_identical_to(loadCoverage(files = files[1:2], chr = '21', cutoff = 0, which = which)))
 })
 
+## Other seqnames
+f1 <- system.file("extdata", "ex1.bam", package="Rsamtools", mustWork = TRUE)
+test_that('Non-standard seqnames', {
+    expect_that(lapply(fullCoverage(f1, chrs = c('seq1', 'seq2'), verbose = FALSE), nrow), equals(list('seq1' = 1575, 'seq2' = 1584)))
+    expect_that(lapply(fullCoverage(f1, chrs = c('seq1', 'seq2'), verbose = FALSE), function(x) { sum(x[[1]])}), equals(list('seq1' = 52166, 'seq2' = 63017)))
+})
 
 ## Export BigWig
 dir.create('bw')
@@ -95,11 +101,16 @@ library('rtracklayer')
 big1 <- BigWigFile(bigwigs[1])
 big1.list <- BigWigFileList(bigwigs[1])
 
-test_that('BamFile and BamFileList', {
+test_that('BamFile and BigWigFile', {
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(bFile, chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(BamFileList(bFile), chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
     expect_that(fullCoverage(bam, chrs = '21', sampleNames = 'ERR009101', verbose = FALSE), equals(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE)))
     expect_that(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE), is_identical_to(fullCoverage(big1, chrs = 'chr21', verbose = FALSE)))
+})
+
+## Dropping D (deletions from reference) bases
+test_that('CIGAR', {
+    expect_that(loadCoverage(files['ERR009167'], chr = '21', drop.D = TRUE, verbose = FALSE)$coverage[[1]] - loadCoverage(files['ERR009167'], chr = '21', drop.D = FALSE, verbose = FALSE)$coverage[[1]], is_identical_to(Rle(c(0L, -1L, 0L), c(47411967, 1, 717927))))
 })
 
 ## Filtering
@@ -132,7 +143,7 @@ regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 fullCov.regs <- fullCoverage(files, chrs = seqlevels(regions), fileStyle = 'NCBI', protectWhich = 3e4, which = regions, verbose = FALSE)
 
 ## Load without using the default 'protectWhich'
-max.noP <- sapply(loadCoverage(files = files, chr = '21', verbose = FALSE, protectWhich = 0, cutoff = NULL, which = regions)$coverage, max)
+max.noP <- sapply(loadCoverage(files = files, chr = '21', verbose = FALSE, protectWhich = 0, cutoff = NULL, which = regions, fileStyle = 'NCBI')$coverage, max)
 max.wP <- sapply(fullCov$chr21, max)
 
 ## Use only the first two exons
