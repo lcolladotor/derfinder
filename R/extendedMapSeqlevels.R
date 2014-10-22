@@ -77,7 +77,7 @@ extendedMapSeqlevels <- function(seqnames, style = getOption('chrsStyle',
     
     ## Check inputs
     if(!is.character(seqnames))
-        seqnames <- is.character(seqnames)
+        seqnames <- as.character(seqnames)
     stopifnot(is.character(style) & length(style) == 1)
     if(!is.null(species)) stopifnot(is.character(species) & length(species) == 1)
     if(!is.null(currentStyle)) stopifnot(is.character(currentStyle) & length(currentStyle) == 1)
