@@ -1,3 +1,18 @@
+CHANGES IN VERSION 1.1.5
+------------------------
+
+NEW FEATURES
+
+    o Introduced function extendedMapSeqlevels() for using GenomeInfoDb when
+        there is information regarding the species and naming style of interest.
+        Otherwise sequence names are left unchanged. If used with
+        'verbose = TRUE', a message is printed whenever GenomeInfoDb could not
+        be used or if some information had to be guessed.
+
+BUG FIXES
+
+    o Fixes https://support.bioconductor.org/p/62136
+
 CHANGES IN VERSION 1.1.3
 ------------------------
 
@@ -9,7 +24,8 @@ NEW FEATURES
 BUG FIXES
 
     o Fixed a bug in loadCoverage() when the input was a BamFileList. 
-        Implemented tests based on the bug.
+        Implemented tests based on the bug. Bug reported at 
+        https://support.bioconductor.org/p/62073
 
 
 CHANGES IN VERSION 0.99.0

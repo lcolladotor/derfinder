@@ -28,8 +28,7 @@
 #' queryHits subjectHits
 #' @importFrom S4Vectors Rle DataFrame
 #' @importFrom GenomicRanges GRangesList seqnames 
-#' @importFrom GenomeInfoDb seqlengths seqlevels 'seqlevels<-' seqlevelsStyle 
-#' 'seqlevelsStyle<-' mapSeqlevels
+#' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
@@ -80,14 +79,9 @@
 
 makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     stopifnot(is(txdb, "TxDb"))
-    
-    ## Advanged argumentsa
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
 
-    ## Use appropriate style
-    chrs <- mapSeqlevels(chrs, chrsStyle)
+    ## Use UCSC names for homo_sapiens by default
+    chrs <- extendedMapSeqlevels(chrs, ...)
 
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
@@ -404,9 +398,11 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     codingGenome <- sort(codingGenome)
     names(codingGenome) <- seq(along = codingGenome)
     
-    ## Define seqlevelsStyle
-    seqlevelsStyle(codingGenome) <- chrsStyle
-    seqlevelsStyle(fullGenome) <- chrsStyle
+    ## Use UCSC names for homo_sapiens by default
+    codingGenome <- renameSeqlevels(codingGenome,
+        extendedMapSeqlevels(seqlevels(codingGenome), ...))
+    fullGenome <- renameSeqlevels(fullGenome,
+        extendedMapSeqlevels(seqlevels(fullGenome), ...))
     
     GenomicState <- GRangesList(fullGenome = fullGenome,
         codingGenome = codingGenome)

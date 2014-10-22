@@ -30,7 +30,7 @@
 #' @export
 #' @aliases get_region_coverage
 #' @importFrom GenomicRanges seqnames
-#' @importFrom GenomeInfoDb seqlevelsStyle 'seqlevelsStyle<-'
+#' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c '$'
@@ -72,11 +72,6 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     targetSize = 80e6, files = NULL, ...) {
         
     ## Advanged arguments
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
-
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -84,8 +79,9 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
 
     names(regions) <- seq_len(length(regions))  # add names
     
-    ## Use UCSC style names by default
-    seqlevelsStyle(regions) <- chrsStyle
+    ## Use UCSC names for homo_sapiens by default
+    regions <- renameSeqlevels(regions, 
+        extendedMapSeqlevels(seqlevels(regions), ...))
     
     ## TODO check seqlengths are properly given in 'regions'
     
@@ -95,7 +91,7 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
             fun = 'getRegionCoverage', ...)        
     }
     ## Fix naming style
-    names(fullCov) <- mapSeqlevels(names(fullCov), chrsStyle)
+    names(fullCov) <- extendedMapSeqlevels(names(fullCov), ...)
         
     # split by chromosome
     regions.chrs <- as.factor(seqnames(regions))

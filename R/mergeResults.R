@@ -57,7 +57,6 @@
 #' order unlist nrow
 #' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom qvalue qvalue
-#' @importFrom GenomeInfoDb mapSeqlevels
 #'
 #' @details If you want to calculate the FWER, supply \code{optionsStats} which #' is produced by \link{analyzeChr}.
 #'
@@ -131,11 +130,6 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
     prep <- fstats <- regions <- annotation <- timeinfo <- NULL
     
     ## Advanged argumentsa
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
-
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -150,8 +144,8 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
 
 
 
-    ## Use UCSC names by default
-    chrs <- mapSeqlevels(chrs, chrsStyle)
+    ## Use UCSC names for homo_sapiens by default
+    chrs <- extendedMapSeqlevels(chrs, ...)
     
     ## save merging options used
     optionsMerge <- list(chrs = chrs, significantCut = significantCut, 

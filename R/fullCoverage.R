@@ -71,11 +71,6 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     }
     
     ## Advanged argumentsa
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.    
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
-
-
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -112,7 +107,7 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
         cutoff = cutoff, mc.cores.load = mc.cores.load,
         ..., BPPARAM = BPPARAM)
-    names(result) <- mapSeqlevels(chrs, chrsStyle)
+    names(result) <- extendedMapSeqlevels(chrs, ...)
     
     ## Done
     return(result)
