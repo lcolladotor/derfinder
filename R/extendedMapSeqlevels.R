@@ -82,75 +82,107 @@ extendedMapSeqlevels <- function(seqnames, style = getOption('chrsStyle',
     if(!is.null(species)) stopifnot(is.character(species) & length(species) == 1)
     if(!is.null(currentStyle)) stopifnot(is.character(currentStyle) & length(currentStyle) == 1)
     
-    guessed <- is.null(species) | is.null(currentStyle)
-
-    ## Guess species
-    if(is.null(species)) {
-        species <- GenomeInfoDb:::.guessSpeciesStyle(seqnames)[1]
-        if(is.na(species)) {
+    ## Was the species and/or the currentStyle guessed?
+    guessedSpecies <- is.null(species)
+    guessedCurrent <- is.null(currentStyle)
+    guessed <- guessedSpecies | guessedCurrent
+    if(guessed) {
+        guesses <- GenomeInfoDb:::.guessSpeciesStyle(seqnames)
+        if(any(is.na(guesses))) {
             if(verbose)
                 message("extendedMapSeqlevels: the 'seqnames' you supplied are currently not supported in GenomeInfoDb. Consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf")
             return(seqnames)
         }
-        
     }
-    
-    ## Format species name
-    species <- tolower(gsub(" ", "_", species))
     
     ## Extract valid mappings
     supported <- GenomeInfoDb:::.supportedSeqnameMappings()
+    names(supported) <- tolower(names(supported))
+
+    ## Guess species and/or currentStyle
+    if(guessedSpecies) {
+        
+        if(guessedCurrent) {
+            ## Guess current style
+            best <- .selectBestGuess(seqnames, guesses$species, guesses$style,
+                supported)
+            currentStyle <- best$style
+        } else {
+            ## Check current style
+            idx <- grep(currentStyle, guesses$style)
+            if(length(idx) == 0) {
+                best$species <- NA
+            } else {
+                best < .selectBestGuess(seqnames, guesses$species[idx],
+                    guesses$style[idx], supported)
+            }           
+            
+        }
+        species <- best$species
+        
+        ## Was able to guess the current species?
+        if(is.na(species)) {
+            if(verbose)
+                message("extendedMapSeqlevels: the species could not be guessed. Consider supplying 'species'.")
+            return(seqnames)
+        }
+            
+    } else {
+        ## Format species name
+        species <- tolower(gsub(" ", "_", species))
+        
+        ## Check species is supported
+        if(length(which(names(supported) == species)) != 1){
+            if(verbose)
+                message(paste("extendedMapSeqlevels: the 'species'", species, "is currently not supported in GenomeInfoDb. Check valid 'species' by running names(GenomeInfoDb::genomeStyles()). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
+            return(seqnames)
+        }
+        
+        if (guessedCurrent) {
+            ## Guess current style
+            idx <- which(tolower(gsub(" ", "_", guesses$species)) == species)
+            if(length(idx) == 0) {
+                currentStyle <- NA
+            } else {
+                currentStyle <- .selectBestGuess(seqnames, guesses$species[idx],
+                    guesses$style[idx], supported)$style
+            }   
+        }
+    } 
     
-    ## Check species is supported
-    i <- which(tolower(names(supported)) == species)
-    if(length(i) != 1){
+    ## Was able to guesss the current style?
+    if(is.na(currentStyle) & guessedCurrent) {
         if(verbose)
-            message(paste("extendedMapSeqlevels: the 'species'", species, "is currently not supported in GenomeInfoDb. Check valid 'species' by running names(GenomeInfoDb::genomeStyles()). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
+            message("extendedMapSeqlevels: the current naming style could not be guessed. Consider supplying 'currentStyle'.")
         return(seqnames)
     }
+
     ## Valid mapping for the species
-    mapping <- supported[[i]]
+    mapping <- supported[[which(names(supported) == species)]]
     
     ## Check style is supported
-    j <- which(tolower(colnames(mapping)) == tolower(style))
+    j <- grep(tolower(style), tolower(colnames(mapping)))
     if(length(j) != 1) {
         if(verbose)
             message(paste("extendedMapSeqlevels: the 'style'", style, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
         return(seqnames)
     }
     
-    ## Guess current style for the current species
-    if(is.null(currentStyle)) {
-        if(ncol(mapping) < 2) {
-            stop("extendedMapSeqlevels: the mapping for your specified 'species' is incomplete: there should be at least 2 different styles.")
-        }
-        ## Proceed as if using mapSeqlevels(best.only = TRUE)
-        possible <- sapply(mapping, function(styleNames) {
-            sum(tolower(seqnames) %in% tolower(styleNames)) })
-        if(max(possible) == 0) {
-            if(verbose)
-                message("extendedMapSeqlevels: the current naming style could not be guessed. Consider supplying 'currentStyle'.")
-            return(seqnames)
-        } else if (max(possible) < length(seqnames)) {
-            warning("extendedMapSeqlevels: not all the 'seqnames' match the best current naming style guess.")
-        }
-        currentStyle <- colnames(mapping)[ which.max(possible) ]
+    ## Is the target style the same as the current style?
+    if(tolower(style) == tolower(currentStyle)) {
+        return(seqnames)
     }
+    
     ## Find current naming map
-    k <- which(tolower(colnames(mapping)) == tolower(currentStyle))
+    k <- grep(tolower(currentStyle), tolower(colnames(mapping)))
     
     ## Check currentStyle if it was supplied
-    if(!is.null(currentStyle)) {
+    if(!guessedCurrent) {
         if(length(k) != 1) {
             if(verbose)
                 message(paste("extendedMapSeqlevels: the 'currentStyle'", currentStyle, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
             return(seqnames)
         }
-    } 
-    
-    ## Is the target style the same as the current style?
-    if(tolower(style) == tolower(currentStyle)) {
-        return(seqnames)
     }
     
     ## Make the map
@@ -162,3 +194,25 @@ extendedMapSeqlevels <- function(seqnames, style = getOption('chrsStyle',
 
 #' @export
 extended_map_seqlevels <- extendedMapSeqlevels
+
+
+.selectBestGuess <- function(seqnames, organisms, styles, supported) {
+    organisms <- tolower(gsub(" ", "_", organisms))
+    seqnames <- tolower(seqnames)
+    if(length(organisms) == 1 & length(styles) == 1) {
+        res <- list('species' = organisms, 'style' = styles)
+    } else {
+        scores <- mapply(function(org, sty) {
+            i <- which(names(supported) == org)
+            if(length(i) != 1) return(0)
+            k <- grep(sty, colnames(supported[[i]]))
+            sum(seqnames %in% tolower(supported[[i]][, k[1]]))            
+        }, organisms, styles)    
+        if(max(scores) == 0) {
+            res <- list('species' = NA, 'style' = NA)
+        } else {
+            res <- list('species' = organisms[which.max(scores)], 'style' = styles[which.max(scores)])
+        }
+    }
+    return(res)
+}
