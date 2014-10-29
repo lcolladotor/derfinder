@@ -1,0 +1,31 @@
+c(
+    bibentry(bibtype="manual",
+        title = "derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution",
+        author = personList(
+            as.person("Leonardo Collado-Torres"),
+            as.person("Alyssa C. Frazee"),
+            as.person("Andrew E. Jaffe"),
+            as.person("Jeffrey T. Leek")
+        ),
+        year = 2014,
+        url = "http://www.bioconductor.org/packages/release/bioc/html/derfinder.html",
+        note = "https://github.com/lcolladotor/derfinder",
+        version = paste("R package version", packageVersion("derfinder"))
+    ),
+    bibentry(bibtype="article",
+        title = "Differential expression analysis of RNA-seq data at single-base resolution",
+        author = personList(
+            as.person("Alyssa C. Frazee"), 
+            as.person("Sarven Sabunciyan"),
+            as.person("Kasper D. Hansen"),
+            as.person("Rafael A. Irizarry"),
+            as.person("Jeffrey T. Leek")
+        ),
+        year = 2014,
+        journal = "Biostatistics",
+        volume = "15 (3)",
+        pages = "413-426",
+        doi = "10.1093/biostatistics/kxt053",
+        url = "http://biostatistics.oxfordjournals.org/content/15/3/413.long"
+    )
+)

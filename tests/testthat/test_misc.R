@@ -19,4 +19,7 @@ test_that('Mapping levels', {
     expect_that(extendedMapSeqlevels('2', 'UCSC', 'Homo sapiens', 'NCBI'), equals(extendedMapSeqlevels('2', 'UCSC', 'Homo sapiens', verbose = FALSE)))
     expect_that(extendedMapSeqlevels('2', 'UCSC', 'Homo sapiens', 'NCBI'), equals(extendedMapSeqlevels('2', 'UCSC', 'homo_saPiens', 'NcBI')))
     expect_that(extendedMapSeqlevels('28', NULL), equals('28'))
+    expect_that(extendedMapSeqlevels('T', 'NCBI', 'homo_sapiens'), shows_message())
+    expect_that(extendedMapSeqlevels('T', 'NCBI', 'homo_sapiens', verbose = FALSE), equals('T'))
+    expect_that(extendedMapSeqlevels('T', 'NCBI', NULL, verbose = FALSE), equals('LGI'))
 })
