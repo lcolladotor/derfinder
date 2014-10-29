@@ -51,7 +51,7 @@ bibs <- c(knitcitations = citation('knitcitations'),
     TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
     AnnotationDbi = citation('AnnotationDbi'),
     BiocParallel = citation('BiocParallel'),
-    derfinderHelper = citation('derfinderHelper'),
+    derfinderHelper = citation('derfinderHelper')[1],
     GenomicAlignments = citation('GenomicAlignments'),
     GenomicFeatures = citation('GenomicFeatures'),
     GenomicFiles = citation('GenomicFiles'),
@@ -526,7 +526,7 @@ This vignette covered the most commonly used advanced arguments, details on how 
 
 # Origins
 
-This implementation of `derfinder` `r citep(bib[['derfinder']])` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
+This implementation of `derfinder` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
 
 
 # Citing `derfinder`
