@@ -31,7 +31,7 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 
 ## Write bibliography information
 write.bibtex(c(knitcitations = citation('knitcitations'),
-    derfinder = citation('derfinder'), 
+    derfinder = citation('derfinder')[1], 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown')),

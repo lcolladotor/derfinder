@@ -33,12 +33,12 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 
 ## Write bibliography information
 bibs <- c(knitcitations = citation('knitcitations'),
-    derfinder = citation('derfinder'), 
+    derfinder = citation('derfinder')[1], 
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown'),
     brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://developinghumanbrain.org'),
-    originalder = RefManageR::BibEntry(bibtype = 'article', key = 'originalder', title = 'Differential expression analysis of RNA-seq data at single-base resolution', author = 'Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizzary and Jeffrey T. Leek', year = 2013, journal = 'Biostatistics'),
+    originalder = citation('derfinder')[2],
     R = citation(),
     IRanges = citation('IRanges'),
     devtools = citation('devtools'),
