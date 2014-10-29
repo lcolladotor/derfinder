@@ -669,7 +669,7 @@ We have illustrated how to identify candidate differentially expressed regions w
 
 # Origins
 
-This implementation of `derfinder` `r citep(bib[['derfinder']])` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
+This implementation of `derfinder` has its origins in [Alyssa C. Frazee's derfinder](https://github.com/alyssafrazee/derfinder) `r citep(bib[['originalder']])`. The statistical methods and implementation by now are very different.
 
 # Citing `derfinder`
 
