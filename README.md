@@ -14,7 +14,7 @@ For a full example on how to use __derfinder__ check
 
 # Installation instructions
 
-Get R 3.1.1 or newer from [CRAN](http://cran.r-project.org/).
+Get R 3.2 or newer from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## From Bioconductor
@@ -58,7 +58,7 @@ A BibTeX entry for LaTeX users is
     year = {2014},
     url = {http://www.bioconductor.org/packages/release/bioc/html/derfinder.html},
     note = {https://github.com/lcolladotor/derfinder},
-    version = {R package version 1.1.7},
+    version = {R package version 1.1.8},
 }
 
 
