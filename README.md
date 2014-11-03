@@ -56,8 +56,7 @@ A BibTeX entry for LaTeX users is
     data at base-pair resolution},
     author = {Leonardo Collado-Torres and Alyssa C. Frazee and Andrew E. Jaffe and Jeffrey T. Leek},
     year = {2014},
-    note = {R package version 1.0.4},
-    url = {https://github.com/lcolladotor/derfinder},
+    note = {https://github.com/lcolladotor/derfinder - R package version 1.0.5},
 }
 
 
