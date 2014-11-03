@@ -9,8 +9,7 @@ c(
         ),
         year = 2014,
         url = "http://www.bioconductor.org/packages/release/bioc/html/derfinder.html",
-        note = "https://github.com/lcolladotor/derfinder",
-        version = paste("R package version", packageDescription("derfinder", fields = "Version"))
+        note = paste("https://github.com/lcolladotor/derfinder - R package version", packageDescription("derfinder", fields = "Version"))
     ),
     bibentry(bibtype="article",
         title = "Differential expression analysis of RNA-seq data at single-base resolution",
