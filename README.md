@@ -47,7 +47,13 @@ run this yourself to check for any updates on how to cite __derfinder__.
 
 To cite package __derfinder__ in publications use:
 
-Leonardo Collado-Torres, Alyssa C. Frazee, Andrew E. Jaffe and Jeffrey T. Leek (2014). derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution. R package version 1.0.6. https://github.com/lcolladotor/derfinder
+Collado-Torres L, Frazee AC, Jaffe AE and Leek JT (2014). _derfinder: Annotation-agnostic differential expression analysis of
+RNA-seq data at base-pair resolution_. https://github.com/lcolladotor/derfinder - R package version 1.0.6, <URL:
+http://www.bioconductor.org/packages/release/bioc/html/derfinder.html>.
+
+Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA and Leek JT (2014). “Differential expression analysis of RNA-seq data at
+single-base resolution.” _Biostatistics_, *15 (3)*, pp. 413-426. <URL: http://dx.doi.org/10.1093/biostatistics/kxt053>, <URL:
+http://biostatistics.oxfordjournals.org/content/15/3/413.long>.
 
 A BibTeX entry for LaTeX users is
 
@@ -58,6 +64,17 @@ A BibTeX entry for LaTeX users is
     year = {2014},
     url = {http://www.bioconductor.org/packages/release/bioc/html/derfinder.html},
     note = {https://github.com/lcolladotor/derfinder - R package version 1.0.6},
+}
+
+@Article{,
+    title = {Differential expression analysis of RNA-seq data at single-base resolution},
+    author = {Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizarry and Jeffrey T. Leek},
+    year = {2014},
+    journal = {Biostatistics},
+    volume = {15 (3)},
+    pages = {413-426},
+    doi = {10.1093/biostatistics/kxt053},
+    url = {http://biostatistics.oxfordjournals.org/content/15/3/413.long},
 }
 
 
