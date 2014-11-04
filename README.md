@@ -14,7 +14,7 @@ For a full example on how to use __derfinder__ check
 
 # Installation instructions
 
-Get R 3.2 or newer from [CRAN](http://cran.r-project.org/).
+Get R 3.1.1 or newer from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## From Bioconductor
