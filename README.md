@@ -75,6 +75,8 @@ use_travis('yourPackage')
 ## Add a status image by following the info at http://docs.travis-ci.com/user/status-images/
 ```
 
+Testing on R-devel for Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder).
+
 # Origins
 
 This is a development version for a faster version of the __derfinder__ core 
