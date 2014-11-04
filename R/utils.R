@@ -26,7 +26,7 @@
 .define_cluster <- function(cores = 'mc.cores', ...) {
     args <- list(...)
     if('BPPARAM.custom' %in% names(args)) {
-        return(args$BPPARAM)
+        return(args$BPPARAM.custom)
     } else {
         mc.cores <- .advanced_argument(cores, getOption('mc.cores', 1L), ...)
         if(mc.cores > 1) {
