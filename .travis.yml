@@ -2,30 +2,30 @@ language: c
 
 before_install:
 #  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-  - curl -OL http://raw.github.com/lcolladotor/r-travis/master/scripts/travis-tool.sh
-  - chmod 755 ./travis-tool.sh
+#  - curl -OL http://raw.github.com/lcolladotor/r-travis/master/scripts/travis-tool.sh
+#  - chmod 755 ./travis-tool.sh
+#  - ./travis-tool.sh bootstrap
+  - curl -OL https://raw.githubusercontent.com/gaborcsardi/r-builder/master/pkg-build.sh
+  - chmod 755 ./pkg-build.sh
   - ./travis-tool.sh bootstrap
  
 install:
-  - ./travis-tool.sh install_bioc S4Vectors
-  - ./travis-tool.sh install_bioc IRanges
-  - ./travis-tool.sh install_r Matrix
-  - ./travis-tool.sh install_r knitr
-  - ./travis-tool.sh install_r rmarkdown
-  - ./travis-tool.sh install_r knitcitations
-  - ./travis-tool.sh install_r knitrBootstrap
-  - ./travis-tool.sh install_github lcolladotor/derfinderHelper
-  - ./travis-tool.sh install_github lcolladotor/derfinderData
-  - ./travis-tool.sh install_bioc_deps
+#  - ./travis-tool.sh install_bioc_deps
+  - ./pkg-build.sh install_bioc_deps
  
-script: ./travis-tool.sh run_tests
+script:
+#  - ./travis-tool.sh run_tests
+  - ./pkg-build.sh run_tests
 
 after_failure:
-  - ./travis-tool.sh dump_logs
+#  - ./travis-tool.sh dump_logs
+  - ./pkg-build.sh dump_logs
 
 after_script:
-  - ./travis-tool.sh dump_logs_by_extension "timings"
-  - ./travis-tool.sh dump_sysinfo
+#  - ./travis-tool.sh dump_logs_by_extension "timings"
+#  - ./travis-tool.sh dump_sysinfo
+  - ./pkg-build.sh dump_logs_by_extension "timings"
+  - ./pkg-build.sh dump_sysinfo
 
 notifications:
   email:
@@ -36,8 +36,9 @@ notifications:
 
 env:
   global:
+    - RVERSION=devel
     - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
-    - R_CHECK_TIME="TRUE"
+#    - R_CHECK_TIME="TRUE"
     - R_CHECK_TESTS="TRUE"
     - _R_CHECK_TIMINGS_="0"
