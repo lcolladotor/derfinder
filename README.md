@@ -43,12 +43,10 @@ You will need a GitHub account to be able to `Watch` the repository.
 Below is the citation output from using `citation('derfinder')` in R. Please 
 run this yourself to check for any updates on how to cite __derfinder__.
 
----
-
 To cite package __derfinder__ in publications use:
 
 Collado-Torres L, Frazee AC, Jaffe AE and Leek JT (2014). _derfinder: Annotation-agnostic differential expression analysis of
-RNA-seq data at base-pair resolution_. https://github.com/lcolladotor/derfinder - R package version 1.1.9, <URL:
+RNA-seq data at base-pair resolution_. https://github.com/lcolladotor/derfinder - R package version 1.1.10, <URL:
 http://www.bioconductor.org/packages/release/bioc/html/derfinder.html>.
 
 Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA and Leek JT (2014). “Differential expression analysis of RNA-seq data at
@@ -63,7 +61,7 @@ A BibTeX entry for LaTeX users is
     author = {Leonardo Collado-Torres and Alyssa C. Frazee and Andrew E. Jaffe and Jeffrey T. Leek},
     year = {2014},
     url = {http://www.bioconductor.org/packages/release/bioc/html/derfinder.html},
-    note = {https://github.com/lcolladotor/derfinder - R package version 1.1.9},
+    note = {https://github.com/lcolladotor/derfinder - R package version 1.1.10},
 }
 
 @Article{,
