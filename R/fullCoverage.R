@@ -63,6 +63,7 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     outputs = NULL, cutoff = NULL, ...) {
         
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
+    stopifnot(is.character(chrs))
     if (!is.null(outputs)) {
         stopifnot(length(outputs) == length(chrs) | outputs == 'auto')
         if (outputs == 'auto') {
