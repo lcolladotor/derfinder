@@ -93,6 +93,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     stopifnot(length(intersect(cutoffType, c('empirical', 'theoretical', 
         'manual'))) == 1)
     stopifnot(is.factor(groupInfo))
+    stopifnot(is.character(chr))
     
     ## Advanged argumentsa
 

@@ -98,6 +98,8 @@
 loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one', 
     chrlen = NULL, output = NULL, bai = NULL, ...) {
     
+    stopifnot(is.character(chr))
+    
     ## Advanged arguments
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.

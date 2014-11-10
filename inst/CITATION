@@ -14,7 +14,7 @@ c(
         ),
         year = 2014,
         url = "http://www.bioconductor.org/packages/release/bioc/html/derfinder.html",
-        note = pkgVer('derfinder', '1.0.6')
+        note = pkgVer('derfinder', '1.0.7')
     ),
     bibentry(bibtype="article",
         title = "Differential expression analysis of RNA-seq data at single-base resolution",
