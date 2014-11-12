@@ -66,11 +66,9 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     returnType = "raw", files = NULL, ...) {
         
     ## Run some checks
-    stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 
-        1)
+    stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 1)
     stopifnot(is(genomicState, 'GRanges'))
-    stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
-        'tx_name', 'gene')))
+    stopifnot('theRegion' %in% names(mcols(genomicState)))
 
     if (is.null(L)) 
         stop("'L' has to be specified")

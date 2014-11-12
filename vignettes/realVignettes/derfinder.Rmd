@@ -187,6 +187,8 @@ In terms of memory, the filtered version requires less resources. Although this 
 round(c(fullCov = object.size(fullCov), filteredCov = object.size(filteredCov)) / 1024^2, 1)
 ```
 
+Note that with your own data, filtering for bases where at least one sample has coverage greater than 2 might not make sense: maybe you need a higher or lower filter. The amount of bases remaining after filtering will impact how long the analysis will take to complete. We thus recommend exploring this before proceeding.
+
 ## DER analysis
 
 One form of base-level differential expression analysis implemented in `derfinder` is to calculate F-statistics for every base and use them to define candidate differentially expressed regions. This type of analysis is further explained in this section.
@@ -215,7 +217,7 @@ models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, 
 lapply(models, head)
 ```
 
-Note how the null model (`mod0`) is nested in the alternative model (`mod`). `derfinder` is very flexible and works with any type of nested model.
+Note how the null model (`mod0`) is nested in the alternative model (`mod`). Use the same models for all your chromosomes unless you have a specific reason to use chromosome-specific models. Note that `derfinder` is very flexible and works with any type of nested model.
 
 
 ### Find candidate DERs
@@ -242,7 +244,9 @@ system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, grou
 
 To speed up `analyzeChr()`, you might need to use several cores via the `mc.cores` argument. If memory is limiting, you might want to use a smaller `chunksize` (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.
 
-Before using a large number of permutations we recommend exploring how long each permutation cycle takes using a single permutation. 
+Before running with a large number of permutations we recommend exploring how long each permutation cycle takes using a single permutation. 
+
+Note that analyzing each chromosome with a large number of permutations and a rich data set can take several hours, so we recommend running one job running `analyzeChr()` per chromosome, and then merging the results via `mergeResults()`. This process is further described in the advanced `derfinder` vignette.
 
 ### Explore results
 
@@ -358,6 +362,8 @@ head(results$annotation)
 ```
 
 For more details on the output please check the [bumphunter](http://www.bioconductor.org/packages/release/bioc/html/bumphunter.html) package.
+
+Check the section about non-human data (specifically, using annotation different from __hg19__) on the advanced vignette.
 
 #### Time spent
 
@@ -679,6 +685,10 @@ Please use:
 ## Citation info
 citation('derfinder')
 ```
+
+# Acknowledgements
+
+We would like to thank [Jessica Hekman](https://support.bioconductor.org/u/6877/) for testing `derfinder` with non-human data, thus discovering some small bugs or sections of the documentation that were not clear.
 
 
 # Reproducibility

@@ -50,8 +50,7 @@
 
 annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
     stopifnot(is(genomicState, 'GRanges'))
-    stopifnot(identical(names(mcols(genomicState)), c('theRegion', 'tx_id',
-        'tx_name', 'gene')))
+    stopifnot('theRegion' %in% names(mcols(genomicState)))
 
     ## Advanged arguments
 
