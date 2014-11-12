@@ -115,6 +115,8 @@ options(chrsStyle = 'NCBI')
 
 Internally `derfinder` uses `extendedMapSeqlevels()` to use the appropriate chromosome naming style given a species in all functions involving chromosome names.
 
+Further note that the argument `subject` from `analyzeChr()` is passed to `bumphunter::annotateNearest(subject)`. So if you are using a genome different from __hg19__ remember to provide the appropriate annotation data or simply use `analyzeChr(runAnnotation = FALSE)`. You might find the discussion [Using bumphunter with non-human genomes](https://support.bioconductor.org/p/62781/) useful.
+
 # Advanced loading data
 
 
@@ -214,7 +216,7 @@ The above figure shows the functions used internally by `regionMatrix()` and pro
 
 # Functions that use multiple cores
 
-Currently, the following functions can use multiple cores.
+Currently, the following functions can use multiple cores, several of which are called inside `analyzeChr()`.
 
 * `calculatePvalues()`: 1 core per chunk of data to process.
 * `calculateStats()`: 1 core per chunk of data to process.
@@ -225,9 +227,11 @@ Currently, the following functions can use multiple cores.
 * `getRegionCoverage()`: 1 core per chromosome.
 * `regionMatrix()`: 1 core per chromosome.
 
-All parallel operations use `SnowParam()` from [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html) when more than 1 core is being used. Otherwise, `SerialParam()` is used. Note that if you prefer to specify other types of parallelization you can do so by specifying the `BPPARAM` advanced argument.
+All parallel operations use `SnowParam()` from [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html) when more than 1 core is being used. Otherwise, `SerialParam()` is used. Note that if you prefer to specify other types of parallelization you can do so by specifying the `BPPARAM.custom` advanced argument.
 
 Because `SnowParam()` requires `R` to load the necessary packages on each worker, the key function `fstats.apply()` was isolated in the `derfinderHelper` package. This package has much faster loading speeds than `derfinder` which greatly impacts performance on cases where the actual step of calculating the F-statistics is fast.
+
+You may prefer to use `MulticoreParam()` described in the [BiocParallel](www.bioconductor.org/packages/release/bioc/html/BiocParallel.html)  vignette. In that case, when using these functions use `BPPARAM.custom = MulticoreParam(workers = x)` where `x` is the number of cores you want to use. Note that in some systems, as is the case of the cluster used by `derfinder`'s developers, the system tools for assessing memory usage can be misleading, thus resulting in much higher memory loads when using `MulticoreParam()` instead of the default `SnowParam()`.
 
 
 
@@ -428,7 +432,7 @@ load("groupInfo.Rdata")
 
 
 ## Run the analysis with lowMemDir
-analyzeChr(chr=opt$chr, coverageInfo=data, models=models, cutoffFstat=1e-06, cutoffType="theoretical", nPermute=1000, seeds=seq_len(1000), maxClusterGap=3000, groupInfo=groupInfo, subject="hg19", mc.cores=opt$mcores, lowMemDir=paste0("chr", opt$chr, "/chunksDir"), verbose=opt$verbose, chunksize=1e5)
+analyzeChr(chr=opt$chr, coverageInfo=data, models=models, cutoffFstat=1e-06, cutoffType="theoretical", nPermute=1000, seeds=seq_len(1000), maxClusterGap=3000, groupInfo=groupInfo, subject="hg19", mc.cores=opt$mcores, lowMemDir=file.path(tempdir(), paste0("chr", opt$chr) , "chunksDir")), verbose=opt$verbose, chunksize=1e5)
 
 ## Done
 if(opt$verbose) {
