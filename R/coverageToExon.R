@@ -139,9 +139,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
 .coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chromosomes,
     ...) {
-    
-    suppressPackageStartupMessages(library('GenomicRanges'))
-    verbose <- derfinder:::.advanced_argument('verbose', TRUE, ...)
+    verbose <- .advanced_argument('verbose', TRUE, ...)
     
     e <- etab[ii]  # subset
     
@@ -164,13 +162,12 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     exonCores <- min(nCores, length(subsets))
 
     ## Define cluster
-    BPPARAM.chrStep <- derfinder:::.advanced_argument('BPPARAM.chrStep', 
-        derfinder:::.define_cluster(cores = 'exonCores', exonCores = exonCores), ...)
+    BPPARAM.chrStep <- .advanced_argument('BPPARAM.chrStep', 
+        .define_cluster(cores = 'exonCores', exonCores = exonCores), ...)
     if(verbose) print(BPPARAM.chrStep)
     
     ## Define ChrStep function
     .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
-        suppressPackageStartupMessages(library('GenomicRanges'))
         if (verbose) 
             message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
     
@@ -188,7 +185,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     }
     
     ## Now run it
-    exonList <- BiocParallel::bpmapply(.coverageToExonChrStep, subsets, chromosomes, 
+    exonList <- bpmapply(.coverageToExonChrStep, subsets, chromosomes, 
         MoreArgs = moreArgs, BPPARAM = BPPARAM.chrStep, SIMPLIFY = FALSE)
         
     # combine
