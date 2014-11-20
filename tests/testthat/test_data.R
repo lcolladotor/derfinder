@@ -157,11 +157,21 @@ exonCov <- coverageToExon(fullCov=fullCov,
 ## Verify coverageToExon
 exonCov.verify <- do.call(rbind, lapply(getRegionCoverage(regions = smallGenomicState$fullGenome, files = files, fileStyle = 'NCBI', verbose = FALSE), function(x) { sapply(x, sum)})) / 36
 
+## Test call using multiple cores for coverageToExon()
+tmp <- rep(smallGenomicState$fullGenome, 3)
+seqlevels(tmp) <- c('chr20', 'chr21', 'chr22')
+seqnames(tmp) <- rep(c('chr20', 'chr21', 'chr22'), 2)
+names(tmp) <- 1:6
+strand(tmp) <- rep(c('+', '-'), 3)
+tripleSmall <- smallGenomicState
+tripleSmall$fullGenome <- tmp
+
 test_that('Obtaining region coverage', {
     expect_that(fullCov, is_identical_to(fullCov.regs))
     expect_that(regionCov, is_identical_to(getRegionCoverage(regions = regions, files = files, fileStyle = 'NCBI', verbose = FALSE)))
     expect_that(exonCov, is_identical_to(coverageToExon(genomicState = smallGenomicState$fullGenome, L=36, files = files, fileStyle = 'NCBI', verbose = FALSE)))
     expect_that(max.noP - max.wP, is_equivalent_to(rep(c(0,-1,0,-1,-2,-1,-3,0,-3,-1,-3,0,-1,0,-1,0), c(4,1,1,1,3,2,2,1,3,1,2,1,1,3,1,4))))
     expect_that(exonCov, equals(exonCov.verify))
+    expect_that(coverageToExon(fullCov=fullCov, genomicState=tripleSmall$fullGenome, L=36, strandCores = 1, mc.cores = 10), equals(coverageToExon(fullCov=fullCov, genomicState=tripleSmall$fullGenome, L=36, BPPARAM.strandStep = BiocParallel::SerialParam(), mc.cores = 10)))
 }
 )
