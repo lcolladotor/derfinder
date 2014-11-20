@@ -108,11 +108,13 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     
     # count reads covering exon on each strand
     strandCores <- min(.advanced_argument('mc.cores', getOption('mc.cores', 1L),
+        ...), .advanced_argument('strandCores', getOption('mc.cores', 1L),
         ...), length(unique(runValue(strand(etab)))))
 
     ## Define cluster
-    BPPARAM <- .advanced_argument('BPPARAM',
-        .define_cluster(cores = 'strandCores', strandCores), ...)
+    BPPARAM <- .advanced_argument('BPPARAM.strandStep',
+        .define_cluster(cores = 'strandCores', strandCores = strandCores), ...)
+    if(verbose) print(BPPARAM)
 
     # Use at most n cores where n is the number of unique strands
     exonByStrand <- bplapply(strandIndexes, .coverageToExonStrandStep, 
@@ -137,7 +139,6 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
 .coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chromosomes,
     ...) {
-        
     verbose <- .advanced_argument('verbose', TRUE, ...)
     
     e <- etab[ii]  # subset
@@ -162,7 +163,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
     ## Define cluster
     BPPARAM.chrStep <- .advanced_argument('BPPARAM.chrStep', 
-        .define_cluster(cores = 'exonCores', exonCores), ...)
+        .define_cluster(cores = 'exonCores', exonCores = exonCores), ...)
+    if(verbose) print(BPPARAM.chrStep)
     
     ## Define ChrStep function
     .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
