@@ -88,7 +88,7 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     
     ## Subsetting function that runs loadCoverage
     loadChr <- function(idx, files, chrs, bai, chrlens, outputs, cutoff,
-        mc.cores.load, ...) {
+        mc.load, ...) {
         
         if (verbose) 
             message(paste(Sys.time(), 'fullCoverage: processing chromosome', 
@@ -100,13 +100,13 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
         } else {
             res <- loadCoverage(files = files, chr = chrs[idx],
                 cutoff = cutoff, bai = bai, chrlen = chrlens[idx],
-                output = outputs[idx], mc.cores = mc.cores.load, ...)
+                output = outputs[idx], mc.cores = mc.load, ...)
         }
         return(res)        
     }
     result <- bplapply(seq_len(length(chrs)), loadChr, files = files, 
         chrs = chrs, bai = bai, chrlens = chrlens, outputs = outputs, 
-        cutoff = cutoff, mc.cores.load = mc.cores.load,
+        cutoff = cutoff, mc.load = mc.cores.load,
         ..., BPPARAM = BPPARAM)
     names(result) <- extendedMapSeqlevels(chrs, ...)
     
