@@ -270,7 +270,7 @@ find_regions <- findRegions
 #' cutoff <- quantile(data, .99)
 #'
 #' ## It's quite fast
-#' system.time(segs <- .getSegmentsRle(data, cutoff, verbose=TRUE))
+#' system.time(segs <- derfinder:::.getSegmentsRle(data, cutoff, verbose=TRUE))
 #' 
 #' \dontrun{
 #' ## The output is different in look than the one from getSegments() but it's 
@@ -278,7 +278,7 @@ find_regions <- findRegions
 #' ## Plus it can be transformed into the same format as the ouptut from 
 #' ## .getSegmentsRle().
 #' library('bumphunter')
-#' cluster <- .clusterMakerRle(pos, 100L)
+#' cluster <- derfinder:::.clusterMakerRle(pos, 100L)
 #' foo <- function() {
 #'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, 
 #'     assumeSorted=TRUE)[c('upIndex', 'dnIndex')]
