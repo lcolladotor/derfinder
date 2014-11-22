@@ -22,7 +22,7 @@
 #' \code{fullOrCoding='full'} then the columns are \code{exon}, 
 #' \code{intragenic} and \code{intron}.}
 #' \item{annotationList }{This is a \code{GRangesList} with the genomic states 
-#' that overlapped with the regions (if any, depends on \code{minoverlap}). The 
+#' that overlapped with the regions (at least 1 bp overlap). The 
 #' names of this \code{GRangesList} correspond to the region index in 
 #' \code{regions}.}
 #' }
@@ -83,7 +83,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
         if (verbose) 
             message(paste(Sys.time(), 'annotateRegions: annotating'))
         
-        oo <- findOverlaps(regions, genomicState, minoverlap = 1L)  # don't care about min overlap here
+        oo <- .runFunFormal(findOverlaps, query = regions,
+            subject = genomicState, ...)
         glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }

@@ -51,7 +51,8 @@ fstats
 
 \dontrun{
 ## Compare vs pre-packaged F-statistics
-summary(fstats - genomeFstats)
+library('testthat')
+expect_that(fstats, is_equivalent_to(genomeFstats))
 }
 }
 \author{
