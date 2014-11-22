@@ -24,7 +24,8 @@ install:
  
 script:
 #  - ./travis-tool.sh run_tests
-  - ./pkg-build.sh run_tests
+  - ./pkg-build.sh run_build
+  - ./pkg-build.sh run_check
 
 after_failure:
 #  - ./travis-tool.sh dump_logs

@@ -134,6 +134,13 @@ test_that('Filtering', {
 ## Assign chr lengths using hg19 information, use only first two regions
 library('GenomicRanges')
 data(hg19Ideogram, package = 'biovizBase', envir = environment())
+
+chr.lens <- c(249250621, 243199373, 198022430, 191154276, 180915260, 171115067, 159138663, 146364022, 141213431, 135534747, 135006516, 133851895, 115169878, 107349540, 102531392, 90354753, 81195210, 78077248, 59128983, 63025520, 48129895, 51304566, 155270560, 59373566)
+names(chr.lens) <- paste0('chr', c(1:22, 'X', 'Y'))
+test_that('Chr lengths', {
+    expect_that(seqlengths(hg19Ideogram)[paste0('chr', c(1:22, 'X', 'Y'))], equals(chr.lens))
+})
+
 regions <- genomeRegions$regions[1:2]
 seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 ## Get the region coverage

@@ -93,15 +93,10 @@ prep <- preprocessCoverage(genomeData, groupInfo = group, cutoff = 0,
 ## Get the F statistics
 fstats <- genomeFstats
 
-## Determine a cutoff from the F-distribution.
-## This step is very important and you should consider using quantiles from
-## the observed F statistics
-n <- dim(prep$coverageProcessed)[2]
-df1 <- dim(models$mod)[2]
-df0 <- dim(models$mod0)[2]
-cutoff <- qf(0.95, df1-df0, n-df1)
+## We recommend determining the cutoff to use based on the F-distribution
+## although you could also based it on the observed F-statistics.
 
-## Low cutoff used for illustrative purposes
+## In this example we use a low cutoff used for illustrative purposes
 cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
@@ -115,7 +110,8 @@ regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10,
     chr='chr21', cutoff=cutoff, mc.cores=2, method='regular')
 
 ## Check that they are the same as the previously calculated regions
-identical(regsWithP, genomeRegions)
+library(testthat)
+expect_that(regsWithP, equals(genomeRegions))
 
 ## Histogram of the theoretical p-values by region
 hist(pf(regsWithP$regions$value, df1-df0, n-df1), main='Distribution

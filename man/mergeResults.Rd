@@ -73,33 +73,6 @@ dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)
 file.copy(system.file(file.path('extdata', 'chr21'), package='derfinder',
 mustWork=TRUE), 'generateReport-example', recursive=TRUE)
 
-\dontrun{
-## If you prefer, you can generate the output from derfinder
-initialPath <- getwd()
-setwd(file.path(initialPath, 'generateReport-example'))
-
-## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-verbose=TRUE)
-
-## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
-verbose=TRUE)
-
-## Build the models
-group <- genomeInfo$pop
-adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-
-## Analyze chromosome 21
-analyzeChr(chr='21', coverageInfo=genomeData, models=models,
-cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=group,
-mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
-
-## Change the directory back to the original one
-setwd(initialPath)
-}
-
 ## Merge the results from the different chromosomes. In this case, there's
 ## only one: chr21
 mergeResults(chrs='21', prefix='generateReport-example',

@@ -80,15 +80,10 @@
 #' ## Get the F statistics
 #' fstats <- genomeFstats
 #'
-#' ## Determine a cutoff from the F-distribution.
-#' ## This step is very important and you should consider using quantiles from 
-#' ## the observed F statistics
-#' n <- dim(prep$coverageProcessed)[2]
-#' df1 <- dim(models$mod)[2]
-#' df0 <- dim(models$mod0)[2]
-#' cutoff <- qf(0.95, df1-df0, n-df1)
+#' ## We recommend determining the cutoff to use based on the F-distribution
+#' ## although you could also based it on the observed F-statistics.
 #' 
-#' ## Low cutoff used for illustrative purposes
+#' ## In this example we use a low cutoff used for illustrative purposes
 #' cutoff <- 1
 #'
 #' ## Calculate the p-values and define the regions of interest.
@@ -102,7 +97,8 @@
 #'     chr='chr21', cutoff=cutoff, mc.cores=2, method='regular')
 #' 
 #' ## Check that they are the same as the previously calculated regions
-#' identical(regsWithP, genomeRegions)
+#' library(testthat)
+#' expect_that(regsWithP, equals(genomeRegions))
 #'
 #' ## Histogram of the theoretical p-values by region
 #' hist(pf(regsWithP$regions$value, df1-df0, n-df1), main='Distribution 
@@ -198,7 +194,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     ## Avoid re-calculating possible candidate DERs for every
     ## permutation
     segmentIR <- .clusterMakerRle(position = position, maxGap = 
-        .advanced_argument('maxRegionGap', 300L, ...), ranges = TRUE)
+        .advanced_argument('maxRegionGap', 0L, ...), ranges = TRUE)
     
     ## Find the regions
     regs <- findRegions(position = position, chr = chr, fstats = fstats,
@@ -250,6 +246,9 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     last <- 0
     nSamples <- seq_len(nrow(models$mod))
     
+    ## Define cluster
+    BPPARAM <- .define_cluster(...)
+    
     for (i in seq_along(seeds)) {
         if (verbose) 
             message(paste(Sys.time(),
@@ -264,11 +263,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         ## Permuted sample labels
         mod.p <- models$mod[idx.permute, , drop = FALSE]
         mod0.p <- models$mod0[idx.permute, , drop = FALSE]
-        
-        ## Define cluster
-        BPPARAM <- .define_cluster(...)
-        
-        
+
         ## Get the F-statistics
         fstats.output <- bplapply(mclapplyIndex, fstats.apply, 
             data = coverageProcessed, mod = mod.p, mod0 = mod0.p, 
@@ -310,10 +305,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         if (verbose) 
             message(paste(Sys.time(),
                 "calculatePvalues: calculating the p-values"))
-        pvals <- sapply(regs$area, function(x) {
-            sum(nullareas > x)
-        })
-        regs$pvalues <- (pvals + 1)/(length(nullareas) + 1)
+        regs$pvalues <- .calcPval(regs$area, nullareas)
         regs$significant <- factor(regs$pvalues < significantCut[1], 
             levels = c(TRUE, FALSE))
         
@@ -328,6 +320,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))
         } else {
+            message(paste(Sys.time(), "calculatePvalues: skipping q-value calculation."))
             qvalues <- rep(NA, length(regs$pvalues))
             sigQval <- rep(NA, length(regs$pvalues))
         }
@@ -355,6 +348,14 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
 #' @export
 calculate_pvalues <- calculatePvalues
+
+.calcPval <- function(areas, nullareas) {
+    pvals <- sapply(areas, function(x) {
+        sum(nullareas > x)
+    })
+    res <- (pvals + 1)/(length(nullareas) + 1)
+    return(res)
+}
 
 .writeRegs <- function(regs, writeOutput, chr) {
     ## Save the output from calculatePvalues

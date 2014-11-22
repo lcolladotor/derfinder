@@ -1,3 +1,19 @@
+CHANGES IN VERSION 1.0.10
+-------------------------
+
+BUG FIXES
+
+    o Fixed an important bug on calculatePvalues()! Basically, internally
+        `maxRegionGap` was set to 300 instead of 0 in one step by default.
+        Thus the process of mapping regions to genomic coordinates was messed
+        up. If you have results prior to this fix you can try using
+        https://gist.github.com/bf85e2c7d5d1f8197707 to fix the results as
+        much as possible. Basically, regions will be correct but the
+        p-values will be approximated with the available information from the
+        null regions. Truly fixing the p-values can only be done by re-running
+        derfinder.
+
+
 CHANGES IN VERSION 1.0.4
 ------------------------
 

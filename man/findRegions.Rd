@@ -71,17 +71,8 @@ regs <- findRegions(prep$position, fstats, 'chr21', verbose=TRUE)
 regs
 
 \dontrun{
-## Compare vs bumphunter
-library('bumphunter')
-regs2 <- regionFinder(as.numeric(fstats), rep('chr21', length(fstats)),
-    which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE,
-    order=FALSE, maxGap=1)
-regs2
-## Note that regs$L can be calculated with width(regs)
-identical(width(regs), as.integer(regs2$L))
-
 ## Once you have the regions you can proceed to annotate them
-annotation <- annotateNearest(regs, 'hg19')
+annotation <- bumphunter::annotateNearest(regs, 'hg19')
 annotation
 }
 }
@@ -94,6 +85,6 @@ D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 1.1.10.
 }
 \seealso{
-\link[bumphunter]{regionFinder}, \link{calculatePvalues}
+\link{calculatePvalues}
 }
 
