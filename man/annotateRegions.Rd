@@ -28,7 +28,7 @@ regions vs the genomic states with one type per column. For example, if
 \code{fullOrCoding='full'} then the columns are \code{exon},
 \code{intragenic} and \code{intron}.}
 \item{annotationList }{This is a \code{GRangesList} with the genomic states
-that overlapped with the regions (at least 1 bp overlap). The
+that overlapped with the regions. The
 names of this \code{GRangesList} correspond to the region index in
 \code{regions}.}
 }
