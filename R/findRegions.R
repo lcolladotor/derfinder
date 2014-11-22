@@ -39,7 +39,7 @@
 #'
 #' @details \link[bumphunter]{regionFinder} adapted to Rle world.
 #'
-#' @seealso \link[bumphunter]{regionFinder}, \link{calculatePvalues}
+#' @seealso \link{calculatePvalues}
 #'
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
 #' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
@@ -66,17 +66,8 @@
 #' regs
 #'
 #' \dontrun{
-#' ## Compare vs bumphunter
-#' library('bumphunter')
-#' regs2 <- regionFinder(as.numeric(fstats), rep('chr21', length(fstats)), 
-#'     which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, 
-#'     order=FALSE, maxGap=1)
-#' regs2
-#' ## Note that regs$L can be calculated with width(regs)
-#' identical(width(regs), as.integer(regs2$L))
-#'
 #' ## Once you have the regions you can proceed to annotate them
-#' annotation <- annotateNearest(regs, 'hg19')
+#' annotation <- bumphunter::annotateNearest(regs, 'hg19')
 #' annotation
 #' }
 
@@ -140,7 +131,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Find the actual DERs
     if (verbose) 
         message(paste(Sys.time(),
-            'findRegions: identifying candidate DERs'))
+            'findRegions: identifying candidate regions'))
     ders <- lapply(segments, function(fcut) {
         ## Merge with segment ranges
         all <- c(fcut, segmentIR)
@@ -182,7 +173,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
             ## Identify clusters
             if (verbose) 
                 message(paste(Sys.time(),
-                    'findRegions: identifying DER clusters'))
+                    'findRegions: identifying region clusters'))
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
             cluster <- .clusterMakerRle(regionPos, maxClusterGap)

@@ -58,7 +58,9 @@
 #'     makeGenomicState(txdb=txdb, chrs='chr21')
 #' 
 #' ## For convinience, this object is already included in derfinder
-#' identical(GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, genomicState)
+#' library('testthat')
+#' expect_that(GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, 
+#'    is_equivalent_to(genomicState))
 #'
 #' ## Hsapiens ENSEMBL GRCh37
 #' library('GenomicFeatures')

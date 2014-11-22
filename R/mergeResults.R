@@ -67,33 +67,6 @@
 #' ## For convenience, the derfinder output has been pre-computed
 #' file.copy(system.file(file.path('extdata', 'chr21'), package='derfinder', 
 #' mustWork=TRUE), 'generateReport-example', recursive=TRUE)
-#' 
-#' \dontrun{
-#' ## If you prefer, you can generate the output from derfinder
-#' initialPath <- getwd()
-#' setwd(file.path(initialPath, 'generateReport-example'))
-#'
-#' ## Collapse the coverage information
-#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-#' verbose=TRUE)
-#' 
-#' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, 
-#' verbose=TRUE)
-#' 
-#' ## Build the models
-#' group <- genomeInfo$pop
-#' adjustvars <- data.frame(genomeInfo$gender)
-#' models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
-#'
-#' ## Analyze chromosome 21
-#' analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
-#' cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=group, 
-#' mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
-#'
-#' ## Change the directory back to the original one
-#' setwd(initialPath)
-#' }
 #'
 #' ## Merge the results from the different chromosomes. In this case, there's 
 #' ## only one: chr21
@@ -284,18 +257,17 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
     if (verbose) 
         message(paste(Sys.time(), 'mergeResults: Re-calculating the p-values'))
     
+    ## Sort by decreasing area
+    fullRegions <- fullRegions[order(fullRegions$area, decreasing = TRUE)]
+    
     if (nrow(fullNullSummary) > 0) {
         ## Actual calculation
-        nullareas <- as.numeric(fullNullSummary$area)
-        pvals <- sapply(fullRegions$area, function(x) {
-            sum(nullareas > x)
-        })
+        fullRegions$pvalues <- .calcPval(fullRegions$area,
+            as.numeric(fullNullSummary$area))
+        
+        ## Update info        
         fullRegions$significant <- factor(fullRegions$pvalues < 
             significantCut[1], levels = c(TRUE, FALSE))
-        
-        ## Update info
-        fullRegions$pvalues <- (pvals + 1)/(length(nullareas) + 
-            1)
         
         ## Sometimes qvalue() fails due to incorrect pi0 estimates
         qvalues <- qvalue(fullRegions$pvalues)
@@ -304,14 +276,13 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))
         } else {
+            message(paste(Sys.time()), "mergeResults: skipping q-value calculation.")
             qvalues <- rep(NA, length(fullRegions$pvalues))
             sigQval <- rep(NA, length(fullRegions$pvalues))
         }
         fullRegions$qvalues <- qvalues
         fullRegions$significantQval <- sigQval
-    }
-    ## Sort by decreasing area
-    fullRegions <- fullRegions[order(fullRegions$area, decreasing = TRUE)]
+    }   
     
     ## save GRanges version
     if (verbose) 

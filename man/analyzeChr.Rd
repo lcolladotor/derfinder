@@ -104,13 +104,13 @@ sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), nonzero=TRUE,
     verbose=TRUE)
 
 ## Build the models
-group <- genomeInfo$pop
+groupInfo <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+models <- makeModels(sampleDepths, testvars=groupInfo, adjustvars=adjustvars)
 
 ## Analyze the chromosome
 results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
-    cutoffFstat=1, cutoffType='manual', groupInfo=group, mc.cores=1,
+    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1,
     writeOutput=FALSE, returnOutput=TRUE, method='regular')
 names(results)
 }
