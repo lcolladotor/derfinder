@@ -276,7 +276,7 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))
         } else {
-            message(paste(Sys.time()), "mergeResults: skipping q-value calculation.")
+            message(paste(Sys.time(), "mergeResults: skipping q-value calculation."))
             qvalues <- rep(NA, length(fullRegions$pvalues))
             sigQval <- rep(NA, length(fullRegions$pvalues))
         }
