@@ -772,7 +772,7 @@ round(totalTime, digits=3)
 ```{r reproducibility3, echo=FALSE, bootstrap.show.code=FALSE, bootstrap.show.message=FALSE}
 ## Session info
 library('devtools')
-options(width = 100)
+options(width = 120)
 session_info()
 ```
 
