@@ -1,5 +1,14 @@
+CHANGES IN VERSION 1.1.15
+-------------------------
+
+BUG FIXES
+
+    o makeGenomicState() incorrectly labeled regions as intragenic. The correct
+        name is intergenic.
+
+
 CHANGES IN VERSION 1.1.14
-------------------------
+-------------------------
 
 BUG FIXES
 

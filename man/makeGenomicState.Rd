@@ -19,8 +19,8 @@ A \code{GRangesList} object with two elements: \code{fullGenome} and
 \code{codingGenome}. Both have metadata information for the type of region
 (theRegion), transcript IDs (tx_id), transcript name (tx_name), and gene ID
 (gene_id). \code{fullGenome} classifies each region as either being exon,
-intron or intragenic. \code{codingGenome} classfies the regions as being
-promoter, exon, intro, 5UTR, 3UTR or intragenic.
+intron or intergenic. \code{codingGenome} classfies the regions as being
+promoter, exon, intro, 5UTR, 3UTR or intergenic.
 }
 \description{
 This function summarizes the annotation contained in a

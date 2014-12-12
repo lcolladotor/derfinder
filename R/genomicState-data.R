@@ -11,9 +11,9 @@
 #' @format  A GRangesList with two components.
 #' \describe{
 #' \item{fullGenome }{ classifies each region as either being exon, intron or 
-#' intragenic.}
+#' intergenic.}
 #' \item{codingGenome }{ classfies the regions as being promoter, exon, intro, 
-#' 5UTR, 3UTR or intragenic.}
+#' 5UTR, 3UTR or intergenic.}
 #' }
 #' @keywords datasets
 #' @seealso \link[derfinder]{makeGenomicState}
