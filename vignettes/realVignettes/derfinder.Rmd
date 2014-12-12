@@ -435,7 +435,7 @@ Note that `analyzeChr()` only has the information for a given chromosome at a ti
 
 #### fullAnnotatedRegions
 
-In preparation for visually exploring the results, `mergeResults()` will run `annotateRegions()` which counts how many known exons, introns and intragenic segments each candidate DER overlaps (by default with a minimum overlap of 20bp). `annotateRegions()` uses a summarized version of the genome annotation created with `makeGenomicState()`. For this example, we can use the data included in `derfinder` which is the summarized annotation of hg19 for chromosome 21.
+In preparation for visually exploring the results, `mergeResults()` will run `annotateRegions()` which counts how many known exons, introns and intergenic segments each candidate DER overlaps (by default with a minimum overlap of 20bp). `annotateRegions()` uses a summarized version of the genome annotation created with `makeGenomicState()`. For this example, we can use the data included in `derfinder` which is the summarized annotation of hg19 for chromosome 21.
 
 ```{r 'exploreFullAnnoRegs'}
 ## Load annotateRegions() output
@@ -580,7 +580,7 @@ We can certainly make region level plots using `plotRegionCoverage()` or cluster
 First we need to get the relevant annotation information.
 
 ```{r 'regionMatAnnotate'}
-## Annotate regions as exonic, intronic or intragenic
+## Annotate regions as exonic, intronic or intergenic
 system.time(annoGenome <- annotateRegions(regionMat$chr21$regions, genomicState$fullGenome))
 ## Note that the genomicState object included in derfinder only has information
 ## for chr21 (hg19).

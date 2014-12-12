@@ -14,8 +14,8 @@
 #' \code{codingGenome}. Both have metadata information for the type of region 
 #' (theRegion), transcript IDs (tx_id), transcript name (tx_name), and gene ID 
 #' (gene_id). \code{fullGenome} classifies each region as either being exon, 
-#' intron or intragenic. \code{codingGenome} classfies the regions as being 
-#' promoter, exon, intro, 5UTR, 3UTR or intragenic.
+#' intron or intergenic. \code{codingGenome} classfies the regions as being 
+#' promoter, exon, intro, 5UTR, 3UTR or intergenic.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link[GenomicFeatures]{TxDb}
@@ -344,32 +344,32 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     codingGR <- unlist(GRangesList(grList2))
     codingGR <- sort(codingGR)
     
-    #### gaps to get intragenic candidate regions
+    #### gaps to get intergenic candidate regions
     
     ## full
     mcols(fullGR)$Gene_Strand <- strand(fullGR)
     strand(fullGR) <- Rle('*')
     
-    fullIntraGR <- gaps(fullGR)
+    fullInterGR <- gaps(fullGR)
     strand(fullGR) <- as.character(mcols(fullGR)$Gene_Strand)
     mcols(fullGR)$Gene_Strand <- NULL
     
-    fList <- split(fullIntraGR, seqnames(fullIntraGR))
+    fList <- split(fullInterGR, seqnames(fullInterGR))
     for (i in seq(along = fList)) {
         x <- fList[[i]]
-        fList[[i]] <- x[width(x) != seqlengths(fullIntraGR)[i]]
+        fList[[i]] <- x[width(x) != seqlengths(fullInterGR)[i]]
     }
-    fullIntraGR <- unlist(fList)
+    fullInterGR <- unlist(fList)
     
-    addTxName <- CharacterList(vector('list', length(fullIntraGR)))
-    addTx <- addGene <- IntegerList(vector('list', length(fullIntraGR)))
-    gRegion <- rep('intragenic', length(fullIntraGR))
-    values(fullIntraGR) <- DataFrame(gRegion, addTx, addTxName, 
+    addTxName <- CharacterList(vector('list', length(fullInterGR)))
+    addTx <- addGene <- IntegerList(vector('list', length(fullInterGR)))
+    gRegion <- rep('intergenic', length(fullInterGR))
+    values(fullInterGR) <- DataFrame(gRegion, addTx, addTxName, 
         addGene)
-    names(mcols(fullIntraGR)) <- names(mcols(fullGR))
+    names(mcols(fullInterGR)) <- names(mcols(fullGR))
     
     
-    fullGenome <- c(fullIntraGR, fullGR)
+    fullGenome <- c(fullInterGR, fullGR)
     fullGenome <- sort(fullGenome)
     names(fullGenome) <- seq(along = fullGenome)
     
@@ -377,26 +377,26 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     mcols(codingGR)$Gene_Strand <- strand(codingGR)
     strand(codingGR) <- Rle('*')
     
-    codingIntraGR <- gaps(codingGR)
+    codingInterGR <- gaps(codingGR)
     strand(codingGR) <- as.character(mcols(codingGR)$Gene_Strand)
     mcols(codingGR)$Gene_Strand <- NULL
     
-    fList <- split(codingIntraGR, seqnames(codingIntraGR))
+    fList <- split(codingInterGR, seqnames(codingInterGR))
     for (i in seq(along = fList)) {
         x <- fList[[i]]
-        fList[[i]] <- x[width(x) != seqlengths(codingIntraGR)[i]]
+        fList[[i]] <- x[width(x) != seqlengths(codingInterGR)[i]]
     }
-    codingIntraGR <- unlist(fList)
+    codingInterGR <- unlist(fList)
     
-    addTxName <- CharacterList(vector('list', length(codingIntraGR)))
-    addTx <- addGene <- IntegerList(vector('list', length(codingIntraGR)))
-    gRegion <- rep('intragenic', length(codingIntraGR))
-    values(codingIntraGR) <- DataFrame(gRegion, addTx, addTxName, 
+    addTxName <- CharacterList(vector('list', length(codingInterGR)))
+    addTx <- addGene <- IntegerList(vector('list', length(codingInterGR)))
+    gRegion <- rep('intergenic', length(codingInterGR))
+    values(codingInterGR) <- DataFrame(gRegion, addTx, addTxName, 
         addGene)
-    names(mcols(codingIntraGR)) <- names(mcols(codingGR))
+    names(mcols(codingInterGR)) <- names(mcols(codingGR))
     
     
-    codingGenome <- c(codingIntraGR, codingGR)
+    codingGenome <- c(codingInterGR, codingGR)
     codingGenome <- sort(codingGenome)
     names(codingGenome) <- seq(along = codingGenome)
     
