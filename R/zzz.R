@@ -1,6 +1,6 @@
 ## Based on https://github.com/hadley/ggplot2/blob/master/R/zzz.r
 .onAttach <- function(...) {
-    if (!interactive() || stats::runif(1) > 0.5) return()
+    if (!interactive() || stats::runif(1) > 0.9) return()
         
     tips <- c(
         "Found a bug? Report it at https://github.com/lcolladotor/derfinder/issues",
@@ -12,6 +12,6 @@
         "Use suppressPackageStartupMessages to eliminate package startup messages."
     )
     
-    tip <- sample(tips, 1, prob = c(0.2, 0.1, 0.4, 0.2, 0.1))
+    tip <- sample(tips, 1, prob = c(0.05, 0.05, 0.55, 0.2, 0.15))
     packageStartupMessage(tip)
 }
