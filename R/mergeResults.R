@@ -33,8 +33,8 @@
 #' statistic, width, chromosome and permutation identifier. It's ordered by the 
 #' statistics}
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full 
-#' annotation from \link[bumphunter]{annotateNearest}. Note that the column 
-#' \code{strand} from \link[bumphunter]{annotateNearest} is renamed to 
+#' annotation from \link[bumphunter]{matchGenes}. Note that the column 
+#' \code{strand} from \link[bumphunter]{matchGenes} is renamed to 
 #' \code{annoStrand} to comply with GRanges specifications. }
 #' \item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data 
 #' from all chromosomes.}

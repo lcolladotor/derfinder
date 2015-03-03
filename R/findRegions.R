@@ -67,7 +67,10 @@
 #'
 #' \dontrun{
 #' ## Once you have the regions you can proceed to annotate them
-#' annotation <- bumphunter::annotateNearest(regs, 'hg19')
+#' library('bumphunter')
+#' library('TxDb.Hsapiens.UCSC.hg19.knownGene')
+#' genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' annotation <- matchGenes(regs, genes)
 #' annotation
 #' }
 

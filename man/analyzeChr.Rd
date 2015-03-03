@@ -6,13 +6,13 @@
 \usage{
 analyzeChr(chr, coverageInfo, models, cutoffPre = 5, cutoffFstat = 1e-08,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
-  "", Sys.Date())) + seq_len(nPermute), groupInfo, subject = "hg19",
+  "", Sys.Date())) + seq_len(nPermute), groupInfo, txdb = NULL,
   writeOutput = TRUE, runAnnotation = TRUE, lowMemDir = file.path(chr,
   "chunksDir"), ...)
 }
 \arguments{
-\item{chr}{Used for naming the output files when \code{writeOutput=TRUE}
-and for \link[bumphunter]{annotateNearest}.}
+\item{chr}{Used for naming the output files when \code{writeOutput=TRUE} and
+the resulting \code{GRanges} object.}
 
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
 the coverage data and a logical Rle --\code{$position}-- with the positions
@@ -45,17 +45,18 @@ seeds to be used for each permutation. If \code{NULL} no seeds are used.}
 that can later be used with the plotting functions in the
 \code{derfinderPlot} package.}
 
-\item{subject}{This argument is passed to
-\link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right
-now.}
+\item{txdb}{This argument is passed to
+\link[bumphunter]{annotateTranscripts}. If \code{NULL},
+\link[TxDb.Hsapiens.UCSC.hg19.knownGene]{TxDb.Hsapiens.UCSC.hg19.knownGene}
+is used.}
 
 \item{writeOutput}{If \code{TRUE}, output Rdata files are created at each
 step inside a directory with the chromosome name (example: 'chr21' if
 \code{chrnum='21'}). One Rdata file is created for each component described
 in the return section.}
 
-\item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateNearest} is
-run. Otherwise this step is skipped.}
+\item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateTranscripts}
+and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.}
 
 \item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
 file under \code{lowMemDir} and later loaded in
@@ -75,7 +76,7 @@ If \code{returnOutput=TRUE}, a list with six components:
 \item{coveragePrep }{ The output from \link{preprocessCoverage}.}
 \item{fstats}{ The output from \link{calculateStats}.}
 \item{regions}{ The output from \link{calculatePvalues}.}
-\item{annotation}{ The output from \link[bumphunter]{annotateNearest}.}
+\item{annotation}{ The output from \link[bumphunter]{matchGenes}.}
 }
 These are the same components that are written to Rdata files if
 \code{writeOutput=TRUE}.
@@ -85,7 +86,8 @@ This is a major wrapper for running several key functions from this package.
 It is meant to be used after \link{loadCoverage} has been used for a
 specific chromosome. The steps run include \link{makeModels},
 \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}
-and \link[bumphunter]{annotateNearest}.
+and annotating with \link[bumphunter]{annotateTranscripts} and
+\link[bumphunter]{matchGenes}.
 }
 \details{
 If you are working with data from an organism different from 'Homo sapiens'
@@ -120,6 +122,6 @@ Leonardo Collado-Torres
 \seealso{
 \link{makeModels}, \link{preprocessCoverage},
 \link{calculateStats}, \link{calculatePvalues},
-\link[bumphunter]{annotateNearest}
+\link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
 }
 

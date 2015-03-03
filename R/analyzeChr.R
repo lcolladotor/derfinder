@@ -4,10 +4,11 @@
 #' It is meant to be used after \link{loadCoverage} has been used for a 
 #' specific chromosome. The steps run include \link{makeModels}, 
 #' \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues} 
-#' and \link[bumphunter]{annotateNearest}. 
+#' and annotating with \link[bumphunter]{annotateTranscripts} and
+#' \link[bumphunter]{matchGenes}. 
 #' 
-#' @param chr Used for naming the output files when \code{writeOutput=TRUE} 
-#' and for \link[bumphunter]{annotateNearest}.
+#' @param chr Used for naming the output files when \code{writeOutput=TRUE} and
+#' the resulting \code{GRanges} object.
 #' @param models The output from \link{makeModels}.
 #' @param cutoffPre This argument is passed to \link{preprocessCoverage} 
 #' (\code{cutoff}).
@@ -24,15 +25,16 @@
 #' @param groupInfo A factor specifying the group membership of each sample 
 #' that can later be used with the plotting functions in the 
 #' \code{derfinderPlot} package.
-#' @param subject This argument is passed to 
-#' \link[bumphunter]{annotateNearest}. Note that only \code{hg19} works right 
-#' now.
+#' @param txdb This argument is passed to 
+#' \link[bumphunter]{annotateTranscripts}. If \code{NULL}, 
+#' \link[TxDb.Hsapiens.UCSC.hg19.knownGene]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
+#' is used.
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 
 #' \code{chrnum='21'}). One Rdata file is created for each component described 
 #' in the return section.
-#' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateNearest} is 
-#' run. Otherwise this step is skipped.
+#' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateTranscripts} 
+#' and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:
@@ -42,7 +44,7 @@
 #' \item{coveragePrep }{ The output from \link{preprocessCoverage}.}
 #' \item{fstats}{ The output from \link{calculateStats}.}
 #' \item{regions}{ The output from \link{calculatePvalues}.}
-#' \item{annotation}{ The output from \link[bumphunter]{annotateNearest}.}
+#' \item{annotation}{ The output from \link[bumphunter]{matchGenes}.}
 #' }
 #' These are the same components that are written to Rdata files if 
 #' \code{writeOutput=TRUE}.
@@ -57,11 +59,11 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{makeModels}, \link{preprocessCoverage}, 
 #' \link{calculateStats}, \link{calculatePvalues}, 
-#' \link[bumphunter]{annotateNearest}
+#' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
 #' @export
 #' @aliases analyze_chr
 #' @importMethodsFrom S4Vectors as.numeric
-#' @importFrom bumphunter annotateNearest
+#' @importFrom bumphunter annotateTranscripts matchGenes
 #' 
 #' @examples
 #' ## Collapse the coverage information
@@ -86,7 +88,7 @@
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
     cutoffFstat = 1e-08, cutoffType = 'theoretical', nPermute = 1, 
     seeds = as.integer(gsub('-', '', Sys.Date())) + seq_len(nPermute), 
-    groupInfo, subject = 'hg19', writeOutput = TRUE, runAnnotation = TRUE,
+    groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
     lowMemDir =  file.path(chr, 'chunksDir'), ...){
         
     ## Run some checks
@@ -217,7 +219,13 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         message(paste(Sys.time(), 'analyzeChr: Annotating regions'))
     
     if (!is.null(regions$regions) & runAnnotation) {
-        annotation <- annotateNearest(regions$regions, subject)
+        if(is.null(txdb)) {
+            library('TxDb.Hsapiens.UCSC.hg19.knownGene')
+            txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+        }
+        genes <- .runFunFormal(annotateTranscripts, txdb = txdb, ...)
+        annotation <- .runFunFormal(matchGenes, x = regions$regions,
+            subject = genes, ...)
     } else {
         annotation <- NULL
     }
