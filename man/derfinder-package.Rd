@@ -11,7 +11,7 @@ pre-processing the data by using \link{preprocessCoverage}, calculating the
 F-statistics (while adjusting for some confounders) using \link{makeModels}
 and \link{calculateStats}, calculating the p-values and finding the regions
 of interest using \link{calculatePvalues}, and finally annotating them using
-\link[bumphunter]{annotateNearest} from the bumphunter package.
+\link[bumphunter]{matchGenes} from the bumphunter package.
 }
 \author{
 Leonardo Collado-Torres <lcollado@jhu.edu>

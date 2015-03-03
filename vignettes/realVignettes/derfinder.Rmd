@@ -354,7 +354,7 @@ sum(width(results$regions$regions[ sig ]) > 50)
 
 #### Nearest annotation
 
-`analyzeChr()` will find the nearest annotation feature using `annotateNearest()` from [bumphunter](http://www.bioconductor.org/packages/release/bioc/html/bumphunter.html). This information is useful considering that the candidate DERs were identified without relying on annotation. Yet at the end, we are interested to check if they are inside a known exon, upstream a gene, etc.
+`analyzeChr()` will find the nearest annotation feature using `matchGenes()` from [bumphunter](http://www.bioconductor.org/packages/release/bioc/html/bumphunter.html) (version >= 1.7.3). This information is useful considering that the candidate DERs were identified without relying on annotation. Yet at the end, we are interested to check if they are inside a known exon, upstream a gene, etc.
 
 ```{r 'exploreAnnotation'}
 ## Nearest annotation
@@ -587,7 +587,10 @@ system.time(annoGenome <- annotateRegions(regionMat$chr21$regions, genomicState$
 
 ## Identify closest genes to regions
 suppressPackageStartupMessages(library('bumphunter'))
-system.time(annoNear <- annotateNearest(regionMat$chr21$regions, subject = 'hg19'))
+suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+genes <- annotateTranscripts(txdb)
+system.time(annoNear <- matchGenes(regionMat$chr21$regions, genes))
 ```
 
 Now we can proceed to use `derfinderPlot` to make the region level plots for the top 100 regions.
@@ -597,9 +600,6 @@ Now we can proceed to use `derfinderPlot` to make the region level plots for the
 top <- order(regionMat$chr21$regions$area, decreasing = TRUE)[1:100]
 
 ## Base-level plots for the top 100 regions with transcript information
-suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
-txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
-
 library('derfinderPlot')
 plotRegionCoverage(regionMat$chr21$regions, regionCoverage = regionMat$chr21$bpCoverage, groupInfo = pheno$group, nearestAnnotation = annoNear, annotatedRegions = annoGenome, whichRegions = top, scalefac = 1, txdb = txdb, ask = FALSE)
 ```

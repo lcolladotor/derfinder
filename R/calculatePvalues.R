@@ -118,7 +118,9 @@
 #'
 #' ## Annotate the results
 #' library('bumphunter')
-#' annotation <- annotateNearest(regsWithP$regions, 'hg19')
+#' library('TxDb.Hsapiens.UCSC.hg19.knownGene')
+#' genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' annotation <- matchGenes(regsWithP$regions, genes)
 #' head(annotation)
 #'
 #' }
