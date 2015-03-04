@@ -58,7 +58,7 @@
 #' @aliases load_coverage
 #' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path 
 #' scanBamFlag BamFile
-#' @importFrom GenomicAlignments readGAlignmentsFromBam
+#' @importFrom GenomicAlignments readGAlignments
 #' @importFrom IRanges IRanges RangesList
 #' @importFrom rtracklayer BigWigFileList path BigWigFile
 #' @importFrom GenomeInfoDb seqlevels
@@ -309,7 +309,7 @@ load_coverage <- loadCoverage
     
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
-    output <- coverage(readGAlignmentsFromBam(file, param = param), 
+    output <- coverage(readGAlignments(file, param = param), 
         drop.D.ranges = drop.D.ranges)[[chr]]
         
     ## Done
