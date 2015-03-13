@@ -30,9 +30,7 @@
     } else {
         mc.cores <- .advanced_argument(cores, getOption('mc.cores', 1L), ...)
         if(mc.cores > 1) {
-            mc.outfile <- .advanced_argument('mc.outfile',
-                Sys.getenv('SGE_STDERR_PATH'), ...)
-            BPPARAM <- SnowParam(workers = mc.cores, outfile = mc.outfile)
+            BPPARAM <- SnowParam(workers = mc.cores)
         } else {
             BPPARAM <- SerialParam()
         }
