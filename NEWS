@@ -5,6 +5,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
     o Changed citation information to reference the bioRxiv pre-print
 
+BUG FIXES
+    
+    o Polished the interaction with bumphunter >= 1.7.3
+    o Updated the default cluster option now that BiocParallel::SnowParam()
+        no longer has an 'outfile' argument.
 
 CHANGES IN VERSION 1.1.16
 -------------------------
