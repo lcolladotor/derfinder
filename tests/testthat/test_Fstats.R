@@ -89,6 +89,7 @@ mergeResults(chrs='21', prefix='generateReport-example',
 load(file.path('generateReport-example' , 'fullRegions.Rdata'))
 fullRegions.included <- fullRegions
 
+## Make a fresh copy
 initialPath <- getwd()
 dir.create('generateReport-example-rerun', showWarnings = FALSE, 
     recursive = TRUE)
@@ -103,9 +104,13 @@ models <- makeModels(sampleDepths, testvars=groupInfo, adjustvars=adjustvars)
 analyzeChr(chr='21', coverageInfo=genomeData, models=models,
     cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=groupInfo,
     mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
+    
+## Merge fresh results
 setwd(initialPath)
 mergeResults(chrs='21', prefix='generateReport-example-rerun',
     genomicState=genomicState$fullGenome)
+    
+## Load results
 load(file.path('generateReport-example-rerun' , 'fullRegions.Rdata'))
 fullRegions.rerun <- fullRegions
 
@@ -116,6 +121,7 @@ test_that('mergeResults', {
 })
 
 
+library('TxDb.Hsapiens.UCSC.hg19.knownGene')
 
 results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
     cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
@@ -123,7 +129,7 @@ results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
 results.param <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
     cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
     writeOutput=FALSE, returnOutput=TRUE, method='regular', maxRegionGap = 0L,
-    maxClusterGap = 300L, subject = 'hg19', scalefac = 32)
+    maxClusterGap = 300L, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene, scalefac = 32)
 
 test_that('analyzeChr', {
     expect_that(results$regions, equals(results.param$regions))
