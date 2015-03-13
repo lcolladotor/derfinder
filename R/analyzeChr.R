@@ -221,10 +221,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     if (!is.null(regions$regions) & runAnnotation) {
         if(is.null(txdb)) {
-            ## For R CMD check
-            TxDb.Hsapiens.UCSC.hg19.knownGene <- NULL
             library('TxDb.Hsapiens.UCSC.hg19.knownGene')
-            txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+            txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
         }
         genes <- .runFunFormal(annotateTranscripts, txdb = txdb, ...)
         annotation <- .runFunFormal(matchGenes, x = regions$regions,
