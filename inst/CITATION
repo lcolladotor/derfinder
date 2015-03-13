@@ -4,17 +4,20 @@ pkgVer <- function(pkg, default) {
     paste0('https://github.com/lcolladotor/', pkg, ' - R package version ', ver)
 }
 c(
-    bibentry(bibtype="manual",
-        title = "derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution",
+    bibentry(bibtype="article",
+        title = "derfinder: Software for annotation-agnostic RNA-seq differential expression analysis",
         author = personList(
             as.person("Leonardo Collado-Torres"),
             as.person("Alyssa C. Frazee"),
+            as.person("Michael I. Love"),
+            as.person("Rafael A. Irizarry"),
             as.person("Andrew E. Jaffe"),
             as.person("Jeffrey T. Leek")
         ),
-        year = 2014,
-        url = "http://www.bioconductor.org/packages/release/bioc/html/derfinder.html",
-        note = pkgVer('derfinder', '1.1.15')
+        year = 2015,
+        journal = "bioRxiv",
+        doi = "10.1101/015370",
+        url = "http://www.biorxiv.org/content/early/2015/02/19/015370.abstract"
     ),
     bibentry(bibtype="article",
         title = "Differential expression analysis of RNA-seq data at single-base resolution",
