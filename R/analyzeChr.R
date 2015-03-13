@@ -82,7 +82,8 @@
 #' ## Analyze the chromosome
 #' results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
 #'     cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
-#'     writeOutput=FALSE, returnOutput=TRUE, method='regular')
+#'     writeOutput=FALSE, returnOutput=TRUE, method='regular',
+#'     runAnnotation = FALSE)
 #' names(results)
 
 analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5, 
@@ -220,6 +221,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     if (!is.null(regions$regions) & runAnnotation) {
         if(is.null(txdb)) {
+            ## For R CMD check
+            TxDb.Hsapiens.UCSC.hg19.knownGene <- NULL
             library('TxDb.Hsapiens.UCSC.hg19.knownGene')
             txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
         }
