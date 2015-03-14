@@ -21,7 +21,6 @@ install:
   - pandoc --version
   # Install bioc deps
   - ./pkg-build.sh install_bioc_deps
-  - ./pkg-build.sh install_github lcolladotor/bumphunter
  
 script:
 #  - ./travis-tool.sh run_tests
