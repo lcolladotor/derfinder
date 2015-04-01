@@ -316,8 +316,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
             writeOutput = writeOutput, chr = chr)
         
         ## Sometimes qvalue() fails due to incorrect pi0 estimates
-        qvalues <- qvalue(regs$pvalues)
-        if (is(qvalues, "qvalue")) {
+        qvalues <- tryCatch(qvalue(regs$pvalues), error = function(e) NULL)
+        if (!is.null(qvalues)) {
             qvalues <- qvalues$qvalues
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))

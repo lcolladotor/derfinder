@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.1.18
+-------------------------
+
+BUG FIXES
+
+    o Updated to work with qvalue 1.99.0
+
+
 CHANGES IN VERSION 1.1.17
 -------------------------
 

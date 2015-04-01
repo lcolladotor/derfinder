@@ -270,8 +270,8 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
             significantCut[1], levels = c(TRUE, FALSE))
         
         ## Sometimes qvalue() fails due to incorrect pi0 estimates
-        qvalues <- qvalue(fullRegions$pvalues)
-        if (is(qvalues, 'qvalue')) {
+        qvalues <- tryCatch(qvalue(fullRegions$pvalues), error = function(e) NULL)
+        if (!is.null(qvalues)) {
             qvalues <- qvalues$qvalues
             sigQval <- factor(qvalues < significantCut[2], levels = c(TRUE, 
                 FALSE))
