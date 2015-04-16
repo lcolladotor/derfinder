@@ -2,7 +2,7 @@ Package: derfinder
 Type: Package
 Title: Annotation-agnostic differential expression analysis of RNA-seq
     data at base-pair resolution
-Version: 1.1.18
+Version: 1.2.0
 Date: 2015-04-01
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person(c("Alyssa", "C."), "Frazee", role = c("aut"),
