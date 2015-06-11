@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.3.1
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Greatly increased the speed of the p-values calculation step. See
+        https://github.com/lcolladotor/derfinder/issues/29 for details.
+
+
 CHANGES IN VERSION 1.1.18
 -------------------------
 

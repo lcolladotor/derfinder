@@ -52,7 +52,7 @@
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' '$<-' cbind
 #' @importFrom IRanges Views RleList values 'values<-' nrow
-#' @importFrom S4Vectors Rle DataFrame
+#' @importFrom S4Vectors Rle DataFrame runValue runLength
 #' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom BiocParallel bplapply
 #' @importFrom qvalue qvalue
@@ -352,10 +352,13 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 calculate_pvalues <- calculatePvalues
 
 .calcPval <- function(areas, nullareas) {
-    pvals <- sapply(areas, function(x) {
-        sum(nullareas > x)
-    })
-    res <- (pvals + 1)/(length(nullareas) + 1)
+    null <- Rle(sort(nullareas, decreasing = FALSE))
+    nullsum <- length(null) - cumsum(runLength(null))
+    
+    int <- findInterval(areas, runValue(null))
+    greaterEqual <- c(length(null), nullsum)[int + 1]
+    res <- (greaterEqual + 1) / (length(null) + 1)
+    
     return(res)
 }
 
