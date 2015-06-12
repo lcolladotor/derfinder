@@ -1,16 +1,13 @@
-derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg?branch=master)](https://travis-ci.org/lcolladotor/derfinder)
+derfinder [![Build Status](https://travis-ci.org/lcolladotor/derfinder.svg?branch=master)](https://travis-ci.org/lcolladotor/derfinder) <a href="http://www.bioconductor.org/packages/release/bioc/html/derfinder.html#archives"><img border="0" src="http://www.bioconductor.org/shields/availability/release/derfinder.svg" title="Whether the package is available on all platforms; click for details."></a> <img border="0" src="http://www.bioconductor.org/shields/years-in-bioc/derfinder.svg" title="How long since the package was first in a released Bioconductor version (or is it in devel only)."> <a href="http://bioconductor.org/packages/stats/bioc/derfinder.html"><img border="0" src="http://www.bioconductor.org/shields/downloads/derfinder.svg" title="Percentile (top 5/20/50% or 'available') of downloads over last 6 full months. Comparison is done across all package categories (software, annotation, experiment)."></a> <a href="http://bioconductor.org/checkResults/release/bioc-LATEST/derfinder/"><img border="0" src="/shields/build/release/bioc/derfinder.svg" title="build results; click for full report"><img border="0" src="http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg" title="build results; click for full report"></a> <a href="https://support.bioconductor.org/t/derfinder/"><img border="0" src="http://www.bioconductor.org/shields/posts/derfinder.svg" title="Support site activity, last 6 months: tagged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts."></a> <img border="0" src="http://www.bioconductor.org/shields/commits/bioc/derfinder.svg" title="average Subversion commits (to the devel branch) per month for the last 6 months">
 =========
 
-Annotation-agnostic fast differential expression analysis of RNA-seq data at base-pair resolution. For more information about `derfinder` check the vignettes [here](http://lcolladotor.github.io/derfinder/).
+Annotation-agnostic fast differential expression analysis of RNA-seq data at base-pair resolution. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
 
 
 # Further documentation
 
 You can generate HTML reports from the results using __regionReport__ 
 available [here](https://github.com/lcolladotor/regionReport).
-
-For a full example on how to use __derfinder__ check 
-[derfinderExample](https://github.com/lcolladotor/derfinderExample). TODO: update this.
 
 # Installation instructions
 
@@ -27,7 +24,7 @@ biocLite(c('derfinderPlot', 'regionReport'))
 
 # Vignettes
 
-The vignettes for this package can be viewed [here](http://lcolladotor.github.io/derfinder/) or via [Bioconductor's website](http://www.bioconductor.org/packages/devel/bioc/html/derfinder.html).
+The vignettes for this package can be viewed [here](http://lcolladotor.github.io/derfinder/) or via [Bioconductor's website](http://www.bioconductor.org/packages/derfinder).
 
 # 'Watch' for updates
 
@@ -75,21 +72,9 @@ A BibTeX entry for LaTeX users is
 }
 
 
-# Travis CI
+# Testing
 
-This package is automatically tested thanks to [Travis CI](travis-ci.org) and [r-travis](https://github.com/craigcitro/r-travis). If you want to add this to your own package use:
-
-```R
-## Use devtools to create the .travis.yml file
-library('devtools')
-use_travis('yourPackage')
-
-## Read https://github.com/craigcitro/r-travis/wiki to configure .travis.yml appropriately
-
-## Add a status image by following the info at http://docs.travis-ci.com/user/status-images/
-```
-
-Testing on R-devel for Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder).
+Testing on Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder).
 
 # Origins
 
