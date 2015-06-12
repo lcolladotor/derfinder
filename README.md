@@ -74,7 +74,7 @@ A BibTeX entry for LaTeX users is
 
 # Testing
 
-Testing on Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder).
+Testing on Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder) as well as Bioconductor's nightly build.
 
 # Origins
 
