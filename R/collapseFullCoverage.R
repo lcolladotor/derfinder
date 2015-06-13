@@ -23,7 +23,6 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{sampleDepth}
 #' @export
-#' @aliases collapse_full_coverage
 #' @importMethodsFrom IRanges names '[' sort
 #' @importFrom S4Vectors runValue runLength
 #' @examples
@@ -98,7 +97,4 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
     }
     
     return(collapsedFull)
-} 
-
-#' @export
-collapse_full_coverage <- collapseFullCoverage
+}

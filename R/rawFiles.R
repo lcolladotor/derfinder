@@ -25,7 +25,6 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @aliases raw_files
 #' @seealso \link{loadCoverage}
 #' @examples
 #' ## Get list of BAM files included in derfinder
@@ -71,7 +70,4 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     
     ## Done
     return(files)
-} 
-
-#' @export
-raw_files <- rawFiles
+}

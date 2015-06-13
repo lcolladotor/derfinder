@@ -18,7 +18,6 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @aliases calculate_stats
 #' @seealso \link{makeModels}, \link{preprocessCoverage}
 #' @importFrom BiocParallel bplapply bpworkers
 #' @importMethodsFrom IRanges ncol '[[' length unlist
@@ -110,7 +109,4 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
     
     ## Done =)
     return(result)    
-} 
-
-#' @export
-calculate_stats <- calculateStats
+}

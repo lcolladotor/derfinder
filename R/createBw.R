@@ -21,7 +21,6 @@
 #' @seealso \link[GenomicRanges]{GRangesList}, \link[rtracklayer]{export}, 
 #' \link{createBwSample}, \link{coerceGR}
 #' @export
-#' @aliases create_bw
 #'
 #' @importMethodsFrom GenomicRanges names
 #' @importFrom GenomicRanges GRangesList
@@ -71,6 +70,3 @@ createBw <- function(fullCov, path = '.', keepGR = TRUE, ...) {
     }
     
 }
-
-#' @export
-create_bw <- createBw

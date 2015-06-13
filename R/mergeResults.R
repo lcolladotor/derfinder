@@ -47,7 +47,6 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 #' @export
-#' @aliases merge_results
 #'
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges '$' '$<-' '['
@@ -319,10 +318,7 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
     
     ## Finish
     return(invisible(NULL))
-} 
-
-#' @export
-merge_results <- mergeResults
+}
 
 ## Calculate FWER adjustments as used in the brainDERs project
 .calculateFWER <- function(cutoffFstatUsed, areaNull, permutation, nPermute, areaReg) {

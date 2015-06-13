@@ -18,7 +18,6 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link[GenomicRanges]{GRanges}
 #' @export
-#' @aliases coerce_gr
 #'
 #' @importFrom BiocParallel bpmapply
 #' @importFrom GenomicRanges GRangesList
@@ -93,6 +92,3 @@ coerceGR <- function(sample, fullCov, ...) {
     ## Done
     return(gr.sample)
 }
-
-#' @export
-coerce_gr <- coerceGR

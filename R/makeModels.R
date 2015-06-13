@@ -29,7 +29,6 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{sampleDepth}, \link{calculateStats}
 #' @export
-#' @aliases make_models
 #'
 #' @importMethodsFrom IRanges ncol median '['
 #' @importMethodsFrom S4Vectors sapply
@@ -127,7 +126,4 @@ makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
     
     ## Done =)
     return(result)
-} 
-
-#' @export
-make_models <- makeModels
+}

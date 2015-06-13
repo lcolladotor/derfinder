@@ -31,7 +31,6 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{collapseFullCoverage}, \link{makeModels}
 #' @export
-#' @aliases sample_depth
 #' @importFrom Hmisc wtd.quantile
 #' @examples
 #' ## Collapse the coverage information
@@ -102,7 +101,4 @@ sampleDepth <- function(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...) {
         }
         return(res)
     })
-} 
-
-#' @export
-sample_depth <- sampleDepth
+}
