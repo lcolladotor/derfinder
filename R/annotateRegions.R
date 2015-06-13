@@ -30,7 +30,6 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{makeGenomicState}, \link{calculatePvalues}
 #' @export
-#' @aliases annotate_regions
 #' @importFrom IRanges queryHits subjectHits
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split mcols
@@ -89,7 +88,4 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
         out$annotationList <- glist
     }
     return(out)
-} 
-
-#' @export
-annotate_regions <- annotateRegions
+}

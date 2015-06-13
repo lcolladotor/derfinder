@@ -61,7 +61,6 @@
 #' \link{calculateStats}, \link{calculatePvalues}, 
 #' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
 #' @export
-#' @aliases analyze_chr
 #' @importMethodsFrom S4Vectors as.numeric
 #' @importFrom bumphunter annotateTranscripts matchGenes
 #' 
@@ -260,10 +259,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     ## Done
     return(invisible(result))
-} 
-
-#' @export
-analyze_chr <- analyzeChr
+}
 
 ## Helper function for calculating the F-stat cutoff
 .calcFstatCutoff <- function(cutoffType, cutoffFstat, fstats, models) {

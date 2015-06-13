@@ -22,7 +22,6 @@
 #'
 #' @author L. Collado-Torres
 #' @export
-#' @aliases extended_map_seqlevels
 #'
 #' @details This function is inspired from \link[GenomeInfoDb]{mapSeqlevels}
 #' with the difference that it will return the original sequence names if
@@ -191,10 +190,6 @@ extendedMapSeqlevels <- function(seqnames, style = getOption('chrsStyle',
         message(paste('extendedMapSeqlevels: sequence names mapped from', currentStyle, 'to', style, 'for species', species))
     return(seqnames)
 }
-
-#' @export
-extended_map_seqlevels <- extendedMapSeqlevels
-
 
 .selectBestGuess <- function(seqnames, organisms, styles, supported) {
     organisms <- tolower(gsub(" ", "_", organisms))

@@ -36,7 +36,6 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
 #' @export
-#' @aliases coverage_to_exon
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
@@ -194,6 +193,3 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     # done
     return(out)
 }
-
-#' @export
-coverage_to_exon <- coverageToExon

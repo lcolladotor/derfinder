@@ -11,7 +11,6 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @aliases advanced_arg
 #'
 #' @details If you are interested on the default options used for functions
 #' that run on multiple cores, check 
@@ -107,6 +106,3 @@ advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
     }    
     return(invisible(url))
 }
-
-#' @export
-advanced_arg <- advancedArg

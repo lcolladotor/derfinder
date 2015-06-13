@@ -48,7 +48,6 @@
 #' @author Leonardo Collado-Torres
 #'
 #' @export
-#' @aliases find_regions
 #' @importFrom IRanges IRanges start end width Views ranges
 #' @importFrom S4Vectors Rle runLength  runValue 'runValue<-' DataFrame
 #' @importFrom GenomicRanges GRanges GRangesList
@@ -218,11 +217,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     }
     
     return(res)
-} 
-
-#' @export
-find_regions <- findRegions
-
+}
 
 
 

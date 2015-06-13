@@ -45,7 +45,6 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @aliases filter_data
 #'
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
 #' @importFrom S4Vectors Rle DataFrame
@@ -206,7 +205,4 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
     }
     
     return(res)
-} 
-
-#' @export
-filter_data <- filterData
+}

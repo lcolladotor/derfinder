@@ -22,7 +22,6 @@
 #' @seealso \link[GenomicRanges]{GRanges}, \link[rtracklayer]{export}, 
 #' link{coerceGR}
 #' @export
-#' @aliases create_bw_sample
 #'
 #' @importMethodsFrom rtracklayer export
 #' 
@@ -73,6 +72,3 @@ createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
         return(invisible(NULL))
     }
 }
-
-#' @export
-create_bw_sample <- createBwSample

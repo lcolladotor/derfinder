@@ -28,7 +28,6 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{calculatePvalues}
 #' @export
-#' @aliases get_region_coverage
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
@@ -158,10 +157,7 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     }
     
     return(theData)
-} 
-
-#' @export
-get_region_coverage <- getRegionCoverage
+}
 
 
 ## Helper function that runs fullCoverage
