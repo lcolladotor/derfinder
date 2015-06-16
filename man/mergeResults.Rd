@@ -17,8 +17,9 @@ in different directories.}
 
 \item{significantCut}{A vector of length two specifiying the cutoffs used to
 determine significance. The first element is used to determine significance
-for the p-values and the second element is used for the q-values just like
-in \link{calculatePvalues}.}
+for the P-values and FWER adjusted P-values, while the second element is
+used for the Q-values (FDR adjusted P-values) similar to
+\link{calculatePvalues}.}
 
 \item{genomicState}{A GRanges object created with \link{makeGenomicState}.
 It can be either the \code{genomicState$fullGenome} or
@@ -63,7 +64,8 @@ report of the results. The \code{derfinderReport} package is available at
 https://github.com/lcolladotor/derfinderReport.
 }
 \details{
-If you want to calculate the FWER, supply \code{optionsStats} which #' is produced by \link{analyzeChr}.
+If you want to calculate the FWER adjusted P-values, supply
+\code{optionsStats} which is produced by \link{analyzeChr}.
 }
 \examples{
 ## The output will be saved in the 'generateReport-example' directory
