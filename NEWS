@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.3.3
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Brought back the 'mc.outfile' argument for specifying the 'outfile' 
+        argument in SnowParam(). See more details at 
+        https://stat.ethz.ch/pipermail/bioc-devel/2015-May/007531.html
+
 CHANGES IN VERSION 1.3.2
 ------------------------
 
