@@ -35,7 +35,8 @@ This argument is passed to \link{findRegions}.}
 
 \item{significantCut}{A vector of length two specifiying the cutoffs used to
 determine significance. The first element is used to determine significance
-for the p-values and the second element is used for the q-values.}
+for the P-values, while the second element is used for the Q-values (FDR
+adjusted P-values).}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
