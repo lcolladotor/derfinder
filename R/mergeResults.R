@@ -14,8 +14,9 @@
 #' in different directories.
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
-#' for the p-values and the second element is used for the q-values just like 
-#' in \link{calculatePvalues}.
+#' for the P-values and FWER adjusted P-values, while the second element is 
+#' used for the Q-values (FDR adjusted P-values) similar to
+#' \link{calculatePvalues}.
 #' @param minoverlap Determines the mininum overlap needed when annotating 
 #' regions with \link{annotateRegions}.
 #' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is 
@@ -57,7 +58,8 @@
 #' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom qvalue qvalue
 #'
-#' @details If you want to calculate the FWER, supply \code{optionsStats} which #' is produced by \link{analyzeChr}.
+#' @details If you want to calculate the FWER adjusted P-values, supply 
+#' \code{optionsStats} which is produced by \link{analyzeChr}.
 #'
 #' @examples
 #' ## The output will be saved in the 'generateReport-example' directory
@@ -101,6 +103,9 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
     ## For R CMD check
     prep <- fstats <- regions <- annotation <- timeinfo <- NULL
     
+    stopifnot(length(significantCut) == 2 & all(significantCut >= 
+        0 & significantCut <= 1))
+
     ## Advanged argumentsa
 #' @param verbose If \code{TRUE} basic status updates will be printed along the 
 #' way.
