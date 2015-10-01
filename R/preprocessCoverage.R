@@ -61,9 +61,9 @@
 #' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
 #'
-#' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-' c split
+#' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-' c
 #' @importFrom S4Vectors Rle
-#' @importMethodsFrom S4Vectors Reduce sapply
+#' @importMethodsFrom S4Vectors Reduce sapply split
 #'
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()
