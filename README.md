@@ -7,7 +7,7 @@ Bioc-devel <a href="http://www.bioconductor.org/packages/devel/bioc/html/derfind
 derfinder
 =========
 
-Annotation-agnostic fast differential expression analysis of RNA-seq data at base-pair resolution. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
+Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution by calculating F-statistics. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
 
 
 # Further documentation
