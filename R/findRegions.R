@@ -317,10 +317,6 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     return(result)
 }
 
-.get_segments_rle <- .getSegmentsRle
-
-
-
 
 
 
@@ -394,7 +390,5 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     
     ## Done
     return(result)
-} 
-
-.cluster_maker_rle <- .clusterMakerRle
+}
 
