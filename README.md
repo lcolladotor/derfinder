@@ -77,13 +77,12 @@ A BibTeX entry for LaTeX users is
     url = {http://biostatistics.oxfordjournals.org/content/15/3/413.long},
 }
 
+# DER Finder versions
+
+* The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at [derfinder](https://github.com/leekgroup/derfinder).
+* The version implementing the single-base approach via calculating F-stastics as described in the pre-print Collado-Torres et al, bioRxiv 2015 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder).
+* The version implementing the expressed-regions approach is available via GitHub at [derfinder2](https://github.com/leekgroup/derfinder2). In the future it will also be available via Bioconductor.
 
 # Testing
 
 Testing on Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder) as well as Bioconductor's nightly build.
-
-# Origins
-
-This is a development version for a faster version of the __derfinder__ core 
-steps. The original implementation is available via GitHub at the 
-[derfinder](https://github.com/alyssafrazee/derfinder) repository.
