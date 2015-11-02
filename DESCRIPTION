@@ -1,9 +1,11 @@
 Package: derfinder
 Type: Package
-Title: Annotation-agnostic differential expression analysis of RNA-seq
-    data using the single-base level approach by calculating F-statistics
-Version: 1.5.0
-Date: 2015-10-07
+Title: Annotation-agnostic differential expression analysis of RNA-seq data at 
+    base-pair resolution via the DER Finder approach. Two implementations of
+    this approach are included in this package: (1) single-base level 
+    F-statistics and (2) identification of expressed-regions.
+Version: 1.5.1
+Date: 2015-11-02
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person(c("Alyssa", "C."), "Frazee", role = c("aut"),
     email = "alyssa.frazee@gmail.com"), person(c("Andrew", "E."), "Jaffe",
@@ -28,13 +30,13 @@ Imports:
     rtracklayer,
     S4Vectors (>= 0.7.20)
 Suggests:
+    BiocStyle,
     biovizBase,
     devtools (>= 1.6),
     derfinderData (>= 0.99.0),
     ggplot2,
     knitcitations (>= 1.0.1),
     knitr (>= 1.6),
-    knitrBootstrap (>= 0.9.0),
     rmarkdown (>= 0.3.3),
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
