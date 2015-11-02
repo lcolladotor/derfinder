@@ -4,10 +4,12 @@ Status: Travis CI [![Build Status](https://travis-ci.org/lcolladotor/derfinder.s
 Bioc-release <a href="http://www.bioconductor.org/packages/release/bioc/html/derfinder.html#archives"><img border="0" src="http://www.bioconductor.org/shields/availability/release/derfinder.svg" title="Whether the package is available on all platforms; click for details."></a> <a href="http://bioconductor.org/checkResults/release/bioc-LATEST/derfinder/"><img border="0" src="http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg" title="build results; click for full report"></a>,
 Bioc-devel <a href="http://www.bioconductor.org/packages/devel/bioc/html/derfinder.html#archives"><img border="0" src="http://www.bioconductor.org/shields/availability/devel/derfinder.svg" title="Whether the package is available on all platforms; click for details."></a> <a href="http://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder/"><img border="0" src="http://www.bioconductor.org/shields/build/devel/bioc/derfinder.svg" title="build results; click for full report"></a>.
 
+Bioc-release <a href="https://bioconductor.org/developers/how-to/unitTesting-guidelines/#coverage"><img border="0" src="http://www.bioconductor.org/shields/coverage/release/derfinder.svg" title="Test coverage percentage, or 'unknown'"></a>, Bioc-devel <a href="https://bioconductor.org/developers/how-to/unitTesting-guidelines/#coverage"><img border="0" src="http://www.bioconductor.org/shields/coverage/devel/derfinder.svg" title="Test coverage percentage, or 'unknown'"></a>
+
 derfinder
 =========
 
-Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution by calculating F-statistics. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
+Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach. This package contains two different implementations of this approach. The first one is the single-base level F-statistics implementation and the second one is via identifying expressed-regions. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
 
 
 # Further documentation
@@ -80,8 +82,7 @@ A BibTeX entry for LaTeX users is
 # DER Finder versions
 
 * The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at [derfinder](https://github.com/leekgroup/derfinder).
-* The version implementing the single-base approach via calculating F-stastics as described in the pre-print Collado-Torres et al, bioRxiv 2015 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder).
-* The version implementing the expressed-regions approach is available via GitHub at [derfinder2](https://github.com/leekgroup/derfinder2). In the future it will also be available via Bioconductor.
+* The version implementing the single-base approach via calculating F-stastics as described in the pre-print Collado-Torres et al, bioRxiv 2015 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder). The same package has the implemented the expressed-regions approach.
 
 # Testing
 
