@@ -43,7 +43,7 @@ bibs <- c(knitcitations = citation('knitcitations'),
     GenomicRanges = citation('GenomicRanges'),
     ggplot2 = citation('ggplot2'),
     biovizBase = citation('biovizBase'),
-    bumphunter = citation('bumphunter'),
+    bumphunter = citation('bumphunter')[1],
     TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
     AnnotationDbi = citation('AnnotationDbi'),
     BiocParallel = citation('BiocParallel'),
@@ -538,31 +538,31 @@ citation('derfinder')
 This package was made possible thanks to:
 
 * R `r citep(bib[['R']])`
-* `r Biocpkg('AnnotationDbi') `r citep(bib[['AnnotationDbi']])`
-* `r Biocpkg('BiocParallel') `r citep(bib[['BiocParallel']])`
-* `r Biocpkg('bumphunter') `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
-* `r Biocpkg('derfinderHelper') `r citep(bib[['derfinderHelper']])`
-* `r Biocpkg('GenomeInfoDb') `r citep(bib[['GenomeInfoDb']])`
-* `r Biocpkg('GenomicAlignments') `r citep(bib[['GenomicAlignments']])`
-* `r Biocpkg('GenomicFeatures') `r citep(bib[['GenomicFeatures']])`
-* `r Biocpkg('GenomicFiles') `r citep(bib[['GenomicFiles']])`
-* `r Biocpkg('GenomicRanges') `r citep(bib[['GenomicRanges']])`
-* `r CRANpkg('Hmisc') `r citep(bib[['Hmisc']])`
-* `r Biocpkg('IRanges') `r citep(bib[['IRanges']])`
-* `r Biocpkg('qvalue') `r citep(bib[['qvalue']])`
-* `r Biocpkg('Rsamtools') `r citep(bib[['Rsamtools']])`
-* `r Biocpkg('rtracklayer') `r citep(bib[['rtracklayer']])`
-* `r Biocpkg('S4Vectors') `r citep(bib[['S4Vectors']])`
-* `r Biocpkg('biovizBase') `r citep(bib[['biovizBase']])`
-* `r Biocexptpkg('derfinderData') `r citep(bib[['derfinderData']])`
-* `r CRANpkg('devtools') `r citep(bib[['devtools']])`
-* `r CRANpkg('ggplot2') `r citep(bib[['ggplot2']])`
-* `r CRANpkg('knitcitations') `r citep(bib[['knitcitations']])`
-* `r CRANpkg('knitr') `r citep(bib[['knitr']])`
-* `r Biocpkg('BiocStyle') `r citep(bib[['BiocStyle']])`
-* `r CRANpkg('rmarkdown') `r citep(bib[['rmarkdown']])`
-* `r CRANpkg('testthat') `r citep(bib[['testthat']])`
-* `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene') `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
+* `r Biocpkg('AnnotationDbi')` `r citep(bib[['AnnotationDbi']])`
+* `r Biocpkg('BiocParallel')` `r citep(bib[['BiocParallel']])`
+* `r Biocpkg('bumphunter')` `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
+* `r Biocpkg('derfinderHelper')` `r citep(bib[['derfinderHelper']])`
+* `r Biocpkg('GenomeInfoDb')` `r citep(bib[['GenomeInfoDb']])`
+* `r Biocpkg('GenomicAlignments')` `r citep(bib[['GenomicAlignments']])`
+* `r Biocpkg('GenomicFeatures')` `r citep(bib[['GenomicFeatures']])`
+* `r Biocpkg('GenomicFiles')` `r citep(bib[['GenomicFiles']])`
+* `r Biocpkg('GenomicRanges')` `r citep(bib[['GenomicRanges']])`
+* `r CRANpkg('Hmisc')` `r citep(bib[['Hmisc']])`
+* `r Biocpkg('IRanges')` `r citep(bib[['IRanges']])`
+* `r Biocpkg('qvalue')` `r citep(bib[['qvalue']])`
+* `r Biocpkg('Rsamtools')` `r citep(bib[['Rsamtools']])`
+* `r Biocpkg('rtracklayer')` `r citep(bib[['rtracklayer']])`
+* `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
+* `r Biocpkg('biovizBase')` `r citep(bib[['biovizBase']])`
+* `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
+* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
+* `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
+* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
+* `r CRANpkg('knitr')` `r citep(bib[['knitr']])`
+* `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
+* `r CRANpkg('testthat')` `r citep(bib[['testthat']])`
+* `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
 
 Code for creating the vignette
 
