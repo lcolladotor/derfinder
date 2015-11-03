@@ -1,41 +1,9 @@
-language: c
+language: r
 
-before_install:
-#  - curl -OL http://raw.github.com/craigcitro/r-travis/master/scripts/travis-tool.sh
-#  - curl -OL http://raw.github.com/lcolladotor/r-travis/master/scripts/travis-tool.sh
-#  - chmod 755 ./travis-tool.sh
-#  - ./travis-tool.sh bootstrap
-  - curl -OL https://raw.githubusercontent.com/metacran/r-builder/master/pkg-build.sh
-  - chmod 755 ./pkg-build.sh
-  - ./pkg-build.sh bootstrap
- 
-install:
-#  - ./travis-tool.sh install_bioc_deps
-  # Install binary pandoc from Rstudio
-  - export PATH="$HOME/pandoc:$PATH"
-  - mkdir $HOME/pandoc
-  - curl -O https://s3.amazonaws.com/rstudio-buildtools/pandoc-1.12.3.zip
-  - unzip -j pandoc-1.12.3.zip pandoc-1.12.3/linux/debian/x86_64/pandoc
-      -d $HOME/pandoc
-  - chmod +x $HOME/pandoc/pandoc
-  - pandoc --version
-  # Install bioc deps
-  - ./pkg-build.sh install_bioc_deps
- 
-script:
-#  - ./travis-tool.sh run_tests
-  - ./pkg-build.sh run_build
-  - ./pkg-build.sh run_check
+bioc_required: true
 
-after_failure:
-#  - ./travis-tool.sh dump_logs
-  - ./pkg-build.sh dump_logs
-
-after_script:
-#  - ./travis-tool.sh dump_logs_by_extension "timings"
-#  - ./travis-tool.sh dump_sysinfo
-  - ./pkg-build.sh dump_logs_by_extension "timings"
-  - ./pkg-build.sh dump_sysinfo
+r_build_args: "--no-manual --no-resave-data"
+r_check_args: "--no-build-vignettes --no-manual --timings"
 
 notifications:
   email:
@@ -46,8 +14,4 @@ notifications:
 
 env:
   global:
-    - RVERSION=3.2.2
-    - R_BUILD_ARGS="--no-manual --no-resave-data"
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
-#    - R_CHECK_TIME="TRUE"
     - _R_CHECK_TIMINGS_="0"
