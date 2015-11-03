@@ -86,4 +86,4 @@ A BibTeX entry for LaTeX users is
 
 # Testing
 
-Testing on Bioc-devel is feasible thanks to [r-builder](https://github.com/metacran/r-builder) as well as Bioconductor's nightly build.
+Testing on Bioc-devel is feasible thanks to [R Travis](http://docs.travis-ci.com/user/languages/r/) as well as Bioconductor's nightly build.
