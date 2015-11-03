@@ -47,7 +47,7 @@ notifications:
 env:
   global:
     - RVERSION=3.2.2
-    - R_BUILD_ARGS="--no-build-vignettes --no-manual --no-resave-data"
+    - R_BUILD_ARGS="--no-manual --no-resave-data"
     - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings"
 #    - R_CHECK_TIME="TRUE"
     - _R_CHECK_TIMINGS_="0"
