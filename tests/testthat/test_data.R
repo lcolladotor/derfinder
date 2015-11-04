@@ -1,5 +1,7 @@
 context('Loading and exporting data')
 
+windowsFlag <- .Platform$OS.type != 'windows'
+
 # Setup
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
 files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
@@ -38,75 +40,98 @@ test_that('Non-standard seqnames', {
     expect_that(lapply(fullCoverage(f1, chrs = c('seq1', 'seq2'), verbose = FALSE), function(x) { sum(x[[1]])}), equals(list('seq1' = 52166, 'seq2' = 63017)))
 })
 
-## Export BigWig
-dir.create('bw')
-
-test_that('Create BigWig files', {
-    expect_that(bws <- createBw(list('chr21' = dataRaw), path = 'bw'), 
-        gives_warning())
-    expect_that(is(bws, "GRangesList"), is_identical_to(TRUE))
-    expect_that(length(bws), equals(31))
-    expect_that(length(bws[[1]]), equals(16))
-    expect_that(names(mcols(bws[[1]])), is_identical_to('score'))
-    expect_that(dir('bw'), is_identical_to(c('ERR009101.bw', 'ERR009102.bw', 'ERR009105.bw', 'ERR009107.bw', 'ERR009108.bw', 'ERR009112.bw', 'ERR009115.bw', 'ERR009116.bw', 'ERR009131.bw', 'ERR009138.bw', 'ERR009144.bw', 'ERR009145.bw', 'ERR009148.bw', 'ERR009151.bw', 'ERR009152.bw', 'ERR009153.bw', 'ERR009159.bw', 'ERR009161.bw', 'ERR009163.bw', 'ERR009164.bw', 'ERR009167.bw', 'SRR031812.bw', 'SRR031835.bw', 'SRR031904.bw')))
-})
-
-
-## Load BigWig
+## Identify BigWig files
 bigwigs <- rawFiles(datadir = "bw", samplepatt = "bw", fileterm = NULL)
 names(bigwigs) <- gsub('.bw', '', names(bigwigs))
-dataBW <- loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL,
-    inputType = "BigWig")
+
+## Export BigWig
+if(windowsFlag) {
+    dir.create('bw')
+
+    test_that('Create BigWig files', {
+        expect_that(bws <- createBw(list('chr21' = dataRaw), path = 'bw'), 
+            gives_warning())
+        expect_that(is(bws, "GRangesList"), is_identical_to(TRUE))
+        expect_that(length(bws), equals(31))
+        expect_that(length(bws[[1]]), equals(16))
+        expect_that(names(mcols(bws[[1]])), is_identical_to('score'))
+        expect_that(dir('bw'), is_identical_to(c('ERR009101.bw', 'ERR009102.bw', 'ERR009105.bw', 'ERR009107.bw', 'ERR009108.bw', 'ERR009112.bw', 'ERR009115.bw', 'ERR009116.bw', 'ERR009131.bw', 'ERR009138.bw', 'ERR009144.bw', 'ERR009145.bw', 'ERR009148.bw', 'ERR009151.bw', 'ERR009152.bw', 'ERR009153.bw', 'ERR009159.bw', 'ERR009161.bw', 'ERR009163.bw', 'ERR009164.bw', 'ERR009167.bw', 'SRR031812.bw', 'SRR031835.bw', 'SRR031904.bw')))
+    })
+
+    ## Load BigWig
+    dataBW <- loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL,
+        inputType = "BigWig")
+
+}
 
 dataRaw.bw <- dataRaw
 dataRaw.bw$coverage <- dataRaw.bw$coverage[, names(bigwigs)]
 
-test_that('Load BigWig data', {
-    expect_that(dataRaw.bw, equals(dataBW))
-    expect_that(loadCoverage(bigwigs, chr = '21', cutoff = NULL,
-        inputType = "BigWig", verbose = FALSE), throws_error())
-    expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL, 
-        verbose = FALSE), equals(dataRaw.bw))
-})
+if(windowsFlag) {
+    test_that('Load BigWig data', {
+        expect_that(dataRaw.bw, equals(dataBW))
+        expect_that(loadCoverage(bigwigs, chr = '21', cutoff = NULL,
+            inputType = "BigWig", verbose = FALSE), throws_error())
+        expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL, 
+            verbose = FALSE), equals(dataRaw.bw))
+    })
+}
+
 
 ## Loading with GenomicFiles
 dataRaw.GF <- loadCoverage(files, chr = '21', tilewidth = 2e7, cutoff = NULL)
-dataRaw.bw.GF <- loadCoverage(bigwigs, chr = 'chr21', tilewidth = 2e7,
-    cutoff = NULL, inputType = 'BigWig')
-test_that('Load using GenomicFiles', {
+test_that('Load using GenomicFiles via BAM', {
     expect_that(dataRaw, is_identical_to(dataRaw.GF))
-    expect_that(dataBW, is_identical_to(dataRaw.bw.GF))
 })
+if(windowsFlag) {
+    dataRaw.bw.GF <- loadCoverage(bigwigs, chr = 'chr21', tilewidth = 2e7,
+        cutoff = NULL, inputType = 'BigWig')
+    test_that('Load using GenomicFiles via BigWig', {
+        expect_that(dataBW, is_identical_to(dataRaw.bw.GF))
+    })
+}
+
 
 ## Loading with fullCoverage
 fullCov <- fullCoverage(files = files, chrs = '21')
-fullCov.bw <- fullCoverage(files = bigwigs, chrs = 'chr21', inputType = 'BigWig')
 test_that('Load with fullCoverage()', {
     expect_that(list('chr21' = dataRaw$coverage), is_identical_to(fullCov))
-    expect_that(list('chr21' = dataBW$coverage), is_identical_to(fullCov.bw))
     expect_that(fullCoverage(files = files, chrs = '21', output = c('one',
         'two')), throws_error())
     expect_that(fullCoverage(files = files, chrs = '21', chrlens = c(4e7,
         5e7)), throws_error())
 })
 
-## Loading with BamFile, BamFileList
+if(windowsFlag) {
+    fullCov.bw <- fullCoverage(files = bigwigs, chrs = 'chr21', 
+        inputType = 'BigWig')
+    test_that('Load with fullCoverage() via BigWigs', {
+        expect_that(list('chr21' = dataBW$coverage), is_identical_to(fullCov.bw))
+    })
+}
 
+## Loading with BamFile, BamFileList
 bam <- system.file('extdata', 'genomeData', 'ERR009101_accepted_hits.bam', package = 'derfinder')
 names(bam) <- 'sample1'
 library('Rsamtools')
 bFile <- BamFile(bam, index = paste0(bam, '.bai'))
 
-library('rtracklayer')
-big1 <- BigWigFile(bigwigs[1])
-big1.list <- BigWigFileList(bigwigs[1])
-
-test_that('BamFile and BigWigFile', {
+test_that('BamFile', {
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(bFile, chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
     expect_that(fullCoverage(bam, chrs = '21', verbose = FALSE), is_identical_to(fullCoverage(BamFileList(bFile), chrs = '21', sampleNames = 'sample1', verbose = FALSE)))
-    expect_that(fullCoverage(bam, chrs = '21', sampleNames = 'ERR009101', verbose = FALSE), equals(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE)))
-    expect_that(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE), is_identical_to(fullCoverage(big1, chrs = 'chr21', verbose = FALSE)))
 })
+
+## Loading via BigWigFile
+if(windowsFlag) {
+    library('rtracklayer')
+    big1 <- BigWigFile(bigwigs[1])
+    big1.list <- BigWigFileList(bigwigs[1])
+
+    test_that('BigWigFile', {
+        expect_that(fullCoverage(bam, chrs = '21', sampleNames = 'ERR009101', verbose = FALSE), equals(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE)))
+        expect_that(fullCoverage(big1.list, chrs = 'chr21', verbose = FALSE), is_identical_to(fullCoverage(big1, chrs = 'chr21', verbose = FALSE)))
+    })
+}
 
 ## Dropping D (deletions from reference) bases
 test_that('CIGAR', {
