@@ -40,10 +40,6 @@ test_that('Non-standard seqnames', {
     expect_that(lapply(fullCoverage(f1, chrs = c('seq1', 'seq2'), verbose = FALSE), function(x) { sum(x[[1]])}), equals(list('seq1' = 52166, 'seq2' = 63017)))
 })
 
-## Identify BigWig files
-bigwigs <- rawFiles(datadir = "bw", samplepatt = "bw", fileterm = NULL)
-names(bigwigs) <- gsub('.bw', '', names(bigwigs))
-
 ## Export BigWig
 if(windowsFlag) {
     dir.create('bw')
@@ -58,16 +54,16 @@ if(windowsFlag) {
         expect_that(dir('bw'), is_identical_to(c('ERR009101.bw', 'ERR009102.bw', 'ERR009105.bw', 'ERR009107.bw', 'ERR009108.bw', 'ERR009112.bw', 'ERR009115.bw', 'ERR009116.bw', 'ERR009131.bw', 'ERR009138.bw', 'ERR009144.bw', 'ERR009145.bw', 'ERR009148.bw', 'ERR009151.bw', 'ERR009152.bw', 'ERR009153.bw', 'ERR009159.bw', 'ERR009161.bw', 'ERR009163.bw', 'ERR009164.bw', 'ERR009167.bw', 'SRR031812.bw', 'SRR031835.bw', 'SRR031904.bw')))
     })
 
+    ## Identify BigWig files
+    bigwigs <- rawFiles(datadir = "bw", samplepatt = "bw", fileterm = NULL)
+    names(bigwigs) <- gsub('.bw', '', names(bigwigs))
+    
     ## Load BigWig
     dataBW <- loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL,
         inputType = "BigWig")
-
-}
-
-dataRaw.bw <- dataRaw
-dataRaw.bw$coverage <- dataRaw.bw$coverage[, names(bigwigs)]
-
-if(windowsFlag) {
+    dataRaw.bw <- dataRaw
+    dataRaw.bw$coverage <- dataRaw.bw$coverage[, names(bigwigs)]
+    
     test_that('Load BigWig data', {
         expect_that(dataRaw.bw, equals(dataBW))
         expect_that(loadCoverage(bigwigs, chr = '21', cutoff = NULL,
