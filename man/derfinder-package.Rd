@@ -3,21 +3,35 @@
 \docType{package}
 \name{derfinder-package}
 \alias{derfinder-package}
-\title{Fast differential expression analysis of RNA-seq data at base-pair resolution}
+\title{Annotation-agnostic differential expression analysis of RNA-seq data at
+base-pair resolution via the DER Finder approach.}
 \description{
-Fast differential expression analysis of RNA-seq data at base-pair
-resolution from multiple samples. The analysis pipeline involves loading the
+This package contains two different implementations of the DER Finder
+approach. The first one is the single-base level F-statistics implementation
+and the second one is via identifying expressed-regions.
+}
+\details{
+The single-base level F-statistics analysis pipeline involves loading the
 sample BAM files using \link{rawFiles} and \link{loadCoverage},
 pre-processing the data by using \link{preprocessCoverage}, calculating the
 F-statistics (while adjusting for some confounders) using \link{makeModels}
 and \link{calculateStats}, calculating the p-values and finding the regions
 of interest using \link{calculatePvalues}, and finally annotating them using
 \link[bumphunter]{matchGenes} from the bumphunter package.
+
+The DER Finder implementation via identifying expressed-regions is done with
+the \link{regionMatrix} function.
+
+Details about both approaches are further described in the vignettes.
 }
 \author{
 Leonardo Collado-Torres <lcollado@jhu.edu>
 }
 \references{
+Collado-Torres L, Frazee AC, Love MI, Irizarry RA, Jaffe AE and Leek JT
+(2015). derfinder: Software for annotation-agnostic RNA-seq differential
+expression analysis. bioRxiv (2015). doi:10.1101/015370
+
 Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. &
 Leek, J. T. Differential expression analysis of RNA-seq data at single-base
 resolution. Biostatistics (2014). doi:10.1093/biostatistics/kxt053
