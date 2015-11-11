@@ -258,6 +258,7 @@ plotRegionCoverage(regions = ers, regionCoverage = regionCov,
     ask = FALSE)
 ```
 
+You can then use the `r Biocpkg('regionReport')` package to generate interactive HTML reports exploring the results.
 
 If you are interested in using `r Biocpkg('derfinder')` we recommend checking the [derfinder users guide](derfinder-users-guide.html) and good luck with your analyses!
 
