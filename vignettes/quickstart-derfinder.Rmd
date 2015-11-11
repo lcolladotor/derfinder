@@ -137,7 +137,7 @@ Next, we can load the full coverage data into memory using the `fullCoverage()` 
 
 ```{r 'getData', eval = !windowsFlag}
 ## Load the data from disk
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE)
 ```
 
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
@@ -153,26 +153,14 @@ Now that we have the data, we can identify expressed-regions (ERs) by using a cu
 
 ```{r 'regionMatrix'}
 ## Use regionMatrix()
-system.time(regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76))
-
-## Explore results
-names(regionMat$chr21)
+regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76, verbose = FALSE)
 ```
 
-`regionMatrix()` returns three pieces of output.
-
-* _regions_ is the result from filtering with `filterData()` and then defining the regions with `findRegions()`. Note that the metadata variable `value` represents the mean coverage for the given region while `area` is the sum of the base-level coverage (before adjusting for read length) from all samples.
-* _bpCoverage_ is a list with the base-level coverage from all the regions. This information can then be used with `plotRegionCoverage()` from `r Biocpkg('derfinderPlot')`.
-* _coverageMatrix_ is the matrix with one row per region and one column per sample. The different matrices for each of the chromosomes can then be merged prior to using `r Biocpkg('limma')` or other packages. Note that the counts are generally not integers, but can easily be rounded if necessary.
-
-The actual ERs are arranged in a `GRanges` object.
+`regionMatrix()` returns a list of elements, each with three pieces of output. The actual ERs are arranged in a `GRanges` object named `regions`.
 
 ```{r 'exploreRegMatRegs'}
 ## regions output
 regionMat$chr21$regions
-
-## Number of regions
-length(regionMat$chr21$regions)
 ```
 
 `bpCoverage` is the base level coverage list which can then be used for plotting.
@@ -217,7 +205,7 @@ counts <- round(regionMat$chr21$coverageMatrix)
 dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
 
 ## Perform DE analysis
-system.time( dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local') )
+dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local')
 
 ## Extract results
 mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions), results(dse))
@@ -231,10 +219,10 @@ We can then compare the DERs against known annotation to see which DERs overlap 
 
 ```{r 'vennRegions'}
 ## Find overlaps between regions and summarized genomic annotation
-annoRegs <- annotateRegions(ers, genomicState$fullGenome)
+annoRegs <- annotateRegions(ers, genomicState$fullGenome, verbose = FALSE)
 
 library('derfinderPlot')
-vennRegions(annoRegs, counts.col = 'blue')
+venn <- vennRegions(annoRegs, counts.col = 'blue')
 ```
 
 We can also identify the nearest annotated feature. In this case, we'll look for the nearest known gene from the UCSC hg19 annotation.
