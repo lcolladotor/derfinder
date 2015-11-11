@@ -37,6 +37,7 @@ Suggests:
     ggplot2,
     knitcitations (>= 1.0.1),
     knitr (>= 1.6),
+    limma,
     rmarkdown (>= 0.3.3),
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
