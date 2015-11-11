@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.5.8
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added a users guide vignette which explains nearly every detail you would
+        want to know as a user.
+
+
 CHANGES IN VERSION 1.5.7
 ------------------------
 
