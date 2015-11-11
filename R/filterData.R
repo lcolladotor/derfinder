@@ -17,9 +17,10 @@
 #' In the second case, the mean coverage has to be greater than \code{cutoff}.
 #' @param totalMapped The total number of reads mapped for each sample. 
 #' Providing this data adjusts the coverage to reads in \code{targetSize} 
-#' library prior to filtering. By default, to reads per 80 million reads.
+#' library prior to filtering.
 #' @param targetSize The target library size to adjust the coverage to. Used
-#' only when \code{totalMapped} is specified.
+#' only when \code{totalMapped} is specified. By default, it adjusts to 
+#' libraries with 80 million reads.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with up to three components.
