@@ -1,0 +1,360 @@
+---
+title: "Quick start to using derfinder"
+author: "L Collado-Torres"
+date: "`r doc_date()`"
+package: "`r pkg_ver('derfinder')`"
+output: 
+  BiocStyle::html_document
+vignette: >
+  %\VignetteIndexEntry{Quick start to using derfinder}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+---
+
+Quick start to using to `r Biocpkg('derfinder')`
+================================================
+
+```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
+## Track time spent on making the vignette
+startTime <- Sys.time()
+
+## Bib setup
+library('knitcitations')
+
+## Load knitcitations with a clean bibliography
+cleanbib()
+cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+# Note links won't show for now due to the following issue
+# https://github.com/cboettig/knitcitations/issues/63
+
+## Write bibliography information
+bibs <- c(knitcitations = citation('knitcitations'),
+    derfinder = citation('derfinder')[1], 
+    BiocStyle = citation('BiocStyle'),
+    knitrBootstrap = citation('knitrBootstrap'), 
+    knitr = citation('knitr')[3],
+    rmarkdown = citation('rmarkdown'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://developinghumanbrain.org'),
+    originalder = citation('derfinder')[2],
+    R = citation(),
+    IRanges = citation('IRanges'),
+    devtools = citation('devtools'),
+    testthat = citation('testthat'),
+    GenomeInfoDb = citation('GenomeInfoDb'),
+    GenomicRanges = citation('GenomicRanges'),
+    ggplot2 = citation('ggplot2'),
+    biovizBase = citation('biovizBase'),
+    bumphunter = citation('bumphunter')[1],
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
+    AnnotationDbi = citation('AnnotationDbi'),
+    BiocParallel = citation('BiocParallel'),
+    derfinderHelper = citation('derfinderHelper'),
+    GenomicAlignments = citation('GenomicAlignments'),
+    GenomicFeatures = citation('GenomicFeatures'),
+    GenomicFiles = citation('GenomicFiles'),
+    Hmisc = citation('Hmisc'),
+    qvalue = citation('qvalue'),
+    Rsamtools = citation('Rsamtools'),
+    rtracklayer = citation('rtracklayer'),
+    S4Vectors = citation('S4Vectors'),
+    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article', key = 'bumphunterPaper', title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies', author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A', year = 2012, journal = 'International Journal of Epidemiology'),
+    derfinderData = citation('derfinderData')
+)
+
+write.bibtex(bibs,
+    file = 'quickstartRef.bib')
+bib <- read.bibtex('quickstartRef.bib')
+
+## Assign short names
+names(bib) <- names(bibs)
+
+## Working on Windows?
+windowsFlag <- .Platform$OS.type == 'windows'
+```
+
+# Introduction
+
+`r Biocpkg('derfinder')` is an R package that implements the DER Finder approach `r citep(bib[['originalder']])` for RNA-seq data. Briefly, this approach is an alternative to feature-counting and transcript assembly. The basic idea is to identify contiguous base-pairs in the genome that present differential expression signal. These base-pairs are grouped into _d_ifferentially _e_xpressed _r_regions (DERs). This approach is annotation-agnostic which is a feature you might be interested in. In particular, `r Biocpkg('derfinder')` contains functions that allow you to identify DERs via two alternative methods. You can find more details on the full [derfinder users guide](derfinder-users-guide.html).
+
+# Basics
+
+## Install `r Biocpkg('derfinder')`
+
+`R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. `r Biocpkg('derfinder')` is a `R` package available via the [Bioconductor](http://bioconductor/packages/derfinder) repository for packages. `R` can be installed on any operating system from [CRAN](https://cran.r-project.org/) after which you can install `r Biocpkg('derfinder')` by using the following commands in your `R` session:
+
+```{r 'installDer', eval = FALSE}
+## try http:// if https:// URLs are not supported
+source("https://bioconductor.org/biocLite.R")
+biocLite("derfinder")
+```
+
+## Required knowledge
+
+`r Biocpkg('derfinder')` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. That is, packages like `r Biocpkg('Rsamtools')`, `r Biocpkg('GenomicAlignments')` and `r Biocpkg('rtracklayer')` that allow you to import the data. A `r Biocpkg('derfinder')` user is not expected to deal with those packages directly but will need to be familiar with `r Biocpkg('GenomicRanges')` to understand the results `r Biocpkg('derfinder')` generates. It might also prove to be highly beneficial to check the `r Biocpkg('BiocParallel')` package for performing parallel computations.
+
+If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startBioC/#.VkOKbq6rRuU).
+
+## Asking for help
+
+As package developers, we try to explain clearly how to use our packages and in which order to use the functions. But `R` and `Bioconductor` have a steep learning curve so it is critical to learn where to ask for help. The blog post quoted above mentions some but we would like to highlight the [Bioconductor support site](https://support.bioconductor.org/) as the main resource for getting help. Other alternatives are available such as creating GitHub issues and tweeting. However, please note that if you want to receive help you should adhere to the [posting guidlines](http://www.bioconductor.org/help/support/posting-guide/). It is particularly critical that you provide a small reproducible example and your session information so package developers can track down the source of the error.
+
+We would like to highlight the `r Biocpkg('derfinder')` user [Jessica Hekman](https://support.bioconductor.org/u/6877/). She has used `r Biocpkg('derfinder')` with non-human data, and in the process of doing so discovered some small bugs or sections of the documentation that were not clear.
+
+## Citing `r Biocpkg('derfinder')`
+
+We hope that `r Biocpkg('derfinder')` will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!
+
+```{r 'citation'}
+## Citation info
+citation('derfinder')
+```
+
+
+# Sample DER Finder analysis
+
+This is a brief overview of what a DER Finder analysis looks like. In particular, here we will be identifying expressed-regions (ERs) without relying on annotation. Next, we'll identify candidate differentially expressed regions (DERs). Finally, we'll compare the DERs with known annotation features.
+
+We first load the required packages.
+
+```{r 'start', message=FALSE}
+## Load libraries
+library('derfinder')
+library('derfinderData')
+library('GenomicRanges')
+```
+
+
+Next, we need to locate the chromosome 21 coverage files for a set of 12 samples. These samples are a small subset from the _BrainSpan Atlas of the Human Brain_ `r citep(bib[['brainspan']])` publicly available data. The function `rawFiles()` helps us in locating these files.
+
+```{r 'locateAMYfiles'}
+## Determine the files to use and fix the names
+files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
+names(files) <- gsub('.bw', '', names(files))
+```
+
+Next, we can load the full coverage data into memory using the `fullCoverage()` function.
+
+
+```{r 'getData', eval = !windowsFlag}
+## Load the data from disk
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+```
+
+```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
+## Load data in Windows case
+foo <- function() { 
+    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData', package = 'derfinderData'))
+    return(fullCovAMY) 
+}
+fullCov <- foo()
+```
+
+Now that we have the data, we can identify expressed-regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.
+
+```{r 'regionMatrix'}
+## Use regionMatrix()
+system.time(regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76))
+
+## Explore results
+names(regionMat$chr21)
+```
+
+`regionMatrix()` returns three pieces of output.
+
+* _regions_ is the result from filtering with `filterData()` and then defining the regions with `findRegions()`. Note that the metadata variable `value` represents the mean coverage for the given region while `area` is the sum of the base-level coverage (before adjusting for read length) from all samples.
+* _bpCoverage_ is a list with the base-level coverage from all the regions. This information can then be used with `plotRegionCoverage()` from `r Biocpkg('derfinderPlot')`.
+* _coverageMatrix_ is the matrix with one row per region and one column per sample. The different matrices for each of the chromosomes can then be merged prior to using `r Biocpkg('limma')` or other packages. Note that the counts are generally not integers, but can easily be rounded if necessary.
+
+The actual ERs are arranged in a `GRanges` object.
+
+```{r 'exploreRegMatRegs'}
+## regions output
+regionMat$chr21$regions
+
+## Number of regions
+length(regionMat$chr21$regions)
+```
+
+`bpCoverage` is the base level coverage list which can then be used for plotting.
+
+```{r 'exploreRegMatBP'}
+## Base-level coverage matrices for each of the regions
+## Useful for plotting
+lapply(regionMat$chr21$bpCoverage[1:2], head, n = 2)
+
+## Check dimensions. First region is 565 long, second one is 138 bp long.
+## The columns match the number of samples (12 in this case).
+lapply(regionMat$chr21$bpCoverage[1:2], dim)
+```
+
+The end result of the coverage matrix is shown below. Note that the coverage has been adjusted for read length. Because reads might not fully align inside a given region, the numbers are generally not integers but can be rounded if needed.
+
+```{r 'exploreRegMatrix'}
+## Dimensions of the coverage matrix
+dim(regionMat$chr21$coverageMatrix)
+
+## Coverage for each region. This matrix can then be used with limma or other pkgs
+head(regionMat$chr21$coverageMatrix)
+```
+
+We can then use the coverage matrix and packages such as `r Biocpkg('limma')`, `r Biocpkg('DESeq2')` or `r Biocpkg('edgeR')` to identify which ERs are differentially expressed. Here we'll use `r Biocpkg('DESeq2')` for which we need some phenotype data.
+
+```{r 'phenoData'}
+## Get pheno table
+pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
+```
+
+Now we can identify the DERs using a rounded version of the coverage matrix.
+
+```{r 'identifyDERsDESeq2'}
+## Required
+library('DESeq2')
+
+## Round matrix
+counts <- round(regionMat$chr21$coverageMatrix)
+
+## Round matrix and specify design
+dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
+
+## Perform DE analysis
+system.time( dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local') )
+
+## Extract results
+mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions), results(dse))
+
+## Save info in an object with a shorter name
+ers <- regionMat$chr21$regions
+ers
+```
+
+We can then compare the DERs against known annotation to see which DERs overlap known exons, introns, or intergenic regions. A way to visualize this information is via a Venn diagram which we can create using `vennRegions()` from the `r Biocpkg('derfinderPlot')` package.
+
+```{r 'vennRegions'}
+## Find overlaps between regions and summarized genomic annotation
+annoRegs <- annotateRegions(ers, genomicState$fullGenome)
+
+library('derfinderPlot')
+vennRegions(annoRegs, counts.col = 'blue')
+```
+
+We can also identify the nearest annotated feature. In this case, we'll look for the nearest known gene from the UCSC hg19 annotation.
+
+```{r 'nearestGene'}
+## Load database of interest
+library('TxDb.Hsapiens.UCSC.hg19.knownGene')
+txdb <- keepSeqlevels(TxDb.Hsapiens.UCSC.hg19.knownGene, 'chr21')
+
+## Find nearest feature
+library('bumphunter')
+genes <- annotateTranscripts(txdb)
+annotation <- matchGenes(ers, subject = genes)
+
+## Extract the region coverage
+regionCov <- regionMat$chr21$bpCoverage
+```
+
+We can broadly visualize the nearest feature for our ERs using the function `plotOverview()`.
+
+```{r 'overviewNearest'}
+## Overview of the candidate DERs in the genome
+plotOverview(regions = ers, annotation = annotation, type = 'annotation')
+```
+
+
+Or we can check the base-level coverage information for some of our DERs. In this example we do so for the first 5 ERs.
+
+```{r 'first5'}
+plotRegionCoverage(regions = ers, regionCoverage = regionCov, 
+    groupInfo = pheno$group, nearestAnnotation = annotation, 
+    annotatedRegions = annoRegs, whichRegions = seq_len(5), txdb = txdb, scalefac = 1, 
+    ask = FALSE)
+```
+
+
+If you are interested in using `r Biocpkg('derfinder')` we recommend checking the [derfinder users guide](derfinder-users-guide.html) and good luck with your analyses!
+
+
+# Reproducibility
+
+This package was made possible thanks to:
+
+* R `r citep(bib[['R']])`
+* `r Biocpkg('AnnotationDbi')` `r citep(bib[['AnnotationDbi']])`
+* `r Biocpkg('BiocParallel')` `r citep(bib[['BiocParallel']])`
+* `r Biocpkg('bumphunter')` `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
+* `r Biocpkg('derfinderHelper')` `r citep(bib[['derfinderHelper']])`
+* `r Biocpkg('GenomeInfoDb')` `r citep(bib[['GenomeInfoDb']])`
+* `r Biocpkg('GenomicAlignments')` `r citep(bib[['GenomicAlignments']])`
+* `r Biocpkg('GenomicFeatures')` `r citep(bib[['GenomicFeatures']])`
+* `r Biocpkg('GenomicFiles')` `r citep(bib[['GenomicFiles']])`
+* `r Biocpkg('GenomicRanges')` `r citep(bib[['GenomicRanges']])`
+* `r CRANpkg('Hmisc')` `r citep(bib[['Hmisc']])`
+* `r Biocpkg('IRanges')` `r citep(bib[['IRanges']])`
+* `r Biocpkg('qvalue')` `r citep(bib[['qvalue']])`
+* `r Biocpkg('Rsamtools')` `r citep(bib[['Rsamtools']])`
+* `r Biocpkg('rtracklayer')` `r citep(bib[['rtracklayer']])`
+* `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
+* `r Biocpkg('biovizBase')` `r citep(bib[['biovizBase']])`
+* `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
+* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
+* `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
+* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
+* `r CRANpkg('knitr')` `r citep(bib[['knitr']])`
+* `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
+* `r CRANpkg('testthat')` `r citep(bib[['testthat']])`
+* `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
+
+Code for creating the vignette
+
+```{r createVignette, eval=FALSE}
+## Create the vignette
+library('rmarkdown')
+system.time(render('quickstart-derfinder.Rmd', 'BiocStyle::html_document'))
+
+## Extract the R code
+library('knitr')
+knit('quickstart-derfinder.Rmd', tangle = TRUE)
+```
+
+```{r createVignette2}
+## Clean up
+file.remove('quickstartRef.bib')
+```
+
+Date the vignette was generated.
+
+```{r reproducibility1, echo=FALSE}
+## Date the vignette was generated
+Sys.time()
+```
+
+Wallclock time spent generating the vignette.
+
+```{r reproducibility2, echo=FALSE}
+## Processing time in seconds
+totalTime <- diff(c(startTime, Sys.time()))
+round(totalTime, digits=3)
+```
+
+`R` session information.
+
+```{r reproducibility3, echo=FALSE}
+## Session info
+library('devtools')
+options(width = 120)
+session_info()
+```
+
+
+# Bibliography
+
+This vignette was generated using `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+with `r CRANpkg('knitr')` `r citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])` running behind the scenes.
+
+Citations made with `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`.
+
+```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE}
+## Print bibliography
+bibliography()
+```
