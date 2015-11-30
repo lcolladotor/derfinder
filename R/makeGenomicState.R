@@ -29,7 +29,7 @@
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels
 #' @importMethodsFrom AnnotationDbi select
-#' @importMethodsFrom GenomicRanges names 'names<-' reduce mcols 'mcols<-' '$' 
+#' @importMethodsFrom GenomicRanges names 'names<-' reduce '$' 
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
 #' strand 'strand<-' gaps width
 #' @importMethodsFrom IRanges names unlist relist length lapply '['
