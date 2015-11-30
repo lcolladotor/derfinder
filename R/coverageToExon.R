@@ -42,8 +42,7 @@
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width c strand subset as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame
-#' @importMethodsFrom S4Vectors as.character '%in%'
-#' @importFrom S4Vectors runValue
+#' @import S4Vectors
 #' @importFrom BiocParallel bplapply bpmapply
 #'
 #' @examples

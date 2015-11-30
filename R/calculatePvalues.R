@@ -52,8 +52,7 @@
 #' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist 
 #' '$<-' cbind
 #' @importFrom IRanges Views RleList values 'values<-' nrow
-#' @importFrom S4Vectors Rle DataFrame runValue runLength
-#' @importMethodsFrom S4Vectors as.numeric '$'
+#' @import S4Vectors
 #' @importFrom BiocParallel bplapply
 #' @importFrom qvalue qvalue
 #' @importFrom derfinderHelper fstats.apply

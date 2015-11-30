@@ -62,8 +62,7 @@
 #' @export
 #'
 #' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-' c
-#' @importFrom S4Vectors Rle
-#' @importMethodsFrom S4Vectors Reduce sapply split
+#' @import S4Vectors
 #'
 #' @examples
 #' ## Split the data and transform appropriately before using calculateStats()

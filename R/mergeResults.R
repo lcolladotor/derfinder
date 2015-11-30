@@ -52,10 +52,9 @@
 #' @importFrom GenomicRanges GRangesList
 #' @importMethodsFrom GenomicRanges '$' '$<-' '['
 #' @importFrom IRanges RleList
-#' @importFrom S4Vectors DataFrame
+#' @import S4Vectors
 #' @importMethodsFrom IRanges cbind values 'values<-' '[' length '$<-'
 #' order unlist nrow
-#' @importMethodsFrom S4Vectors as.numeric '$'
 #' @importFrom qvalue qvalue
 #'
 #' @details If you want to calculate the FWER adjusted P-values, supply 

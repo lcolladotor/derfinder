@@ -35,7 +35,7 @@
 #' width c '$'
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @importFrom IRanges IRanges
-#' @importMethodsFrom S4Vectors as.factor
+#' @import S4Vectors
 #' @importFrom BiocParallel bpmapply
 #'
 #' @details When \code{fullCov} is the output of \link{loadCoverage} with
