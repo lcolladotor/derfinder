@@ -32,7 +32,7 @@
 #' @export
 #' @importFrom IRanges queryHits subjectHits
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
-#' @importMethodsFrom GenomicRanges names 'names<-' length '$' split mcols
+#' @importMethodsFrom GenomicRanges names 'names<-' length '$'
 #' countOverlaps findOverlaps '['
 #' @import S4Vectors
 #'
