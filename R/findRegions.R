@@ -49,7 +49,7 @@
 #'
 #' @export
 #' @importFrom IRanges IRanges start end width Views ranges
-#' @importFrom S4Vectors Rle runLength  runValue 'runValue<-' DataFrame
+#' @import S4Vectors
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importMethodsFrom IRanges quantile which length mean rbind
 #' @examples
@@ -250,7 +250,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' @keywords internal 
 #' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
-#' @importMethodsFrom S4Vectors as.numeric
+#' @import S4Vectors
 #' @examples
 #' library('IRanges')
 #' set.seed(20130725)
@@ -354,7 +354,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #'
 #' @importFrom IRanges IRanges start end reduce Views runLength
 #' @importMethodsFrom IRanges length sum
-#' @importFrom S4Vectors Rle runValue
+#' @import S4Vectors
 #'
 #' @examples
 #' library('IRanges')

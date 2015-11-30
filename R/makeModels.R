@@ -31,7 +31,7 @@
 #' @export
 #'
 #' @importMethodsFrom IRanges ncol median '['
-#' @importMethodsFrom S4Vectors sapply
+#' @import S4Vectors
 #' @examples
 #' ## Collapse the coverage information
 #' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 

@@ -25,7 +25,7 @@
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
 #' @importFrom IRanges CharacterList elementLengths IntegerList 
 #' queryHits subjectHits
-#' @importFrom S4Vectors Rle DataFrame
+#' @import S4Vectors
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels
 #' @importMethodsFrom AnnotationDbi select
@@ -33,7 +33,7 @@
 #' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
 #' strand 'strand<-' gaps width
 #' @importMethodsFrom IRanges names unlist relist length lapply '['
-#' @importMethodsFrom S4Vectors as.character sapply
+#' @import S4Vectors
 #' @importMethodsFrom GenomicFeatures promoters
 #'
 #' @examples

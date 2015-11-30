@@ -34,7 +34,7 @@
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$' split mcols
 #' countOverlaps findOverlaps '['
-#' @importMethodsFrom S4Vectors sapply
+#' @import S4Vectors
 #'
 #' @details
 #' You might want to specify arguments such as \code{minoverlap} to control

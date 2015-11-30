@@ -48,8 +48,7 @@
 #' @export
 #'
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
-#' @importFrom S4Vectors Rle DataFrame
-#' @importMethodsFrom S4Vectors Reduce
+#' @import S4Vectors
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples

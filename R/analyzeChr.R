@@ -61,7 +61,7 @@
 #' \link{calculateStats}, \link{calculatePvalues}, 
 #' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
 #' @export
-#' @importMethodsFrom S4Vectors as.numeric
+#' @import S4Vectors
 #' @importFrom bumphunter annotateTranscripts matchGenes
 #' 
 #' @examples

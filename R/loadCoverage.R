@@ -64,7 +64,7 @@
 #' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
-#' @importMethodsFrom S4Vectors Reduce
+#' @import S4Vectors
 #' @importMethodsFrom GenomicRanges coverage isDisjoint reduce width resize
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
