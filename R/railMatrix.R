@@ -103,7 +103,10 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     ## Define cluster
     BPPARAM <- .define_cluster(...)
-    BPPARAM.railChr <- .define_cluster(cores = 'file.cores', file.cores = file.cores, ...)
+    
+    mc.outfile <- .advanced_argument('mc.outfile',
+        Sys.getenv('SGE_STDERR_PATH'), ...)
+    BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', SnowParam(workers = file.cores, outfile = mc.outfile), ...)
     
     regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP), BPPARAM = BPPARAM)
     return(regionMat)
