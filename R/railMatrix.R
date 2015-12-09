@@ -31,9 +31,11 @@
 #' only when \code{totalMapped} is specified. By default, it adjusts to 
 #' libraries with 40 million reads, which matches the default used in Rail.
 #' @inheritParams filterData
-#' @param L The width of the reads used.
+#' @param L The width of the reads used. Either a vector of length 1 or length
+#' equal to the number of samples.
 #' @param maxClusterGap This determines the maximum gap between candidate ERs.
 #' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
+#' @param file.cores Number of cores used for loading the BigWig files per chr.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
@@ -90,7 +92,7 @@
 #' }
 
 
-railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL, maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, ...) {
+railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL, maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, file.cores = 1L, ...) {
     stopifnot(length(chrs) == length(summaryFiles))
     ## In the future, summaryFiles might be a vector or a list, but the length
     ## check must be maintained. It might be a list if the mean bigwig info
@@ -101,13 +103,14 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     ## Define cluster
     BPPARAM <- .define_cluster(...)
+    BPPARAM.railChr <- .define_cluster(cores = 'file.cores', file.cores = file.cores, ...)
     
     regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE) {
+.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, BPPARAM.railChr = BPPARAM.railChr) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr)
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff)
     
@@ -118,9 +121,21 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     seqlengths(regs) <- length(meanCov$coverage[[1]])
     
     ## Get the region coverage matrix
-    regionCov <- getRegionCoverage(regions = regs, files = sampleFiles, which = regs, totalMapped = totalMapped, targetSize = targetSize, mc.cores = 1L, protectWhich = 0)
+    fullCov <- fullCoverage(files = sampleFiles, chrs = chr, protectWhich = 0,
+        which = regs, totalMapped = totalMapped, targetSize = targetSize,
+        BPPARAM.custom = BPPARAM.railChr)
+    regionCov <- getRegionCoverage(fullCov = fullCov, regions = regs,
+        mc.cores = 1L)
     covMat <- lapply(regionCov, colSums)
-    covMat <- do.call(rbind, covMat) / L
+    covMat <- do.call(rbind, covMat)
+    if(length(L) == 1) {
+        covMat <- covMat / L
+    } else if (length(L) == ncol(covMat)) {
+        covMat <- covMat / matrix(rep(L, each = nrow(covMat)), ncol = ncol(covMat))
+    } else {
+        warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
+    }
+    
     
     ## Finish
     if(returnBP) {
