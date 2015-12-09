@@ -12,7 +12,8 @@
 #' using \link{fullCoverage}. If \code{runFilter = FALSE}, then 
 #' \code{returnMean = TRUE} must have been used.
 #' @inheritParams filterData
-#' @param L The width of the reads used.
+#' @param L The width of the reads used. Either a vector of length 1 or length
+#' equal to the number of samples.
 #' @param runFilter This controls whether to run \link{filterData} or not. If 
 #' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
 #' create each element of \code{fullCov}.
@@ -148,7 +149,14 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         chrsStyle = chrsStyle, mc.cores = 1L)
         
     covMat <- lapply(regionCov, colSums)
-    covMat <- do.call(rbind, covMat) / L
+    covMat <- do.call(rbind, covMat)
+    if(length(L) == 1) {
+        covMat <- covMat / L
+    } else if (length(L) == ncol(covMat)) {
+        covMat <- covMat / matrix(rep(L, each = nrow(covMat)), ncol = ncol(covMat))
+    } else {
+        warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
+    }
 
     ## Finish
     if(returnBP) {

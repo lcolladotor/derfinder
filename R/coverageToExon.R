@@ -7,7 +7,8 @@
 #' 
 #' @inheritParams getRegionCoverage
 #' @inheritParams annotateRegions
-#' @param L The width of the reads used.
+#' @param L The width of the reads used. Either a vector of length 1 or length
+#' equal to the number of samples.
 #' @param returnType If \code{raw}, then the raw coverage information per exon 
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
 #' @inheritParams fullCoverage
@@ -176,7 +177,15 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         g <- e[seqnames(e) == chr]
         ind <- rep(names(g), width(g))  # to split
         tmpList <- split(z, ind)  # split
-        res <- t(sapply(tmpList, colSums)/L)  # get # reads
+        res <- t(sapply(tmpList, colSums))  # get # reads
+        
+        if(length(L) == 1) {
+            res <- res / L
+        } else if (length(L) == ncol(res)) {
+            res <- res / matrix(rep(L, each = nrow(res)), ncol = ncol(res))
+        } else {
+            warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
+        }
     
         # done
         return(res)

@@ -1,9 +1,9 @@
 Package: derfinder
 Type: Package
-Title: Annotation-agnostic differential expression analysis of RNA-seq data at 
+Title: Annotation-agnostic differential expression analysis of RNA-seq data at
     base-pair resolution via the DER Finder approach
-Version: 1.5.10
-Date: 2015-11-30
+Version: 1.5.11
+Date: 2015-12-09
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person(c("Alyssa", "C."), "Frazee", role = c("aut"),
     email = "alyssa.frazee@gmail.com"), person(c("Andrew", "E."), "Jaffe",
@@ -42,12 +42,13 @@ Suggests:
     testthat,
     TxDb.Hsapiens.UCSC.hg19.knownGene
 VignetteBuilder: knitr
-Description: This package provides functions for annotation-agnostic 
+Description: This package provides functions for annotation-agnostic
     differential expression analysis of RNA-seq data. Two implementations of
-    the DER Finder approach are included in this package: (1) single-base level 
+    the DER Finder approach are included in this package: (1) single-base level
     F-statistics and (2) identification of expressed-regions.
 License: Artistic-2.0
 LazyData: true
 URL: https://github.com/lcolladotor/derfinder
 BugReports: https://github.com/lcolladotor/derfinder/issues
 biocViews: DifferentialExpression, Sequencing, RNASeq, Software
+RoxygenNote: 5.0.1
