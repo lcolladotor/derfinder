@@ -30,7 +30,7 @@
 #' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce '$' 
-#' '$<-' '[' '[<-' values 'values<-' sort disjoin length findOverlaps split 
+#' '$<-' '[' '[<-' sort disjoin length findOverlaps
 #' strand 'strand<-' gaps width
 #' @importMethodsFrom IRanges names unlist relist length lapply '['
 #' @import S4Vectors
