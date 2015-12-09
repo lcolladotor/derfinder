@@ -91,7 +91,7 @@ This is the path you will want to follow in most scenarios.
 
 ## `railMatrix()`
 
-![Rail logo](https://github.com/nellore/rail/blob/master/assets/railrnalogodark.png?raw=true)
+[![Rail logo](https://github.com/nellore/rail/blob/master/assets/railrnalogodark.png?raw=true)](http://rail.bio)
 
 Our favorite method for identifying expressed-regions is based on pre-computed summary coverage files (mean or median) as well as coverage files by sample. [Rail](http://rail.bio) is a cloud-enabled aligner that will generate:
 
@@ -914,7 +914,7 @@ Because `SnowParam()` requires `R` to load the necessary packages on each worker
 
 You may prefer to use `MulticoreParam()` described in the `r Biocpkg('BiocParallel')`  vignette. In that case, when using these functions use `BPPARAM.custom = MulticoreParam(workers = x)` where `x` is the number of cores you want to use. Note that in some systems, as is the case of the cluster used by `r Biocpkg('derfinder')`'s developers, the system tools for assessing memory usage can be misleading, thus resulting in much higher memory loads when using `MulticoreParam()` instead of the default `SnowParam()`.
 
-# Advanced loading data
+# Loading data details
 
 
 ## Controlling loading from BAM files
@@ -977,6 +977,15 @@ If you prefer to do so, `fullCoverage()` and `loadCoverage()` can load the data 
 Notice that you might run into slight coverage errors near the borders of the tiles for the same reason that was illustrated previously when loading specific regions.
 
 This approach is not necessarily more efficient and can be significantly time consuming if you use a small `tilewidth`.
+
+
+## Large number of samples
+
+If you have a large number of samples (say thousands), it might be best to submit cluster jobs that run `loadCoverage()` or `fullCoverage()` for only one chromosome at a time.
+
+In the case of working with [Rail](http://rail.bio) output, you can either use `railMatrix()` with the argument `file.cores` greater than 1 or specify the advanced argument `BPPARAM.railChr` to control the parallel environment used for loading the BigWig files. Doing so, you can then submit cluster jobs that run `railMatrix()` for one chromosome at a time, yet read in the data fast. You can do all of from R by using `BPPARAM.custom` and `BPPARAM.railChr` at the same time where you use a `BatchJobsParam()` for the first one.
+
+Another option when working with [Rail](http://rail.bio) output is to simply load the summary BigWig data (mean, median), then define the ERs using `findRegions()` and write them to a BED file. You can then use [bwtool](https://github.com/CRG-Barcelona/bwtool/wiki) to create the coverage matrix.
 
 
 
