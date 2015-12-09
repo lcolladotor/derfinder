@@ -1,5 +1,17 @@
-CHANGES IN VERSION 1.5.9
-------------------------
+CHANGES IN VERSION 1.5.13
+-------------------------
+
+BUG FIXES
+
+    o Fixed railMatrix()'s flexibility for defining the cluster used for loading
+        the BigWig files. You can now use 'BPPARAM.railChr' which will take
+        priority over 'file.cores'. Also, if 'file.cores = 1L', then the default
+        will be to use SerialParam(), which was the implementation available
+        prior to 1.5.11.
+    
+
+CHANGES IN VERSION 1.5.11
+-------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
