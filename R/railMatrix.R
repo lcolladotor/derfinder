@@ -101,14 +101,22 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
     
-    ## Define cluster
+    ## Define cluster used for per chromosome
     BPPARAM <- .define_cluster(...)
     
-    mc.outfile <- .advanced_argument('mc.outfile',
-        Sys.getenv('SGE_STDERR_PATH'), ...)
-    BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', SnowParam(workers = file.cores, outfile = mc.outfile), ...)
+    ## Define cluster used for loading BigWig files    
+    if(file.cores == 1L) {
+        BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', SerialParam(),
+            ...)
+    } else {
+        mc.outfile <- .advanced_argument('mc.outfile', 
+            Sys.getenv('SGE_STDERR_PATH'), ...)
+        BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', 
+            SnowParam(workers = file.cores, outfile = mc.outfile), ...)
+    }
     
-    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP), BPPARAM = BPPARAM)
+    
+    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP, BPPARAM.railChr = BPPARAM.railChr), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
