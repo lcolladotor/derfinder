@@ -41,7 +41,7 @@
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
-#' width c strand subset as.data.frame
+#' width c strand as.data.frame
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply bpmapply
