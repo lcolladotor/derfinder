@@ -142,7 +142,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     if(!is.null(totalMapped) & targetSize != 0) {
         mappedPerXM <- totalMapped / targetSize
         if(verbose) message(paste(Sys.time(), 'railMatrix: normalizing coverage'))
-        for(i in ncol(fullCov$coverage)) fullCov[[1]][[i]] <- fullCov[[1]][[i]] / mappedPerXM[i]
+        for(i in ncol(fullCov[[1]])) fullCov[[1]][[i]] <- fullCov[[1]][[i]] / mappedPerXM[i]
         if(verbose) message(paste(Sys.time(), 'railMatrix: done normalizing coverage'))
     }
     
