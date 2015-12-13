@@ -148,12 +148,15 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         totalMapped = NULL, targetSize = 0, verbose = verbose,
         chrsStyle = chrsStyle, mc.cores = 1L)
         
+    if(verbose) message(paste(Sys.time(), "regionMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat)
+    
+    if(verbose) message(paste(Sys.time(), "regionMatrix: adjusting coverageMatrix for 'L'"))
     if(length(L) == 1) {
         covMat <- covMat / L
     } else if (length(L) == ncol(covMat)) {
-        covMat <- covMat / matrix(rep(L, each = nrow(covMat)), ncol = ncol(covMat))
+        for(i in length(L)) covMat[, i] <- covMat[, i] / L[i]
     } else {
         warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
     }

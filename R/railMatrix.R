@@ -101,6 +101,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
     
+    ## Verbose value
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
     ## Define cluster used for per chromosome
     BPPARAM <- .define_cluster(...)
     
@@ -116,13 +119,13 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     }
     
     
-    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP, BPPARAM.railChr = BPPARAM.railChr), BPPARAM = BPPARAM)
+    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, BPPARAM.railChr = BPPARAM.railChr) {
-    meanCov <- loadCoverage(files = summaryFile, chr = chr)
+.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE) {
+    meanCov <- loadCoverage(files = summaryFile, chr = chr)    
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff)
     
     ## Format appropriately
@@ -133,16 +136,28 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     ## Get the region coverage matrix
     fullCov <- fullCoverage(files = sampleFiles, chrs = chr, protectWhich = 0,
-        which = regs, totalMapped = totalMapped, targetSize = targetSize,
-        BPPARAM.custom = BPPARAM.railChr)
+        which = regs, BPPARAM.custom = BPPARAM.railChr)
+        
+    ## Normalize coverage
+    if(!is.null(totalMapped) & targetSize != 0) {
+        mappedPerXM <- totalMapped / targetSize
+        if(verbose) message(paste(Sys.time(), 'railMatrix: normalizing coverage'))
+        for(i in ncol(fullCov$coverage)) fullCov[[1]][[i]] <- fullCov[[1]][[i]] / mappedPerXM[i]
+        if(verbose) message(paste(Sys.time(), 'railMatrix: done normalizing coverage'))
+    }
+    
     regionCov <- getRegionCoverage(fullCov = fullCov, regions = regs,
         mc.cores = 1L)
+        
+    if(verbose) message(paste(Sys.time(), "railMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat)
+    
+    if(verbose) message(paste(Sys.time(), "railMatrix: adjusting coverageMatrix for 'L'"))
     if(length(L) == 1) {
         covMat <- covMat / L
     } else if (length(L) == ncol(covMat)) {
-        covMat <- covMat / matrix(rep(L, each = nrow(covMat)), ncol = ncol(covMat))
+        for(i in length(L)) covMat[, i] <- covMat[, i] / L[i]
     } else {
         warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
     }
