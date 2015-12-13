@@ -182,7 +182,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         if(length(L) == 1) {
             res <- res / L
         } else if (length(L) == ncol(res)) {
-            res <- res / matrix(rep(L, each = nrow(res)), ncol = ncol(res))
+            for(i in length(L)) res[, i] <- res[, i] / L[i]
         } else {
             warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
         }
