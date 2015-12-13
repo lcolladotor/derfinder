@@ -113,7 +113,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Create the F-stats segments
     if (verbose) 
         message(paste(Sys.time(),
-            'findRegions: segmenting F-stats information'))
+            'findRegions: segmenting information'))
     segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, ...)
     
     ## Work only with those that have some information
