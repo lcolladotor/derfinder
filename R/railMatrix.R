@@ -43,7 +43,7 @@
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
 #' returned by \link{findRegions}.}
-#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}.}
+#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}. Set to \code{FALSE} when the number of samples is large.}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
@@ -118,13 +118,22 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
             SnowParam(workers = file.cores, outfile = mc.outfile), ...)
     }
     
+    if(!is.null(totalMapped) & targetSize != 0) {
+        mappedPerXM <- totalMapped / targetSize
+    } else {
+        mappedPerXM <- NULL
+    }
     
-    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, totalMapped = totalMapped, targetSize = targetSize, returnBP = returnBP, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose), BPPARAM = BPPARAM)
+    ## Chunksize to use
+    chunksize <- .advanced_argument('chunksize', 1000, ...)
+    
+    
+    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, mappedPerXM = mappedPerXM, returnBP = returnBP, chunksize = chunksize, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE) {
+.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, returnBP = TRUE, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr)    
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff)
     
@@ -134,25 +143,61 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     ## Set the length
     seqlengths(regs) <- length(meanCov$coverage[[1]])
     
-    ## Get the region coverage matrix
-    fullCov <- fullCoverage(files = sampleFiles, chrs = chr, protectWhich = 0,
-        which = regs, BPPARAM.custom = BPPARAM.railChr)
+    ## Get coverage matrix by chunks of regions
+    nChunks <- length(regs) %/% chunksize
+    if(length(regs) %% chunksize > 0) nChunks <- nChunks + 1
+    
+    ## Split regions into chunks
+    if(nChunks == 1) {
+        regs_split <- list(regs)
+    } else {
+        regs_split <- split(regs, cut(seq_len(length(regs)), breaks = nChunks, labels = FALSE))
+    }
+    
+    ## Actually calculate the coverage matrix
+    resChunks <- bplapply(regs_split, .railMatChrRegion, sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM, L = L, returnBP = returnBP, verbose = verbose, BPPARAM = BPPARAM.railChr)
+    
+    
+    ## Finish
+    if(returnBP) {
+        regionCov <- lapply(resChunks, '[[', 'bpCoverage')
+        names(regionCov) <- NULL
+        regionCov <- do.call(c, regionCov)
         
+        result <- list(
+            regions = regs,
+            coverageMatrix = do.call(rbind, lapply(resChunks, '[[', 'coverageMatrix')),
+            bpCoverage = regionCov
+        )
+    } else {
+        result <- list(
+            regions = regs,
+            coverageMatrix = do.call(rbind, lapply(resChunks, '[[', 'coverageMatrix'))
+        )
+    }
+    return(result)
+}
+
+.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L, returnBP, verbose = TRUE) {
+        
+    ## Get the region coverage matrix
+    fullCov <- fullCoverage(files = sampleFiles, chrs = chr,
+        protectWhich = 0, which = regions)
+    
     ## Normalize coverage
-    if(!is.null(totalMapped) & targetSize != 0) {
-        mappedPerXM <- totalMapped / targetSize
+    if(!is.null(mappedPerXM)) {
         if(verbose) message(paste(Sys.time(), 'railMatrix: normalizing coverage'))
         for(i in ncol(fullCov[[1]])) fullCov[[1]][[i]] <- fullCov[[1]][[i]] / mappedPerXM[i]
         if(verbose) message(paste(Sys.time(), 'railMatrix: done normalizing coverage'))
     }
-    
-    regionCov <- getRegionCoverage(fullCov = fullCov, regions = regs,
+
+    regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions,
         mc.cores = 1L)
-        
+
     if(verbose) message(paste(Sys.time(), "railMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat)
-    
+
     if(verbose) message(paste(Sys.time(), "railMatrix: adjusting coverageMatrix for 'L'"))
     if(length(L) == 1) {
         covMat <- covMat / L
@@ -161,15 +206,12 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     } else {
         warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
     }
-    
-    
+
     ## Finish
     if(returnBP) {
-        res <- list(regions = regs, coverageMatrix = covMat, 
-            bpCoverage = regionCov)
+        res <- list(coverageMatrix = covMat, bpCoverage = regionCov)
     } else {
-        res <- list(regions = regs, coverageMatrix = covMat)
+        res <- list(coverageMatrix = covMat)
     }
-    
     return(res)
 }

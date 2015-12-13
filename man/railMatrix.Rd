@@ -48,7 +48,7 @@ with three components.
 \describe{
 \item{regions }{ A set of regions based on the coverage filter cutoff as
 returned by \link{findRegions}.}
-\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}.}
+\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}. Set to \code{FALSE} when the number of samples is large.}
 \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 candidate region.}
 }
