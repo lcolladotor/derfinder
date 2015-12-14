@@ -34,7 +34,6 @@
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
 #' @param maxClusterGap This determines the maximum gap between candidate ERs.
-#' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
 #' @param file.cores Number of cores used for loading the BigWig files per chr.
 #' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, 
 #' the chromosome length is extracted from the BAM files. Otherwise, it should 
@@ -42,11 +41,10 @@
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
-#' with three components.
+#' with two components.
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
 #' returned by \link{findRegions}.}
-#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}. Set to \code{FALSE} when the number of samples is large.}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
@@ -95,7 +93,7 @@
 #' }
 
 
-railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL, maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, returnBP = TRUE, file.cores = 1L, chrlens = NULL, ...) {
+railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL, maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6, file.cores = 1L, chrlens = NULL, ...) {
     stopifnot(length(chrs) == length(summaryFiles))
     ## In the future, summaryFiles might be a vector or a list, but the length
     ## check must be maintained. It might be a list if the mean bigwig info
@@ -103,6 +101,8 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
+    stopifnot(length(L) != 1 | length(L) != length(sampleFiles))
+    if(!is.null(totalMapped)) stopifnot(length(totalMapped) != 1 | length(totalMapped) != length(sampleFiles))
     
     ## Verbose value
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -128,37 +128,34 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     if(!is.null(totalMapped) & targetSize != 0) {
         mappedPerXM <- totalMapped / targetSize
     } else {
-        mappedPerXM <- NULL
+        mappedPerXM <- rep(list(NULL), length(sampleFiles))
     }
     
     ## Chunksize to use
     chunksize <- .advanced_argument('chunksize', 1000, ...)
     
     
-    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, chrlens, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, mappedPerXM = mappedPerXM, returnBP = returnBP, chunksize = chunksize, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose, verboseLoad = verbose.load), BPPARAM = BPPARAM)
+    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, chrlens, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, mappedPerXM = mappedPerXM, chunksize = chunksize, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose, verboseLoad = verbose.load), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, chrlen, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, returnBP = TRUE, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE, verboseLoad = TRUE) {
+.railMatrixChr <- function(chr, summaryFile, chrlen, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE, verboseLoad = TRUE) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr, chrlen = chrlen)
     
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose)
     
     ## If there are no regions, return NULL
-    if(is.null(regs)) {
-        if(returnBP) {
-            return(list(regions = GRanges(), coverageMatrix = NULL, bpCoverage = NULL))
-        } else {
-            return(list(regions = GRanges(), coverageMatrix = NULL))
-        }
-    }
+    if(is.null(regs)) return(list(regions = GRanges(), coverageMatrix = NULL))
     
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
     
     ## Set the length
     seqlengths(regs) <- length(meanCov$coverage[[1]])
+    
+    ## No longer needed, delete to save memory
+    rm(meanCov)
     
     ## Get coverage matrix by chunks of regions
     nChunks <- length(regs) %/% chunksize
@@ -172,64 +169,37 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     }
     
     ## Actually calculate the coverage matrix
-    resChunks <- bplapply(regs_split, .railMatChrRegion, sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM, L = L, returnBP = returnBP, verbose = verbose, BPPARAM = BPPARAM.railChr, verboseLoad = verboseLoad, chrlen = chrlen)
+    resChunks <- lapply(regs_split, .railMatChrRegion, sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM, L = L, verbose = verbose, BPPARAM.railChr = BPPARAM.railChr, verboseLoad = verboseLoad, chrlen = chrlen)
     
     
     ## Finish
-    if(returnBP) {
-        regionCov <- lapply(resChunks, '[[', 'bpCoverage')
-        names(regionCov) <- NULL
-        regionCov <- do.call(c, regionCov)
-        
-        result <- list(
-            regions = regs,
-            coverageMatrix = do.call(rbind, lapply(resChunks, '[[', 'coverageMatrix')),
-            bpCoverage = regionCov
-        )
-    } else {
-        result <- list(
-            regions = regs,
-            coverageMatrix = do.call(rbind, lapply(resChunks, '[[', 'coverageMatrix'))
-        )
-    }
+    result <- list(
+        regions = regs,
+        coverageMatrix = do.call(rbind, lapply(resChunks, '[[', 'coverageMatrix'))
+    )
     return(result)
 }
 
-.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L, returnBP, verbose = TRUE, verboseLoad = TRUE, chrlen) {
+.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L, verbose = TRUE, verboseLoad = TRUE, chrlen, BPPARAM.railChr) {
+    
+    if(verbose) message(paste(Sys.time(), 'railMatrix: processing regions', paste(range(as.integer(names(regions))), collapse = ' to ')))
         
     ## Get the region coverage matrix
-    fullCov <- fullCoverage(files = sampleFiles, chrs = chr,
-        protectWhich = 0, which = regions, verbose = verboseLoad,
-        chrlens = chrlen)
-    
-    ## Normalize coverage
-    if(!is.null(mappedPerXM)) {
-        if(verbose) message(paste(Sys.time(), 'railMatrix: normalizing coverage'))
-        for(i in ncol(fullCov[[1]])) fullCov[[1]][[i]] <- fullCov[[1]][[i]] / mappedPerXM[i]
-        if(verbose) message(paste(Sys.time(), 'railMatrix: done normalizing coverage'))
-    }
-
-    regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions,
-        mc.cores = 1L, verbose = verbose)
-
-    if(verbose) message(paste(Sys.time(), "railMatrix: calculating coverageMatrix"))
-    covMat <- lapply(regionCov, colSums)
-    covMat <- do.call(rbind, covMat)
-
-    if(verbose) message(paste(Sys.time(), "railMatrix: adjusting coverageMatrix for 'L'"))
-    if(length(L) == 1) {
-        covMat <- covMat / L
-    } else if (length(L) == ncol(covMat)) {
-        for(i in length(L)) covMat[, i] <- covMat[, i] / L[i]
-    } else {
-        warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
-    }
+    covMat <- bpmapply(.railMatChrRegionCov, sampleFiles, mappedPerXM, L, BPPARAM = BPPARAM.railChr, MoreArgs = list(chr = chr, regs = regions, verbose = verboseLoad))
+    colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
 
     ## Finish
-    if(returnBP) {
-        res <- list(coverageMatrix = covMat, bpCoverage = regionCov)
-    } else {
-        res <- list(coverageMatrix = covMat)
-    }
+    res <- list(coverageMatrix = covMat)
     return(res)
+}
+
+.railMatChrRegionCov <- function(sampleFile, mappedPerXM, L, chr, regs, verbose = TRUE) {
+    if(verbose) message(paste(Sys.time(), 'railMatrix: processing file', sampleFile))
+    regCov <- import(sampleFile, selection = regs, as = 'RleList')[[chr]] 
+    if(!is.null(mappedPerXM)) {
+        regCov <- import(sampleFile, selection = regs, as = 'RleList')[[chr]] / mappedPerXM
+    } else {
+        regCov <- import(sampleFile, selection = regs, as = 'RleList')[[chr]] 
+    }
+    sum(Views(regCov, ranges(regs))) / L
 }

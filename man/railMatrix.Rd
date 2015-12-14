@@ -5,9 +5,9 @@
 \title{Identify regions data by a coverage filter and get a count matrix from
 BigWig files}
 \usage{
-railMatrix(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
+railMatrix(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
   maxClusterGap = 300L, totalMapped = NULL, targetSize = 4e+07,
-  returnBP = TRUE, file.cores = 1L, chrlens = NULL, ...)
+  file.cores = 1L, chrlens = NULL, ...)
 }
 \arguments{
 \item{chrs}{A character vector with the names of the chromosomes.}
@@ -36,8 +36,6 @@ library prior to filtering.}
 only when \code{totalMapped} is specified. By default, it adjusts to 
 libraries with 40 million reads, which matches the default used in Rail.}
 
-\item{returnBP}{If \code{TRUE}, returns \code{$bpCoverage} explained below.}
-
 \item{file.cores}{Number of cores used for loading the BigWig files per chr.}
 
 \item{chrlens}{The chromosome lengths in base pairs. If it's \code{NULL}, 
@@ -48,11 +46,10 @@ have the same length as \code{chrs}.}
 }
 \value{
 A list with one entry per chromosome. Then per chromosome, a list 
-with three components.
+with two components.
 \describe{
 \item{regions }{ A set of regions based on the coverage filter cutoff as
 returned by \link{findRegions}.}
-\item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}. Set to \code{FALSE} when the number of samples is large.}
 \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 candidate region.}
 }
