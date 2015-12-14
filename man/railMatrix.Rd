@@ -7,7 +7,7 @@ BigWig files}
 \usage{
 railMatrix(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
   maxClusterGap = 300L, totalMapped = NULL, targetSize = 4e+07,
-  returnBP = TRUE, file.cores = 1L, ...)
+  returnBP = TRUE, file.cores = 1L, chrlens = NULL, ...)
 }
 \arguments{
 \item{chrs}{A character vector with the names of the chromosomes.}
@@ -39,6 +39,10 @@ libraries with 40 million reads, which matches the default used in Rail.}
 \item{returnBP}{If \code{TRUE}, returns \code{$bpCoverage} explained below.}
 
 \item{file.cores}{Number of cores used for loading the BigWig files per chr.}
+
+\item{chrlens}{The chromosome lengths in base pairs. If it's \code{NULL}, 
+the chromosome length is extracted from the BAM files. Otherwise, it should 
+have the same length as \code{chrs}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
