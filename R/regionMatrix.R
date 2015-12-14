@@ -136,9 +136,9 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     ## If there are no regions, return NULL
     if(is.null(regs)) {
         if(returnBP) {
-            return(list(regions = NULL, coverageMatrix = NULL, bpCoverage = NULL))
+            return(list(regions = GRanges(), coverageMatrix = NULL, bpCoverage = NULL))
         } else {
-            return(list(regions = NULL, coverageMatrix = NULL))
+            return(list(regions = GRanges(), coverageMatrix = NULL))
         }
     }
     
