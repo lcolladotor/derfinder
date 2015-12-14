@@ -186,6 +186,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL, maxClu
         
     ## Get the region coverage matrix
     covMat <- bpmapply(.railMatChrRegionCov, sampleFiles, mappedPerXM, L, BPPARAM = BPPARAM.railChr, MoreArgs = list(chr = chr, regs = regions, verbose = verboseLoad))
+    if(!any(is.na(match(colnames(covMat), sampleFiles))))
     colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
 
     ## Finish
