@@ -135,7 +135,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
 
 
 .railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, returnBP = TRUE, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE, verboseLoad = TRUE) {
-    meanCov <- loadCoverage(files = summaryFile, chr = chr, verbose = verboseLoad)    
+    meanCov <- loadCoverage(files = summaryFile, chr = chr)
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose)
     
     ## Format appropriately
@@ -156,7 +156,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     }
     
     ## Actually calculate the coverage matrix
-    resChunks <- bplapply(regs_split, .railMatChrRegion, sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM, L = L, returnBP = returnBP, verbose = verbose, BPPARAM = BPPARAM.railChr)
+    resChunks <- bplapply(regs_split, .railMatChrRegion, sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM, L = L, returnBP = returnBP, verbose = verbose, BPPARAM = BPPARAM.railChr, verboseLoad = verboseLoad)
     
     
     ## Finish
@@ -179,11 +179,11 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     return(result)
 }
 
-.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L, returnBP, verbose = TRUE) {
+.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L, returnBP, verbose = TRUE, verboseLoad = TRUE) {
         
     ## Get the region coverage matrix
     fullCov <- fullCoverage(files = sampleFiles, chrs = chr,
-        protectWhich = 0, which = regions)
+        protectWhich = 0, which = regions, verbose = verboseLoad)
     
     ## Normalize coverage
     if(!is.null(mappedPerXM)) {
