@@ -131,7 +131,16 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(covInfo)
         seqlengths <- length(covInfo$position)
-    }     
+    }
+    
+    ## If there are no regions, return NULL
+    if(is.null(regs)) {
+        if(returnBP) {
+            return(list(regions = NULL, coverageMatrix = NULL, bpCoverage = NULL))
+        } else {
+            return(list(regions = NULL, coverageMatrix = NULL))
+        }
+    }
     
     ## Format appropriately
     names(regs) <- seq_len(length(regs))

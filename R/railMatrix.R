@@ -145,6 +145,15 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose)
     
+    ## If there are no regions, return NULL
+    if(is.null(regs)) {
+        if(returnBP) {
+            return(list(regions = NULL, coverageMatrix = NULL, bpCoverage = NULL))
+        } else {
+            return(list(regions = NULL, coverageMatrix = NULL))
+        }
+    }
+    
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
     
