@@ -103,6 +103,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     
     ## Verbose value
     verbose <- .advanced_argument('verbose', TRUE, ...)
+    verbose.load <- .advanced_argument('verbose.load', TRUE, ...)
     
     ## Define cluster used for per chromosome
     BPPARAM <- .define_cluster(...)
@@ -128,14 +129,14 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     chunksize <- .advanced_argument('chunksize', 1000, ...)
     
     
-    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, mappedPerXM = mappedPerXM, returnBP = returnBP, chunksize = chunksize, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose), BPPARAM = BPPARAM)
+    regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L, maxClusterGap = maxClusterGap, cutoff = cutoff, mappedPerXM = mappedPerXM, returnBP = returnBP, chunksize = chunksize, BPPARAM.railChr = BPPARAM.railChr, verbose = verbose, verboseLoad = verbose.load), BPPARAM = BPPARAM)
     return(regionMat)
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, returnBP = TRUE, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE) {
-    meanCov <- loadCoverage(files = summaryFile, chr = chr)    
-    regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff)
+.railMatrixChr <- function(chr, summaryFile, sampleFiles, L = NULL, cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM, returnBP = TRUE, chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE, verboseLoad = TRUE) {
+    meanCov <- loadCoverage(files = summaryFile, chr = chr, verbose = verboseLoad)    
+    regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])), fstats = meanCov$coverage[[1]], chr = chr, maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose)
     
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
@@ -192,7 +193,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     }
 
     regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions,
-        mc.cores = 1L)
+        mc.cores = 1L, verbose = verbose)
 
     if(verbose) message(paste(Sys.time(), "railMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
