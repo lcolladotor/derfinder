@@ -148,9 +148,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L = NULL, cutoff = NULL,
     ## If there are no regions, return NULL
     if(is.null(regs)) {
         if(returnBP) {
-            return(list(regions = NULL, coverageMatrix = NULL, bpCoverage = NULL))
+            return(list(regions = GRanges(), coverageMatrix = NULL, bpCoverage = NULL))
         } else {
-            return(list(regions = NULL, coverageMatrix = NULL))
+            return(list(regions = GRanges(), coverageMatrix = NULL))
         }
     }
     
