@@ -26,7 +26,7 @@ Imports:
     qvalue (>= 1.99.0),
     Rsamtools,
     rtracklayer,
-    S4Vectors (>= 0.7.20)
+    S4Vectors (>= 0.9.25)
 Suggests:
     BiocStyle,
     biovizBase,
