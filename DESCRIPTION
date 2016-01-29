@@ -2,7 +2,7 @@ Package: derfinder
 Type: Package
 Title: Annotation-agnostic differential expression analysis of RNA-seq data at
     base-pair resolution via the DER Finder approach
-Version: 1.5.19
+Version: 1.5.20
 Date: 2015-12-14
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person(c("Alyssa", "C."), "Frazee", role = c("aut"),
@@ -26,7 +26,7 @@ Imports:
     qvalue (>= 1.99.0),
     Rsamtools,
     rtracklayer,
-    S4Vectors (>= 0.7.20)
+    S4Vectors (>= 0.9.25)
 Suggests:
     BiocStyle,
     biovizBase,

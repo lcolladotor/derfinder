@@ -23,7 +23,7 @@
 #'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
-#' @importFrom IRanges CharacterList elementLengths IntegerList 
+#' @importFrom IRanges CharacterList IntegerList 
 #' queryHits subjectHits
 #' @import S4Vectors
 #' @importFrom GenomicRanges GRangesList seqnames 
@@ -101,10 +101,10 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     tx_names <- CharacterList(split(map$TXNAME, map$GENEID))
     tx_id <- CharacterList(split(map$TXID, map$GENEID))
     tx2gene <- data.frame(tx = unlist(unname(tx_id)), gene = rep(names(tx_id), 
-        elementLengths(tx_id)))
-    txidRep <- rep(as.numeric(names(introns)), elementLengths(introns))
+        elementNROWS(tx_id)))
+    txidRep <- rep(as.numeric(names(introns)), elementNROWS(introns))
     txnameRep <- rep(names(intronsByTranscript(txdb, use.names = TRUE)), 
-        elementLengths(introns))
+        elementNROWS(introns))
     geneRep <- tx2gene$gene[match(txidRep, tx2gene$tx)]
     
     
@@ -149,10 +149,10 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     
     ##### UTRs 5'
     utr5 <- fiveUTRsByTranscript(txdb)
-    txidRep5 <- rep(as.numeric(names(utr5)), elementLengths(utr5))
+    txidRep5 <- rep(as.numeric(names(utr5)), elementNROWS(utr5))
     geneRep5 <- tx2gene$gene[match(txidRep5, tx2gene$tx)]
     txnameRep5 <- rep(names(fiveUTRsByTranscript(txdb, use.names = TRUE)), 
-        elementLengths(utr5))
+        elementNROWS(utr5))
     utr5a <- utr5@unlistData
     mcols(utr5a) <- DataFrame(txidRep5, txnameRep5, geneRep5)
     
@@ -171,10 +171,10 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     
     # 3'
     utr3 <- threeUTRsByTranscript(txdb)
-    txidRep3 <- rep(as.numeric(names(utr3)), elementLengths(utr3))
+    txidRep3 <- rep(as.numeric(names(utr3)), elementNROWS(utr3))
     geneRep3 <- tx2gene$gene[match(txidRep3, tx2gene$tx)]
     txnameRep3 <- rep(names(threeUTRsByTranscript(txdb, use.names = TRUE)), 
-        elementLengths(utr3))
+        elementNROWS(utr3))
     utr3a <- utr3@unlistData
     mcols(utr3a) <- DataFrame(txidRep3, txnameRep3, geneRep3)
     
@@ -193,10 +193,10 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
     
     ### exons
     exons <- exonsBy(txdb)
-    txidRep <- rep(as.numeric(names(exons)), elementLengths(exons))
+    txidRep <- rep(as.numeric(names(exons)), elementNROWS(exons))
     geneRep <- tx2gene$gene[match(txidRep, tx2gene$tx)]
     txnameRep <- rep(names(exonsBy(txdb, use.names = TRUE)), 
-        elementLengths(exons))
+        elementNROWS(exons))
     exonsa <- exons@unlistData
     mcols(exonsa) <- DataFrame(txidRep, txnameRep, geneRep)
     
