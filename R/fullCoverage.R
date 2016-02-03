@@ -72,13 +72,13 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     }
     
     ## Advanged argumentsa
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
-#' @param mc.cores.load Controls the number of cores to be used per chr for 
-#' loading the data in chunks. Only used when \code{tilewidth} is specified.
+# @param mc.cores.load Controls the number of cores to be used per chr for 
+# loading the data in chunks. Only used when \code{tilewidth} is specified.
     mc.cores.load <- .advanced_argument('mc.cores.load',
         .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...), ...)
 

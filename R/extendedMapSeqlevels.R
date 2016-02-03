@@ -60,13 +60,13 @@ extendedMapSeqlevels <- function(seqnames, style = getOption('chrsStyle',
     'UCSC'), species = getOption('species', 'homo_sapiens'), 
     currentStyle = NULL, ...) {
     
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
     
     if(missing(style)) {
-#' @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
-#' \link[GenomeInfoDb]{seqlevelsStyle}.   
+# @param chrsStyle The naming style of the chromosomes. By default, UCSC. See 
+# \link[GenomeInfoDb]{seqlevelsStyle}.   
         style <- .advanced_argument('chrsStyle', 'UCSC', ...)
     }
     if(is.null(style)) {

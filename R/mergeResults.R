@@ -106,16 +106,16 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
         0 & significantCut <= 1))
 
     ## Advanged argumentsa
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
-#' @param optionsStats The options used in \link{analyzeChr}.
+# @param optionsStats The options used in \link{analyzeChr}.
     optionsStats <- .advanced_argument('optionsStats', NULL, ...)
     
-#' @param cutoffFstatUsed The actual F-statistic cutoff used. This can be 
-#' obtained from the logs or from the output of \link{analyzeChr}. If 
-#' \code{NULL} then this function will attempt to re-calculate it.
+# @param cutoffFstatUsed The actual F-statistic cutoff used. This can be 
+# obtained from the logs or from the output of \link{analyzeChr}. If 
+# \code{NULL} then this function will attempt to re-calculate it.
     cutoffFstatUsed <- .advanced_argument('cutoffFstatUsed', optionsStats$cutoffFstatUsed, ...)
 
 

@@ -32,9 +32,6 @@ The names are used for the column names of the DataFrame. Check
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
 }
 \value{
 A matrix (nrow = number of exons in \code{genomicState} 

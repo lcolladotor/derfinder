@@ -32,15 +32,6 @@ regions with \link{annotateRegions}.}
 merged.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{optionsStats}{The options used in \link{analyzeChr}.}
-
-\item{cutoffFstatUsed}{The actual F-statistic cutoff used. This can be 
-obtained from the logs or from the output of \link{analyzeChr}. If 
-\code{NULL} then this function will attempt to re-calculate it.}
 }
 \value{
 Seven Rdata files.

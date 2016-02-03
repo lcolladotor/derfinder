@@ -67,16 +67,6 @@ loads only the data needed for the chunk processing. The downside is a bit
 longer computation time due to input/output.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{scalefac}{This argument is passed to \link{preprocessCoverage}.}
-
-\item{chunksize}{This argument is passed to \link{preprocessCoverage}.}
-
-\item{returnOutput}{If \code{TRUE}, it returns a list with the results from 
-each step. Otherwise, it returns \code{NULL}.}
 }
 \value{
 If \code{returnOutput=TRUE}, a list with six components:

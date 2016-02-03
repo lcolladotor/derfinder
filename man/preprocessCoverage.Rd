@@ -33,20 +33,6 @@ loads only the data needed for the chunk processing. The downside is a bit
 longer computation time due to input/output.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{toMatrix}{Determines whether the data in the chunk should already be 
-saved as a Matrix object, which can be useful to reduce the computation time of the F-statistics. Only used when \code{lowMemDir} is not NULL.}
-
-\item{mc.cores}{Number of cores you will use for calculating the statistics.}
-
-\item{scalefac}{A log transformation is used on the count tables, so zero 
-counts present a problem.  What number should we add to the entire matrix?}
-
-\item{chunksize}{How many rows of \code{coverageInfo$coverage} should be 
-processed at a time?}
 }
 \value{
 A list with five components.

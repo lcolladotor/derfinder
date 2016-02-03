@@ -41,8 +41,8 @@
 createBwSample <- function(sample, path = '.', fullCov, keepGR = TRUE, ...) {
 
     ## Advanced arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
     

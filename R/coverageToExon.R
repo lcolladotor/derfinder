@@ -73,8 +73,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
         stop("'L' has to be specified")
     
     ## Advanged argumentsa
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 

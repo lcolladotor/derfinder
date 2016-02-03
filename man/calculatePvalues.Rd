@@ -42,26 +42,6 @@ adjusted P-values).}
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{scalefac}{This argument is passed to 
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-in \link{preprocessCoverage}.}
-
-\item{method}{Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-details in derfinderHelper::fstats.apply().}
-
-\item{adjustF}{A single value to adjust that is added in the denominator of 
-the F-stat calculation. Useful when the Residual Sum of Squares of the 
-alternative model is very small.}
-
-\item{writeOutput}{If \code{TRUE} then the regions are saved before 
-calculating q-values, and then overwritten once the q-values are written.
-This argument was introduced to save the results from the permutations (can 
-take some time) to investigate the problem described at
-https://support.bioconductor.org/p/62026/}
 }
 \value{
 A list with four components:

@@ -15,12 +15,6 @@ to a \code{GRanges} object.}
 using \link{fullCoverage}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{seqlengths}{A named vector with the sequence lengths of the 
-chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.}
 }
 \value{
 A \link[GenomicRanges]{GRanges} object with \code{score} metadata 

@@ -16,9 +16,6 @@ generated using \link{fullCoverage}.}
 \item{save}{If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
 }
 \value{
 A list with one element per sample. Then per sample, a list with two vector 

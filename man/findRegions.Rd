@@ -32,15 +32,6 @@ potentials DERs. This is used in \link{calculatePvalues} to speed up
 permutation calculations.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{basic}{If \code{TRUE} a DataFrame is returned that has only basic
-information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.}
-
-\item{maxRegionGap}{This determines the maximum number of gaps between two 
-genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER).}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
 }
 \value{
 Either a GRanges or a GRangesList as determined by \code{oneTable}. 

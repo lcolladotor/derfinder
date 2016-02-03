@@ -71,8 +71,8 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     targetSize = 80e6, files = NULL, ...) {
         
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 

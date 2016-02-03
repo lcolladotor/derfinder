@@ -18,9 +18,6 @@ state. Otherwise, only the overlaps between the regions and the genomic
 states are computed.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
 }
 \value{
 A list with elements \code{countTable} and \code{annotationList} 

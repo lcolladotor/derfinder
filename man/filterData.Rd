@@ -31,16 +31,6 @@ only when \code{totalMapped} is specified. By default, it adjusts to
 libraries with 80 million reads.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{returnMean}{If \code{TRUE} the mean coverage is included in the result.}
-
-\item{returnCoverage}{If \code{TRUE}, the coverage DataFrame is returned.}
-
-\item{colnames}{Specifies the column names to be used for the results 
-DataFrame. If \code{NULL}, names from \code{data} are used.}
 }
 \value{
 A list with up to three components.

@@ -79,27 +79,27 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
     stopifnot(is.factor(groupInfo) | is.null(groupInfo))
     
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', FALSE, ...)
 
 
-#' @param toMatrix Determines whether the data in the chunk should already be 
-#' saved as a Matrix object, which can be useful to reduce the computation time of the F-statistics. Only used when \code{lowMemDir} is not NULL.
+# @param toMatrix Determines whether the data in the chunk should already be 
+# saved as a Matrix object, which can be useful to reduce the computation time of the F-statistics. Only used when \code{lowMemDir} is not NULL.
     toMatrix <- .advanced_argument('toMatrix', !is.null(lowMemDir), ...) 
 
 
-#' @param mc.cores Number of cores you will use for calculating the statistics.
+# @param mc.cores Number of cores you will use for calculating the statistics.
     mc.cores <- .advanced_argument('mc.cores', getOption('mc.cores', 1L), ...)
 
 
-#' @param scalefac A log transformation is used on the count tables, so zero 
-#' counts present a problem.  What number should we add to the entire matrix?
+# @param scalefac A log transformation is used on the count tables, so zero 
+# counts present a problem.  What number should we add to the entire matrix?
     scalefac <- .advanced_argument('scalefac', 32, ...)
 
 
-#' @param chunksize How many rows of \code{coverageInfo$coverage} should be 
-#' processed at a time?
+# @param chunksize How many rows of \code{coverageInfo$coverage} should be 
+# processed at a time?
     chunksize <- .advanced_argument('chunksize', 5e+06, ...)
 
 
