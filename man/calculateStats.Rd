@@ -18,20 +18,6 @@ using \link{makeModels}.}
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{scalefac}{This argument is passed to 
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-in \link{preprocessCoverage}.}
-
-\item{method}{Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-details in derfinderHelper::fstats.apply().}
-
-\item{adjustF}{A single value to adjust that is added in the denominator of 
-the F-stat calculation. Useful when the Residual Sum of Squares of the 
-alternative model is very small.}
 }
 \value{
 A numeric Rle with the F-statistics per base pair that passed the 

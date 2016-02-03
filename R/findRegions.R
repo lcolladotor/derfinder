@@ -78,17 +78,17 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ...){
     
     ## Advanged arguments
-#' @param basic If \code{TRUE} a DataFrame is returned that has only basic
-#' information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
+# @param basic If \code{TRUE} a DataFrame is returned that has only basic
+# information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
     basic <- .advanced_argument('basic', FALSE, ...)
 
 
-#' @param maxRegionGap This determines the maximum number of gaps between two 
-#' genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER). 
+# @param maxRegionGap This determines the maximum number of gaps between two 
+# genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER). 
     maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
 
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
     
@@ -288,8 +288,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 .getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), ...) {
     
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', FALSE, ...)
     
     ## Select the cutoff

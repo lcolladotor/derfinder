@@ -75,23 +75,23 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
     stopifnot(filter %in% c('one', 'mean'))
     
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
 
-#' @param returnMean If \code{TRUE} the mean coverage is included in the result.
+# @param returnMean If \code{TRUE} the mean coverage is included in the result.
     returnMean <- .advanced_argument('returnMean', FALSE, ...)
 
 
 
-#' @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
+# @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
     returnCoverage <- .advanced_argument('returnCoverage', TRUE, ...)
 
 
-#' @param colnames Specifies the column names to be used for the results 
-#' DataFrame. If \code{NULL}, names from \code{data} are used.
+# @param colnames Specifies the column names to be used for the results 
+# DataFrame. If \code{NULL}, names from \code{data} are used.
     colnames <- .advanced_argument('colnames', NULL, ...)
 
     ## Initialize meanCov

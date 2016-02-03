@@ -100,13 +100,13 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     stopifnot(is.character(chr))
     
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
     
-#' @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
-#' the format of the raw data files.
+# @param inputType Has to be either \code{bam} or \code{BigWig}. It specifies
+# the format of the raw data files.
     inputType <- .advanced_argument('inputType', 'bam', ...)
 
 
@@ -120,24 +120,24 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     }    
     stopifnot(inputType %in% c('bam', 'BigWig'))
 
-#' @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
-#' break up the chromosome into chunks.
+# @param tilewidth When specified, \link[GenomicRanges]{tileGenome} is used to
+# break up the chromosome into chunks.
     tilewidth <- .advanced_argument('tilewidth', NULL, ...)
 
   
-#' @param which \code{NULL} by default. When a \code{GRanges} is specified, 
-#" this specific region of the genome is loaded instead of the full chromosome.
+# @param which \code{NULL} by default. When a \code{GRanges} is specified, 
+# this specific region of the genome is loaded instead of the full chromosome.
     which <- .advanced_argument('which', NULL, ...)
 
 
-#' @param fileStyle The naming style of the chromosomes in the input files. If 
-#' the global option 'chrsStyle' is not set, the naming style won't be changed.
+# @param fileStyle The naming style of the chromosomes in the input files. If 
+# the global option 'chrsStyle' is not set, the naming style won't be changed.
     fileStyle <- .advanced_argument('fileStyle', getOption('chrsStyle',
         NULL), ...)
 
 
-#' @param protectWhich When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
-#' This helps get the same base level coverage you would get from reading the coverage for a full chromosome. Otherwise some reads might be excluded and thus the base level coverage will be lower.
+# @param protectWhich When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
+# This helps get the same base level coverage you would get from reading the coverage for a full chromosome. Otherwise some reads might be excluded and thus the base level coverage will be lower.
     protectWhich <- .advanced_argument('protectWhich', NULL, ...)
 
 
@@ -258,7 +258,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     ## Rename the object to a name that will make more sense later
     varname <- paste0(mapSeqlevels(chr, 'UCSC'), 'CovInfo')
 
-#' @param sampleNames Column names to be used the samples
+# @param sampleNames Column names to be used the samples
     sampleNames <- .advanced_argument('sampleNames', names(files), ...)
     
     assign(varname, filterData(data = data, cutoff = cutoff, index = NULL, 

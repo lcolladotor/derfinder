@@ -59,25 +59,25 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
         2)
     
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
-#' @param scalefac This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-#' in \link{preprocessCoverage}.
+# @param scalefac This argument is passed to 
+# \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+# in \link{preprocessCoverage}.
     scalefac <- .advanced_argument('scalefac', 32, ...)    
 
 
-#' @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-#' details in derfinderHelper::fstats.apply().
+# @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
+# details in derfinderHelper::fstats.apply().
     method <- .advanced_argument('method', 'Matrix', ...)
 
 
-#' @param adjustF A single value to adjust that is added in the denominator of 
-#' the F-stat calculation. Useful when the Residual Sum of Squares of the 
-#' alternative model is very small.
+# @param adjustF A single value to adjust that is added in the denominator of 
+# the F-stat calculation. Useful when the Residual Sum of Squares of the 
+# alternative model is very small.
     adjustF <- .advanced_argument('adjustF', 0, ...)
 
     if (is.null(lowMemDir) & is.null(coveragePrep$coverageProcessed)) 

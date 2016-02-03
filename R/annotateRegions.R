@@ -53,8 +53,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
 
     ## Advanged arguments
 
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 

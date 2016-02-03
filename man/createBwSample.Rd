@@ -20,9 +20,6 @@ using \link{fullCoverage}.}
 created by \link{coerceGR} is returned. Otherwise it is discarded.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
 }
 \value{
 Creates a BigWig file with the coverage information (regions with

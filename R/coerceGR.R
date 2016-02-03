@@ -38,13 +38,13 @@
 coerceGR <- function(sample, fullCov, ...) {
         
     ## Advanged arguments
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
-#' @param seqlengths A named vector with the sequence lengths of the 
-#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
+# @param seqlengths A named vector with the sequence lengths of the 
+# chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
     if('coverage' %in% names(fullCov[[1]])) {
         seqlengths.auto <- sapply(fullCov, function(x) { nrow(x$coverage )})
     } else {

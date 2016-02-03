@@ -17,15 +17,6 @@ interest. For example, 0.5 is the median.}
 log2 transformation.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{nonzero}{If \code{TRUE} only the nonzero counts are used to calculate 
-the library size adjustment.}
-
-\item{center}{If \code{TRUE} the sample coverage adjustements are centered. 
-In some cases, this could be helpful for interpretation purposes.}
 }
 \value{
 A matrix (vector of \code{length(probs) == 1}) with the library size depth 

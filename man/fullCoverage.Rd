@@ -34,12 +34,6 @@ have the same length as \code{chrs}.}
 \item{cutoff}{This argument is passed to \link{filterData}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{mc.cores.load}{Controls the number of cores to be used per chr for 
-loading the data in chunks. Only used when \code{tilewidth} is specified.}
 }
 \value{
 A list with one element per chromosome.

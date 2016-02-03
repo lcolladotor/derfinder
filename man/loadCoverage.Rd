@@ -38,27 +38,8 @@ and that they have the .bai extension. Ignored if \code{files} is a
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 
-\item{verbose}{If \code{TRUE} basic status updates will be printed along the 
-way.}
-
-\item{inputType}{Has to be either \code{bam} or \code{BigWig}. It specifies
-the format of the raw data files.}
-
-\item{tilewidth}{When specified, \link[GenomicRanges]{tileGenome} is used to
-break up the chromosome into chunks.}
-
-\item{which}{\code{NULL} by default. When a \code{GRanges} is specified,}
-
-\item{fileStyle}{The naming style of the chromosomes in the input files. If 
-the global option 'chrsStyle' is not set, the naming style won't be changed.}
-
-\item{protectWhich}{When not \code{NULL} and \code{which} is specified, this argument specifies by how much the ranges in \code{which} will be expanded.
-This helps get the same base level coverage you would get from reading the coverage for a full chromosome. Otherwise some reads might be excluded and thus the base level coverage will be lower.}
-
 \item{drop.D}{Whether to drop the bases with 'D' in the CIGAR strings
 or to include them.}
-
-\item{sampleNames}{Column names to be used the samples}
 }
 \value{
 A list with two components.

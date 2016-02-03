@@ -102,23 +102,23 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## Use UCSC names for homo_sapiens by default
     chr <- extendedMapSeqlevels(chr, ...)
 
-#' @param verbose If \code{TRUE} basic status updates will be printed along the 
-#' way.
+# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
 
 
-#' @param scalefac This argument is passed to \link{preprocessCoverage}.
+# @param scalefac This argument is passed to \link{preprocessCoverage}.
     scalefac <- .advanced_argument('scalefac', 32, ...)
 
 
 
-#' @param chunksize This argument is passed to \link{preprocessCoverage}.
+# @param chunksize This argument is passed to \link{preprocessCoverage}.
     chunksize <- .advanced_argument('chunksize', NULL, ...)
         
 
-#' @param returnOutput If \code{TRUE}, it returns a list with the results from 
-#' each step. Otherwise, it returns \code{NULL}.
+# @param returnOutput If \code{TRUE}, it returns a list with the results from 
+# each step. Otherwise, it returns \code{NULL}.
     returnOutput <- .advanced_argument('returnOutput', !writeOutput, ...)
         
 
