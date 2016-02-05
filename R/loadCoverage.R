@@ -224,8 +224,8 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         param <- ScanBamParam(which = which, 
             flag = .runFunFormal(scanBamFlag, ...))
             
-        #' @param drop.D Whether to drop the bases with 'D' in the CIGAR strings
-        #' or to include them.
+        # @param drop.D Whether to drop the bases with 'D' in the CIGAR strings
+        # or to include them.
         drop.D <- .advanced_argument('drop.D', FALSE, ...)
         
         ## Read in the data for all the chrs

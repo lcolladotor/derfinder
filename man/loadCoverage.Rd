@@ -37,9 +37,6 @@ and that they have the .bai extension. Ignored if \code{files} is a
 \code{BamFileList} object or if \code{inputType=='BigWig'}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
-
-\item{drop.D}{Whether to drop the bases with 'D' in the CIGAR strings
-or to include them.}
 }
 \value{
 A list with two components.
