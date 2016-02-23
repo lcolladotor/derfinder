@@ -30,7 +30,6 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{makeGenomicState}, \link{calculatePvalues}
 #' @export
-#' @importFrom IRanges queryHits subjectHits
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$'
 #' countOverlaps findOverlaps '['
