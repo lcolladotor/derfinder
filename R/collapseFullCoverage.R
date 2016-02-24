@@ -23,7 +23,7 @@
 #' @author Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{sampleDepth}
 #' @export
-#' @importMethodsFrom IRanges names '[' sort
+#' @importMethodsFrom IRanges names '['
 #' @import S4Vectors
 #' @examples
 #' ## Collapse the coverage information for the filtered data
