@@ -23,8 +23,7 @@
 #'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 
 #' fiveUTRsByTranscript threeUTRsByTranscript exonsBy
-#' @importFrom IRanges CharacterList IntegerList 
-#' queryHits subjectHits
+#' @importFrom IRanges CharacterList IntegerList
 #' @import S4Vectors
 #' @importFrom GenomicRanges GRangesList seqnames 
 #' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels

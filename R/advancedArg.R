@@ -22,6 +22,8 @@
 #' 
 #' @return A vector of URLs with the GitHub search queries.
 #'
+#' @importFrom utils browseURL
+#'
 #' @examples
 #' ## Open the advanced argument docs for loadCoverage()
 #' if(interactive()) {
