@@ -117,8 +117,7 @@
 #'
 #' ## Annotate the results
 #' library('bumphunter')
-#' library('TxDb.Hsapiens.UCSC.hg19.knownGene')
-#' genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene)
+#' genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' annotation <- matchGenes(regsWithP$regions, genes)
 #' head(annotation)
 #'

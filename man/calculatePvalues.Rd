@@ -132,8 +132,7 @@ ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() +
 
 ## Annotate the results
 library('bumphunter')
-library('TxDb.Hsapiens.UCSC.hg19.knownGene')
-genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene)
+genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene)
 annotation <- matchGenes(regsWithP$regions, genes)
 head(annotation)
 
