@@ -1,5 +1,12 @@
 language: r
 
+r:
+  - devel
+warnings_are_errors: false
+sudo: false
+bioc_use_devel: true
+cache: packages
+
 bioc_required: true
 r_packages:
   - knitrBootstrap
