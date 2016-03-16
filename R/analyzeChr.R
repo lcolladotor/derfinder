@@ -63,6 +63,7 @@
 #' @export
 #' @import S4Vectors
 #' @importFrom bumphunter annotateTranscripts matchGenes
+#' @importFrom stats qf
 #' 
 #' @examples
 #' ## Collapse the coverage information
