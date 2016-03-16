@@ -47,8 +47,7 @@
 # 
 #' \dontrun{
 #' ## Create the GenomicState object for Hsapiens.UCSC.hg19.knownGene
-#' library('TxDb.Hsapiens.UCSC.hg19.knownGene')
-#' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+#' txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 #'
 #' ## Creating this GenomicState object takes around 8 min for all chrs and 
 #' ## around 30 secs for chr21
