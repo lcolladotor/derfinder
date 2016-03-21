@@ -121,7 +121,7 @@ ers
 
 # Sample DER Finder analysis
 
-This is a brief overview of what a DER Finder analysis looks like. In particular, here we will be identifying expressed-regions (ERs) without relying on annotation. Next, we'll identify candidate differentially expressed regions (DERs). Finally, we'll compare the DERs with known annotation features.
+This is a brief overview of what a DER Finder analysis looks like. In particular, here we will be identifying expressed regions (ERs) without relying on annotation. Next, we'll identify candidate differentially expressed regions (DERs). Finally, we'll compare the DERs with known annotation features.
 
 We first load the required packages.
 
@@ -158,7 +158,7 @@ foo <- function() {
 fullCov <- foo()
 ```
 
-Now that we have the data, we can identify expressed-regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.
+Now that we have the data, we can identify expressed regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.
 
 ```{r 'regionMatrix'}
 ## Get the region matrix of Expressed Regions (ERs)
@@ -172,7 +172,7 @@ regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76, verbose = FALSE)
 regionMat$chr21$regions
 ```
 
-`bpCoverage` is the base level coverage list which can then be used for plotting.
+`bpCoverage` is the base-level coverage list which can then be used for plotting.
 
 ```{r 'exploreRegMatBP'}
 ## Base-level coverage matrices for each of the regions
