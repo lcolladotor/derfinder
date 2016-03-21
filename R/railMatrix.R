@@ -6,7 +6,7 @@
 #' coverage BigWig file per sample and an adjusted summary coverage BigWig file 
 #' by chromosome (median or mean). \link{railMatrix} reads in the mean (or 
 #' median) coverage BigWig file and applies a threshold cutoff to identify 
-#' expressed-regions (ERs). Then it goes back to the sample coverage BigWig 
+#' expressed regions (ERs). Then it goes back to the sample coverage BigWig 
 #' files and extracts the base level coverage for each sample. Finally it
 #' summarizes this information in a matrix with one row per ERs and one column
 #' per sample. This function is similar to \link{regionMatrix} but is faster

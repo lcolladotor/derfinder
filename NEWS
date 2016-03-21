@@ -31,7 +31,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
     o Dropped the old introductory and advanced vignettes. We think that the
         new vignettes are clearer. In particular, they do a better job at
-        highlighting the differences between the expressed-regions and
+        highlighting the differences between the expressed regions-level and
         single base-level F-statistics implementations of the DER Finder
         approach to RNA-seq data.
 

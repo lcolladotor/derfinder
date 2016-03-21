@@ -74,18 +74,18 @@ windowsFlag <- .Platform$OS.type == 'windows'
 
 If you haven't already, please read the [quick start to using derfinder](quickstart-derfinder.html) vignette. It explains the basics of using `r Biocpkg('derfinder')`, how to ask for help, and showcases an example analysis.
 
-The _derfinder users guide_ goes into more depth about what you can do with `r Biocpkg('derfinder')`. It covers the two implementations of the DER Finder approach `r citep(bib[['originalder']])`. That is, the (A) expressed-regions and (B) single-base level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.
+The _derfinder users guide_ goes into more depth about what you can do with `r Biocpkg('derfinder')`. It covers the two implementations of the DER Finder approach `r citep(bib[['originalder']])`. That is, the (A) expressed regions-level and (B) single base-level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.
 
-# Expressed-regions
+# Expressed regions-level
 
-The expressed-regions implementation is based on summarizing the coverage information for all your samples and applying a cutoff to that summary. For example, by calculating the mean coverage at every base and then checking if it's greater than some cutoff value of interest. Contiguous bases passing the cutoff become a candidate Expressed Region (ER). We can then construct a matrix summarizing the base-level coverage for each sample for the set of ERs. This matrix can then be using with packages developed for feature counting (`r Biocpkg('limma')`, `r Biocpkg('DESeq2')`, `r Biocpkg('edgeR')`, etc) to determine which ERs have differential expression signal. That is, to identify the Differentially Expressed Regions (DERs).
+The expressed regions-level implementation is based on summarizing the coverage information for all your samples and applying a cutoff to that summary. For example, by calculating the mean coverage at every base and then checking if it's greater than some cutoff value of interest. Contiguous bases passing the cutoff become a candidate Expressed Region (ER). We can then construct a matrix summarizing the base-level coverage for each sample for the set of ERs. This matrix can then be using with packages developed for feature counting (`r Biocpkg('limma')`, `r Biocpkg('DESeq2')`, `r Biocpkg('edgeR')`, etc) to determine which ERs have differential expression signal. That is, to identify the Differentially Expressed Regions (DERs).
 
 
 ## `regionMatrix()`
 
-Commonly, users have aligned their raw RNA-seq data and saved the alignments in BAM files. Some might have chosen to compress this information into BigWig files. BigWig files are much faster to load than BAM files and are the type of file we prefer to work with. However, we can still identify the expressed-regions from BAM files. 
+Commonly, users have aligned their raw RNA-seq data and saved the alignments in BAM files. Some might have chosen to compress this information into BigWig files. BigWig files are much faster to load than BAM files and are the type of file we prefer to work with. However, we can still identify the expressed regions from BAM files. 
 
-The function `regionMatrix()` will require you to load the data (either from BAM or BigWig files) and store it all in memory. It will then calculate the mean coverage across all samples, apply the cutoff you chose, and determine the expressed-regions.
+The function `regionMatrix()` will require you to load the data (either from BAM or BigWig files) and store it all in memory. It will then calculate the mean coverage across all samples, apply the cutoff you chose, and determine the expressed regions.
 
 This is the path you will want to follow in most scenarios.
 
@@ -93,7 +93,7 @@ This is the path you will want to follow in most scenarios.
 
 [![Rail logo](https://github.com/nellore/rail/blob/master/assets/railrnalogodark.png?raw=true)](http://rail.bio)
 
-Our favorite method for identifying expressed-regions is based on pre-computed summary coverage files (mean or median) as well as coverage files by sample. [Rail](http://rail.bio) is a cloud-enabled aligner that will generate:
+Our favorite method for identifying expressed regions is based on pre-computed summary coverage files (mean or median) as well as coverage files by sample. [Rail](http://rail.bio) is a cloud-enabled aligner that will generate:
 
 1. Per chromosome, a summary (mean or median) coverage BigWig file. Note that the summary is adjusted for library size and is by default set to libraries with 40 million reads.
 1. Per sample, a coverage BigWig file with the un-adjusted coverage.
@@ -105,9 +105,9 @@ If you have this type of data or can generate it from BAM files with other tools
 We highly recommend this approach. [Rail](http://rail.bio) has also other significant features such as: scalability, reduced redundancy, integrative analysis, mode agnosticism, and inexpensive cloud implementation. For more information, visit [rail.bio](http://rail.bio).
 
 
-# Single-base level F-statistics
+# Single base-level F-statistics
 
-The DER Finder approach was originally implemented by calculating t-statistics between two groups and using a hidden markov model to determine the expression states: not expressed, expressed, differentially expressed `r citep(bib[['originalder']])`. The original software works but had areas where we worked to improve it, which lead to the single-base level F-statistics implementation. Also note that the original software is no longer maintained.  
+The DER Finder approach was originally implemented by calculating t-statistics between two groups and using a hidden markov model to determine the expression states: not expressed, expressed, differentially expressed `r citep(bib[['originalder']])`. The original software works but had areas where we worked to improve it, which lead to the single base-level F-statistics implementation. Also note that the original software is no longer maintained.  
 
 This type of analysis first loads the data and preprocess it in a format that saves time and reduces memory later. It then fits two nested models (an alternative and a null model) with the coverage information for every single base-pair of the genome. Using the two fitted models, it calculates an F-statistic. Basically, it generates a vector along the genome with F-statistics.
 
@@ -117,7 +117,7 @@ Calculating F-statistics along the genome is computationally intensive, but doab
 
 This type of analysis at the chromosome level is done by the `analyzeChr()` function, which is a high level function using many other pieces of `r Biocpkg('derfinder')`. Once all chromosomes have been processed, `mergeResults()` combines them.
 
-Which implementation of the DER Finder approach you will want to use depends on your specific use case and computational resources available. But in general, we recommend starting with the expressed-regions implementation.
+Which implementation of the DER Finder approach you will want to use depends on your specific use case and computational resources available. But in general, we recommend starting with the expressed regions-level implementation.
 
 
 # Example data
@@ -200,7 +200,7 @@ If filtering was performed, each chromosome also has a logical `Rle` indicating 
 
 ## Filter coverage
 
-Depending on the use case, you might want to filter the base level coverage at the time of reading it, or you might want to keep an unfiltered version. By default both `loadCoverage()` and `fullCoverage()` will not filter.
+Depending on the use case, you might want to filter the base-level coverage at the time of reading it, or you might want to keep an unfiltered version. By default both `loadCoverage()` and `fullCoverage()` will not filter.
 
 If you decide to filter, set the `cutoff` argument to a positive value. This will run `filterData()`. Note that you might want to standardize the library sizes prior to filtering, which can be done by supplying the `totalMapped` and `targetSize` arguments.
 
@@ -228,11 +228,11 @@ round(c(fullCov = object.size(fullCov), filteredCov = object.size(filteredCov)) 
 Note that with your own data, filtering for bases where at least one sample has coverage greater than 2 might not make sense: maybe you need a higher or lower filter. The amount of bases remaining after filtering will impact how long the analysis will take to complete. We thus recommend exploring this before proceeding.
 
 
-# Expressed-region analysis
+# Expressed region-level analysis
 
 ## Via `regionMatrix()`
 
-Now that we have the data, we can identify expressed-regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.
+Now that we have the data, we can identify expressed regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.
 
 Note that for this type of analysis there is no major benefit of filtering the data. Although it can be done if needed.
 
@@ -259,7 +259,7 @@ regionMat$chr21$regions
 length(regionMat$chr21$regions)
 ```
 
-`bpCoverage` is the base level coverage list which can then be used for plotting.
+`bpCoverage` is the base-level coverage list which can then be used for plotting.
 
 ```{r 'exploreRegMatBP'}
 ## Base-level coverage matrices for each of the regions
@@ -419,7 +419,7 @@ identical(round(regionMat$chr21$regions$area, 4), round(regionMat.rail$chr21$reg
 ```
 
 
-# Single-base level F-statistics analysis
+# Single base-level F-statistics analysis
 
 One form of base-level differential expression analysis implemented in `r Biocpkg('derfinder')` is to calculate F-statistics for every base and use them to define candidate differentially expressed regions. This type of analysis is further explained in this section.
 
@@ -721,7 +721,7 @@ plotRegionCoverage(regions = fullRegions, regionCoverage = regionCov,
 plotCluster(idx = 1, regions = fullRegions, annotation = results$annotation, coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group, titleUse = 'fwer')
 ```
 
-The [quick start to using derfinder](quickstart-derfinder.html) has example plots for the expressed-regions approach. The vignette for `r Biocpkg('derfinderPlot')` has even more examples.
+The [quick start to using derfinder](quickstart-derfinder.html) has example plots for the expressed regions-level approach. The vignette for `r Biocpkg('derfinderPlot')` has even more examples.
 
 
 # Interactive HTML reports
@@ -742,12 +742,12 @@ In this section we go over some other features of `r Biocpkg('derfinder')` which
 
 ## Feature level analysis
 
-Similar to the expressed-region level analysis, you might be interested in performing a feature level analysis. More specifically, this means getting a count matrix at the exon level (or gene level). `coverageToExon()` allows you to get such a matrix by taking advantage of the summarized annotation produced by `makeGenomicState()`.
+Similar to the expressed region-level analysis, you might be interested in performing a feature-level analysis. More specifically, this means getting a count matrix at the exon-level (or gene-level). `coverageToExon()` allows you to get such a matrix by taking advantage of the summarized annotation produced by `makeGenomicState()`.
 
 In this example, we use the genomic state included in the package which has the information for chr21 `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` annotation.
 
 ```{r 'featureLevel'}
-## Get the exon level matrix
+## Get the exon-level matrix
 system.time(exonCov <- coverageToExon(fullCov, genomicState$fullGenome, L = 76))
 
 ## Dimensions of the matrix
@@ -761,7 +761,7 @@ With this matrix, rounded if necessary, you can proceed to use packages such as 
 
 ## Compare results visually
 
-We can certainly make region level plots using `plotRegionCoverage()` or cluster plots using `plotCluster()` or overview plots using `plotOveview()`, all from `r Biocpkg('derfinderPlot')`. 
+We can certainly make region-level plots using `plotRegionCoverage()` or cluster plots using `plotCluster()` or overview plots using `plotOveview()`, all from `r Biocpkg('derfinderPlot')`. 
 
 
 First we need to get the relevant annotation information.
@@ -780,7 +780,7 @@ genes <- annotateTranscripts(txdb)
 system.time(annoNear <- matchGenes(regionMat$chr21$regions, genes))
 ```
 
-Now we can proceed to use `r Biocpkg('derfinderPlot')` to make the region level plots for the top 100 regions.
+Now we can proceed to use `r Biocpkg('derfinderPlot')` to make the region-level plots for the top 100 regions.
 
 ```{r 'static-vis', eval = FALSE}
 ## Identify the top regions by highest total coverage
@@ -925,7 +925,7 @@ You can also control whether to include or exclude bases with `CIGAR` string `D`
 
 ## Unfiltered base-level coverage
 
-Note that in most scenarios, the `fullCov` object illustrated in the introductory vignette can be large in memory. When making plots or calculating the region level coverage, we don't need the full information. In such situations, it might pay off to create a smaller version by loading only the required data. This can be achieved using the advanced argument `which` to `fullCoverage()` or `loadCoverage()`. 
+Note that in most scenarios, the `fullCov` object illustrated in the introductory vignette can be large in memory. When making plots or calculating the region-level coverage, we don't need the full information. In such situations, it might pay off to create a smaller version by loading only the required data. This can be achieved using the advanced argument `which` to `fullCoverage()` or `loadCoverage()`. 
 
 However, it is important to consider that when reading the data from BAM files, a read might align partially inside the region of interest. By default such a read would be discarded and thus the base-level coverage would be lower than what it is in reality. The advanced argument `protectWhich` extends regions by 30 kbp (15 kbp each side) to help mitigate this issue. 
 
@@ -1019,7 +1019,7 @@ Furthermore, you might want to specify `maxClusterGap` to control the maximum ga
 
 <center><img src="http://lcolladotor.github.io/derfinder/fig/regionMatrix.png" alt="regionMatrix flow" style="width: 500px;"/></center>
 
-The above figure shows the functions used internally by `regionMatrix()` and processing steps for identifying expressed-regions. Overall, it is much simpler than `analyzeChr()`. The flow is even simpler in `railMatrix()`.
+The above figure shows the functions used internally by `regionMatrix()` and processing steps for identifying expressed regions. Overall, it is much simpler than `analyzeChr()`. The flow is even simpler in `railMatrix()`.
 
 
 
@@ -1314,15 +1314,15 @@ done
 Your cluster might specify memory requirements differently and you might need to use fewer or more cores depending on your data set.
 
 
-# Expressed-regions projects
+# Expressed regions-level projects
 
-If you are using `regionMatrix()`, an organization similar to the one we mentioned for the base-level F-statistics implementation is recommended. If you have a very large number of samples, it might be best to store the coverage data separately by chromosome instead of a single `fullCov` object. This is help with the memory load since you can then write a script for loading the coverage data for the chromosome of interest and running `regionMatrix()` on it. Once all your jobs are done, merge the results from them.
+If you are using `regionMatrix()`, an organization similar to the one we mentioned for the single base-level F-statistics implementation is recommended. If you have a very large number of samples, it might be best to store the coverage data separately by chromosome instead of a single `fullCov` object. This is help with the memory load since you can then write a script for loading the coverage data for the chromosome of interest and running `regionMatrix()` on it. Once all your jobs are done, merge the results from them.
 
 If you are using `railMatrix()`, you don't need any fancy setup. You only need the paths to the summary files and the sample files, all of which are assumed to be BigWig files.
 
 # Summary
 
-We have illustrated how to identify candidate differentially expressed regions without using annotation by using `analyzeChr()`. Furthermore, we covered how to perform the expressed-region matrix analysis with `regionMatrix()` or `railMatrix()`. We also highlighted other uses of the `r Biocpkg('derfinder')` package.
+We have illustrated how to identify candidate differentially expressed regions without using annotation by using `analyzeChr()`. Furthermore, we covered how to perform the expressed region-level matrix analysis with `regionMatrix()` or `railMatrix()`. We also highlighted other uses of the `r Biocpkg('derfinder')` package.
 
 Latter sections of this vignette covered the most commonly used advanced arguments, details on how to load data, flow charts explaining the relationships between the functions, the recommended output organization, and example shell scripts for running the analysis.
 

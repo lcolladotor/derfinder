@@ -31,7 +31,7 @@ of interest by sample, and then the sum of the coverage for bases below or
 equal to quantiles of interest. The resulting values are transformed {log2(x 
 + scalefac)} to avoid very large numbers that could potentially affect the 
 stability of the F-statistics calculation. The sample coverage adjustments 
-are then used in \link{makeModels} for construcing the null and alternative 
+are then used in \link{makeModels} for constructing the null and alternative 
 models.
 }
 \examples{

@@ -2,10 +2,10 @@
 #' base-pair resolution via the DER Finder approach. 
 #'
 #' This package contains two different implementations of the DER Finder 
-#' approach. The first one is the single-base level F-statistics implementation 
-#' and the second one is via identifying expressed-regions.
+#' approach. The first one is the single base-level F-statistics implementation 
+#' and the second one is via identifying expressed regions.
 #'
-#' The single-base level F-statistics analysis pipeline involves loading the 
+#' The single base-level F-statistics analysis pipeline involves loading the 
 #' sample BAM files using \link{rawFiles} and \link{loadCoverage}, 
 #' pre-processing the data by using \link{preprocessCoverage}, calculating the 
 #' F-statistics (while adjusting for some confounders) using \link{makeModels} 
@@ -13,8 +13,9 @@
 #' of interest using \link{calculatePvalues}, and finally annotating them using 
 #' \link[bumphunter]{matchGenes} from the bumphunter package.
 #'
-#' The DER Finder implementation via identifying expressed-regions is done with
-#' the \link{regionMatrix} function.
+#' The DER Finder at the expressed regions-level is done with
+#' the \link{regionMatrix} or \link{railMatrix} functions depending on the
+#' input data.
 #'
 #' Details about both approaches are further described in the vignettes.
 #'
