@@ -1,7 +1,7 @@
 language: r
 
 r:
-  - devel
+  - 3.3.0
 warnings_are_errors: false
 sudo: false
 bioc_use_devel: true
