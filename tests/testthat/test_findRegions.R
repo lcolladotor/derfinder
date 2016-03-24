@@ -59,8 +59,8 @@ test_that('findRegions', {
 
 
 test_that('findRegions-smooth', {
-    expect_equal(derfinder:::.smootherFstats(genomeFstats, prep$position), Rle(smoother(genomeFstats, prep$position, derfinder:::.clusterMakerRle(prep$position), smoothFunction = bumphunter::locfitByCluster)$fitted)),
-    expect_error(findRegions(fstats = genomeFstats, chr = 'chr21', smooth = TRUE)),
+    expect_equal(derfinder:::.smootherFstats(genomeFstats, prep$position), Rle(smoother(genomeFstats, prep$position, derfinder:::.clusterMakerRle(prep$position), smoothFunction = bumphunter::locfitByCluster)$fitted))
+    expect_error(findRegions(fstats = genomeFstats, chr = 'chr21', smooth = TRUE))
     expect_warning(findRegions(prep$position, fstats = genomeFstats, chr = 'chr21', smooth = TRUE, basic = TRUE), "Ignoring 'smooth' = TRUE since 'basic' = TRUE")
 })
 
