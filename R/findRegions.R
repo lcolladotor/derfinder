@@ -464,6 +464,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 ## the result back to a Rle object
 
 .smoothFstatsFun <- function(y, x, cluster, weights, smoothFun, ...) {
+    hostPackage <- environmentName(environment(smoothFun))
+    requireNamespace(hostPackage)    
     sm <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
     ## Extract only the smoothed data
     res <- Rle(sm$fitted)
