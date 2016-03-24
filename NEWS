@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.5.27
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Added smoothing arguments for the single base-level approach based on
+        functions from the bumphunter package.
+
+
 CHANGES IN VERSION 1.5.13
 -------------------------
 

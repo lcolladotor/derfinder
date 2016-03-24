@@ -7,7 +7,8 @@
 calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
   cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1),
-  lowMemDir = NULL, ...)
+  lowMemDir = NULL, smooth = FALSE, weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
 \item{coveragePrep}{A list with \code{$coverageProcessed}, 
@@ -40,6 +41,18 @@ adjusted P-values).}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when 
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
+
+\item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
+is by default \code{FALSE} and is not recommended for RNA-seq data.}
+
+\item{weights}{Weights used by the smoother as described in
+\link[bumphunter]{smoother}.}
+
+\item{smoothFunction}{A function to be used for smoothing the F-statistics.
+Two functions are provided by the \code{bumphunter} package: 
+\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+you are using your own custom function, it has to return a named list with
+an element called \code{$fitted} that contains the smoothed F-statistics.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

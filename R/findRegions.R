@@ -21,6 +21,15 @@
 #' @param segmentIR An IRanges object with the genomic positions that are
 #' potentials DERs. This is used in \link{calculatePvalues} to speed up
 #' permutation calculations.
+#' @param smooth Whether to smooth the F-statistics (\code{fstats}) or not. This
+#' is by default \code{FALSE} and is not recommended for RNA-seq data.
+#' @param weights Weights used by the smoother as described in
+#' \link[bumphunter]{smoother}.
+#' @param smoothFunction A function to be used for smoothing the F-statistics.
+#' Two functions are provided by the \code{bumphunter} package: 
+#' \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+#' you are using your own custom function, it has to return a named list with
+#' an element called \code{$fitted} that contains the smoothed F-statistics.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
@@ -52,6 +61,8 @@
 #' @import S4Vectors
 #' @importFrom GenomicRanges GRanges GRangesList
 #' @importMethodsFrom IRanges quantile which length mean rbind
+#' @importFrom BiocParallel bpworkers
+#' @importFrom bumphunter locfitByCluster runmedByCluster
 #' @examples
 #' ## Preprocess the data
 #' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, 
@@ -74,7 +85,8 @@
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
     maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
-    ...){
+    smooth = FALSE,  weights = NULL, 
+    smoothFunction = bumphunter::locfitByCluster, ...){
     
     ## Advanged arguments
 # @param basic If \code{TRUE} a DataFrame is returned that has only basic
@@ -90,15 +102,23 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 # way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
-    
-    if (!basic) {
-        if (is.null(segmentIR)) {
-            stopifnot(!is.null(position))
-        }
-    }
     if (maxClusterGap < maxRegionGap) {
         warning("'maxClusterGap' is less than 'maxRegionGap' which nullifies it's intended use.")
     }
+    
+    if (!basic) {
+        if (is.null(segmentIR) | smooth) {
+            stopifnot(!is.null(position))
+        }
+        if(smooth) {
+            if (verbose) 
+                message(paste(Sys.time(), 'findRegions: smoothing'))
+            fstats <- .smootherFstats(fstats = fstats, position = position, weights = weights, smoothFunction = smoothFunction, ...)
+        }
+    } else {
+        if(smooth) warning("Ignoring 'smooth' = TRUE since 'basic' = TRUE")
+    }
+    
     
     ## Identify the segments
     if (is.null(segmentIR)) {
@@ -391,3 +411,61 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     return(result)
 }
 
+
+.smootherFstats <- function(fstats, position, weights = NULL,
+    smoothFunction = bumphunter::locfitByCluster, ...) {
+    ## Based on bumphunter::smoother
+    
+    ## Advanced arguments
+# @param maxRegionGap This determines the maximum gap between candidate DERs. 
+# It should be greater than \code{maxRegionGap} (0 by default).
+    maxClusterGap <- .advanced_argument('maxClusterGap', 300L, ...)
+        
+    ## Identify clusters
+    cluster <- .clusterMakerRle(position, maxGap = maxClusterGap)
+        
+    ## Define computing cluster
+    BPPARAM <- .define_cluster(...)
+    cores <- bpworkers(BPPARAM)
+    
+    if(cores > 1) {
+        IndexesChunks <- split(runValue(cluster), cut(runValue(cluster),
+            breaks = cores))
+        iChunks <- rep(seq_len(cores), sapply(IndexesChunks, function(i)
+            sum(cluster %in% i)))
+    } else {
+        iChunks <- rep(1, length(cluster))
+    }
+    
+    ## Define the chunks of data to process in parallel
+    fstatsChunks <- split(fstats, iChunks)
+    posChunks <- split(which(position), iChunks)
+    clusterChunks <- split(cluster, iChunks)
+    
+    if(is.null(weights)) {
+        weightChunks <- vector('list', length = cores)
+    } else {
+        weightChunks <- split(weights, iChunks)
+    }
+    
+    ## Run in parallel
+    res <- bpmapply(.smoothFstatsFun, fstatsChunks, posChunks, clusterChunks,
+        weightChunks, MoreArgs = list(smoothFun = smoothFunction, ...),
+        BPPARAM = BPPARAM)
+        
+    ## Get back a Rle
+    res <- unlist(RleList(res), use.names = FALSE)
+    
+    return(res)  
+}
+
+
+## Helper function to smoothFstats() for running in parallel and coercing
+## the result back to a Rle object
+
+.smoothFstatsFun <- function(y, x, cluster, weights, smoothFun, ...) {
+    sm <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
+    ## Extract only the smoothed data
+    res <- Rle(sm$fitted)
+    return(res)
+}

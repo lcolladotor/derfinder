@@ -6,7 +6,8 @@
 \usage{
 findRegions(position = NULL, fstats, chr, oneTable = TRUE,
   maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
-  ...)
+  smooth = FALSE, weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
 \item{position}{A logical Rle of genomic positions. This is generated in 
@@ -30,6 +31,18 @@ It should be greater than \code{maxRegionGap} (0 by default).}
 \item{segmentIR}{An IRanges object with the genomic positions that are
 potentials DERs. This is used in \link{calculatePvalues} to speed up
 permutation calculations.}
+
+\item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
+is by default \code{FALSE} and is not recommended for RNA-seq data.}
+
+\item{weights}{Weights used by the smoother as described in
+\link[bumphunter]{smoother}.}
+
+\item{smoothFunction}{A function to be used for smoothing the F-statistics.
+Two functions are provided by the \code{bumphunter} package: 
+\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+you are using your own custom function, it has to return a named list with
+an element called \code{$fitted} that contains the smoothed F-statistics.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }
