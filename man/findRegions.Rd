@@ -90,6 +90,13 @@ genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UC
 annotation <- matchGenes(regs, genes)
 annotation
 }
+
+# Find regions with smoothing the F-statistics by bumphunter::runmedByCluster
+regs_smooth <- findRegions(prep$position, fstats, 'chr21', verbose = TRUE,
+    smoothFunction = bumphunter::runmedByCluster)
+## Compare against the object regs obtained earlier
+regs_smooth
+
 }
 \author{
 Leonardo Collado-Torres
