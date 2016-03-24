@@ -8,7 +8,8 @@ analyzeChr(chr, coverageInfo, models, cutoffPre = 5, cutoffFstat = 1e-08,
   cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
   "", Sys.Date())) + seq_len(nPermute), groupInfo, txdb = NULL,
   writeOutput = TRUE, runAnnotation = TRUE, lowMemDir = file.path(chr,
-  "chunksDir"), ...)
+  "chunksDir"), smooth = FALSE, weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE} and
@@ -65,6 +66,18 @@ running \link{calculateStats} and \link{calculatePvalues}. Using this option
 helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
 loads only the data needed for the chunk processing. The downside is a bit 
 longer computation time due to input/output.}
+
+\item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
+is by default \code{FALSE} and is not recommended for RNA-seq data.}
+
+\item{weights}{Weights used by the smoother as described in
+\link[bumphunter]{smoother}.}
+
+\item{smoothFunction}{A function to be used for smoothing the F-statistics.
+Two functions are provided by the \code{bumphunter} package: 
+\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+you are using your own custom function, it has to return a named list with
+an element called \code{$fitted} that contains the smoothed F-statistics.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

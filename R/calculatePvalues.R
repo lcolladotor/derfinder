@@ -22,6 +22,7 @@
 #' for the P-values, while the second element is used for the Q-values (FDR 
 #' adjusted P-values).
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' @inheritParams findRegions
 #'
 #' @return A list with four components:
 #' \describe{
@@ -127,7 +128,8 @@
 calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L, 
     seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), 
     chr, cutoff = quantile(fstats, 0.99), significantCut = c(0.05, 0.1),
-    lowMemDir = NULL, ...) {
+    lowMemDir = NULL, smooth = FALSE,  weights = NULL, 
+    smoothFunction = bumphunter::locfitByCluster, ...) {
         
     ## Setup
     if (is.null(seeds)) {
@@ -198,7 +200,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     
     ## Find the regions
     regs <- findRegions(position = position, chr = chr, fstats = fstats,
-        cutoff = cutoff, segmentIR = segmentIR, ...)
+        cutoff = cutoff, segmentIR = segmentIR, smooth = smooth,
+        weights = weights, smoothFunction = smoothFunction, ...)
     if (is.null(regs)) {
         final <- list(regions = NULL, nullStats = NULL, nullWidths = NULL, 
             nullPermutation = NULL)
@@ -238,7 +241,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         rm(regionGroupMean)
     }
     
-    rm(fstats, position, means, groupMeans)
+    rm(fstats, means, groupMeans)
+    if(!smooth) rm(position)
     
     ## Pre-allocate memory
     nullareas <- nullpermutation <- nullwidths <- nullstats <- vector("list", 
@@ -270,6 +274,12 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
             method = method, adjustF = adjustF, scalefac = scalefac,
             lowMemDir = lowMemDir, BPPARAM = BPPARAM)
         fstats.output <- unlist(RleList(fstats.output), use.names = FALSE)
+        
+        if(smooth) {
+            if (verbose) 
+                message(paste(Sys.time(), 'calculatePvalues: smoothing F-statistics for permutation', i))
+            fstats.output <- .smootherFstats(fstats = fstats.output, position = position, weights = weights, smoothFunction = smoothFunction, ...)
+        }        
         
         ## Find the segments
         regs.perm <- findRegions(chr = chr, fstats = fstats.output, 

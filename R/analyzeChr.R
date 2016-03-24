@@ -36,6 +36,7 @@
 #' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateTranscripts} 
 #' and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' @inheritParams findRegions
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:
 #' \describe{
@@ -90,7 +91,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     cutoffFstat = 1e-08, cutoffType = 'theoretical', nPermute = 1, 
     seeds = as.integer(gsub('-', '', Sys.Date())) + seq_len(nPermute), 
     groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
-    lowMemDir =  file.path(chr, 'chunksDir'), ...){
+    lowMemDir =  file.path(chr, 'chunksDir'), smooth = FALSE,  weights = NULL, 
+    smoothFunction = bumphunter::locfitByCluster, ...){
         
     ## Run some checks
     stopifnot(length(intersect(cutoffType, c('empirical', 'theoretical', 
@@ -179,7 +181,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
         cutoffFstat = cutoffFstat, cutoffType = cutoffType, 
         nPermute = nPermute, seeds = seeds, groupInfo = groupInfo,
         lowMemDir = lowMemDir, analyzeCall = match.call(), 
-        cutoffFstatUsed = cutoff, ...)
+        cutoffFstatUsed = cutoff, smooth = smooth,
+        smoothFunction = smoothFunction, weights = weights, ...)
         
     if (writeOutput) {
         dir.create(chr, showWarnings = FALSE, recursive = TRUE)
@@ -199,7 +202,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     
     regions <- calculatePvalues(coveragePrep = prep, models = models, 
         fstats = fstats, nPermute = nPermute, seeds = seeds, 
-        chr = chr, cutoff = cutoff, lowMemDir = lowMemDir, ...)
+        chr = chr, cutoff = cutoff, lowMemDir = lowMemDir, smooth = smooth,
+        smoothFunction = smoothFunction, weights = weights, ...)
     if (!returnOutput) {
         rm(prep)
     }
