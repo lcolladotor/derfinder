@@ -82,6 +82,14 @@
 #' annotation <- matchGenes(regs, genes)
 #' annotation
 #' }
+#'
+#' # Find regions with smoothing the F-statistics by bumphunter::runmedByCluster
+#' regs_smooth <- findRegions(prep$position, fstats, 'chr21', verbose = TRUE,
+#'     smoothFunction = bumphunter::runmedByCluster)
+#' ## Compare against the object regs obtained earlier
+#' regs_smooth
+#'
+
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
     maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,

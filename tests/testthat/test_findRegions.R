@@ -58,10 +58,26 @@ test_that('findRegions', {
 })
 
 
-test_that('findRegions-smooth', {
+test_that('findRegions-smoother', {
     expect_equal(derfinder:::.smootherFstats(genomeFstats, prep$position), Rle(bumphunter::locfitByCluster(genomeFstats, which(prep$position), derfinder:::.clusterMakerRle(prep$position, maxGap = 300L))$fitted))
     expect_equal(derfinder:::.smootherFstats(genomeFstats, prep$position), Rle(smoother(genomeFstats, which(prep$position), derfinder:::.clusterMakerRle(prep$position, maxGap = 300L), smoothFunction = bumphunter::locfitByCluster)$fitted))
     expect_error(findRegions(fstats = genomeFstats, chr = 'chr21', smooth = TRUE))
     expect_warning(findRegions(prep$position, fstats = genomeFstats, chr = 'chr21', smooth = TRUE, basic = TRUE), "Ignoring 'smooth' = TRUE since 'basic' = TRUE")
 })
 
+## Find smoothed regions
+# Works right now because bumphunter was loaded previously in the session,
+# otherwise it would fail due to https://github.com/ririzarr/bumphunter/issues/7
+regs_s1 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE)
+regs_s2 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster)
+## Won't work now due to https://github.com/ririzarr/bumphunter/issues/7
+#regs_s3 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2)
+regs_s3 <- regs_s1
+regs_s4 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, mc.cores = 2)
+
+test_that('findRegions-smooth-regions', {
+    expect_equal(regs_s1, regs_s3)
+    expect_equal(regs_s2, regs_s4)
+    expect_equal(length(regs_s1), 1)
+    expect_equal(length(regs_s2), 2)
+})
