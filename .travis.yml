@@ -1,13 +1,10 @@
 language: r
 
-r:
-  - 3.3.0
+r: bioc_devel
 warnings_are_errors: false
 sudo: false
-bioc_use_devel: true
 cache: packages
 
-bioc_required: true
 r_packages:
   - knitrBootstrap
   - covr
