@@ -5,8 +5,8 @@
 \title{Find non-zero regions in a Rle}
 \usage{
 findRegions(position = NULL, fstats, chr, oneTable = TRUE,
-  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
-  smooth = FALSE, weights = NULL,
+  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
+  segmentIR = NULL, smooth = FALSE, weights = NULL,
   smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
