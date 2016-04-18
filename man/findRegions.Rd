@@ -33,7 +33,7 @@ potentials DERs. This is used in \link{calculatePvalues} to speed up
 permutation calculations.}
 
 \item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
-is by default \code{FALSE} and is not recommended for RNA-seq data.}
+is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 
 \item{weights}{Weights used by the smoother as described in
 \link[bumphunter]{smoother}.}
