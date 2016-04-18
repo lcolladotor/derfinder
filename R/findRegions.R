@@ -22,7 +22,7 @@
 #' potentials DERs. This is used in \link{calculatePvalues} to speed up
 #' permutation calculations.
 #' @param smooth Whether to smooth the F-statistics (\code{fstats}) or not. This
-#' is by default \code{FALSE} and is not recommended for RNA-seq data.
+#' is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.
 #' @param weights Weights used by the smoother as described in
 #' \link[bumphunter]{smoother}.
 #' @param smoothFunction A function to be used for smoothing the F-statistics.
