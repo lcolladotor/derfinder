@@ -92,8 +92,8 @@
 
 
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
-    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99), segmentIR = NULL,
-    smooth = FALSE,  weights = NULL, 
+    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
+    segmentIR = NULL, smooth = FALSE,  weights = NULL, 
     smoothFunction = bumphunter::locfitByCluster, ...){
     
     ## Advanged arguments
@@ -283,7 +283,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' set.seed(20130725)
 #' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
 #' data <- Rle(rnorm(sum(pos)))
-#' cutoff <- quantile(data, .99)
+#' cutoff <- quantile(data, .99, na.rm = TRUE)
 #'
 #' ## It's quite fast
 #' system.time(segs <- derfinder:::.getSegmentsRle(data, cutoff, verbose=TRUE))
@@ -312,7 +312,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' }
 #'
 
-.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99), ...) {
+.getSegmentsRle <- function(x, cutoff = quantile(x, 0.99, na.rm = TRUE), ...) {
     
     ## Advanged arguments
 # @param verbose If \code{TRUE} basic status updates will be printed along the 

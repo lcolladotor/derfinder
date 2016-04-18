@@ -272,7 +272,7 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
             cutoffFstat <- 0.99
             warning("Switching 'cutoffFstat' to 0.99 as the user probably forgot to change its default value.")
         }
-        cutoff <- quantile(as.numeric(fstats), cutoffFstat)
+        cutoff <- quantile(as.numeric(fstats), cutoffFstat, na.rm = TRUE)
     } else if (cutoffType == 'theoretical') {
         n <- dim(models$mod)[1]
         df1 <- dim(models$mod)[2]
