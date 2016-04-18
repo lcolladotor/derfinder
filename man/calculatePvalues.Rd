@@ -52,7 +52,10 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 Two functions are provided by the \code{bumphunter} package: 
 \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
-an element called \code{$fitted} that contains the smoothed F-statistics.}
+an element called \code{$fitted} that contains the smoothed F-statistics and
+an element claled \code{$smoothed} that is a logical vector indicating
+whether the F-statistics were smoothed or not. If they are not smoothed, the
+original values will be used.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.}
 }

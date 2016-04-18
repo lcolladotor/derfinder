@@ -29,7 +29,10 @@
 #' Two functions are provided by the \code{bumphunter} package: 
 #' \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
 #' you are using your own custom function, it has to return a named list with
-#' an element called \code{$fitted} that contains the smoothed F-statistics.
+#' an element called \code{$fitted} that contains the smoothed F-statistics and
+#' an element claled \code{$smoothed} that is a logical vector indicating
+#' whether the F-statistics were smoothed or not. If they are not smoothed, the
+#' original values will be used.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
@@ -474,8 +477,14 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 .smoothFstatsFun <- function(y, x, cluster, weights, smoothFun, ...) {
     hostPackage <- environmentName(environment(smoothFun))
     requireNamespace(hostPackage)    
-    sm <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
+    smoothed <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
+    
+    ## Use original values if they were not smoothed
+    if(any(!smoothed$smoothed)) {
+        smoothed$fitted[!smoothed$smoothed] <- y[!smoothed$smoothed]
+    }
+    
     ## Extract only the smoothed data
-    res <- Rle(sm$fitted)
+    res <- Rle(smoothed$fitted)
     return(res)
 }

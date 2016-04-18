@@ -72,10 +72,12 @@ test_that('findRegions-smoother', {
 # otherwise it would fail due to https://github.com/ririzarr/bumphunter/issues/7
 regs_s1 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE)
 regs_s2 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster)
+regs_s3 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, minNum = 1435)
 
 test_that('findRegions-smooth-regions', {
     expect_equal(length(regs_s1), 1)
     expect_equal(length(regs_s2), 2)
+    expect_equal(regs, regs_s3)
 })
 
 ## Tests with 2 cores, can't run on Travis
