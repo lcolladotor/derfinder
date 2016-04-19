@@ -81,15 +81,22 @@ test_that('findRegions-smooth-regions', {
 })
 
 ## Tests with 2 cores, can't run on Travis
-if(FALSE) {
-    ## Won't work now due to https://github.com/ririzarr/bumphunter/issues/7
-    #regs_s3 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2)
-    regs_s3 <- regs_s1
-    regs_s4 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, mc.cores = 2)
+library('BiocParallel')
+if('SnowParam' %in% names(registered())) {
+    if(bpworkers(registered()$SnowParam) >= 2) {
+        ## Won't work now due to https://github.com/ririzarr/bumphunter/issues/7
+        regs_s4 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2, maxClusterGap = 1256)
+        regs_s5 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2)
+        regs_s6 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, mc.cores = 2)
+        ## The following code use to fail before version 1.5.34
+        smoothF <- derfinder:::.smootherFstats(genomeFstats, prep$position, maxClusterGap = 1256, mc.cores = 2)
 
-    test_that('findRegions-smooth-regions-2cores', {
-        expect_equal(regs_s1, regs_s3)
-        expect_equal(regs_s2, regs_s4)
-    })
-    
+        test_that('findRegions-smooth-regions-2cores', {
+            expect_equal(ranges(regs_s4), IRanges(start = 47409522, width = 15, names = 'up'))
+            expect_equal(regs_s1, regs_s5)
+            expect_equal(regs_s2, regs_s6)
+            expect_equal(max(smoothF - genomeFstats), 8.5196371283809764208)
+            expect_equal(min(smoothF - genomeFstats), -15.547398327000998108)
+        })
+    }
 }
