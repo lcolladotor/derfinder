@@ -454,7 +454,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     clusterChunks <- split(cluster, iChunks)
     
     if(is.null(weights)) {
-        weightChunks <- vector('list', length = cores)
+        weightChunks <- vector('list', length = length(unique(iChunks)))
     } else {
         weightChunks <- split(weights, iChunks)
     }
