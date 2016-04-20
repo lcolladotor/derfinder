@@ -329,6 +329,6 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
     nullList <- split(as.numeric(areaNull), factor(as.numeric(permutation), levels = seq_len(nPermute)))
     nullList[sapply(nullList, length) == 0] <- cutoffFstatUsed
     maxArea <- sapply(nullList, max)
-    fwer <- sapply(areaReg, function(x) sum(maxArea > x)) / length(maxArea)
+    fwer <- (sapply(areaReg, function(x) sum(maxArea > x)) + 1) / (length(maxArea) + 1)
     return(fwer)
 }
