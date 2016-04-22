@@ -76,7 +76,7 @@ test_that('calculatePvalues', {
     expect_that(regsWithP, is_equivalent_to(genomeRegions))
     expect_that(calculatePvalues(prep, models, fstats, nPermute=1, seeds=11, chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular'), equals(calculatePvalues(prep, models, fstats, nPermute=1, seeds=11, chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular', maxRegionGap = 0L, maxClusterGap = 300L, verbose = TRUE, scalefac = 32, adjustF = 0)))
     expect_that(derfinder:::.calcPval(1:2, 1:4), equals(c(0.8, 0.6)))
-    expect_that(derfinder:::.calculateFWER(10, 1:4, rep(c(1, 3), each=2), 3, 1:2), equals(3:2/3))
+    expect_that(derfinder:::.calculateFWER(10, 1:4, rep(c(1, 3), each=2), 3, 1:2), equals(c(1, 0.75)))
 })
 
 
