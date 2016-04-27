@@ -24,6 +24,12 @@ the \link{regionMatrix} or \link{railMatrix} functions depending on the
 input data.
 
 Details about both approaches are further described in the vignettes.
+
+The DER Finder approach can also be used to identify differentially bounded
+ChIP-seq regions (peaks). In particular, \link{analyzeChr} has parameters 
+that allow smoothing of the F-statistics which can be useful for anlayzing
+ChIP-seq data. This use case is further explained in the users guide 
+vignette.
 }
 \author{
 Leonardo Collado-Torres <lcollado@jhu.edu>
