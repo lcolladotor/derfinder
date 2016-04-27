@@ -1,10 +1,20 @@
+CHANGES IN VERSION 1.5.37
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o The users guide vignette now has a short section explaining how to use
+        derfinder for differential binding analysis with ChIP-seq data.
+
+
 CHANGES IN VERSION 1.5.27
 -------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o Added smoothing arguments for the single base-level approach based on
-        functions from the bumphunter package.
+        functions from the bumphunter package. These arguments are useful for
+        identifying differentially bounded ChIP-seq peaks.
 
 
 CHANGES IN VERSION 1.5.13

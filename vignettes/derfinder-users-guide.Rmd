@@ -678,6 +678,12 @@ names(fullAnnotatedRegions)
 lapply(fullAnnotatedRegions, head)
 ```
 
+# ChIP-seq differential binding
+
+As of version 1.5.27 `r Biocpkg('derfinder')` has parameters that allow smoothing of the single base-level F-statistics before determining DERs. This allows finding differentially bounded regions (peaks) using ChIP-seq data. In general, ChIP-seq studies are smaller than RNA-seq studies which means that the single base-level F-statistics approach is well suited for differential binding analysis.
+
+To smooth the F-statistics use `smooth = TRUE` in `analyzeChr()`. The default smoothing function is `bumphunter::locfitByCluster()` and all its parameters can be passed specified in the call to `analyzeChr()`. In particular, the `minNum` and `bpSpan` arguments are important. We recommend setting `minNum` to the minimum read length and `bpSpan` to the average peak length expected in the ChIP-seq data being analyzed. Smoothing the F-statistics will take longer but not use significantly more memory than the default behavior. So take this into account when choosing the number of permutations to run.
+
 
 # Visually explore results
 
