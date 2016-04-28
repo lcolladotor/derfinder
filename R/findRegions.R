@@ -426,19 +426,19 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 .smootherFstats <- function(fstats, position, weights = NULL,
     smoothFunction = bumphunter::locfitByCluster, ...) {
     ## Based on bumphunter::smoother
-    
+
     ## Advanced arguments
 # @param maxRegionGap This determines the maximum gap between candidate DERs. 
 # It should be greater than \code{maxRegionGap} (0 by default).
     maxClusterGap <- .advanced_argument('maxClusterGap', 300L, ...)
-        
+    
     ## Identify clusters
     cluster <- .clusterMakerRle(position, maxGap = maxClusterGap)
-        
+    
     ## Define computing cluster
     BPPARAM <- .define_cluster(...)
     cores <- bpworkers(BPPARAM)
-    
+
     if(cores > 1) {
         IndexesChunks <- split(runValue(cluster), cut(runValue(cluster),
             breaks = cores))
@@ -447,23 +447,23 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     } else {
         iChunks <- rep(1, length(cluster))
     }
-    
+
     ## Define the chunks of data to process in parallel
     fstatsChunks <- split(fstats, iChunks)
     posChunks <- split(which(position), iChunks)
     clusterChunks <- split(cluster, iChunks)
-    
+
     if(is.null(weights)) {
         weightChunks <- vector('list', length = length(unique(iChunks)))
     } else {
         weightChunks <- split(weights, iChunks)
     }
-    
+
     ## Run in parallel
     res <- bpmapply(.smoothFstatsFun, fstatsChunks, posChunks, clusterChunks,
         weightChunks, MoreArgs = list(smoothFun = smoothFunction, ...),
         BPPARAM = BPPARAM)
-        
+
     ## Get back a Rle
     res <- unlist(RleList(res), use.names = FALSE)
     
