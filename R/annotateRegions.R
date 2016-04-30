@@ -76,7 +76,7 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
     
     countTable <- sapply(genomicState.list, function(x, ...) {
         .runFunFormal(countOverlaps, query = regions, subject = x,
-            ignore.strand = ignore.strand, ...)
+            ..., hiddenArgs = list(ignore.strand = ignore.strand))
     }, ...)
     countTable <- data.frame(countTable)
     out <- list(countTable = countTable)
@@ -86,7 +86,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
             message(paste(Sys.time(), 'annotateRegions: annotating'))
         
         oo <- .runFunFormal(findOverlaps, query = regions,
-            subject = genomicState, ignore.strand = ignore.strand, ...)
+            subject = genomicState, ..., 
+            hiddenArgs = list(ignore.strand = ignore.strand))
         glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }
