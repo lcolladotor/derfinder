@@ -55,6 +55,9 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
 # @param verbose If \code{TRUE} basic status updates will be printed along the 
 # way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
+    
+# @param ignore.strand Passed on to findOverlaps and countOverlaps
+    ignore.strand <- .advanced_argument('ignore.strand', TRUE, ...)
 
 
     ## Fix row names
@@ -72,7 +75,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
         message(paste(Sys.time(), 'annotateRegions: counting'))
     
     countTable <- sapply(genomicState.list, function(x, ...) {
-        .runFunFormal(countOverlaps, query = regions, subject = x, ...)
+        .runFunFormal(countOverlaps, query = regions, subject = x,
+            ignore.strand = ignore.strand, ...)
     }, ...)
     countTable <- data.frame(countTable)
     out <- list(countTable = countTable)
@@ -82,7 +86,7 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
             message(paste(Sys.time(), 'annotateRegions: annotating'))
         
         oo <- .runFunFormal(findOverlaps, query = regions,
-            subject = genomicState, ...)
+            subject = genomicState, ignore.strand = ignore.strand, ...)
         glist <- split(genomicState[subjectHits(oo)], queryHits(oo))
         out$annotationList <- glist
     }
