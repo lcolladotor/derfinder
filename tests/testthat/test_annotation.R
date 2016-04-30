@@ -32,3 +32,15 @@ test_that('annotateRegions', {
     expect_that(annotateRegions(regions = copy, genomicState = genomicState$fullGenome, minoverlap = max(width(copy)) + 1, annotate = FALSE, verbose = FALSE), is_equivalent_to(list(count.table = data.frame(exon = c(0, 0), intragenic = c(0, 0), intron = c(0, 0)))))
     
 })
+
+
+## Strand info
+regs <- genomeRegions$regions[1:2]
+ann <- annotateRegions(regions = regs, genomicState = genomicState$fullGenome, minoverlap = 1)
+library('GenomicRanges')
+regs2 <- regs
+strand(regs2) <- '-'
+ann2 <- annotateRegions(regions = regs2, genomicState = genomicState$fullGenome, minoverlap = 1)
+test_that('ignore strand', {
+    expect_equal(ann, ann2)
+})
