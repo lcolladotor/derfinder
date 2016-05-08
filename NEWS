@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.7.2
+------------------------
+
+BUG FIXES
+
+    o Now derfinder uses DataFrame(check.names = FALSE) to avoid naming issues.
+
+
 CHANGES IN VERSION 1.7.1
 ------------------------
 

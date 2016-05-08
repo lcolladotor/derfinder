@@ -187,7 +187,7 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
         
         ## Combine regions with annotation
         values(fullRegions) <- cbind(values(fullRegions),
-            DataFrame(fullAnnotation))
+            DataFrame(fullAnnotation, check.names = FALSE))
     }
     
     
@@ -201,7 +201,7 @@ mergeResults <- function(chrs = c(1:22, 'X', 'Y'), prefix = '.',
         ## Proceed only if there are null regions to work with
         fullNullSummary <- DataFrame(stat = nulls, width = widths, 
             chr = Rle(names(fullNullStats), howMany),
-            permutation = permutations)
+            permutation = permutations, check.names = FALSE)
         rm(nulls, widths, howMany, permutations)
         
         fullNullSummary$area <- abs(fullNullSummary$stat) * 
