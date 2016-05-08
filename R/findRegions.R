@@ -228,7 +228,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         } else {
             ## Actually build the GRanges
             res[[i]] <- DataFrame(area = Rle(abs(sum(ders[[i]]))), 
-                width = Rle(width(ders[[i]])), stat = Rle(mean(ders[[i]])))
+                width = Rle(width(ders[[i]])), stat = Rle(mean(ders[[i]])),
+                check.names = FALSE)
         }
         
     }

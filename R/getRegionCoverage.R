@@ -128,7 +128,7 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
         # depth-adjust, like for plotting
         if (!is.null(totalMapped) & targetSize != 0) {
             yy <- DataFrame(mapply(function(x, d) x / d, 
-                yy, totalMapped / targetSize))
+                yy, totalMapped / targetSize), check.names = FALSE)
         }
         
         ind <- rep(names(g), width(g))  # to split along

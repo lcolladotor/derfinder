@@ -203,3 +203,13 @@ test_that('Obtaining region coverage', {
     expect_that(coverageToExon(fullCov=fullCov, genomicState=tripleSmall$fullGenome, L=36, strandCores = 1, mc.cores = 10), equals(coverageToExon(fullCov=fullCov, genomicState=tripleSmall$fullGenome, L=36, BPPARAM.strandStep = BiocParallel::SerialParam(), mc.cores = 10)))
 }
 )
+
+## Naming
+x <- Rle(round(runif(1e4, max=10)))
+y <- Rle(round(runif(1e4, max=10)))
+z <- Rle(round(runif(1e4, max=10)))
+l <- list('(CEU)' = x, '(YRI)' = y, '[0,-5)' = z)
+filt <- filterData(l, 5)
+test_that('Naming is preserved', {
+    expect_equal(colnames(filt$coverage), names(l))
+})

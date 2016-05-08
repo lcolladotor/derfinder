@@ -162,9 +162,9 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
             if (!is.null(newindex)) {
                 DF <- DataFrame(lapply(data, function(x) {
                     x[newindex]
-                }))
+                }), check.names = FALSE)
             } else {
-                DF <- DataFrame(data)
+                DF <- DataFrame(data, check.names = FALSE)
             }
         }
     }
