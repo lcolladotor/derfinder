@@ -5,19 +5,21 @@ pkgVer <- function(pkg, default) {
 }
 c(
     bibentry(bibtype="article",
-        title = "derfinder: Software for annotation-agnostic RNA-seq differential expression analysis",
+        title = "Flexible expressed region analysis for RNA-seq with derfinder",
         author = personList(
             as.person("Leonardo Collado-Torres"),
+            as.person("Abhinav Nellore"),
             as.person("Alyssa C. Frazee"),
+            as.person("Christopher Wilks"),
             as.person("Michael I. Love"),
             as.person("Rafael A. Irizarry"),
-            as.person("Andrew E. Jaffe"),
-            as.person("Jeffrey T. Leek")
+            as.person("Jeffrey T. Leek"),
+            as.person("Andrew E. Jaffe")
         ),
-        year = 2015,
+        year = 2016,
         journal = "bioRxiv",
         doi = "10.1101/015370",
-        url = "http://www.biorxiv.org/content/early/2015/02/19/015370.abstract"
+        url = "http://biorxiv.org/content/early/2016/05/07/015370"
     ),
     bibentry(bibtype="article",
         title = "Differential expression analysis of RNA-seq data at single-base resolution",
