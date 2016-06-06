@@ -140,9 +140,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, chrlens,
         SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L,
             maxClusterGap = maxClusterGap, cutoff = cutoff,
-            mappedPerXM = mappedPerXM, chunksize = chunksize,
+            mappedPerXM = mappedPerXM, regionschunk = chunksize,
             BPPARAM.railChr = BPPARAM.railChr, verbose = verbose,
-            verboseLoad = verbose.load),
+            verboseLoad = verbose.load, ...),
         BPPARAM = BPPARAM)
     return(regionMat)
 }
@@ -150,13 +150,13 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
 
 .railMatrixChr <- function(chr, summaryFile, chrlen, sampleFiles, L = NULL,
     cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM,
-    chunksize = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE,
-    verboseLoad = TRUE) {
+    regionschunk = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE,
+    verboseLoad = TRUE, ...) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr, chrlen = chrlen)
     
     regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])),
         fstats = meanCov$coverage[[1]], chr = chr,
-        maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose)
+        maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose, ...)
     
     ## If there are no regions, return NULL
     if(is.null(regs)) return(list(regions = GRanges(), coverageMatrix = NULL))
@@ -171,8 +171,8 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     rm(meanCov)
     
     ## Get coverage matrix by chunks of regions
-    nChunks <- length(regs) %/% chunksize
-    if(length(regs) %% chunksize > 0) nChunks <- nChunks + 1
+    nChunks <- length(regs) %/% regionschunk
+    if(length(regs) %% regionschunk > 0) nChunks <- nChunks + 1
     
     ## Split regions into chunks
     if(nChunks == 1) {

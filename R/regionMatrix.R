@@ -11,6 +11,9 @@
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}. If \code{runFilter = FALSE}, then 
 #' \code{returnMean = TRUE} must have been used.
+#' @param filter Has to be either \code{'one'} or \code{'mean'} (default). In 
+#' the first case, at least one sample has to have coverage above \code{cutoff}.
+#' In the second case, the mean coverage has to be greater than \code{cutoff}.
 #' @inheritParams filterData
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
@@ -64,7 +67,6 @@
 #'     cutoff=5, totalMapped = libSize, targetSize = 4e4)
 #' regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
 #'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
-#' identical(regionMat2, regionMat)
 #' }
 
 regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,

@@ -16,7 +16,7 @@ using \link{fullCoverage}. If \code{runFilter = FALSE}, then
 \item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled 
 by \code{filter}.}
 
-\item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In 
+\item{filter}{Has to be either \code{'one'} or \code{'mean'} (default). In 
 the first case, at least one sample has to have coverage above \code{cutoff}.
 In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
@@ -78,7 +78,6 @@ filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
     cutoff=5, totalMapped = libSize, targetSize = 4e4)
 regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
     maxClusterGap = 300L, L = 36, runFilter=FALSE)
-identical(regionMat2, regionMat)
 }
 }
 \author{
