@@ -93,9 +93,15 @@ if(.Platform$OS.type != 'windows') {
         FALSE)
     summaryFile2 <- 'mean2Chr21.bw'
     
+    ## First with the less memory intensive of the two methods
     railMat5 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile2, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 1, maxClusterGap = 3000L,
+        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
         smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, k = 299)
+        
+    ## Next with the more memory intensive one
+    railMat6 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile2, 
+        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
+        smooth = TRUE, minInSpan = 76, minNum = 76, bpSpan = 300)
         
         
     test_that('railMatrix', {
@@ -103,6 +109,8 @@ if(.Platform$OS.type != 'windows') {
         expect_lt(max(railMat3$chr21$regions$cluster), max(railMat$chr21$regions$cluster))
         expect_equivalent(railMat$chr21$regions, railMat4$chr21$regions)
         expect_equal(railMat$chr21$coverageMatrix, railMat4$chr21$coverageMatrix, tolerance = 0.05)
-        expect_gt(width(railMat5$chr21$regions), width(railMat$chr21$regions[1]))
+        expect_lt(railMat5$chr21$regions$value, railMat$chr21$regions[1]$value)
+        expect_gt(length(railMat6$chr21$regions), length(railMat5$chr21$regions))
+        expect_equal(abs(railMat6$chr21$regions$value * width(railMat6$chr21$regions)), railMat6$chr21$regions$area)
     })
 }
