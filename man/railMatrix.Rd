@@ -102,7 +102,8 @@ if(.Platform$OS.type != 'windows') {
     
     ## Get the regions
     regionMat <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L)
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1,
+        maxClusterGap = 3000L)
     
     ## Explore results
     names(regionMat$chr21)

@@ -4,8 +4,8 @@
 \alias{regionMatrix}
 \title{Identify regions data by a coverage filter and get a count matrix}
 \usage{
-regionMatrix(fullCov, cutoff = 5, filter = "mean", L, runFilter = TRUE,
-  returnBP = TRUE, ...)
+regionMatrix(fullCov, cutoff = 5, L, runFilter = TRUE, returnBP = TRUE,
+  ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from 
@@ -15,10 +15,6 @@ using \link{fullCoverage}. If \code{runFilter = FALSE}, then
 
 \item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled 
 by \code{filter}.}
-
-\item{filter}{Has to be either \code{'one'} or \code{'mean'} (default). In 
-the first case, at least one sample has to have coverage above \code{cutoff}.
-In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
 \item{L}{The width of the reads used. Either a vector of length 1 or length
 equal to the number of samples.}
