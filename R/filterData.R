@@ -125,6 +125,13 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
             }
         } else if (filter == 'mean') {
             meanCov <- Reduce('+', data) / length(data)
+            
+            smoothMean <- .advanced_argument('smoothMean', FALSE, ...)
+            if(smoothMean) {
+                if(verbose) message(paste(Sys.time(), 'filterData: smoothing mean coverage'))
+                newindex <- Rle(TRUE, length(meanCov))
+                meanCov <- derfinder:::.smootherFstats(fstats = meanCov, position = newindex, ...)
+            }            
             newindex <- meanCov > cutoff
         }
         

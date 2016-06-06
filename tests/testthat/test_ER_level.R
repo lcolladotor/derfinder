@@ -72,19 +72,19 @@ if(.Platform$OS.type != 'windows') {
     
     ## Get the regions
     railMat <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L)
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1, maxClusterGap = 3000L)
         
     ## Changing chunksize
     railMat2 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1, maxClusterGap = 3000L,
         chunksize = 100)
     
     ## Changing maxClusterGap
     railMat3 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 1e6)
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1, maxClusterGap = 1e6)
         
     ## Reproducing results with regionMatrix
-    railMat4 <- regionMatrix(fullCov = railCov, L = 76, cutoff = 5,
+    railMat4 <- regionMatrix(fullCov = railCov, L = 76, cutoff = 5.1,
         maxClusterGap = 3000L)
     
     ## Smoothing
@@ -95,22 +95,34 @@ if(.Platform$OS.type != 'windows') {
     
     ## First with the less memory intensive of the two methods
     railMat5 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile2, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
-        smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, k = 299)
-        
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1, maxClusterGap = 3000L,
+        smoothMean = TRUE, smoothFunction = bumphunter::runmedByCluster,
+        k = 299)
+    
     ## Next with the more memory intensive one
     railMat6 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile2, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
-        smooth = TRUE, minInSpan = 76, minNum = 76, bpSpan = 300)
+        sampleFiles = sampleFiles, L = 76, cutoff = 5.1, maxClusterGap = 3000L,
+        smoothMean = TRUE, minInSpan = 76, minNum = 76, bpSpan = 300)
+    
+    ## Reproducing results with regionMatrix
+    railCov2 <- railCov
+    railCov2$chr21 <- railCov2$chr21[9820000:9830000, ]
+    
+    ## Note that railMat 5 and 6 don't have the correct coverageMatrix since
+    ## the sampleFiles were not changed, only the mean was changed.
+    railMat7 <- regionMatrix(fullCov = railCov2, L = 76, cutoff = 5,
+        maxClusterGap = 3000L, smoothMean = TRUE,
+        smoothFunction = bumphunter::runmedByCluster, k = 299, returnBP = FALSE)
         
         
     test_that('railMatrix', {
         expect_equal(railMat, railMat2)
         expect_lt(max(railMat3$chr21$regions$cluster), max(railMat$chr21$regions$cluster))
         expect_equivalent(railMat$chr21$regions, railMat4$chr21$regions)
-        expect_equal(railMat$chr21$coverageMatrix, railMat4$chr21$coverageMatrix, tolerance = 0.05)
+        expect_equal(railMat$chr21$coverageMatrix, railMat4$chr21$coverageMatrix, tolerance = 0.005)
         expect_lt(railMat5$chr21$regions$value, railMat$chr21$regions[1]$value)
-        expect_gt(length(railMat6$chr21$regions), length(railMat5$chr21$regions))
+        expect_lt(railMat6$chr21$regions$value, railMat5$chr21$regions$value)
         expect_equal(abs(railMat6$chr21$regions$value * width(railMat6$chr21$regions)), railMat6$chr21$regions$area)
+        expect_equal(railMat5$chr21$regions, railMat7$chr21$regions, tolerance = 0.0000001)
     })
 }

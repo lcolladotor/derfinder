@@ -11,9 +11,6 @@
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}. If \code{runFilter = FALSE}, then 
 #' \code{returnMean = TRUE} must have been used.
-#' @param filter Has to be either \code{'one'} or \code{'mean'} (default). In 
-#' the first case, at least one sample has to have coverage above \code{cutoff}.
-#' In the second case, the mean coverage has to be greater than \code{cutoff}.
 #' @inheritParams filterData
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
@@ -69,7 +66,7 @@
 #'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 #' }
 
-regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
+regionMatrix <- function(fullCov, cutoff = 5, L,
     runFilter = TRUE, returnBP = TRUE, ...) {
         
     ## Have to filter by something
@@ -85,8 +82,8 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     }
         
     ## Define args
-    moreArgs <- list(cutoff = cutoff, filter = filter, L = L,
-        runFilter = runFilter, returnBP = returnBP, ...)
+    moreArgs <- list(cutoff = cutoff, L = L, runFilter = runFilter,
+        returnBP = returnBP, ...)
     
     ## Define cluster
     BPPARAM <- .define_cluster(...)
@@ -96,8 +93,8 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         SIMPLIFY = FALSE, BPPARAM = BPPARAM)
 }
 
-.regionMatrixByChr <- function(covInfo, chr, cutoff, filter, L, runFilter,
-    returnBP, ...) {
+.regionMatrixByChr <- function(covInfo, chr, cutoff, L, runFilter, returnBP,
+    ...) {
 
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -111,16 +108,17 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     if(runFilter) {
         if(all(c('coverage', 'position') %in% names(covInfo))) {
             filt <- filterData(data = covInfo$coverage, cutoff = cutoff,
-                filter = filter, returnMean = TRUE, returnCoverage = TRUE,
-                index = covInfo$position, ...)
+                returnMean = TRUE, returnCoverage = TRUE,
+                index = covInfo$position, filter = 'mean', ...)
         } else {
-            filt <- filterData(data = covInfo, cutoff = cutoff, filter = filter,
-                returnMean = TRUE, returnCoverage = TRUE, ...)
+            filt <- filterData(data = covInfo, cutoff = cutoff,
+                returnMean = TRUE, returnCoverage = TRUE, filter = 'mean', ...)
         }
+        #if(is.null(filt$position)) filt$position <- Rle(TRUE, length(filt$meanCoverage))
         
         ## Identify regions
         regs <- findRegions(position = filt$position, 
-            fstats = filt$meanCoverage, chr = chr, cutoff = 0, ...)
+            fstats = filt$meanCoverage, chr = chr, cutoff = cutoff, ...)
             
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(filt)
@@ -128,7 +126,7 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     } else {        
         ## Identify regions
         regs <- findRegions(position = covInfo$position, 
-            fstats = covInfo$meanCoverage, chr = chr, cutoff = 0, ...)
+            fstats = covInfo$meanCoverage, chr = chr, cutoff = cutoff, ...)
         
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(covInfo)

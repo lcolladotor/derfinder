@@ -84,7 +84,8 @@
 #'     
 #'     ## Get the regions
 #'     regionMat <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-#'         sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L)
+#'         sampleFiles = sampleFiles, L = 76, cutoff = 5.1,
+#'         maxClusterGap = 3000L)
 #'     
 #'     ## Explore results
 #'     names(regionMat$chr21)
@@ -154,8 +155,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     verboseLoad = TRUE, ...) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr, chrlen = chrlen)
     
-    regs <- findRegions(position = Rle(TRUE, length(meanCov$coverage[[1]])),
-        fstats = meanCov$coverage[[1]], chr = chr,
+    filteredMean <- filterData(meanCov$coverage, cutoff = cutoff, filter = 'mean', returnMean = TRUE, ...)
+    regs <- findRegions(position = filteredMean$position,
+        fstats = filteredMean$meanCoverage, chr = chr,
         maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose, ...)
     
     ## If there are no regions, return NULL
