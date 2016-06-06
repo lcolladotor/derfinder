@@ -90,14 +90,13 @@ if(.Platform$OS.type != 'windows') {
     ## Smoothing    
     #railMat5 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
     #    sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
-    #    smooth = TRUE, minNum = 76, bpSpan = 300, minInSpan = 76)
+    #    smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, k = 299)
         
         
     test_that('railMatrix', {
         expect_equal(railMat, railMat2)
         expect_lt(max(railMat3$chr21$regions$cluster), max(railMat$chr21$regions$cluster))
         expect_equivalent(railMat$chr21$regions, railMat4$chr21$regions)
-        expect_equivalent(railMat$chr21$, railMat4)
         expect_equal(railMat$chr21$coverageMatrix, railMat4$chr21$coverageMatrix, tolerance = 0.05)
     })
 }
