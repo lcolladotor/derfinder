@@ -87,10 +87,15 @@ if(.Platform$OS.type != 'windows') {
     railMat4 <- regionMatrix(fullCov = railCov, L = 76, cutoff = 5,
         maxClusterGap = 3000L)
     
-    ## Smoothing    
-    #railMat5 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-    #    sampleFiles = sampleFiles, L = 76, cutoff = 5, maxClusterGap = 3000L,
-    #    smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, k = 299)
+    ## Smoothing
+    meanCov2 <- meanCov[9820000:9830000, ]
+    createBw(list('chr21' = DataFrame('mean2Chr21' = meanCov2)), keepGR = 
+        FALSE)
+    summaryFile2 <- 'mean2Chr21.bw'
+    
+    railMat5 <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile2, 
+        sampleFiles = sampleFiles, L = 76, cutoff = 1, maxClusterGap = 3000L,
+        smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, k = 299)
         
         
     test_that('railMatrix', {
@@ -98,5 +103,6 @@ if(.Platform$OS.type != 'windows') {
         expect_lt(max(railMat3$chr21$regions$cluster), max(railMat$chr21$regions$cluster))
         expect_equivalent(railMat$chr21$regions, railMat4$chr21$regions)
         expect_equal(railMat$chr21$coverageMatrix, railMat4$chr21$coverageMatrix, tolerance = 0.05)
+        expect_gt(width(railMat5$chr21$regions), width(railMat$chr21$regions[1]))
     })
 }
