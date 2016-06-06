@@ -94,8 +94,8 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
         SIMPLIFY = FALSE, BPPARAM = BPPARAM)
 }
 
-.regionMatrixByChr <- function(covInfo, chr, cutoff, filter, 
-    maxClusterGap = 300L, L, runFilter, returnBP, ...) {
+.regionMatrixByChr <- function(covInfo, chr, cutoff, filter, L, runFilter,
+    returnBP, ...) {
 
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -136,7 +136,8 @@ regionMatrix <- function(fullCov, cutoff = 5, filter = 'mean', L,
     ## If there are no regions, return NULL
     if(is.null(regs)) {
         if(returnBP) {
-            return(list(regions = GRanges(), coverageMatrix = NULL, bpCoverage = NULL))
+            return(list(regions = GRanges(), coverageMatrix = NULL,
+                bpCoverage = NULL))
         } else {
             return(list(regions = GRanges(), coverageMatrix = NULL))
         }
