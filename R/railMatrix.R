@@ -179,6 +179,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     ## Split regions into chunks
     if(nChunks == 1) {
         regs_split <- list(regs)
+        names(regs_split) <- '1'
     } else {
         regs_split <- split(regs, cut(seq_len(length(regs)),
             breaks = nChunks, labels = FALSE))
