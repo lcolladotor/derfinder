@@ -3,6 +3,7 @@ language: r
 r: bioc-devel
 warnings_are_errors: false
 sudo: false
+cache: packages
 
 r_packages:
   - knitrBootstrap
