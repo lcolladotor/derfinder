@@ -881,7 +881,7 @@ options(chrsStyle = 'NCBI')
 
 Internally `r Biocpkg('derfinder')` uses `extendedMapSeqlevels()` to use the appropriate chromosome naming style given a species in all functions involving chromosome names.
 
-Further note that the argument `txdb` from `analyzeChr()` is passed to `bumphunter::annotateNearest(txdb)`. So if you are using a genome different from __hg19__ remember to provide the appropriate annotation data or simply use `analyzeChr(runAnnotation = FALSE)`. 
+Further note that the argument `txdb` from `analyzeChr()` is passed to `bumphunter::annotateTranscripts(txdb)`. So if you are using a genome different from __hg19__ remember to provide the appropriate annotation data or simply use `analyzeChr(runAnnotation = FALSE)`. 
 
 So, in the _Arabidopsis Thaliana_ example, your `analyzeChr()` call would look like this:
 
