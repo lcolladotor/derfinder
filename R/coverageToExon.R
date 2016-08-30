@@ -45,6 +45,7 @@
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply bpmapply
+#' @importFrom methods is
 #'
 #' @examples
 #' ## Obtain fullCov object

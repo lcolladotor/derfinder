@@ -34,6 +34,7 @@
 #' @importMethodsFrom IRanges names unlist relist length lapply '['
 #' @import S4Vectors
 #' @importMethodsFrom GenomicFeatures promoters
+#' @importFrom methods is
 #'
 #' @examples
 #' ## Load the example data base from the GenomicFeatures vignette

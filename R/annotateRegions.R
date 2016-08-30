@@ -33,6 +33,7 @@
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$'
 #' countOverlaps findOverlaps '['
+#' @importFrom methods is
 #' @import S4Vectors
 #'
 #' @details

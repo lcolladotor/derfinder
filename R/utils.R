@@ -49,6 +49,7 @@
 #' @param hiddenArgs A named list of additional arguments to use that are not
 #' part of the formal definition of the function.
 #'
+#' @importFrom methods formalArgs
 #' @keywords internal
 .runFunFormal <- function(fun, ..., hiddenArgs = NULL) {
     ## Identify the formal arguments and the supplied info
