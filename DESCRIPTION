@@ -23,6 +23,7 @@ Imports:
     GenomicRanges (>= 1.17.40),
     Hmisc,
     IRanges (>= 2.3.23),
+    methods,
     qvalue (>= 1.99.0),
     Rsamtools,
     rtracklayer,
