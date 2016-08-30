@@ -1,6 +1,6 @@
-pkgVer <- function(pkg, default) { 
-    x <- packageDescription(pkg, fields = 'Version')
-    ver <- ifelse(is.na(x), default, x)
+pkgVer <- function(pkg) {
+    if (!exists("meta") || is.null(meta)) meta <- packageDescription(pkg)
+    ver <- meta$Version
     paste0('https://github.com/lcolladotor/', pkg, ' - R package version ', ver)
 }
 c(
@@ -36,5 +36,16 @@ c(
         pages = "413-426",
         doi = "10.1093/biostatistics/kxt053",
         url = "http://biostatistics.oxfordjournals.org/content/15/3/413.long"
+    ),
+    bibentry(bibtype="manual",
+        title = "derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach",
+        author = personList(
+            as.person("Leonardo Collado-Torres"),
+            as.person("Andrew E. Jaffe"),
+            as.person("Jeffrey T. Leek")
+        ),
+        year = 2016,
+        url = "http://www.bioconductor.org/packages/derfinder",
+        note = pkgVer('derfinder')
     )
 )

@@ -19,7 +19,7 @@ available [here](https://github.com/lcolladotor/regionReport).
 
 # Installation instructions
 
-Get R 3.2.0 from [CRAN](http://cran.r-project.org/).
+Get R 3.3.x from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## From Bioconductor

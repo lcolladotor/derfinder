@@ -68,6 +68,7 @@
 #' @importMethodsFrom GenomicRanges coverage isDisjoint reduce width resize
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
+#' @importFrom methods is
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
 #' files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 

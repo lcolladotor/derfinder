@@ -49,6 +49,7 @@
 #'
 #' @importMethodsFrom IRanges '[' '[<-' '[[' colnames 'colnames<-' lapply
 #' @import S4Vectors
+#' @importFrom methods is
 #'
 #' @seealso \link{loadCoverage}, \link{preprocessCoverage}
 #' @examples
