@@ -55,6 +55,7 @@ test_that('findRegions', {
     expect_that(width(regs.small[3]), equals(runLength(genomeFstats[32 + seq_len(36)] > 1)[runValue(genomeFstats[32 + seq_len(36)] > 1)]))
     expect_that(regs.small.basic, equals(basic.check))
     expect_that(ranges(findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, cutoff = 0, maxRegionGap = 1e5, maxClusterGap = 1e6)), equals(IRanges(47407537, 47408970, names = 'up')))
+    expect_equal(findRegions(position = FALSE), NULL)
 })
 
 

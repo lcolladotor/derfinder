@@ -136,6 +136,10 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         if (verbose) 
             message(paste(Sys.time(),
                 'findRegions: identifying potential segments'))
+        if(!any(position)) {
+            warning('Found no regions')
+            return(NULL)
+        }
         segmentIR <- .clusterMakerRle(position, maxGap = maxRegionGap,
             ranges = TRUE)
     }
