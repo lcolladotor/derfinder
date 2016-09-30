@@ -31,7 +31,7 @@
 #' produced by \link{loadCoverage}.
 #' }
 #'
-#' @seealso \link{loadCoverage}, \link{filterData}
+#' @seealso \link{loadCoverage}, \link{filterData}, \link{getTotalMapped}
 #'
 #' @author Leonardo Collado-Torres
 #' @export

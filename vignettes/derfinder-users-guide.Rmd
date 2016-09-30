@@ -152,7 +152,7 @@ kable(p, format = 'html', row.names = TRUE)
 
 `r Biocpkg('derfinder')` offers three functions related to loading raw data. The first one, `rawFiles()`, is a helper function for identifying the full paths to the input files. Next, `loadCoverage()` loads the base-level coverage data from either BAM or BigWig files for a specific chromosome. Finally, `fullCoverage()` will load the coverage for a set of chromosomes using `loadCoverage()`.
 
-We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`.
+We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
 
 ```{r 'getData', eval = !windowsFlag}
 ## Determine the files to use and fix the names
@@ -160,7 +160,8 @@ files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samp
 names(files) <- gsub('.bw', '', names(files))
 
 ## Load the data from disk
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'.
+    totalMapped = rep(1, length(files)), targetSize = 1))
 ```
 
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
@@ -181,7 +182,8 @@ files <- pheno$file
 names(files) <- gsub('.AMY', '', pheno$lab)
 
 ## Load the data from the web
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'))
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21',
+    totalMapped = rep(1, length(files)), targetSize = 1))
 ```
 
 
@@ -202,7 +204,7 @@ If filtering was performed, each chromosome also has a logical `Rle` indicating 
 
 Depending on the use case, you might want to filter the base-level coverage at the time of reading it, or you might want to keep an unfiltered version. By default both `loadCoverage()` and `fullCoverage()` will not filter.
 
-If you decide to filter, set the `cutoff` argument to a positive value. This will run `filterData()`. Note that you might want to standardize the library sizes prior to filtering, which can be done by supplying the `totalMapped` and `targetSize` arguments.
+If you decide to filter, set the `cutoff` argument to a positive value. This will run `filterData()`. Note that you might want to standardize the library sizes prior to filtering if you didn't already do it when creating the `fullCov` object. You can do so by by supplying the `totalMapped` and `targetSize` arguments to `filterData()`. Note: don't use these arguments twice in `fullCoverage()` and `filterData()`.
 
 In this example, we prefer to keep both an unfiltered and filtered version. For the filtered version, we will retain the bases where at least one sample has coverage greater than 2.
 

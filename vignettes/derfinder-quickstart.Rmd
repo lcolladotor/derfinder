@@ -141,12 +141,13 @@ files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samp
 names(files) <- gsub('.bw', '', names(files))
 ```
 
-Next, we can load the full coverage data into memory using the `fullCoverage()` function.
+Next, we can load the full coverage data into memory using the `fullCoverage()` function. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
 
 
 ```{r 'getData', eval = !windowsFlag}
 ## Load the data from disk
-fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE)
+fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE,
+    totalMapped = rep(1, length(files)), targetSize = 1)
 ```
 
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}

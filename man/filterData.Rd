@@ -82,6 +82,7 @@ filt2
 Leonardo Collado-Torres
 }
 \seealso{
-\link{loadCoverage}, \link{preprocessCoverage}
+\link{loadCoverage}, \link{preprocessCoverage},
+\link{getTotalMapped}
 }
 
