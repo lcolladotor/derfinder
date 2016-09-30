@@ -51,7 +51,8 @@
 #' @import S4Vectors
 #' @importFrom methods is
 #'
-#' @seealso \link{loadCoverage}, \link{preprocessCoverage}
+#' @seealso \link{loadCoverage}, \link{preprocessCoverage},
+#' \link{getTotalMapped}
 #' @examples
 #' ## Construct some toy data
 #' library('IRanges')

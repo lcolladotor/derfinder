@@ -71,6 +71,6 @@ bplapply(fullCov, function(x) {
 Leonardo Collado-Torres
 }
 \seealso{
-\link{loadCoverage}, \link{filterData}
+\link{loadCoverage}, \link{filterData}, \link{getTotalMapped}
 }
 

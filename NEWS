@@ -1,3 +1,16 @@
+CHANGES IN VERSION 1.7.14
+-------------------------
+
+NEW FEATURES
+
+    o Added the function getTotalMapped() for calculating the total number of
+        mapped reads for a BAM file or the area under the curve (AUC) for a 
+        BigWig file. This information can then be used with fullCoverage(),
+        filterData() and other functions. Note that if you 'totalMapped'
+        in fullCoverage() you should not use 'totalMapped' again in
+        filterData().
+
+
 CHANGES IN VERSION 1.7.12
 -------------------------
 

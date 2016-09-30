@@ -52,6 +52,7 @@
 #' \code{options(species = 'arabidopsis_thaliana')}
 #' \code{options(chrsStyle = 'NCBI')}
 #' 
+#' @seealso \link{fullCoverage}, \link{getTotalMapped}
 #' 
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
