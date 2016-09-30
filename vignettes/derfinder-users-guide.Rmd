@@ -160,7 +160,7 @@ files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samp
 names(files) <- gsub('.bw', '', names(files))
 
 ## Load the data from disk
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21'.
+system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21',
     totalMapped = rep(1, length(files)), targetSize = 1))
 ```
 
