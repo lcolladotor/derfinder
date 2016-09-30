@@ -40,6 +40,12 @@ test_that('Non-standard seqnames', {
     expect_that(lapply(fullCoverage(f1, chrs = c('seq1', 'seq2'), verbose = FALSE), function(x) { sum(x[[1]])}), equals(list('seq1' = 52166, 'seq2' = 63017)))
 })
 
+## Total mapped
+test_that('Total mapped: BAM', {
+    expect_equal(getTotalMapped(f1), 3271)
+    expect_equal(getTotalMapped(f1), getTotalMapped(f1, 'seq1') + getTotalMapped(f1, 'seq2'))
+})
+
 ## Export BigWig
 if(windowsFlag) {
     dir.create('bw')
@@ -70,6 +76,12 @@ if(windowsFlag) {
             inputType = "BigWig", verbose = FALSE), throws_error())
         expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL, 
             verbose = FALSE), equals(dataRaw.bw))
+    })
+    
+    b1 <- system.file('extdata', 'AMY', 'HSB113.bw', package = 'derfinderData')
+    b2 <- BigWigFile(b1)
+    test_that('AUC: BigWig', {
+        expect_equal(getTotalMapped(b1), 926227.628686)
     })
 }
 

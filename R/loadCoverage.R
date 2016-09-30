@@ -117,7 +117,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         inputType <- 'BigWig'
     } else if (is(files, 'BamFileList') | is(files, 'BamFile')) {
         inputType <- 'bam'
-    } else if(all(grepl('bw$|BigWig$', files))) {
+    } else if(all(grepl('bw$|bigwig$', tolower(files)))) {
         inputType <- 'BigWig'
     }    
     stopifnot(inputType %in% c('bam', 'BigWig'))
