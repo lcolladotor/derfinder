@@ -34,13 +34,11 @@ getTotalMapped <- function(rawFile, chrs = NULL) {
     stopifnot(length(rawFile) == 1)
     
     ## Guess the input type
-    if(is(rawFile, 'BigWigFileList') | is(rawFile, 'BigWigFile')) {
+    if(is(rawFile, 'BigWigFileList') | is(rawFile, 'BigWigFile') | grepl('bw$|bigwig$', tolower(rawFile))) {
         inputType <- 'BigWig'
     } else if (is(rawFile, 'BamFileList') | is(rawFile, 'BamFile') | grepl('bam$', tolower(rawFile))) {
         inputType <- 'bam'
-    } else if(all(grepl('bw$|BigWig$', rawFile))) {
-        inputType <- 'BigWig'
-    }    
+    }
     stopifnot(inputType %in% c('bam', 'BigWig'))
     
     if(inputType == 'bam') {
