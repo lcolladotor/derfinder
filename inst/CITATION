@@ -12,14 +12,15 @@ c(
             as.person("Alyssa C. Frazee"),
             as.person("Christopher Wilks"),
             as.person("Michael I. Love"),
+            as.person("Ben Langmead"),
             as.person("Rafael A. Irizarry"),
             as.person("Jeffrey T. Leek"),
             as.person("Andrew E. Jaffe")
         ),
         year = 2016,
-        journal = "bioRxiv",
-        doi = "10.1101/015370",
-        url = "http://biorxiv.org/content/early/2016/05/07/015370"
+        journal = "Nucl. Acids Res.",
+        doi = "10.1093/nar/gkw852",
+        url = "http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852"
     ),
     bibentry(bibtype="article",
         title = "Differential expression analysis of RNA-seq data at single-base resolution",
