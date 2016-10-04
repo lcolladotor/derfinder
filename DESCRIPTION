@@ -3,7 +3,7 @@ Type: Package
 Title: Annotation-agnostic differential expression analysis of RNA-seq data at
     base-pair resolution via the DER Finder approach
 Version: 1.7.14
-Date: 2016-09-30
+Date: 2016-10-04
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcollado@jhu.edu"), person(c("Alyssa", "C."), "Frazee", role = c("ctb"),
     email = "alyssa.frazee@gmail.com"), person(c("Andrew", "E."), "Jaffe",
@@ -25,7 +25,7 @@ Imports:
     IRanges (>= 2.3.23),
     methods,
     qvalue (>= 1.99.0),
-    Rsamtools,
+    Rsamtools (>= 1.25.0),
     rtracklayer,
     S4Vectors (>= 0.9.38)
 Suggests:
