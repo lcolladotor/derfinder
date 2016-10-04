@@ -14,7 +14,16 @@ to a \code{GRanges} object.}
 \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 using \link{fullCoverage}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{seqlengths }{ A named vector with the sequence lengths of the 
+chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}. By
+default this is \code{NULL} and inferred from the data.}
+}
+Passed to \link{define_cluster}.}
 }
 \value{
 A \link[GenomicRanges]{GRanges} object with \code{score} metadata 

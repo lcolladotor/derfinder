@@ -1,7 +1,7 @@
-#' List advanced arguments
+#' Deprecated functions in package \sQuote{derfinder}
 #'
-#' Find in GitHub the documentation for the advanced arguments of a given 
-#' function.
+#' These functions are provided for compatibility with older version of
+#' \sQuote{derfinder} only and will be defunct at the next release.
 #'
 #' @param fun The name of a function(s) that has advanced arguments in
 #' \code{package}.
@@ -9,18 +9,19 @@
 #' 'derfinder', 'derfinderPlot', and 'regionReport' are accepted.
 #' @param browse Whether to open the URLs in a browser.
 #'
-#' @author Leonardo Collado-Torres
-#' @export
-#'
-#' @details If you are interested on the default options used for functions
-#' that run on multiple cores, check 
-#' https://github.com/lcolladotor/derfinder/blob/master/R/utils.R
-#' Note that in general, \link[BiocParallel]{SnowParam} is more memory efficient
-#' than link[BiocParallel]{MulticoreParam}. If you so desire, use your favorite
-#' cluster type by specifying \code{BPPARAM}.
-#'
-#' 
 #' @return A vector of URLs with the GitHub search queries.
+#'
+#' @details
+#'
+#' The following functions are deprecated and will be made defunct.
+#'
+#' \itemize{
+#'     \item{advancedArg}{ Not needed now that the advanced arguments are
+#'     documented on the help pages of each function.}
+#' }
+#'
+#' @name derfinder-deprecated
+#' @export
 #'
 #' @importFrom utils browseURL
 #'
@@ -31,8 +32,10 @@
 #' } else {
 #'     (advancedArg('loadCoverage', browse = FALSE))
 #' }
+#'
 
 advancedArg <- function(fun, package = 'derfinder', browse = interactive()) {
+    .Deprecated(msg = 'This function is not needed anymore now that the advanced arguments are document in the help pages of each function.')
     stopifnot(package %in% c('derfinder', 'derfinderPlot', 'regionReport'))
     
     query_map <- data.frame(

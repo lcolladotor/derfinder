@@ -31,7 +31,20 @@ The names are used for the column names of the DataFrame. Check
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+}
+Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.
+
+When \code{fullCov} is \code{NULL}, \code{...} has the advanced argument
+\code{protectWhich} (default 30000) from \link{loadCoverage}. Also 
+\code{...} is passed to \link{fullCoverage} for loading the data on the fly. 
+This can be useful for loading the data from a specific region (or small 
+sets of regions) without having to load in memory the output the coverage 
+information from all the genome.}
 }
 \value{
 a list of data.frame where each data.frame has the coverage 
@@ -56,8 +69,6 @@ If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
 will attempt to read the coverage from the files. Note that if you used
 'totalMapped' and 'targetSize' before, you will have to specify them again
 to get the same results. 
-
-See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 
 You should use at most one core per chromosome.
 }

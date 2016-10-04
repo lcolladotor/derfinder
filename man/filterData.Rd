@@ -22,7 +22,8 @@ the cutoff. If \code{NULL} it is assumed that this is the first time using
 the first case, at least one sample has to have coverage above \code{cutoff}.
 In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
-\item{totalMapped}{The total number of reads mapped for each sample. 
+\item{totalMapped}{A vector with the total number of reads mapped for each 
+sample. The vector should be in the same order as the samples in \code{data}.
 Providing this data adjusts the coverage to reads in \code{targetSize} 
 library prior to filtering.}
 
@@ -30,7 +31,16 @@ library prior to filtering.}
 only when \code{totalMapped} is specified. By default, it adjusts to 
 libraries with 80 million reads.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{returnMean }{ If \code{TRUE} the mean coverage is included in the 
+result. \code{FALSE} by default.}
+\item{returnCoverage }{ If \code{TRUE}, the coverage DataFrame is returned.
+\code{TRUE} by default.}
+}}
 }
 \value{
 A list with up to three components.
@@ -44,7 +54,14 @@ Included only when \code{returnCoverage = TRUE}.}
 that passed the cutoff.}
 \item{meanCoverage }{ is a numeric Rle with the mean coverage at each base. 
 Included only when \code{returnMean = TRUE}.}
+\item{colnames }{ Specifies the column names to be used for the results 
+DataFrame. If \code{NULL}, names from \code{data} are used.}
+\item{smoothMean }{ Whether to smooth the mean. Used only when
+\code{filter = 'mean'}. This option is used internally by 
+\link{regionMatrix}.}
 }
+Passed to the internal function \code{.smootherFstats}, see 
+\link{findRegions}.
 }
 \description{
 For a group of samples this function reads the coverage information for a 

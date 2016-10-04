@@ -8,7 +8,7 @@
 #' @param txdb A \link[GenomicFeatures]{TxDb} object.
 #' @param chrs The names of the chromosomes to use as denoted in the 
 #' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
-#' @param ... Arguments passed to other methods and/or advanced arguments.
+#' @param ... Arguments passed to \link{extendedMapSeqlevels}.
 #'
 #' @return A \code{GRangesList} object with two elements: \code{fullGenome} and 
 #' \code{codingGenome}. Both have metadata information for the type of region 

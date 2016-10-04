@@ -2,8 +2,8 @@
 #'
 #' This function takes the regions found in \link{calculatePvalues} and assigns 
 #' them genomic states contructed with \link{makeGenomicState}. The main 
-#' workhorse functions are \link[IRanges]{countOverlaps} and 
-#' \link[IRanges]{findOverlaps}.
+#' workhorse functions are \link[GenomicRanges]{countOverlaps} and 
+#' \link[GenomicRanges]{findOverlaps}.
 #' 
 #' @param regions The \code{$regions} output from \link{calculatePvalues}.
 #' @param genomicState A GRanges object created with \link{makeGenomicState}. 
@@ -13,6 +13,16 @@
 #' state. Otherwise, only the overlaps between the regions and the genomic 
 #' states are computed.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{ignore.strand }{ Passed on to
+#' \link[GenomicRanges]{findOverlaps-methods} and
+#' \link[GenomicRanges]{countOverlaps}. Default: \code{TRUE}.}
+#' }
+#' Passed to \link{extendedMapSeqlevels}, \link[GenomicRanges]{countOverlaps}
+#' and \link[GenomicRanges]{findOverlaps-methods}.
 #'
 #' @return A list with elements \code{countTable} and \code{annotationList} 
 #' (only if \code{annotate=TRUE}). 
@@ -38,8 +48,8 @@
 #'
 #' @details
 #' You might want to specify arguments such as \code{minoverlap} to control
-#' how the overlaps are determined. See \link[IRanges]{findOverlaps} for further
-#' details.
+#' how the overlaps are determined. See \link[GenomicRanges]{findOverlaps}
+#' for further details.
 #'
 #' @examples
 #' ## Annotate regions, first two only

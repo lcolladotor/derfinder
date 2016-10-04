@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.7.16
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Help pages now document advanced arguments.
+    o Deprecated advancedArg().
+
+
 CHANGES IN VERSION 1.7.14
 -------------------------
 

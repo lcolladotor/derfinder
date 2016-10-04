@@ -22,6 +22,17 @@
 #' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is 
 #' merged. 
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{optionsStats }{ The options used in \link{analyzeChr}. By default 
+#' \code{NULL} and will be inferred from the output files.}
+#' \item{cutoffFstatUsed }{ The actual F-statistic cutoff used. This can be 
+#' obtained from the logs or from the output of \link{analyzeChr}. If 
+#' \code{NULL} then this function will attempt to re-calculate it.}
+#' }
+#' Passed to \link{annotateRegions} and \link{extendedMapSeqlevels}.
 #' @inheritParams annotateRegions
 #'
 #'

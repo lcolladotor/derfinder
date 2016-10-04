@@ -845,15 +845,7 @@ bw
 
 # Advanced arguments
 
-If you are interested in using advanced arguments in `r Biocpkg('derfinder')`, use `advancedArg()` as shown below:
-
-```{r 'advancedArg'}
-## URLs to advanced arguemtns
-sapply(c('analyzeChr', 'loadCoverage'), advancedArg, browse = FALSE)
-## Set browse = TRUE if you want to open them in your browser
-```
-
-The most common advanced arguments are:
+If you are interested in using advanced arguments in `r Biocpkg('derfinder')`, they are described in the manual pages of each function. Some of the most common advanced arguments are:
 
 * `chrsStyle` (default is `UCSC`)
 * `verbose` (by default `TRUE`).
@@ -863,9 +855,7 @@ The most common advanced arguments are:
 
 The third commonly used advanced argument is `mc.cores`. It controls the number of cores to use for the functions that can run with more than one core to speed up. In nearly all the cases, the maximum number of cores depends on the number of chromosomes. One notable exception is `analyzeChr()` where the maximum number of cores depends on the `chunksize` used and the dimensions of the data for the chromosome under study.
 
-These advanced arguments are options we expect not all users will want to change and which would otherwise make the help pages confusing to them. However, all arguments are documented in `r CRANpkg('roxygen2')` style in the source code. 
-
-Furthermore, note that using the `...` argument allows you to specify some of the documented arguments. For example, you might want to control the `maxClusterGap` from `findRegions()` in the `analyzeChr()` call.
+Note that using the `...` argument allows you to specify some of the documented arguments. For example, you might want to control the `maxClusterGap` from `findRegions()` in the `analyzeChr()` call.
 
 
 

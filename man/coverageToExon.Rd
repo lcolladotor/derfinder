@@ -31,7 +31,21 @@ The names are used for the column names of the DataFrame. Check
 \code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{BPPARAM.strandStep }{ A BPPARAM object to use for the strand step. If
+not specified, then \code{strandCores} specifies the number of cores to use
+for the strand step. The actual number of cores used is the minimum of
+\code{strandCores}, \code{mc.cores} and the number of strands in the data.}
+\item{BPPARAM.chrStep }{ A BPPRAM object to use for the chr step. If not
+specified, then \code{mc.cores} specifies the number of cores to use for 
+the chr step. The actual number of cores used is the minimum of
+\code{mc.cores} and the number of samples.}
+}
+Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.}
 }
 \value{
 A matrix (nrow = number of exons in \code{genomicState} 
@@ -56,9 +70,7 @@ maximum of the number of strands and number of chromosomes.
 If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
 will attempt to read the coverage from the files. Note that if you used
 'totalMapped' and 'targetSize' before, you will have to specify them again
-to get the same results. 
-
-See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
+to get the same results.
 }
 \examples{
 ## Obtain fullCov object

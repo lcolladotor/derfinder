@@ -36,6 +36,20 @@
 #' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateTranscripts} 
 #' and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way. Default \code{TRUE}.}
+#' \item{scalefac }{ This argument is passed to \link{preprocessCoverage}.}
+#' \item{chunksize }{ This argument is passed to \link{preprocessCoverage}.}
+#' \item{returnOutput }{ If \code{TRUE}, it returns a list with the results 
+#' from each step. Otherwise, it returns \code{NULL}. Default: the opposite of
+#' \code{writeOutput}.}
+#' }
+#' Passed to \link{extendedMapSeqlevels}, \link{preprocessCoverage},
+#' \link{calculateStats}, \link{calculatePvalues},
+#' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes},
+#' and \link{define_cluster}.
 #' @inheritParams findRegions
 #'
 #' @return If \code{returnOutput=TRUE}, a list with six components:

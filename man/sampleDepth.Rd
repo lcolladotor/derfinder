@@ -16,7 +16,17 @@ interest. For example, 0.5 is the median.}
 \item{scalefac}{Number added to the sample coverage adjustments before the 
 log2 transformation.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{nonzero }{ If \code{TRUE} only the nonzero counts are used to 
+calculate the library size adjustment. Default: \code{TRUE}.}
+\item{center }{ If \code{TRUE} the sample coverage adjustements are 
+centered. In some cases, this could be helpful for interpretation purposes.
+Default: \code{FALSE}.}
+}}
 }
 \value{
 A matrix (vector of \code{length(probs) == 1}) with the library size depth 

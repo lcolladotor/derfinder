@@ -11,7 +11,7 @@
 #' summarizes this information in a matrix with one row per ERs and one column
 #' per sample. This function is similar to \link{regionMatrix} but is faster
 #' thanks to the advantages presented by BigWig files.
-
+#'
 #' Given a set of un-filtered coverage data (see \link{fullCoverage}), create
 #' candidate regions by applying a cutoff on the coverage values,
 #' and obtain a count matrix where the number of rows corresponds to the number
@@ -19,7 +19,7 @@
 #' samples. The values are the mean coverage for a given sample for a given 
 #' region.
 #' 
-
+#'
 #' @param chrs A character vector with the names of the chromosomes.
 #' @param summaryFiles A character vector (or BigWigFileList) with the paths to 
 #' the summary BigWig files created by Rail. Either mean or median files. These 
@@ -39,6 +39,18 @@
 #' the chromosome length is extracted from the BAM files. Otherwise, it should 
 #' have the same length as \code{chrs}.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way. Default: \code{TRUE}.}
+#' \item{verbose.load }{ If \code{TRUE} basic status updates will be printed 
+#' along the way when loading data. Default: \code{TRUE}.}
+#' \item{BPPARAM.railChr }{ A BPPARAM object to use for the chr step. Set to
+#' \link[BiocParallel]{SerialParam} when \code{file.cores = 1} and 
+#' \link[BiocParallel]{SnowParam} otherwise.}
+#' \item{chunksize }{ Chunksize to use. Default: 1000.}
+#' }
+#' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
 #' with two components.
@@ -115,7 +127,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     if(is.null(chrlens)) chrlens <- rep(list(NULL), length(chrs))
     
     ## Define cluster used for per chromosome
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
     
     ## Define cluster used for loading BigWig files    
     if(file.cores == 1L) {

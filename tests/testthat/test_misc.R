@@ -26,11 +26,11 @@ test_that('Mapping levels', {
 
 
 foo <- function(...) {
-    derfinder:::.define_cluster(...)
+    derfinder::define_cluster(...)
 }
 fuu <- function(...) {
     cores <- derfinder:::.advanced_argument('cores', 1L, ...)
-    derfinder:::.define_cluster(cores = 'test', test = cores)
+    derfinder::define_cluster(cores = 'test', test = cores)
 }
 
 library('BiocParallel')

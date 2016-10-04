@@ -13,6 +13,12 @@
 #' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} object 
 #' created by \link{coerceGR} is returned. Otherwise it is discarded.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' }
+#' Passed to \link{coerceGR}.
 #'
 #' @return Creates a BigWig file with the coverage information (regions with
 #' coverage greater than zero) for a given sample. If \code{keepGR} it returns

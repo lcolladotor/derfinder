@@ -19,6 +19,19 @@
 #' only when \code{totalMapped} is specified.
 #' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' }
+#' Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.
+#'
+#' When \code{fullCov} is \code{NULL}, \code{...} has the advanced argument
+#' \code{protectWhich} (default 30000) from \link{loadCoverage}. Also 
+#' \code{...} is passed to \link{fullCoverage} for loading the data on the fly. 
+#' This can be useful for loading the data from a specific region (or small 
+#' sets of regions) without having to load in memory the output the coverage 
+#' information from all the genome.
 #'
 #' @return a list of data.frame where each data.frame has the coverage 
 #' information (nrow = width of region, ncol = number of samples) for a given 
@@ -48,8 +61,6 @@
 #' will attempt to read the coverage from the files. Note that if you used
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 
-#'
-#' See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 #'
 #' You should use at most one core per chromosome.
 #' 
@@ -102,7 +113,7 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     moreArgs <- list(totalMapped = totalMapped, verbose = verbose)
     
     ## Define cluster
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
     
     counts <- bpmapply(function(chr, covInfo, g, totalMapped, verbose) {
         
