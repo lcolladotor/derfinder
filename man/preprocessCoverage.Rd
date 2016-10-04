@@ -32,7 +32,25 @@ helps reduce the memory load as each fork in \link[BiocParallel]{bplapply}
 loads only the data needed for the chunk processing. The downside is a bit 
 longer computation time due to input/output.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way. Default: \code{FALSE}.}
+\item{toMatrix }{ Determines whether the data in the chunk should already be 
+saved as a Matrix object, which can be useful to reduce the computation time 
+of the F-statistics. Only used when \code{lowMemDir} is not \code{NULL} and
+by in that case set to \code{TRUE} by default.}
+\item{mc.cores }{ Number of cores you will use for calculating the 
+statistics.}
+\item{scalefac }{ A log 2 transformation is used on the count tables, so 
+zero counts present a problem.  What number should we add to the entire 
+matrix? Default: 32.}
+\item{chunksize }{ How many rows of \code{coverageInfo$coverage} should be 
+processed at a time? Default: 5 million. Reduce this number if you have
+hundreds of samples to reduce the memory burden while sacrificing some
+speed.}
+}}
 }
 \value{
 A list with five components.
@@ -56,6 +74,7 @@ filtered base.}
 each filtered base calculated by group. This list has length 0 if 
 \code{groupInfo=NULL}.}
 }
+Passed to \link{filterData} when \code{colsubset} is specified.
 }
 \description{
 This function takes the coverage data from \link{loadCoverage}, scales the 

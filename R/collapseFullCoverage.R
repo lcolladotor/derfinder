@@ -14,6 +14,11 @@
 #' @param colsubset Which columns of \code{coverageInfo$coverage} to use.
 #' @param save If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way. Default: \code{FALSE}.}
+#' }
 #'
 #' @return 
 #' A list with one element per sample. Then per sample, a list with two vector 

@@ -17,7 +17,7 @@ using \link{fullCoverage}.}
 created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList} 
 are returned. Otherwise they are discarded.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to \link{createBwSample}.}
 }
 \value{
 If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}

@@ -28,7 +28,8 @@ by \code{filter}.}
 
 \item{maxClusterGap}{This determines the maximum gap between candidate ERs.}
 
-\item{totalMapped}{The total number of reads mapped for each sample. 
+\item{totalMapped}{A vector with the total number of reads mapped for each 
+sample. The vector should be in the same order as the samples in \code{data}.
 Providing this data adjusts the coverage to reads in \code{targetSize} 
 library prior to filtering.}
 
@@ -42,7 +43,19 @@ libraries with 40 million reads, which matches the default used in Rail.}
 the chromosome length is extracted from the BAM files. Otherwise, it should 
 have the same length as \code{chrs}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way. Default: \code{TRUE}.}
+\item{verbose.load }{ If \code{TRUE} basic status updates will be printed 
+along the way when loading data. Default: \code{TRUE}.}
+\item{BPPARAM.railChr }{ A BPPARAM object to use for the chr step. Set to
+\link[BiocParallel]{SerialParam} when \code{file.cores = 1} and 
+\link[BiocParallel]{SnowParam} otherwise.}
+\item{chunksize }{ Chunksize to use. Default: 1000.}
+}
+Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.}
 }
 \value{
 A list with one entry per chromosome. Then per chromosome, a list 
@@ -65,14 +78,15 @@ files and extracts the base level coverage for each sample. Finally it
 summarizes this information in a matrix with one row per ERs and one column
 per sample. This function is similar to \link{regionMatrix} but is faster
 thanks to the advantages presented by BigWig files.
+}
+\details{
 Given a set of un-filtered coverage data (see \link{fullCoverage}), create
 candidate regions by applying a cutoff on the coverage values,
 and obtain a count matrix where the number of rows corresponds to the number
 of candidate regions and the number of columns corresponds to the number of 
 samples. The values are the mean coverage for a given sample for a given 
 region.
-}
-\details{
+
 This function uses several other \link{derfinder-package} 
 functions. Inspect the code if interested.
 

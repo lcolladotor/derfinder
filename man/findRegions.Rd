@@ -47,7 +47,25 @@ an element claled \code{$smoothed} that is a logical vector indicating
 whether the F-statistics were smoothed or not. If they are not smoothed, the
 original values will be used.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{basic }{ If \code{TRUE} a DataFrame is returned that has only basic
+information on the candidate DERs. This is used in \link{calculatePvalues} 
+to speed up permutation calculations. Default: \code{FALSE}.}
+\item{maxRegionGap }{ This determines the maximum number of gaps between two 
+genomic positions to be considered part of the same candidate region. The
+default is 0L.}
+}
+Passed to \link{extendedMapSeqlevels} and the internal function
+\code{.getSegmentsRle} that has by default \code{verbose = FALSE}.
+
+When \code{smooth = TRUE}, \code{...} is passed to the internal function
+\code{.smootherFstats}. This internal function has the advanced argument
+\code{maxClusterGap} (same as above) and passes \code{...} to 
+\link{define_cluster} and the formal arguments of \code{smoothFun}.}
 }
 \value{
 Either a GRanges or a GRangesList as determined by \code{oneTable}. 

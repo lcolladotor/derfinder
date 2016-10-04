@@ -22,6 +22,28 @@
 #' for the P-values, while the second element is used for the Q-values (FDR 
 #' adjusted P-values).
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{scalefac }{ This argument is passed to 
+#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+#' in \link{preprocessCoverage}. Default: 32.}
+#' \item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
+#' details in \link[derfinderHelper]{fstats.apply}.}
+#' \item{adjustF }{ A single value to adjust that is added in the denominator 
+#' of the F-stat calculation. Useful when the Residual Sum of Squares of the 
+#' alternative model is very small. Default: 0.}
+#' \item{writeOutput }{ If \code{TRUE} then the regions are saved before 
+#' calculating q-values, and then overwritten once the q-values are written.
+#' This argument was introduced to save the results from the permutations (can 
+#' take some time) to investigate the problem described at
+#' https://support.bioconductor.org/p/62026/}
+#' \item{maxRegionGap }{ Passed to internal functions of \link{findRegions}.
+#' Default: 0.}
+#' }
+#' Passed to \link{findRegions}, \code{smoothFunction} and 
+#' \link{define_cluster}.
 #' @inheritParams findRegions
 #'
 #' @return A list with four components:
@@ -254,7 +276,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     nSamples <- seq_len(nrow(models$mod))
     
     ## Define cluster
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
     
     for (i in seq_along(seeds)) {
         if (verbose) 

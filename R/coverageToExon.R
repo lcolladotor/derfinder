@@ -13,6 +13,20 @@
 #' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
 #' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{BPPARAM.strandStep }{ A BPPARAM object to use for the strand step. If
+#' not specified, then \code{strandCores} specifies the number of cores to use
+#' for the strand step. The actual number of cores used is the minimum of
+#' \code{strandCores}, \code{mc.cores} and the number of strands in the data.}
+#' \item{BPPARAM.chrStep }{ A BPPRAM object to use for the chr step. If not
+#' specified, then \code{mc.cores} specifies the number of cores to use for 
+#' the chr step. The actual number of cores used is the minimum of
+#' \code{mc.cores} and the number of samples.}
+#' }
+#' Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.
 #'
 #' @return A matrix (nrow = number of exons in \code{genomicState} 
 #' corresponding to the chromosomes in \code{fullCov}, ncol = number of 
@@ -31,8 +45,6 @@
 #' will attempt to read the coverage from the files. Note that if you used
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 
-#'
-#' See also \link{advancedArg} with \code{fun='loadCoverage'} for other details.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso \link{fullCoverage}, \link{getRegionCoverage}
@@ -113,7 +125,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
     ## Define cluster
     BPPARAM <- .advanced_argument('BPPARAM.strandStep',
-        .define_cluster(cores = 'strandCores', strandCores = strandCores), ...)
+        define_cluster(cores = 'strandCores', strandCores = strandCores), ...)
     if(verbose) print(BPPARAM)
 
     # Use at most n cores where n is the number of unique strands
@@ -163,7 +175,7 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
     ## Define cluster
     BPPARAM.chrStep <- .advanced_argument('BPPARAM.chrStep', 
-        .define_cluster(cores = 'exonCores', exonCores = exonCores), ...)
+        define_cluster(cores = 'exonCores', exonCores = exonCores), ...)
     if(verbose) print(BPPARAM.chrStep)
     
     ## Define ChrStep function

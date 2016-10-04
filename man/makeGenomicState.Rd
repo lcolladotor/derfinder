@@ -12,7 +12,7 @@ makeGenomicState(txdb, chrs = c(1:22, "X", "Y"), ...)
 \item{chrs}{The names of the chromosomes to use as denoted in the 
 \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to \link{extendedMapSeqlevels}.}
 }
 \value{
 A \code{GRangesList} object with two elements: \code{fullGenome} and 

@@ -34,6 +34,24 @@
 #' whether the F-statistics were smoothed or not. If they are not smoothed, the
 #' original values will be used.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{basic }{ If \code{TRUE} a DataFrame is returned that has only basic
+#' information on the candidate DERs. This is used in \link{calculatePvalues} 
+#' to speed up permutation calculations. Default: \code{FALSE}.}
+#' \item{maxRegionGap }{ This determines the maximum number of gaps between two 
+#' genomic positions to be considered part of the same candidate region. The
+#' default is 0L.}
+#' }
+#' Passed to \link{extendedMapSeqlevels} and the internal function
+#' \code{.getSegmentsRle} that has by default \code{verbose = FALSE}.
+#'
+#' When \code{smooth = TRUE}, \code{...} is passed to the internal function
+#' \code{.smootherFstats}. This internal function has the advanced argument
+#' \code{maxClusterGap} (same as above) and passes \code{...} to 
+#' \link{define_cluster} and the formal arguments of \code{smoothFun}.
 #'
 #' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
 #' Each of them has the following metadata variables.
@@ -433,7 +451,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Based on bumphunter::smoother
 
     ## Advanced arguments
-# @param maxRegionGap This determines the maximum gap between candidate DERs. 
+# @param maxClusterGap This determines the maximum gap between candidate DERs. 
 # It should be greater than \code{maxRegionGap} (0 by default).
     maxClusterGap <- .advanced_argument('maxClusterGap', 300L, ...)
     
@@ -441,7 +459,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     cluster <- .clusterMakerRle(position, maxGap = maxClusterGap)
     
     ## Define computing cluster
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
     cores <- bpworkers(BPPARAM)
 
     if(cores > 1) {

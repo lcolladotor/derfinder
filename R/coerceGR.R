@@ -9,6 +9,15 @@
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{seqlengths }{ A named vector with the sequence lengths of the 
+#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}. By
+#' default this is \code{NULL} and inferred from the data.}
+#' }
+#' Passed to \link{define_cluster}.
 #'
 #' @return A \link[GenomicRanges]{GRanges} object with \code{score} metadata 
 #' vector containing the coverage information for the specified sample. The 
@@ -57,7 +66,7 @@ coerceGR <- function(sample, fullCov, ...) {
         message(paste(Sys.time(), 'coerceGR: coercing sample', sample))
     
     ## Define cluster
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
             
     ## Coerce to a list of GRanges (1 element per chr)
     gr.sample <- bpmapply(function(chr, DF, sample, seqlengths) {

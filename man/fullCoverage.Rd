@@ -33,7 +33,21 @@ have the same length as \code{chrs}.}
 
 \item{cutoff}{This argument is passed to \link{filterData}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{mc.cores.load }{ Controls the number of cores to be used per chr for 
+loading the data. If not supplied, it uses \code{mc.cores} for
+\link{loadCoverage}. Default: 1.}
+}
+Passed to \link{loadCoverage}, \link{define_cluster} and 
+\link{extendedMapSeqlevels}.
+Note that \link{filterData} is used internally 
+by \link{loadCoverage} (and hence \link{fullCoverage}) and has the important 
+arguments \code{totalMapped} and \code{targetSize} which can be used to 
+normalize the coverage by library size.}
 }
 \value{
 A list with one element per chromosome.

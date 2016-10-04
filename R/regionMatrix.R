@@ -19,6 +19,20 @@
 #' create each element of \code{fullCov}.
 #' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{chrsStyle }{ Default: \code{UCSC}. Passed to \link{getRegionCoverage}.}
+#' }
+#' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
+#'
+#' Note that \link{filterData} is used internally 
+#' by \link{loadCoverage} (and hence \code{fullCoverage}) and has the important 
+#' arguments \code{totalMapped} and \code{targetSize} which can be used to 
+#' normalize the coverage by library size. If you already used these arguments #' when creating the \code{fullCov} object, then don't specify them a second 
+#' time in \link{regionMatrix}. If you have not used these arguments, we 
+#' recommend using them to normalize the mean coverage.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
 #' with three components.
@@ -86,7 +100,7 @@ regionMatrix <- function(fullCov, cutoff = 5, L,
         returnBP = returnBP, ...)
     
     ## Define cluster
-    BPPARAM <- .define_cluster(...)
+    BPPARAM <- define_cluster(...)
         
     ## Get regions per chr
     bpmapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs, 

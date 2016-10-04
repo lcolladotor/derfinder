@@ -24,6 +24,39 @@
 #' and that they have the .bai extension. Ignored if \code{files} is a 
 #' \code{BamFileList} object or if \code{inputType=='BigWig'}.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
+#' Advanced arguments:
+#' \describe{
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' the way.}
+#' \item{inputType }{ Has to be either \code{bam} or \code{BigWig}. It specifies
+#' the format of the raw data files. By default it's set to \code{bam} before
+#' trying to guess it from the file names.}
+#' \item{tilewidth }{ When specified, \link[GenomicRanges]{tileGenome} is used 
+#' to break up the chromosome into chunks. We don't recommend this for BAM
+#' files as the coverage in the borders of the chunks might be slightly off.}
+#' \item{which }{ \code{NULL} by default. When a \code{GRanges} is specified, 
+#' this specific region of the genome is loaded instead of the full chromosome.}
+#' \item{fileStyle }{ The naming style of the chromosomes in the input files. 
+#' If the global option \code{chrsStyle} is not set, the naming style won't be 
+#' changed. This option is useful when you want to use a specific naming style
+#' but the raw files use another style.}
+#' \item{protectWhich }{ When not \code{NULL} and \code{which} is specified, 
+#' this argument specifies by how much the ranges in \code{which} will be 
+#' expanded. This helps get the same base level coverage you would get from 
+#' reading the coverage for a full chromosome from BAM files. Otherwise some 
+#' reads might be excluded and thus the base level coverage will be lower. 
+#' \code{NULL} by default.}
+#' \item{drop.D }{ Whether to drop the bases with 'D' in the CIGAR strings
+#' or to include them. Only used with BAM files. \code{FALSE} by default.}
+#' \item{sampleNames }{ Column names to be used the samples. By default it's
+#' \code{names(files)}.}
+#' }
+#' Passed to \link{extendedMapSeqlevels}, \link{define_cluster}, 
+#' \link[Rsamtools]{scanBamFlag} and \link{filterData}. 
+#' Note that \link{filterData} is used internally 
+#' by \link{loadCoverage} and has the important arguments \code{totalMapped} 
+#' and \code{targetSize} which can be used to normalize the coverage by
+#' library size.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -214,7 +247,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         tiles <- tileGenome(chrlen, tilewidth = tilewidth)
         
         ## Define cluster
-        BPPARAM <- .define_cluster(...)
+        BPPARAM <- define_cluster(...)
     }    
     
     ## Construct the objects so only the chr of interest is read

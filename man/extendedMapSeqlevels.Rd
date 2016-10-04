@@ -22,7 +22,14 @@ a guess will be made using the available information in GenomeInfoDb.}
 naming style. If \code{NULL}, a guess will be made from the naming styles
 supported by \code{species}.}
 
-\item{...}{Arguments passed to other methods and/or advanced arguments.}
+\item{...}{Arguments passed to other methods and/or advanced arguments.
+Advanced arguments:
+\describe{
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+the way.}
+\item{chrsStyle }{ The naming style of the chromosomes. By default, 
+\code{UCSC}. See \link[GenomeInfoDb]{seqlevelsStyle}.}
+}}
 }
 \value{
 A vector of sequence names using the specified naming \code{style}.
