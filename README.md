@@ -50,8 +50,10 @@ run this yourself to check for any updates on how to cite __derfinder__.
 
 To cite package __derfinder__ in publications use:
 
-Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Irizarry RA, Leek JT and Jaffe AE (2016). "Flexible expressed region analysis for RNA-seq with derfinder". _bioRxiv_. <URL: http://dx.doi.org/10.1101/015370>, <URL:
-http://biorxiv.org/content/early/2016/05/07/015370>.
+Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Langmead B, Irizarry RA, Leek JT and
+Jaffe AE (2016). “Flexible expressed region analysis for RNA-seq with derfinder.” _Nucl. Acids
+Res._. doi: 10.1093/nar/gkw852 (URL: http://doi.org/10.1093/nar/gkw852), <URL:
+http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852>.
 
 Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA and Leek JT (2014). “Differential expression analysis of RNA-seq data at
 single-base resolution.” _Biostatistics_, *15 (3)*, pp. 413-426. <URL: http://dx.doi.org/10.1093/biostatistics/kxt053>, <URL:
@@ -59,13 +61,13 @@ http://biostatistics.oxfordjournals.org/content/15/3/413.long>.
 
 A BibTeX entry for LaTeX users is
 
-@Manual{,
+@Article{,
     title = {Flexible expressed region analysis for RNA-seq with derfinder},
-    author = {Leonardo Collado-Torres and Abhinav Nellore and Alyssa C. Frazee and Christopher Wilks and Michael I. Love and Rafael A. Irizarry and Jeffrey T. Leek and Andrew E. Jaffe},
+    author = {Leonardo Collado-Torres and Abhinav Nellore and Alyssa C. Frazee and Christopher Wilks and Michael I. Love and Ben Langmead and Rafael A. Irizarry and Jeffrey T. Leek and Andrew E. Jaffe},
     year = {2016},
-    journal = {bioRxiv},
-    doi = {10.1101/015370},
-    url = {http://biorxiv.org/content/early/2016/05/07/015370}
+    journal = {Nucl. Acids Res.},
+    doi = {10.1093/nar/gkw852},
+    url = {http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852},
 }
 
 @Article{,
