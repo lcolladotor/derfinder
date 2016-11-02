@@ -38,9 +38,16 @@ Advanced arguments:
 \describe{
 \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
 the way.}
+\item{mc.cores }{ How many cores to use for reading the chromosome
+information. There's no benefit of using a number greater than the number
+of chromosomes. Also note that your harddisk speed will limit how much
+you get from using a higher \code{mc.cores} value.}
 \item{mc.cores.load }{ Controls the number of cores to be used per chr for 
-loading the data. If not supplied, it uses \code{mc.cores} for
-\link{loadCoverage}. Default: 1.}
+loading the data which is only useful in the scenario that you are loading
+in genome tiles. If not supplied, it uses \code{mc.cores} for
+\link{loadCoverage}. Default: 1. If you are using genome tiles, the total
+number of cores you'll use will be \code{mc.cores} times 
+\code{mc.cores.load}.}
 }
 Passed to \link{loadCoverage}, \link{define_cluster} and 
 \link{extendedMapSeqlevels}.
