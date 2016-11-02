@@ -4,7 +4,10 @@ author: "L Collado-Torres"
 date: "`r doc_date()`"
 package: "`r pkg_ver('derfinder')`"
 output: 
-  BiocStyle::html_document
+  BiocStyle::html_document2:
+    toc: true
+    toc_float: true
+    code_folding: show
 vignette: >
   %\VignetteIndexEntry{derfinder quick start guide}
   %\VignetteEngine{knitr::rmarkdown}
