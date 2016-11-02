@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.9.2
+------------------------
+
+BUG FIXES
+
+    o Clarified the documentation of 'mc.cores' and 'mc.cores.load' in
+        fullCoverage() thanks to feedback from Emily Burke
+        https://github.com/emilyburke.
+
+
 CHANGES IN VERSION 1.7.16
 -------------------------
 
