@@ -31,7 +31,8 @@ by \code{filter}.}
 \item{totalMapped}{A vector with the total number of reads mapped for each 
 sample. The vector should be in the same order as the samples in \code{data}.
 Providing this data adjusts the coverage to reads in \code{targetSize} 
-library prior to filtering.}
+library prior to filtering. See \link{getTotalMapped} for
+calculating this vector.}
 
 \item{targetSize}{The target library size to adjust the coverage to. Used
 only when \code{totalMapped} is specified. By default, it adjusts to 

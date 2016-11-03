@@ -4,8 +4,8 @@
 \alias{regionMatrix}
 \title{Identify regions data by a coverage filter and get a count matrix}
 \usage{
-regionMatrix(fullCov, cutoff = 5, L, runFilter = TRUE, returnBP = TRUE,
-  ...)
+regionMatrix(fullCov, cutoff = 5, L, totalMapped = 8e+07,
+  targetSize = 8e+07, runFilter = TRUE, returnBP = TRUE, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from 
@@ -19,9 +19,20 @@ by \code{filter}.}
 \item{L}{The width of the reads used. Either a vector of length 1 or length
 equal to the number of samples.}
 
+\item{totalMapped}{A vector with the total number of reads mapped for each 
+sample. The vector should be in the same order as the samples in
+\code{fullCov}. Providing this argument adjusts the coverage to reads in 
+\code{targetSize} library prior to filtering. See \link{getTotalMapped} for
+calculating this vector.}
+
+\item{targetSize}{The target library size to adjust the coverage to. Used
+only when \code{totalMapped} is specified. By default, it adjusts to 
+libraries with 80 million reads.}
+
 \item{runFilter}{This controls whether to run \link{filterData} or not. If 
 set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
-create each element of \code{fullCov}.}
+create each element of \code{fullCov} and the data must have been
+normalized (\code{totalMapped} equal to \code{targetSize}).}
 
 \item{returnBP}{If \code{TRUE}, returns \code{$bpCoverage} explained below.}
 
