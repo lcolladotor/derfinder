@@ -54,7 +54,8 @@ Passed to \link{loadCoverage}, \link{define_cluster} and
 Note that \link{filterData} is used internally 
 by \link{loadCoverage} (and hence \link{fullCoverage}) and has the important 
 arguments \code{totalMapped} and \code{targetSize} which can be used to 
-normalize the coverage by library size.}
+normalize the coverage by library size. See \link{getTotalMapped} for
+calculating \link{totalMapped}.}
 }
 \value{
 A list with one element per chromosome.

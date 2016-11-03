@@ -14,9 +14,18 @@
 #' @inheritParams filterData
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
+#' @param totalMapped A vector with the total number of reads mapped for each 
+#' sample. The vector should be in the same order as the samples in
+#' \code{fullCov}. Providing this argument adjusts the coverage to reads in 
+#' \code{targetSize} library prior to filtering. See \link{getTotalMapped} for
+#' calculating this vector.
+#' @param targetSize The target library size to adjust the coverage to. Used
+#' only when \code{totalMapped} is specified. By default, it adjusts to 
+#' libraries with 80 million reads.
 #' @param runFilter This controls whether to run \link{filterData} or not. If 
 #' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
-#' create each element of \code{fullCov}.
+#' create each element of \code{fullCov} and the data must have been
+#' normalized (\code{totalMapped} equal to \code{targetSize}).
 #' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
@@ -80,14 +89,25 @@
 #'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 #' }
 
-regionMatrix <- function(fullCov, cutoff = 5, L,
-    runFilter = TRUE, returnBP = TRUE, ...) {
+regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
+    targetSize = 80e6, runFilter = TRUE, returnBP = TRUE, ...) {
         
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
     
     ## fullCov has to be named
     stopifnot(!is.null(names(fullCov)))
+    verbose <- .advanced_argument('verbose', TRUE, ...)
+    
+    if(!runFilter) {
+        if(totalMapped != targetSize) {
+            stop("When using 'runFilter' = FALSE the arguments 'totalMapped' and 'targetSize' are not used. If you have not normalized the data, please do so before running regionMatrix(runFilter = FALSE).")
+        }
+    } else {
+        if(totalMapped == targetSize) {
+            if(verbose) message("By using totalMapped equal to targetSize, regionMatrix() assumes that you have normalized the data already in fullCoverage(), loadCoverage() or filterData().")
+        }
+    }
     
     ## If filtering has been run, check that the information is there
     if(!runFilter) {
@@ -96,7 +116,8 @@ regionMatrix <- function(fullCov, cutoff = 5, L,
     }
         
     ## Define args
-    moreArgs <- list(cutoff = cutoff, L = L, runFilter = runFilter,
+    moreArgs <- list(cutoff = cutoff, L = L, totalMapped = totalMapped,
+        targetSize = targetSize, runFilter = runFilter,
         returnBP = returnBP, ...)
     
     ## Define cluster
@@ -107,8 +128,8 @@ regionMatrix <- function(fullCov, cutoff = 5, L,
         SIMPLIFY = FALSE, BPPARAM = BPPARAM)
 }
 
-.regionMatrixByChr <- function(covInfo, chr, cutoff, L, runFilter, returnBP,
-    ...) {
+.regionMatrixByChr <- function(covInfo, chr, cutoff, L, totalMapped,
+    targetSize, runFilter, returnBP, ...) {
 
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
@@ -123,10 +144,12 @@ regionMatrix <- function(fullCov, cutoff = 5, L,
         if(all(c('coverage', 'position') %in% names(covInfo))) {
             filt <- filterData(data = covInfo$coverage, cutoff = cutoff,
                 returnMean = TRUE, returnCoverage = TRUE,
-                index = covInfo$position, filter = 'mean', ...)
+                index = covInfo$position, filter = 'mean',
+                totalMapped = totalMapped, targetSize = targetSize, ...)
         } else {
             filt <- filterData(data = covInfo, cutoff = cutoff,
-                returnMean = TRUE, returnCoverage = TRUE, filter = 'mean', ...)
+                returnMean = TRUE, returnCoverage = TRUE, filter = 'mean',
+                totalMapped = totalMapped, targetSize = targetSize, ...)
         }
         #if(is.null(filt$position)) filt$position <- Rle(TRUE, length(filt$meanCoverage))
         

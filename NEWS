@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.9.3
+------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o regionMatrix() now has explicit arguments 'totalMapped' and 'targetSize'
+        so that users will almost always normalize by library size when
+        using this function (if they see the help page) or in the steps
+        prior to using regionMatrix().
+
 CHANGES IN VERSION 1.9.2
 ------------------------
 

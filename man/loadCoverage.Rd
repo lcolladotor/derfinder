@@ -69,7 +69,7 @@ Passed to \link{extendedMapSeqlevels}, \link{define_cluster},
 Note that \link{filterData} is used internally 
 by \link{loadCoverage} and has the important arguments \code{totalMapped} 
 and \code{targetSize} which can be used to normalize the coverage by
-library size.}
+library size. See \link{getTotalMapped} for calculating \code{totalMapped}.}
 }
 \value{
 A list with two components.
