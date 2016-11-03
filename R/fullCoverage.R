@@ -46,7 +46,7 @@
 #' by \link{loadCoverage} (and hence \link{fullCoverage}) and has the important 
 #' arguments \code{totalMapped} and \code{targetSize} which can be used to 
 #' normalize the coverage by library size. See \link{getTotalMapped} for
-#' calculating \link{totalMapped}.
+#' calculating \code{totalMapped}.
 #'
 #' @return A list with one element per chromosome.
 #' \describe{ Each element is a DataFrame with the coverage information 
