@@ -4,10 +4,7 @@ author: "L Collado-Torres"
 date: "`r doc_date()`"
 package: "`r pkg_ver('derfinder')`"
 output: 
-  BiocStyle::html_document2:
-    toc: true
-    toc_float: true
-    code_folding: show
+  BiocStyle::html_document
 vignette: >
   %\VignetteIndexEntry{derfinder users guide}
   %\VignetteEngine{knitr::rmarkdown}
