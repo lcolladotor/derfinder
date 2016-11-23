@@ -34,7 +34,10 @@ bibs <- c(knitcitations = citation('knitcitations'),
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown'),
-    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished',
+        key = 'brainspan',
+        title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.',
+        author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
     originalder = citation('derfinder')[2],
     R = citation(),
     IRanges = citation('IRanges'),
@@ -57,7 +60,11 @@ bibs <- c(knitcitations = citation('knitcitations'),
     Rsamtools = citation('Rsamtools'),
     rtracklayer = citation('rtracklayer'),
     S4Vectors = citation('S4Vectors'),
-    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article', key = 'bumphunterPaper', title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies', author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A', year = 2012, journal = 'International Journal of Epidemiology'),
+    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article',
+        key = 'bumphunterPaper',
+        title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies',
+        author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A',
+        year = 2012, journal = 'International Journal of Epidemiology'),
     derfinderData = citation('derfinderData')
 )
 
@@ -143,7 +150,8 @@ library('knitr')
 pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
 
 ## Display the main information
-p <- pheno[, -which(colnames(pheno) %in% c('structure_acronym', 'structure_name', 'file'))]
+p <- pheno[, -which(colnames(pheno) %in% c('structure_acronym',
+    'structure_name', 'file'))]
 rownames(p) <- NULL
 kable(p, format = 'html', row.names = TRUE)
 ```
@@ -156,7 +164,8 @@ We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfin
 
 ```{r 'getData', eval = !windowsFlag}
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
+files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
+    samplepatt = 'bw', fileterm = NULL)
 names(files) <- gsub('.bw', '', names(files))
 
 ## Load the data from disk
@@ -167,7 +176,8 @@ system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21',
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
 ## Load data in Windows case
 foo <- function() { 
-    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData', package = 'derfinderData'))
+    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData',
+        package = 'derfinderData'))
     return(fullCovAMY) 
 }
 fullCov <- foo()
@@ -224,7 +234,8 @@ In terms of memory, the filtered version requires less resources. Although this 
 
 ```{r 'compareCov'}
 ## Compare the size in Mb
-round(c(fullCov = object.size(fullCov), filteredCov = object.size(filteredCov)) / 1024^2, 1)
+round(c(fullCov = object.size(fullCov),
+    filteredCov = object.size(filteredCov)) / 1024^2, 1)
 ```
 
 Note that with your own data, filtering for bases where at least one sample has coverage greater than 2 might not make sense: maybe you need a higher or lower filter. The amount of bases remaining after filtering will impact how long the analysis will take to complete. We thus recommend exploring this before proceeding.
@@ -340,13 +351,14 @@ fit <- lmFit(transformedCov, mod)
 fit0 <- lmFit(transformedCov, mod0)
 
 ## Determine DE status for the regions
+## Also in https://github.com/LieberInstitute/jaffelab with help and examples
 getF  <- function(fit, fit0, theData) {
 	rss1 = rowSums((fitted(fit)-theData)^2)
 	df1 = ncol(fit$coef)
 	rss0 = rowSums((fitted(fit0)-theData)^2)
 	df0 = ncol(fit0$coef)
 	fstat = ((rss0-rss1)/(df1-df0))/(rss1/(ncol(theData)-df1))
-	f_pval = pf(fstat, df1-1, ncol(theData)-df1,lower.tail=FALSE)
+	f_pval = pf(fstat, df1-df0, ncol(theData)-df1,lower.tail=FALSE)
 	fout = cbind(fstat,df1-1,ncol(theData)-df1,f_pval)
 	colnames(fout)[2:3] = c("df1","df0")
 	fout = data.frame(fout)
@@ -415,9 +427,11 @@ identical(regionMat, regionMat.rail)
 identical(ranges(regionMat$chr21$regions), ranges(regionMat.rail$chr21$regions))
 
 ## When you round, the small differences go away
-identical(round(regionMat$chr21$regions$value, 4), round(regionMat.rail$chr21$regions$value, 4))
+identical(round(regionMat$chr21$regions$value, 4),
+    round(regionMat.rail$chr21$regions$value, 4))
 
-identical(round(regionMat$chr21$regions$area, 4), round(regionMat.rail$chr21$regions$area, 4))
+identical(round(regionMat$chr21$regions$area, 4),
+    round(regionMat.rail$chr21$regions$area, 4))
 ```
 
 
@@ -443,7 +457,8 @@ We can then define the nested models we want to use using `makeModels()`. This i
 
 ```{r 'makeModels'}
 ## Define models
-models <- makeModels(sampleDepths, testvars = pheno$group, adjustvars = pheno[, c('gender')]) 
+models <- makeModels(sampleDepths, testvars = pheno$group,
+    adjustvars = pheno[, c('gender')]) 
 
 ## Explore the models
 lapply(models, head)
@@ -471,7 +486,9 @@ originalWd <- getwd()
 setwd(file.path(originalWd, 'analysisResults'))
 
 ## Perform differential expression analysis
-system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models, groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 5e-02, nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
+system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models,
+    groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 5e-02,
+    nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
 ```
 
 To speed up `analyzeChr()`, you might need to use several cores via the `mc.cores` argument. If memory is limiting, you might want to use a smaller `chunksize` (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.
@@ -714,7 +731,8 @@ With this, we are all set to visually explore the results.
 library('derfinderPlot')
 
 ## Overview of the candidate DERs in the genome
-plotOverview(regions = fullRegions, annotation = results$annotation, type = 'fwer')
+plotOverview(regions = fullRegions, annotation = results$annotation,
+    type = 'fwer')
 
 suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
@@ -726,7 +744,9 @@ plotRegionCoverage(regions = fullRegions, regionCoverage = regionCov,
     ask = FALSE)
 
 ## Cluster plot for the first region
-plotCluster(idx = 1, regions = fullRegions, annotation = results$annotation, coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group, titleUse = 'fwer')
+plotCluster(idx = 1, regions = fullRegions, annotation = results$annotation,
+    coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group,
+    titleUse = 'fwer')
 ```
 
 The [quick start to using derfinder](quickstart-derfinder.html) has example plots for the expressed regions-level approach. The vignette for `r Biocpkg('derfinderPlot')` has even more examples.
@@ -776,7 +796,8 @@ First we need to get the relevant annotation information.
 
 ```{r 'regionMatAnnotate'}
 ## Annotate regions as exonic, intronic or intergenic
-system.time(annoGenome <- annotateRegions(regionMat$chr21$regions, genomicState$fullGenome))
+system.time(annoGenome <- annotateRegions(regionMat$chr21$regions,
+    genomicState$fullGenome))
 ## Note that the genomicState object included in derfinder only has information
 ## for chr21 (hg19).
 
@@ -796,7 +817,11 @@ top <- order(regionMat$chr21$regions$area, decreasing = TRUE)[1:100]
 
 ## Base-level plots for the top 100 regions with transcript information
 library('derfinderPlot')
-plotRegionCoverage(regionMat$chr21$regions, regionCoverage = regionMat$chr21$bpCoverage, groupInfo = pheno$group, nearestAnnotation = annoNear, annotatedRegions = annoGenome, whichRegions = top, scalefac = 1, txdb = txdb, ask = FALSE)
+plotRegionCoverage(regionMat$chr21$regions,
+    regionCoverage = regionMat$chr21$bpCoverage,
+    groupInfo = pheno$group, nearestAnnotation = annoNear,
+    annotatedRegions = annoGenome, whichRegions = top, scalefac = 1,
+    txdb = txdb, ask = FALSE)
 ```
 
 
@@ -816,7 +841,8 @@ ders_potential_dev <- mgr$addDevice(
 regs_dev <- mgr$addDevice(regionMat$chr21$regions, "Region Matrix")
 
 ## Go to a place you like in the genome
-mgr$navigate("chr21", start(regionMat$chr21$regions[top[1]]) - 100, end(regionMat$chr21$regions[top[1]]) + 100)
+mgr$navigate("chr21", start(regionMat$chr21$regions[top[1]]) - 100,
+    end(regionMat$chr21$regions[top[1]]) + 100)
 
 ## Stop the navigation
 mgr$stopServer()
@@ -939,7 +965,8 @@ Next, we load the coverage again using `which` but without any padding. We can s
 
 ```{r 'loadWhich'}
 ## Illustrate reading data from a set of regions
-test <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = regions, protectWhich = 0, fileStyle = 'NCBI')
+test <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = regions,
+    protectWhich = 0, fileStyle = 'NCBI')
 
 ## Some reads were ignored and thus the coverage is lower as can be seen below:
 sapply(test$coverage, max) - sapply(genomeDataRaw$coverage, max)
@@ -950,8 +977,8 @@ When we re-load the data using some padding to the regions, we find that the cov
 ```{r 'loadWhich2'}
 ## Illustrate reading data from a set of regions
 
-test2 <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = 
-regions, protectWhich = 3e4, fileStyle = 'NCBI')
+test2 <- loadCoverage(files = files, chr = '21', cutoff = NULL, 
+    which = regions, protectWhich = 3e4, fileStyle = 'NCBI')
 
 ## Adding some padding to the regions helps get the same coverage
 identical(sapply(test2$coverage, max), sapply(genomeDataRaw$coverage, max))
@@ -1228,7 +1255,12 @@ load("groupInfo.Rdata")
 
 
 ## Run the analysis with lowMemDir
-analyzeChr(chr=opt$chr, coverageInfo=data, models=models, cutoffFstat=1e-06, cutoffType="theoretical", nPermute=1000, seeds=seq_len(1000), maxClusterGap=3000, groupInfo=groupInfo, subject="hg19", mc.cores=opt$mcores, lowMemDir=file.path(tempdir(), paste0("chr", opt$chr) , "chunksDir")), verbose=opt$verbose, chunksize=1e5)
+analyzeChr(chr=opt$chr, coverageInfo = data, models = models,
+    cutoffFstat = 1e-06, cutoffType = "theoretical", nPermute = 1000,
+    seeds = seq_len(1000), maxClusterGap = 3000, groupInfo = groupInfo,
+    subject = "hg19", mc.cores = opt$mcores,
+    lowMemDir = file.path(tempdir(), paste0("chr", opt$chr) , "chunksDir")),
+    verbose = opt$verbose, chunksize = 1e5)
 
 ## Done
 if(opt$verbose) {
@@ -1293,7 +1325,7 @@ cd ${WDIR}/${PREFIX}/
 
 # specific to our cluster
 # see http://www.jhpce.jhu.edu/knowledge-base/environment-modules/
-module load R/3.2.x
+module load R/3.3.x
 Rscript ${WDIR}/derfinder-analysis.R -d "${DATADIR}/${chr}Cov.Rdata" -c "${chrnum}" -m ${CORES} -v TRUE
 
 # Move log files into the logs directory
@@ -1412,6 +1444,3 @@ Citations made with `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']]
 ## Print bibliography
 bibliography()
 ```
-
-
-
