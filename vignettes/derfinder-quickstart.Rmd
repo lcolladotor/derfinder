@@ -34,7 +34,10 @@ bibs <- c(knitcitations = citation('knitcitations'),
     knitrBootstrap = citation('knitrBootstrap'), 
     knitr = citation('knitr')[3],
     rmarkdown = citation('rmarkdown'),
-    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished', key = 'brainspan', title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.', author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
+    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished',
+        key = 'brainspan',
+        title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.',
+        author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
     originalder = citation('derfinder')[2],
     R = citation(),
     IRanges = citation('IRanges'),
@@ -57,7 +60,11 @@ bibs <- c(knitcitations = citation('knitcitations'),
     Rsamtools = citation('Rsamtools'),
     rtracklayer = citation('rtracklayer'),
     S4Vectors = citation('S4Vectors'),
-    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article', key = 'bumphunterPaper', title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies', author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A', year = 2012, journal = 'International Journal of Epidemiology'),
+    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article',
+        key = 'bumphunterPaper',
+        title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies',
+        author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A',
+        year = 2012, journal = 'International Journal of Epidemiology'),
     derfinderData = citation('derfinderData')
 )
 
@@ -81,7 +88,8 @@ library('derfinderData')
 library('GenomicRanges')
 
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
+files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
+    samplepatt = 'bw', fileterm = NULL)
 names(files) <- gsub('.bw', '', names(files))
 
 ## Load the data from disk -- On Windows you have to load data from Bam files
@@ -137,7 +145,8 @@ Next, we need to locate the chromosome 21 coverage files for a set of 12 samples
 
 ```{r 'locateAMYfiles'}
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'), samplepatt = 'bw', fileterm = NULL)
+files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
+    samplepatt = 'bw', fileterm = NULL)
 names(files) <- gsub('.bw', '', names(files))
 ```
 
@@ -153,7 +162,8 @@ fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE,
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
 ## Load data in Windows case
 foo <- function() { 
-    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData', package = 'derfinderData'))
+    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData',
+        package = 'derfinderData'))
     return(fullCovAMY) 
 }
 fullCov <- foo()
@@ -218,7 +228,8 @@ dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
 dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local')
 
 ## Extract results
-mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions), results(dse))
+mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions),
+    results(dse))
 
 ## Save info in an object with a shorter name
 ers <- regionMat$chr21$regions
@@ -232,7 +243,8 @@ We can then compare the DERs against known annotation to see which DERs overlap 
 annoRegs <- annotateRegions(ers, genomicState$fullGenome, verbose = FALSE)
 
 library('derfinderPlot')
-venn <- vennRegions(annoRegs, counts.col = 'blue', main = 'Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation')
+venn <- vennRegions(annoRegs, counts.col = 'blue',
+    main = 'Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation')
 ```
 
 We can also identify the nearest annotated feature. In this case, we'll look for the nearest known gene from the UCSC hg19 annotation.
@@ -259,7 +271,8 @@ We can check the base-level coverage information for some of our DERs. In this e
 regionCov <- regionMat$chr21$bpCoverage
 plotRegionCoverage(regions = ers, regionCoverage = regionCov, 
     groupInfo = pheno$group, nearestAnnotation = annotation, 
-    annotatedRegions = annoRegs, whichRegions = seq_len(5), txdb = txdb, scalefac = 1, ask = FALSE, verbose = FALSE)
+    annotatedRegions = annoRegs, whichRegions = seq_len(5), txdb = txdb,
+    scalefac = 1, ask = FALSE, verbose = FALSE)
 ```
 
 You can then use the `r Biocpkg('regionReport')` package to generate interactive HTML reports exploring the results.
