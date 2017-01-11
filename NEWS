@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.9.6
+------------------------
+
+BUG FIXES
+
+    o Fixed define_cluster() to match recent changes in BiocParallel and
+        fixed an if clause in regionMatrix() that could lead to warnings in
+        some situations.
+
 CHANGES IN VERSION 1.9.3
 ------------------------
 

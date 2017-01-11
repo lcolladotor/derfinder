@@ -104,7 +104,7 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
             stop("When using 'runFilter' = FALSE the arguments 'totalMapped' and 'targetSize' are not used. If you have not normalized the data, please do so before running regionMatrix(runFilter = FALSE).")
         }
     } else {
-        if(totalMapped == targetSize) {
+        if(all(totalMapped == targetSize)) {
             if(verbose) message("By using totalMapped equal to targetSize, regionMatrix() assumes that you have normalized the data already in fullCoverage(), loadCoverage() or filterData().")
         }
     }
