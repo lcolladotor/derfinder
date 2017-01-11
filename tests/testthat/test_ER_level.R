@@ -21,8 +21,8 @@ filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
     cutoff=5, totalMapped = libSize, targetSize = 4e4)
 regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36, runFilter=FALSE)
-    
-regionMat3 <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L, 
+
+regionMat3 <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
     maxClusterGap = 30000L, L = 36, totalMapped = libSize, targetSize = 4e4)
     
 ## fullCov with position info
