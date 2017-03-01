@@ -37,4 +37,3 @@ define_cluster(mc.cores = 2, BPPARAM.custom = BiocParallel::SerialParam())
 \author{
 Leonardo Collado-Torres
 }
-

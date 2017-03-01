@@ -53,9 +53,6 @@ collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
 sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), verbose=TRUE)
 sampleDepths
 }
-\author{
-Leonardo Collado-Torres
-}
 \references{
 Paulson, J. N., Stine, O. C., Bravo, H. C. & Pop, M. Differential abundance 
 analysis for microbial marker-gene surveys. Nat. Methods (2013). 
@@ -64,4 +61,6 @@ doi:10.1038/nmeth.2658
 \seealso{
 \link{collapseFullCoverage}, \link{makeModels}
 }
-
+\author{
+Leonardo Collado-Torres
+}

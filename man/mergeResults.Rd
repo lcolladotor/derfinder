@@ -114,10 +114,9 @@ ggplot(time, aes(x=step, y=min, colour=chr)) + geom_point() +
     xlab('Step')
 }
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
 }
-
+\author{
+Leonardo Collado-Torres
+}

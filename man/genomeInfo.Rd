@@ -43,4 +43,3 @@ sequencing in a Caucasian population. Nature 2010 Mar.
 \link{genomeData}, \link{calculateStats}
 }
 \keyword{datasets}
-

@@ -96,11 +96,10 @@ filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
 filt2
 
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{loadCoverage}, \link{preprocessCoverage},
 \link{getTotalMapped}
 }
-
+\author{
+Leonardo Collado-Torres
+}

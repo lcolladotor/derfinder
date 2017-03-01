@@ -60,10 +60,9 @@ annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2],
     genomicState=genomicState$fullGenome, minoverlap=1)
 annotatedRegions
 }
-\author{
-Andrew Jaffe, Leonardo Collado-Torres
-}
 \seealso{
 \link{makeGenomicState}, \link{calculatePvalues}
 }
-
+\author{
+Andrew Jaffe, Leonardo Collado-Torres
+}

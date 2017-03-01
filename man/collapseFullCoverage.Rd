@@ -47,10 +47,9 @@ collapsedFull
 collapsedFullRaw <- collapseFullCoverage(list(genomeDataRaw), verbose=TRUE)
 }
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{fullCoverage}, \link{sampleDepth}
 }
-
+\author{
+Leonardo Collado-Torres
+}

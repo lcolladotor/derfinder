@@ -7,7 +7,10 @@
 makeGenomicState(txdb, chrs = c(1:22, "X", "Y"), ...)
 }
 \arguments{
-\item{txdb}{A \link[GenomicFeatures]{TxDb} object.}
+\item{txdb}{A \link[GenomicFeatures]{TxDb} object with chromosome lengths
+(check \code{seqlengths(txdb)}). If you are using a 
+\link[GenomicFeatures]{TxDb} object created from a GFF/GTF file, you will
+find this \url{https://support.bioconductor.org/p/93235/} useful.}
 
 \item{chrs}{The names of the chromosomes to use as denoted in the 
 \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
@@ -68,10 +71,9 @@ save(GenomicState.Hsapiens.ensembl.GRCh37.p11,
     file='GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata')
 }
 }
-\author{
-Andrew Jaffe, Leonardo Collado-Torres
-}
 \seealso{
 \link[GenomicFeatures]{TxDb}
 }
-
+\author{
+Andrew Jaffe, Leonardo Collado-Torres
+}

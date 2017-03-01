@@ -5,7 +5,10 @@
 #' on annotated transcripts. It groups contiguous base pairs classified as the 
 #' same type into regions.
 #' 
-#' @param txdb A \link[GenomicFeatures]{TxDb} object.
+#' @param txdb A \link[GenomicFeatures]{TxDb} object with chromosome lengths
+#' (check \code{seqlengths(txdb)}). If you are using a 
+#' \link[GenomicFeatures]{TxDb} object created from a GFF/GTF file, you will
+#' find this \url{https://support.bioconductor.org/p/93235/} useful.
 #' @param chrs The names of the chromosomes to use as denoted in the 
 #' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
 #' @param ... Arguments passed to \link{extendedMapSeqlevels}.
@@ -85,6 +88,10 @@ makeGenomicState <- function(txdb, chrs = c(1:22, 'X', 'Y'), ...) {
 
     ## Select chrs to use
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
+    
+    ## Check that the chrs have lengths. This happens when the TxDb was created
+    ## from a GFF/GTF file.
+    all(!is.na(seqlengths(txdb)))
     
     ######### add introns
     introns <- intronsByTranscript(txdb)

@@ -36,4 +36,3 @@ getTotalMapped(bam)
 \author{
 Leonardo Collado-Torres
 }
-

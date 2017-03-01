@@ -49,11 +49,10 @@ bw <- createBwSample('ERR009101', 'createBwSample-example',
 ## Explore the output
 bw
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link[GenomicRanges]{GRanges}, \link[rtracklayer]{export}, 
 link{coerceGR}
 }
-
+\author{
+Leonardo Collado-Torres
+}

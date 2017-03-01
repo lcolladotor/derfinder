@@ -89,10 +89,9 @@ bplapply(fullCov, function(x) {
     library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
 }
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{loadCoverage}, \link{filterData}, \link{getTotalMapped}
 }
-
+\author{
+Leonardo Collado-Torres
+}

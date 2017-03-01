@@ -52,11 +52,10 @@ bws[[1]]
 bws[[2]]
 
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link[GenomicRanges]{GRangesList}, \link[rtracklayer]{export}, 
 \link{createBwSample}, \link{coerceGR}
 }
-
+\author{
+Leonardo Collado-Torres
+}

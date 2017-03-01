@@ -47,10 +47,9 @@ gr <- createBwSample('ERR009101', fullCov = fullCov,
 gr
 
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link[GenomicRanges]{GRanges}
 }
-
+\author{
+Leonardo Collado-Torres
+}
