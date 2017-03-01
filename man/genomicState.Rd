@@ -21,4 +21,3 @@ for chr21 only.
 \link[derfinder]{makeGenomicState}
 }
 \keyword{datasets}
-

@@ -22,4 +22,3 @@ Candidate Differentially Expressed Regions (DERs) for the example data. For more
 \link{calculatePvalues}
 }
 \keyword{datasets}
-

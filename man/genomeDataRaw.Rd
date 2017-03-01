@@ -30,4 +30,3 @@ sequencing in a Caucasian population. Nature 2010 Mar.
 \link{loadCoverage}, \link{genomeInfo}
 }
 \keyword{datasets}
-

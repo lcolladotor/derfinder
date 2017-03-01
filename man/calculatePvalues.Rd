@@ -177,11 +177,10 @@ head(annotation)
 }
 
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{findRegions}, \link[derfinderHelper]{fstats.apply}, 
 \link[qvalue]{qvalue}
 }
-
+\author{
+Leonardo Collado-Torres
+}

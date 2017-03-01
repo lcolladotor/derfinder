@@ -69,10 +69,9 @@ library('testthat')
 expect_that(fstats, is_equivalent_to(genomeFstats))
 }
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{makeModels}, \link{preprocessCoverage}
 }
-
+\author{
+Leonardo Collado-Torres
+}

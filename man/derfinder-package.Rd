@@ -31,9 +31,6 @@ that allow smoothing of the F-statistics which can be useful for anlayzing
 ChIP-seq data. This use case is further explained in the users guide 
 vignette.
 }
-\author{
-Leonardo Collado-Torres <lcollado@jhu.edu>
-}
 \references{
 Collado-Torres L, Frazee AC, Love MI, Irizarry RA, Jaffe AE and Leek JT 
 (2015). derfinder: Software for annotation-agnostic RNA-seq differential 
@@ -46,5 +43,7 @@ resolution. Biostatistics (2014). doi:10.1093/biostatistics/kxt053
 Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and 
 Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 }
+\author{
+Leonardo Collado-Torres <lcollado@jhu.edu>
+}
 \keyword{package}
-

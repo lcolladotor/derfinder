@@ -15,4 +15,3 @@ the example of \link{calculateStats}.
 \link{calculateStats}
 }
 \keyword{datasets}
-

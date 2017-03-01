@@ -119,9 +119,6 @@ regs_smooth <- findRegions(prep$position, fstats, 'chr21', verbose = TRUE,
 regs_smooth
 
 }
-\author{
-Leonardo Collado-Torres
-}
 \references{
 Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
 D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
@@ -130,4 +127,6 @@ D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 \seealso{
 \link{calculatePvalues}
 }
-
+\author{
+Leonardo Collado-Torres
+}

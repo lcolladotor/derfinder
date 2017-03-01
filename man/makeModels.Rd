@@ -54,10 +54,9 @@ models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
 names(models)
 models
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{sampleDepth}, \link{calculateStats}
 }
-
+\author{
+Leonardo Collado-Torres
+}

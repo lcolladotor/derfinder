@@ -147,12 +147,11 @@ results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
     runAnnotation = FALSE)
 names(results)
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{makeModels}, \link{preprocessCoverage}, 
 \link{calculateStats}, \link{calculatePvalues}, 
 \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
 }
-
+\author{
+Leonardo Collado-Torres
+}

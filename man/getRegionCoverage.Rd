@@ -85,10 +85,9 @@ seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
 ## Finally, get the region coverage
 regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
 }
-\author{
-Andrew Jaffe, Leonardo Collado-Torres
-}
 \seealso{
 \link{fullCoverage}, \link{calculatePvalues}
 }
-
+\author{
+Andrew Jaffe, Leonardo Collado-Torres
+}

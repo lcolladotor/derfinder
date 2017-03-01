@@ -100,10 +100,9 @@ dataReady <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32,
 names(dataReady)
 dataReady
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 }
-
+\author{
+Leonardo Collado-Torres
+}

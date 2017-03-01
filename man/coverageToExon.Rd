@@ -86,10 +86,9 @@ exonCov <- coverageToExon(fullCov=fullCov,
     genomicState=smallGenomicState$fullGenome, L=36)
 
 }
-\author{
-Andrew Jaffe, Leonardo Collado-Torres
-}
 \seealso{
 \link{fullCoverage}, \link{getRegionCoverage}
 }
-
+\author{
+Andrew Jaffe, Leonardo Collado-Torres
+}

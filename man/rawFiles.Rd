@@ -44,10 +44,9 @@ files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$',
     fileterm=NULL)
 files
 }
-\author{
-Leonardo Collado-Torres
-}
 \seealso{
 \link{loadCoverage}
 }
-
+\author{
+Leonardo Collado-Torres
+}

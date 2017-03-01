@@ -129,10 +129,9 @@ mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)
 
 }
 }
-\author{
-Leonardo Collado-Torres, Andrew Jaffe
-}
 \seealso{
 \link{fullCoverage}, \link{getTotalMapped}
 }
-
+\author{
+Leonardo Collado-Torres, Andrew Jaffe
+}

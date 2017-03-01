@@ -78,4 +78,3 @@ extendedMapSeqlevels('2')
 \author{
 L. Collado-Torres
 }
-
