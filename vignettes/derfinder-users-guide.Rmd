@@ -11,8 +11,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}  
 ---
 
-`r Biocpkg('derfinder')` users guide
-================================================
+# Asking for help
+
+Please read the [basics of using `derfinder`](http://bioconductor.org/packages/release/bioc/vignettes/derfinder/inst/doc/derfinder-quickstart.html#basics) in the quick start guide. Thank you.
+
+# `r Biocpkg('derfinder')` users guide
 
 ```{r vignetteSetup, echo=FALSE, message=FALSE, warning = FALSE}
 ## Track time spent on making the vignette
