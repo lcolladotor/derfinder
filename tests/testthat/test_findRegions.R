@@ -1,4 +1,4 @@
-context('findRegions')
+context('Finding regions')
 
 library('GenomicRanges')
 

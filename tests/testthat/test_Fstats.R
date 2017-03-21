@@ -1,4 +1,4 @@
-context('F-stats')
+context('F statistics')
 
 library('GenomicRanges')
 

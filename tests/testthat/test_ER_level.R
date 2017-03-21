@@ -110,7 +110,7 @@ if(.Platform$OS.type != 'windows') {
     
     ## Note that railMat 5 and 6 don't have the correct coverageMatrix since
     ## the sampleFiles were not changed, only the mean was changed.
-    railMat7 <- regionMatrix(fullCov = railCov2, L = 76, cutoff = 5,
+    railMat7 <- regionMatrix(fullCov = railCov2, L = 76, cutoff = 5.1,
         maxClusterGap = 3000L, smoothMean = TRUE,
         smoothFunction = bumphunter::runmedByCluster, k = 299, returnBP = FALSE)
         
