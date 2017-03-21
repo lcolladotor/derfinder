@@ -504,7 +504,12 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     
     ## Use original values if they were not smoothed
     if(any(!smoothed$smoothed)) {
-        smoothed$fitted[!smoothed$smoothed] <- y[!smoothed$smoothed]
+        if(is(y, 'Rle')) {
+            smoothed$fitted[!smoothed$smoothed] <- as.vector(y[!smoothed$smoothed])
+        } else {
+            smoothed$fitted[!smoothed$smoothed] <- y[!smoothed$smoothed]
+        }
+        
     }
     
     ## Extract only the smoothed data
