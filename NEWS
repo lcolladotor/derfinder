@@ -1,3 +1,12 @@
+CHANGES IN VERSION 1.10.2
+-------------------------
+
+BUG FIXES
+
+    o Improved documentation of extendedMapSeqlevels(). Related to
+        https://support.bioconductor.org/p/95521/.
+    o Improved filterData() based on https://github.com/lcolladotor/derfinder/issues/38
+
 CHANGES IN VERSION 1.9.6
 ------------------------
 
