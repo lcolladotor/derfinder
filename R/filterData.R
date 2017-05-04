@@ -200,8 +200,8 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
     if (verbose) {
         if(returnCoverage) {
             message(paste(Sys.time(), 'filterData: originally there were', 
-                length(data[[1]]), 'rows, now there are', nrow(DF), 
-                'rows. Meaning that', 100 - round(nrow(DF)/length(data[[1]]) * 
+                length(data[[1]]), 'rows, now there are', NROW(DF), 
+                'rows. Meaning that', 100 - round(NROW(DF)/length(data[[1]]) * 
                     100, 2), 'percent was filtered.'))
         } else if (returnMean) {
             message(paste(Sys.time(), 'filterData: originally there were', 
