@@ -4,7 +4,8 @@
 #' interest to map the sequence names from the style currently used to another 
 #' valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
 #' (UCSC style). If the information from GenomeInfoDb is not available, the 
-#' original sequence names will be returned.
+#' original sequence names will be returned. To disable this functionality
+#' specify the same \code{style} and \param{currentStyle}.
 #'
 #' @param seqnames A character vector with the sequence names.
 #' @param style A single character vector specifying the naming style to use
@@ -34,6 +35,13 @@
 #' with the difference that it will return the original sequence names if
 #' the species, current naming style or target naming style are not supported
 #' in GenomeInfoDb.
+#'
+#' If you want to disable this function, specify the same \code{style} and
+#' \code{currentStyle}. From other functions in derfinder that pass the
+#' \code{...} argument to this function, use \code{currentStyle = 'UCSC'}
+#' to match the \code{style}'s default. This can be useful when working
+#' with organisms that are absent from GenomeInfoDb as documented in
+#' \url{https://support.bioconductor.org/p/95521/}.
 #'
 #' @examples
 #'
