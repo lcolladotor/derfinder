@@ -5,11 +5,11 @@
 #' valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
 #' (UCSC style). If the information from GenomeInfoDb is not available, the 
 #' original sequence names will be returned. To disable this functionality
-#' specify the same \code{style} and \param{currentStyle}.
+#' specify set \param{chrsStyle} to \code{NULL}.
 #'
 #' @param seqnames A character vector with the sequence names.
 #' @param style A single character vector specifying the naming style to use
-#' for renaming the sequence names. 
+#' for renaming the sequence names.
 #' @param species A single character vector with the species of interest: it has
 #' to match the valid species names supported in GenomeInfoDb. See
 #' \code{names(GenomeInfoDb::genomeStyles())}. If \code{species = NULL}, 
@@ -23,7 +23,10 @@
 #' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
 #' the way.}
 #' \item{chrsStyle }{ The naming style of the chromosomes. By default, 
-#' \code{UCSC}. See \link[GenomeInfoDb]{seqlevelsStyle}.}
+#' \code{UCSC}. See \link[GenomeInfoDb]{seqlevelsStyle}. Set to \code{NULL} to
+#' disable this function. This is used when \code{style} is missing, which is
+#' normally the case when \code{extendedMapSeqlevels} is called by other
+#' functions.}
 #' }
 #'
 #' @return A vector of sequence names using the specified naming \code{style}.
@@ -36,10 +39,10 @@
 #' the species, current naming style or target naming style are not supported
 #' in GenomeInfoDb.
 #'
-#' If you want to disable this function, specify the same \code{style} and
-#' \code{currentStyle}. From other functions in derfinder that pass the
-#' \code{...} argument to this function, use \code{currentStyle = 'UCSC'}
-#' to match the \code{style}'s default. This can be useful when working
+#' If you want to disable this function, set \code{chrsStyle} to \code{NULL}.
+#' From other functions in derfinder that pass the
+#' \code{...} argument to this function, use \code{chrsStyle = NULL}.
+#' This can be useful when working
 #' with organisms that are absent from GenomeInfoDb as documented in
 #' \url{https://support.bioconductor.org/p/95521/}.
 #'
@@ -61,6 +64,12 @@
 #'
 #' ## Sequence names are unchanged when using an unsupported species
 #' extendedMapSeqlevels('seq2', 'NCBI', 'toyOrganism')
+#'
+#' ## Disable extendedMapSeqlevels. This can be useful when working with
+#' ## organisms that are not supported by GenomeInfoDb
+#' chrs <- c('I', 'II','III','IV', 'IX', 'V', 'VI', 'VII', 'VIII', 'X', 
+#'     'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII')
+#' extendedMapSeqlevels(chrs, chrsStyle = NULL)
 #' 
 #' \dontrun{
 #' ## Set global species and style option
