@@ -41,7 +41,12 @@ Advanced arguments:
 \describe{
 \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
 the way.}
-\item{chrsStyle }{ Default: \code{UCSC}. Passed to \link{getRegionCoverage}.}
+\item{chrsStyle }{ Default: \code{UCSC}. Passed to
+\link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
+\item{species }{ Default: \code{homo_sapiens}. Passed to
+\link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
+\item{currentStyle }{ Default: \code{NULL}. Passed to
+\link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
 }
 Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
 

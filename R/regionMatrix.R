@@ -32,7 +32,12 @@
 #' \describe{
 #' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
 #' the way.}
-#' \item{chrsStyle }{ Default: \code{UCSC}. Passed to \link{getRegionCoverage}.}
+#' \item{chrsStyle }{ Default: \code{UCSC}. Passed to
+#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
+#' \item{species }{ Default: \code{homo_sapiens}. Passed to
+#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
+#' \item{currentStyle }{ Default: \code{NULL}. Passed to
+#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
 #' }
 #' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
 #'
@@ -133,7 +138,12 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
 
     
     verbose <- .advanced_argument('verbose', TRUE, ...)
-    chrsStyle <- .advanced_argument('chrsStyle', 'UCSC', ...)
+    chrsStyle <- .advanced_argument('chrsStyle', getOption('chrsStyle',
+        'UCSC'), ...)
+    species <- .advanced_argument('species', getOption('species',
+        'homo_sapiens'), ...)
+    currentStyle <- .advanced_argument('currentStyle', NULL, ...)
+    
 
 
     if (verbose) 
@@ -193,7 +203,8 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
     ## Get region coverage    
     regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs, 
         totalMapped = NULL, targetSize = 0, verbose = verbose,
-        chrsStyle = chrsStyle, mc.cores = 1L)
+        chrsStyle = chrsStyle, mc.cores = 1L, species = species,
+        currentStyle = currentStyle)
         
     if(verbose) message(paste(Sys.time(), "regionMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
