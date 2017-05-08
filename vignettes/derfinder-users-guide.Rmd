@@ -879,7 +879,7 @@ If you are interested in using advanced arguments in `r Biocpkg('derfinder')`, t
 * `chrsStyle` (default is `UCSC`)
 * `verbose` (by default `TRUE`).
 
-`verbose` controls whether to print status updates for nearly all the functions. `chrsStyle` is used to determine the chromosome naming style and is powered by `r Biocpkg('GenomeInfoDb')`. Note that `chrsStyle` is used in any of the functions that call `extendedMapSeqlevels()`. If you are working with a different organism than _Homo sapiens_ set the global `species` option using `options(species = 'your species')` with the syntax used in `names(GenomeInfoDb::genomeStyles())`.
+`verbose` controls whether to print status updates for nearly all the functions. `chrsStyle` is used to determine the chromosome naming style and is powered by `r Biocpkg('GenomeInfoDb')`. Note that `chrsStyle` is used in any of the functions that call `extendedMapSeqlevels()`. If you are working with a different organism than _Homo sapiens_ set the global `species` option using `options(species = 'your species')` with the syntax used in `names(GenomeInfoDb::genomeStyles())`. If you want to disable `extendedMapSeqlevels()` set `chrsStyle` to `NULL`, which can be useful if your organism is not part of `r Biocpkg('GenomeInfoDb')`.
 
 
 The third commonly used advanced argument is `mc.cores`. It controls the number of cores to use for the functions that can run with more than one core to speed up. In nearly all the cases, the maximum number of cores depends on the number of chromosomes. One notable exception is `analyzeChr()` where the maximum number of cores depends on the `chunksize` used and the dimensions of the data for the chromosome under study.
