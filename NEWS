@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.10.4
+-------------------------
+
+BUG FIXES
+    
+    o regionMatrix() will now pass the hidden arguments 'species' and
+        'currentStyle' to getRegionCoverage() so they can be used by
+        extendedMapSeqlevels(). Related to
+        https://support.bioconductor.org/p/95721/.
+
 CHANGES IN VERSION 1.10.2
 -------------------------
 
