@@ -5,7 +5,7 @@
 #' valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
 #' (UCSC style). If the information from GenomeInfoDb is not available, the 
 #' original sequence names will be returned. To disable this functionality
-#' specify set \param{chrsStyle} to \code{NULL}.
+#' specify set \code{chrsStyle} to \code{NULL}.
 #'
 #' @param seqnames A character vector with the sequence names.
 #' @param style A single character vector specifying the naming style to use
