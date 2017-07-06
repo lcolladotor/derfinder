@@ -43,7 +43,7 @@ interest to map the sequence names from the style currently used to another
 valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
 (UCSC style). If the information from GenomeInfoDb is not available, the 
 original sequence names will be returned. To disable this functionality
-specify set \param{chrsStyle} to \code{NULL}.
+specify set \code{chrsStyle} to \code{NULL}.
 }
 \details{
 This function is inspired from \link[GenomeInfoDb]{mapSeqlevels}
