@@ -7,7 +7,7 @@ author:
     - &ccb Center for Computational Biology, Johns Hopkins University
     email: leo.collado@libd.org
 output: 
-  BiocStyle::html_document2:
+  BiocStyle::html_document:
     self_contained: yes
     toc: true
     toc_float: true
@@ -629,9 +629,9 @@ Check the section about non-human data (specifically, using annotation different
 
 ### Time spent
 
-The final piece is the wallclock time spent during each of the steps in `analyzeChr()`.
+The final piece is the wallclock time spent during each of the steps in `analyzeChr()`. You can then make a plot with this information as shown in Figure \@ref(fig:exploreTime).
 
-```{r 'exploreTime'}
+```{r 'exploreTime', fig.cap = "Seconds used to run each step in analyzeChr()."}
 ## Time spent
 results$timeinfo
 
@@ -1031,9 +1031,11 @@ Another option when working with [Rail](http://rail.bio) output is to simply loa
 
 ## DER analysis flow chart
 
-The following figure illustrates how most of `r Biocpkg('derfinder')`'s functions interact when performing a base-level differential expression analysis by calculating base-level F-statistics.
+Figure \@ref(fig:Figure1) illustrates how most of `r Biocpkg('derfinder')`'s functions interact when performing a base-level differential expression analysis by calculating base-level F-statistics.
 
-<center><img src="http://lcolladotor.github.io/derfinder/fig/DERpathway.png" alt="DER flow" style="width: 500px;"/></center>
+```{r Figure1, out.width="100%", fig.align="center", fig.cap = "derfinder F-statistics flow chart.", echo = FALSE}
+knitr::include_graphics("http://lcolladotor.github.io/derfinder/fig/DERpathway.png")
+```
 
 Flow chart of the different processing steps (black boxes) that can be carried out using `r Biocpkg('derfinder')` and the functions that perform these actions (in red). Input and output is shown in green boxes. Functions in blue are those applied to the results from multiple chromosomes (`mergeResults()` and `derfinderReport`). `r Biocpkg('regionReport')` functions are shown in orange while `r Biocpkg('derfinderPlot')` functions are shown in dark purple. Purple dotted arrow marks functions that require unfiltered base-level coverage.
 
@@ -1041,10 +1043,11 @@ Flow chart of the different processing steps (black boxes) that can be carried o
 
 ## `analyzeChr()` flow chart
 
+```{r Figure2, out.width="100%", fig.align="center", fig.cap = "analyzeChr() flow chart.", echo = FALSE}
+knitr::include_graphics("http://lcolladotor.github.io/derfinder/fig/analyzeChr.png")
+```
 
-<center><img src="http://lcolladotor.github.io/derfinder/fig/analyzeChr.png" alt="analyzeChr flow" style="width: 500px;"/></center>
-
-This figure shows in more detail the processing flow in `analyzeChr()`, which is the main function for identifying candidate differentially expressed regions (DERs) from the base-level F-statistics.
+Figure \@ref(fig:Figure2) shows in more detail the processing flow in `analyzeChr()`, which is the main function for identifying candidate differentially expressed regions (DERs) from the base-level F-statistics.
 
 Many fine-tunning arguments can be passed to `analyzeChr()` to feed into the other functions. For example, you might want to use a smaller `chunksize` when pre-processing the coverage data (the default is 5 million): specially if you have hundreds of samples. 
 
@@ -1055,9 +1058,11 @@ Furthermore, you might want to specify `maxClusterGap` to control the maximum ga
 
 ## `regionMatrix()` flow chart
 
-<center><img src="http://lcolladotor.github.io/derfinder/fig/regionMatrix.png" alt="regionMatrix flow" style="width: 500px;"/></center>
+```{r Figure3, out.width="100%", fig.align="center", fig.cap = "regionMatrix() flow chart.", echo = FALSE}
+knitr::include_graphics("http://lcolladotor.github.io/derfinder/fig/regionMatrix.png")
+```
 
-The above figure shows the functions used internally by `regionMatrix()` and processing steps for identifying expressed regions. Overall, it is much simpler than `analyzeChr()`. The flow is even simpler in `railMatrix()`.
+Figure \@ref(fig:Figure3) shows the functions used internally by `regionMatrix()` and processing steps for identifying expressed regions. Overall, it is much simpler than `analyzeChr()`. The flow is even simpler in `railMatrix()`.
 
 
 
@@ -1453,7 +1458,7 @@ with `r CRANpkg('knitr')` `r citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')`
 
 Citations made with `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`.
 
-```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE}
+```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE, message = FALSE}
 ## Print bibliography
 bibliography()
 ```

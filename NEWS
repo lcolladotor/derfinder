@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.11.7
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Vignette now uses the new BiocStyle::html_document that was recently
+        released.
+
 CHANGES IN VERSION 1.11.4
 -------------------------
 

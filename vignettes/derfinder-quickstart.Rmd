@@ -7,7 +7,7 @@ author:
     - &ccb Center for Computational Biology, Johns Hopkins University
     email: leo.collado@libd.org
 output: 
-  BiocStyle::html_document2:
+  BiocStyle::html_document:
     self_contained: yes
     toc: true
     toc_float: true
@@ -281,9 +281,9 @@ ers <- regionMat$chr21$regions
 ers
 ```
 
-We can then compare the DERs against known annotation to see which DERs overlap known exons, introns, or intergenic regions. A way to visualize this information is via a Venn diagram which we can create using `vennRegions()` from the `r Biocpkg('derfinderPlot')` package.
+We can then compare the DERs against known annotation to see which DERs overlap known exons, introns, or intergenic regions. A way to visualize this information is via a Venn diagram which we can create using `vennRegions()` from the `r Biocpkg('derfinderPlot')` package as shown in Figure \@ref(fig:vennRegions).
 
-```{r 'vennRegions'}
+```{r 'vennRegions', fig.cap = "Venn diagram showing ERs by annotation class."}
 ## Find overlaps between regions and summarized genomic annotation
 annoRegs <- annotateRegions(ers, genomicState$fullGenome, verbose = FALSE)
 
@@ -309,9 +309,9 @@ head(annotation)
 ## You can use derfinderPlot::plotOverview() to visualize this information
 ```
 
-We can check the base-level coverage information for some of our DERs. In this example we do so for the first 5 ERs.
+We can check the base-level coverage information for some of our DERs. In this example we do so for the first 5 ERs (Figures \@ref(fig:firstfive1), \@ref(fig:firstfive2), \@ref(fig:firstfive3), \@ref(fig:firstfive4), \@ref(fig:firstfive5)).
 
-```{r 'first5'}
+```{r 'firstfive', fig.cap = paste0("Base-pair resolution plot of differentially expressed region ", 1:5, ".")}
 ## Extract the region coverage
 regionCov <- regionMat$chr21$bpCoverage
 plotRegionCoverage(regions = ers, regionCoverage = regionCov, 
@@ -404,7 +404,7 @@ with `r CRANpkg('knitr')` `r citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')`
 
 Citations made with `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`.
 
-```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE}
+```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE, message = FALSE}
 ## Print bibliography
 bibliography()
 ```
