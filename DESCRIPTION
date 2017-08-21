@@ -29,7 +29,7 @@ Imports:
     rtracklayer,
     S4Vectors (>= 0.9.38)
 Suggests:
-    BiocStyle (>= 2.3.12),
+    BiocStyle (>= 2.5.19),
     biovizBase,
     devtools (>= 1.6),
     derfinderData (>= 0.99.0),
