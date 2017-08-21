@@ -10,7 +10,10 @@ preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
 \arguments{
 \item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with 
 the coverage data and a logical Rle --\code{$position}-- with the positions 
-that passed the cutoff. This object is generated using \link{loadCoverage}.}
+that passed the cutoff. This object is generated using \link{loadCoverage}.
+You should have specified a cutoff value for \link{loadCoverage} unless
+that you are using \code{colsubset} which will force a filtering step
+with \link{filterData} when running \link{preprocessCoverage}.}
 
 \item{groupInfo}{A factor specifying the group membership of each sample. If 
 \code{NULL} no group mean coverages are calculated. If the factor has more 

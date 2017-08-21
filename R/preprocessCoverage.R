@@ -7,6 +7,9 @@
 #' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with 
 #' the coverage data and a logical Rle --\code{$position}-- with the positions 
 #' that passed the cutoff. This object is generated using \link{loadCoverage}.
+#' You should have specified a cutoff value for \link{loadCoverage} unless
+#' that you are using \code{colsubset} which will force a filtering step
+#' with \link{filterData} when running \link{preprocessCoverage}.
 #' @param groupInfo A factor specifying the group membership of each sample. If 
 #' \code{NULL} no group mean coverages are calculated. If the factor has more 
 #' than one level, the first one will be used to calculate the log2 fold change 
@@ -147,6 +150,10 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
         means <- coverageInfo$meanCoverage
     }
     rm(coverageInfo)
+    
+    if(is.null(position)) {
+        stop("'coverageInfo$position' is NULL when it shouldn't be. Use a cutoff when loading the data with loadCoverage() or fullCoverage(). Alternatively, you can specify 'colsubset' such that preproccessCoverage() will run filterData() again.")
+    }
     
     ## Get the positions and shorter variables
     numrow <- nrow(coverage)

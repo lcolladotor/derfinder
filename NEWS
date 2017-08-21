@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.10.6
+-------------------------
+
+BUG FIXES
+
+    o Improved the documentation regarding an error when coverageInfo$position
+        is NULL when running analyzeChr() [and indirectly running
+        preprocessCoverage()]. See https://support.bioconductor.org/p/99400/
+        for details.
+
 CHANGES IN VERSION 1.10.4
 -------------------------
 
