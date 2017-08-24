@@ -41,7 +41,7 @@ cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-bibs <- c(knitcitations = citation('knitcitations'),
+bib <- c(knitcitations = citation('knitcitations'),
     derfinder = citation('derfinder')[1], 
     BiocStyle = citation('BiocStyle'),
     knitrBootstrap = citation('knitrBootstrap'), 
@@ -81,12 +81,7 @@ bibs <- c(knitcitations = citation('knitcitations'),
     derfinderData = citation('derfinderData')
 )
 
-write.bibtex(bibs,
-    file = 'derfinderUsersGuideRed.bib')
-bib <- read.bibtex('derfinderUsersGuideRed.bib')
-
-## Assign short names
-names(bib) <- names(bibs)
+write.bibtex(bib, file = 'derfinderUsersGuideRed.bib')
 
 ## Working on Windows?
 windowsFlag <- .Platform$OS.type == 'windows'
