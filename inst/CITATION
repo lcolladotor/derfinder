@@ -17,7 +17,7 @@ c(
             as.person("Jeffrey T. Leek"),
             as.person("Andrew E. Jaffe")
         ),
-        year = 2016,
+        year = 2017,
         journal = "Nucl. Acids Res.",
         doi = "10.1093/nar/gkw852",
         url = "http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852"
@@ -45,8 +45,9 @@ c(
             as.person("Andrew E. Jaffe"),
             as.person("Jeffrey T. Leek")
         ),
-        year = 2016,
+        year = 2017,
         url = "http://www.bioconductor.org/packages/derfinder",
-        note = pkgVer('derfinder')
+        note = pkgVer('derfinder'),
+        doi = '10.18129/B9.bioc.derfinder'
     )
 )
