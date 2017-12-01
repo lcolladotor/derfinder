@@ -105,6 +105,25 @@ filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
 regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 }
+
+## regionMatrix() can work with multiple chrs as shown below.
+fullCov2 <- list('chr21' = DataFrame(x, y, z), 'chr22' = DataFrame(x, y, z))
+regionMat2 <- regionMatrix(fullCov = fullCov2, maxRegionGap = 10L, 
+    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
+
+## Combine results from multiple chromosomes
+library('GenomicRanges')
+
+## First extract the data
+regs <- unlist(GRangesList(lapply(regionMat2, '[[', 'regions')))
+covMat <- do.call(rbind, lapply(regionMat2, '[[', 'coverageMatrix'))
+covBp <- do.call(c, lapply(regionMat2, '[[', 'bpCoverage'))
+## Force the names to match
+names(regs) <- rownames(covMat) <- names(covBp) <- seq_len(length(regs))
+## Combine into a list (not really needed)
+mergedRegionMat <- list('regions' = regs, 'coverageMatrix' = covMat,
+    'bpCoverage' = covBp)
+
 }
 \author{
 Leonardo Collado-Torres
