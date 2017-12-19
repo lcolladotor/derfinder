@@ -66,7 +66,7 @@
 #' @author Leonardo Collado-Torres
 #' @export
 #'
-#' @importMethodsFrom IRanges nrow '$<-'
+#' @importMethodsFrom IRanges nrow
 #' @importFrom BiocParallel bpmapply
 #' @importFrom GenomeInfoDb 'seqlengths<-'
 #'
