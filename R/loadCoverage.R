@@ -89,11 +89,12 @@
 #' 
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
-#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam path 
+#' @importFrom BiocGenerics path
+#' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam
 #' scanBamFlag BamFile
 #' @importFrom GenomicAlignments readGAlignments
 #' @importFrom IRanges IRanges RangesList
-#' @importFrom rtracklayer BigWigFileList path BigWigFile
+#' @importFrom rtracklayer BigWigFileList BigWigFile
 #' @importFrom GenomeInfoDb seqlevels
 #' mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
