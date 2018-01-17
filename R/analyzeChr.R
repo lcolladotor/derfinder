@@ -27,7 +27,7 @@
 #' \code{derfinderPlot} package.
 #' @param txdb This argument is passed to 
 #' \link[bumphunter]{annotateTranscripts}. If \code{NULL}, 
-#' \link[TxDb.Hsapiens.UCSC.hg19.knownGene]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
+#' \link[TxDb.Hsapiens.UCSC.hg19.knownGene:TxDb.Hsapiens.UCSC.hg19.knownGene]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
 #' is used.
 #' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 

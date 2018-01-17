@@ -12,8 +12,8 @@ loadCoverage(files, chr, cutoff = NULL, filter = "one", chrlen = NULL,
 (or BigWig files). 
 The names are used for the column names of the DataFrame. Check 
 \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-\link[Rsamtools]{BamFileList}, \link[Rsamtools]{BamFile}, 
-\link[rtracklayer]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.}
+\link[Rsamtools:BamFile]{BamFileList}, \link[Rsamtools:BamFile]{BamFile}, 
+\link[rtracklayer:BigWigFile-class]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.}
 
 \item{chr}{Chromosome to read. Should be in the format matching the one used
 in the raw data.}
@@ -65,7 +65,7 @@ or to include them. Only used with BAM files. \code{FALSE} by default.}
 \code{names(files)}.}
 }
 Passed to \link{extendedMapSeqlevels}, \link{define_cluster}, 
-\link[Rsamtools]{scanBamFlag} and \link{filterData}. 
+\link[Rsamtools:ScanBamParam]{scanBamFlag} and \link{filterData}. 
 Note that \link{filterData} is used internally 
 by \link{loadCoverage} and has the important arguments \code{totalMapped} 
 and \code{targetSize} which can be used to normalize the coverage by
@@ -88,7 +88,7 @@ DataFrame and removes the bases that do not pass the cutoff.
 }
 \details{
 The \code{...} argument can be used to control which alignments to consider
-when reading from BAM files. See \link[Rsamtools]{scanBamFlag}.
+when reading from BAM files. See \link[Rsamtools:ScanBamParam]{scanBamFlag}.
 
 Parallelization for loading the data in chunks is used only used when 
 \code{tilewidth} is specified. You may use up to one core per tile.

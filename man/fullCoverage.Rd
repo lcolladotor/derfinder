@@ -13,8 +13,8 @@ fullCoverage(files, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
 (or BigWig files). 
 The names are used for the column names of the DataFrame. Check 
 \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-\code{BamFileList} object created with \link[Rsamtools]{BamFileList} or a
-\code{BigWigFileList} object created with \link[rtracklayer]{BigWigFileList}.}
+\code{BamFileList} object created with \link[Rsamtools:BamFile]{BamFileList} or a
+\code{BigWigFileList} object created with \link[rtracklayer:BigWigFile-class]{BigWigFileList}.}
 
 \item{chrs}{The chromosome of the files to read. The format has to match the
 one used in the input files.}

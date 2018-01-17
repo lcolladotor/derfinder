@@ -7,13 +7,13 @@
 makeGenomicState(txdb, chrs = c(1:22, "X", "Y"), ...)
 }
 \arguments{
-\item{txdb}{A \link[GenomicFeatures]{TxDb} object with chromosome lengths
+\item{txdb}{A \link[GenomicFeatures:TxDb-class]{TxDb} object with chromosome lengths
 (check \code{seqlengths(txdb)}). If you are using a 
-\link[GenomicFeatures]{TxDb} object created from a GFF/GTF file, you will
+\link[GenomicFeatures:TxDb-class]{TxDb} object created from a GFF/GTF file, you will
 find this \url{https://support.bioconductor.org/p/93235/} useful.}
 
 \item{chrs}{The names of the chromosomes to use as denoted in the 
-\code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.}
+\code{txdb} object. Check \link[GenomicFeatures:TxDb-class]{isActiveSeq}.}
 
 \item{...}{Arguments passed to \link{extendedMapSeqlevels}.}
 }
@@ -27,7 +27,7 @@ promoter, exon, intro, 5UTR, 3UTR or intergenic.
 }
 \description{
 This function summarizes the annotation contained in a 
-\link[GenomicFeatures]{TxDb} at each given base of the genome based 
+\link[GenomicFeatures:TxDb-class]{TxDb} at each given base of the genome based 
 on annotated transcripts. It groups contiguous base pairs classified as the 
 same type into regions.
 }
@@ -72,7 +72,7 @@ save(GenomicState.Hsapiens.ensembl.GRCh37.p11,
 }
 }
 \seealso{
-\link[GenomicFeatures]{TxDb}
+\link[GenomicFeatures:TxDb-class]{TxDb}
 }
 \author{
 Andrew Jaffe, Leonardo Collado-Torres

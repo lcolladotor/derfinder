@@ -1,16 +1,16 @@
 #' Obtain the genomic state per region from annotation
 #'
 #' This function summarizes the annotation contained in a 
-#' \link[GenomicFeatures]{TxDb} at each given base of the genome based 
+#' \link[GenomicFeatures:TxDb-class]{TxDb} at each given base of the genome based 
 #' on annotated transcripts. It groups contiguous base pairs classified as the 
 #' same type into regions.
 #' 
-#' @param txdb A \link[GenomicFeatures]{TxDb} object with chromosome lengths
+#' @param txdb A \link[GenomicFeatures:TxDb-class]{TxDb} object with chromosome lengths
 #' (check \code{seqlengths(txdb)}). If you are using a 
-#' \link[GenomicFeatures]{TxDb} object created from a GFF/GTF file, you will
+#' \link[GenomicFeatures:TxDb-class]{TxDb} object created from a GFF/GTF file, you will
 #' find this \url{https://support.bioconductor.org/p/93235/} useful.
 #' @param chrs The names of the chromosomes to use as denoted in the 
-#' \code{txdb} object. Check \link[GenomicFeatures]{isActiveSeq}.
+#' \code{txdb} object. Check \link[GenomicFeatures:TxDb-class]{isActiveSeq}.
 #' @param ... Arguments passed to \link{extendedMapSeqlevels}.
 #'
 #' @return A \code{GRangesList} object with two elements: \code{fullGenome} and 
@@ -21,7 +21,7 @@
 #' promoter, exon, intro, 5UTR, 3UTR or intergenic.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link[GenomicFeatures]{TxDb}
+#' @seealso \link[GenomicFeatures:TxDb-class]{TxDb}
 #' @export
 #'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 

@@ -46,8 +46,8 @@
 #' \item{verbose.load }{ If \code{TRUE} basic status updates will be printed 
 #' along the way when loading data. Default: \code{TRUE}.}
 #' \item{BPPARAM.railChr }{ A BPPARAM object to use for the chr step. Set to
-#' \link[BiocParallel]{SerialParam} when \code{file.cores = 1} and 
-#' \link[BiocParallel]{SnowParam} otherwise.}
+#' \link[BiocParallel:SerialParam-class]{SerialParam} when \code{file.cores = 1} and 
+#' \link[BiocParallel:SnowParam-class]{SnowParam} otherwise.}
 #' \item{chunksize }{ Chunksize to use. Default: 1000.}
 #' }
 #' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
