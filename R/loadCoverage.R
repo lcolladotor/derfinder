@@ -8,7 +8,7 @@
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-#' \link[Rsamtools:BamFile]{BamFileList}, \link[Rsamtools:BamFile]{BamFile}, 
+#' \link[Rsamtools:BamFile]{BamFileList}, \link[Rsamtools:BamFile-class]{BamFile}, 
 #' \link[rtracklayer:BigWigFile-class]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.
 #' @param chr Chromosome to read. Should be in the format matching the one used
 #' in the raw data.
