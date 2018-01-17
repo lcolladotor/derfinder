@@ -64,7 +64,7 @@
 #' @importMethodsFrom GenomicRanges '$' '$<-' '['
 #' @importFrom IRanges RleList
 #' @import S4Vectors
-#' @importMethodsFrom IRanges cbind values 'values<-' '[' length '$<-'
+#' @importMethodsFrom IRanges cbind values 'values<-' '[' length
 #' order unlist nrow
 #' @importFrom qvalue qvalue
 #'
