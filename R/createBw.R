@@ -7,18 +7,18 @@
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
 #' @param path The path where the BigWig files will be created.
-#' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} objects 
-#' created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList} 
+#' @param keepGR If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} objects 
+#' created by \link{coerceGR} grouped into a \link[GenomicRanges:GRangesList-class]{GRangesList} 
 #' are returned. Otherwise they are discarded.
 #' @param ... Arguments passed to \link{createBwSample}.
 #'
-#' @return If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}
+#' @return If \code{keepGR = TRUE}, then a \link[GenomicRanges:GRangesList-class]{GRangesList}
 #' with the output for \link{coerceGR} for each of the samples.
 #'
 #' @details Use at most one core per chromosome.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges]{GRangesList}, \link[rtracklayer]{export}, 
+#' @seealso \link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer]{export}, 
 #' \link{createBwSample}, \link{coerceGR}
 #' @export
 #'

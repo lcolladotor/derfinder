@@ -49,7 +49,7 @@
 #' determine the \code{chunksize}. This is useful if you want to split the data 
 #' so each core gets the same amount of data (up to rounding).
 #'
-#' Computing the indexes and using those for \link[parallel]{mclapply} reduces 
+#' Computing the indexes and using those for \link[parallel:mclapply]{mclapply} reduces 
 #' memory copying as described by Ryan Thompson and illustrated in approach #4 
 #' at \url{http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-when-using-mclapply}
 #'

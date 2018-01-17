@@ -1,7 +1,7 @@
 #' Coerce the coverage to a GRanges object for a given sample
 #' 
 #' Given the output of \link{fullCoverage}, coerce the coverage to a 
-#' \link[GenomicRanges]{GRanges} object.
+#' \link[GenomicRanges:GRanges-class]{GRanges} object.
 #'
 #' @param sample The name or integer index of the sample of interest to coerce
 #' to a \code{GRanges} object.
@@ -14,18 +14,18 @@
 #' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
 #' the way.}
 #' \item{seqlengths }{ A named vector with the sequence lengths of the 
-#' chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}. By
+#' chromosomes. This argument is passed to \link[GenomicRanges:GRanges-class]{GRanges}. By
 #' default this is \code{NULL} and inferred from the data.}
 #' }
 #' Passed to \link{define_cluster}.
 #'
-#' @return A \link[GenomicRanges]{GRanges} object with \code{score} metadata 
+#' @return A \link[GenomicRanges:GRanges-class]{GRanges} object with \code{score} metadata 
 #' vector containing the coverage information for the specified sample. The 
 #' ranges reported are only those for regions of the genome with coverage 
 #' greater than zero.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges]{GRanges}
+#' @seealso \link[GenomicRanges:GRanges-class]{GRanges}
 #' @export
 #'
 #' @importFrom BiocParallel bpmapply
@@ -53,7 +53,7 @@ coerceGR <- function(sample, fullCov, ...) {
 
 
 # @param seqlengths A named vector with the sequence lengths of the 
-# chromosomes. This argument is passed to \link[GenomicRanges]{GRanges}.
+# chromosomes. This argument is passed to \link[GenomicRanges:GRanges-class]{GRanges}.
     if('coverage' %in% names(fullCov[[1]])) {
         seqlengths.auto <- sapply(fullCov, function(x) { nrow(x$coverage )})
     } else {

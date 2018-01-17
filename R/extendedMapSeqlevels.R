@@ -34,7 +34,7 @@
 #' @author L. Collado-Torres
 #' @export
 #'
-#' @details This function is inspired from \link[GenomeInfoDb]{mapSeqlevels}
+#' @details This function is inspired from \link[GenomeInfoDb:seqlevelsStyle]{mapSeqlevels}
 #' with the difference that it will return the original sequence names if
 #' the species, current naming style or target naming style are not supported
 #' in GenomeInfoDb.

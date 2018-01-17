@@ -16,7 +16,7 @@ to a \code{GRanges} object.}
 \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 using \link{fullCoverage}.}
 
-\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges]{GRanges} object 
+\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} object 
 created by \link{coerceGR} is returned. Otherwise it is discarded.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
@@ -34,7 +34,7 @@ the output from \link{coerceGR}.
 }
 \description{
 Given the output of \link{fullCoverage}, this function coerces the coverage
-to a \link[GenomicRanges]{GRanges} object using \link{coerceGR} and then 
+to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then 
 exports the coverage to a BigWig file using \link[rtracklayer]{export}.
 }
 \examples{
@@ -50,7 +50,7 @@ bw <- createBwSample('ERR009101', 'createBwSample-example',
 bw
 }
 \seealso{
-\link[GenomicRanges]{GRanges}, \link[rtracklayer]{export}, 
+\link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer]{export}, 
 link{coerceGR}
 }
 \author{

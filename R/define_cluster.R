@@ -4,11 +4,11 @@
 #' useful for cases with nested parallelizations.
 #' @param ... Advanced arguments are:
 #' \describe{
-#' \item{mc.cores }{ If 1 (default), then \link[BiocParallel]{SerialParam} will 
+#' \item{mc.cores }{ If 1 (default), then \link[BiocParallel:SerialParam-class]{SerialParam} will 
 #' be used. If greater than 1, then it specifies the number of workers for
-#' \link[BiocParallel]{SnowParam}.}
+#' \link[BiocParallel:SnowParam-class]{SnowParam}.}
 #' \item{mc.outfile }{ Passed to \code{outfile} when using
-#' \link[BiocParallel]{SnowParam}.}
+#' \link[BiocParallel:SnowParam-class]{SnowParam}.}
 #' \item{BPPARAM.custom }{ If specified, that's the BPPARAM that will be used.}
 #' }
 #'

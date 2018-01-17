@@ -13,14 +13,14 @@ using \link{fullCoverage}.}
 
 \item{path}{The path where the BigWig files will be created.}
 
-\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges]{GRanges} objects 
-created by \link{coerceGR} grouped into a \link[GenomicRanges]{GRangesList} 
+\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} objects 
+created by \link{coerceGR} grouped into a \link[GenomicRanges:GRangesList-class]{GRangesList} 
 are returned. Otherwise they are discarded.}
 
 \item{...}{Arguments passed to \link{createBwSample}.}
 }
 \value{
-If \code{keepGR = TRUE}, then a \link[GenomicRanges]{GRangesList}
+If \code{keepGR = TRUE}, then a \link[GenomicRanges:GRangesList-class]{GRangesList}
 with the output for \link{coerceGR} for each of the samples.
 }
 \description{
@@ -53,7 +53,7 @@ bws[[2]]
 
 }
 \seealso{
-\link[GenomicRanges]{GRangesList}, \link[rtracklayer]{export}, 
+\link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer]{export}, 
 \link{createBwSample}, \link{coerceGR}
 }
 \author{

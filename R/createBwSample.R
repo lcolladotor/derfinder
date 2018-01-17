@@ -1,7 +1,7 @@
 #' Create a BigWig file with the coverage information for a given sample
 #'
 #' Given the output of \link{fullCoverage}, this function coerces the coverage
-#' to a \link[GenomicRanges]{GRanges} object using \link{coerceGR} and then 
+#' to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then 
 #' exports the coverage to a BigWig file using \link[rtracklayer]{export}.
 #' 
 #' @param sample The name or integer index of the sample of interest to coerce
@@ -10,7 +10,7 @@
 #' @param fullCov A list where each element is the result from 
 #' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
 #' using \link{fullCoverage}.
-#' @param keepGR If \code{TRUE}, the \link[GenomicRanges]{GRanges} object 
+#' @param keepGR If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} object 
 #' created by \link{coerceGR} is returned. Otherwise it is discarded.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
@@ -25,7 +25,7 @@
 #' the output from \link{coerceGR}.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges]{GRanges}, \link[rtracklayer]{export}, 
+#' @seealso \link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer]{export}, 
 #' link{coerceGR}
 #' @export
 #'
