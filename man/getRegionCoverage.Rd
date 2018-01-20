@@ -28,8 +28,8 @@ only when \code{totalMapped} is specified.}
 (or BigWig files). 
 The names are used for the column names of the DataFrame. Check 
 \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-\code{BamFileList} object created with \link[Rsamtools:BamFile]{BamFileList} or a
-\code{BigWigFileList} object created with \link[rtracklayer:BigWigFile-class]{BigWigFileList}.}
+\code{BamFileList} object created with \link[Rsamtools:BamFile-class]{BamFileList} or a
+\code{BigWigFileList} object created with \link[rtracklayer:BigWigFile]{BigWigFileList}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
