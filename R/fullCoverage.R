@@ -10,8 +10,8 @@
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
 #' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-#' \code{BamFileList} object created with \link[Rsamtools:BamFile]{BamFileList} or a
-#' \code{BigWigFileList} object created with \link[rtracklayer:BigWigFile-class]{BigWigFileList}.
+#' \code{BamFileList} object created with \link[Rsamtools:BamFile-class]{BamFileList} or a
+#' \code{BigWigFileList} object created with \link[rtracklayer:BigWigFile]{BigWigFileList}.
 #' @param chrs The chromosome of the files to read. The format has to match the
 #' one used in the input files.
 #' @param bai The full path to the BAM index files. If \code{NULL} it is 

@@ -51,7 +51,7 @@ that can later be used with the plotting functions in the
 
 \item{txdb}{This argument is passed to 
 \link[bumphunter]{annotateTranscripts}. If \code{NULL}, 
-\link[TxDb.Hsapiens.UCSC.hg19.knownGene:TxDb.Hsapiens.UCSC.hg19.knownGene]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
+\link[TxDb.Hsapiens.UCSC.hg19.knownGene:package]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
 is used.}
 
 \item{writeOutput}{If \code{TRUE}, output Rdata files are created at each 
