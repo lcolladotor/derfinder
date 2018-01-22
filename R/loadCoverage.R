@@ -93,7 +93,7 @@
 #' @importFrom Rsamtools BamFileList scanBamHeader ScanBamParam
 #' scanBamFlag BamFile
 #' @importFrom GenomicAlignments readGAlignments
-#' @importFrom IRanges IRanges RangesList
+#' @importFrom IRanges IRanges
 #' @importFrom rtracklayer BigWigFileList BigWigFile
 #' @importFrom GenomeInfoDb seqlevels
 #' mapSeqlevels
