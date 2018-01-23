@@ -45,7 +45,7 @@
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels
 #' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
-#' width c '$'
+#' width '$'
 #' @importMethodsFrom IRanges subset as.data.frame
 #' @importFrom IRanges IRanges
 #' @import S4Vectors

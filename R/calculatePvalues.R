@@ -72,7 +72,7 @@
 #' @seealso \link{findRegions}, \link[derfinderHelper]{fstats.apply}, 
 #' \link[qvalue]{qvalue}
 #' @export
-#' @importMethodsFrom IRanges quantile nrow ncol c mean lapply unlist cbind
+#' @importMethodsFrom IRanges quantile nrow ncol mean lapply unlist cbind
 #' @importFrom IRanges Views RleList values 'values<-' nrow
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply

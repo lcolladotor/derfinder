@@ -83,7 +83,7 @@
 #' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
 #' @export
 #'
-#' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-' c
+#' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-'
 #' @import S4Vectors
 #'
 #' @examples
