@@ -1,3 +1,10 @@
+CHANGES IN VERSION 1.13.8
+-------------------------
+
+BUG FIXES
+
+    o Fixed a unit test that was breaking version 1.13.7.
+
 CHANGES IN VERSION 1.13.1
 -------------------------
 

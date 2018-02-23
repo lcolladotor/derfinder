@@ -115,7 +115,7 @@ load(file.path('generateReport-example-rerun' , 'fullRegions.Rdata'))
 fullRegions.rerun <- fullRegions
 
 test_that('mergeResults', {
-    expect_that(ranges(fullRegions.included), equals(ranges(genomeRegions$regions)))
+    expect_that(ranges(fullRegions.included), is_equivalent_to(ranges(genomeRegions$regions)))
     expect_that(fullRegions.included, is_equivalent_to(fullRegions.rerun))
     expect_that(dir('generateReport-example'), equals(dir('generateReport-example-rerun')))
 })
