@@ -54,7 +54,7 @@
 #' mapSeqlevels seqlevelsInUse
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort 
 #' width strand as.data.frame
-#' @importMethodsFrom IRanges subset as.data.frame
+#' @importMethodsFrom IRanges as.data.frame
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply bpmapply
 #' @importFrom methods is
