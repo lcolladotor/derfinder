@@ -85,7 +85,7 @@ bib <- c(knitcitations = citation('knitcitations'),
     originalder = citation('derfinder')[2],
     R = citation(),
     IRanges = citation('IRanges'),
-    devtools = citation('devtools'),
+    sessioninfo = citation('sessioninfo'),
     testthat = citation('testthat'),
     GenomeInfoDb = RefManageR::BibEntry(bibtype = 'manual',
         key = 'GenomeInfoDb',
@@ -351,7 +351,7 @@ This package was made possible thanks to:
 * `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
 * `r Biocpkg('biovizBase')` `r citep(bib[['biovizBase']])`
 * `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
-* `r CRANpkg('devtools')` `r citep(bib[['devtools']])`
+* `r CRANpkg('sessioninfo')` `r citep(bib[['sessioninfo']])`
 * `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
 * `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
 * `r CRANpkg('knitr')` `r citep(bib[['knitr']])`
@@ -396,7 +396,7 @@ round(totalTime, digits=3)
 
 ```{r reproducibility3, echo=FALSE}
 ## Session info
-library('devtools')
+library('sessioninfo')
 options(width = 120)
 session_info()
 ```
