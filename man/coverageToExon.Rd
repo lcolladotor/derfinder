@@ -4,8 +4,8 @@
 \alias{coverageToExon}
 \title{Extract coverage information for exons}
 \usage{
-coverageToExon(fullCov = NULL, genomicState, L = NULL, returnType = "raw",
-  files = NULL, ...)
+coverageToExon(fullCov = NULL, genomicState, L = NULL,
+  returnType = "raw", files = NULL, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from 

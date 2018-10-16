@@ -4,12 +4,12 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-analyzeChr(chr, coverageInfo, models, cutoffPre = 5, cutoffFstat = 1e-08,
-  cutoffType = "theoretical", nPermute = 1, seeds = as.integer(gsub("-",
-  "", Sys.Date())) + seq_len(nPermute), groupInfo, txdb = NULL,
-  writeOutput = TRUE, runAnnotation = TRUE, lowMemDir = file.path(chr,
-  "chunksDir"), smooth = FALSE, weights = NULL,
-  smoothFunction = bumphunter::locfitByCluster, ...)
+analyzeChr(chr, coverageInfo, models, cutoffPre = 5,
+  cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1,
+  seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
+  groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
+  lowMemDir = file.path(chr, "chunksDir"), smooth = FALSE,
+  weights = NULL, smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE} and

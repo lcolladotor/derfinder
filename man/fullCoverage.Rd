@@ -84,7 +84,7 @@ fullCov
 ## You can then use filterData() to filter the data if you want to. 
 ## Use bplapply() if you want to do so with multiple cores as shown below.
 library('BiocParallel')
-p <- SnowParam(2L, outfile = Sys.getenv('SGE_STDERR_PATH'))
+p <- SnowParam(2L)
 bplapply(fullCov, function(x) {
     library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
 }

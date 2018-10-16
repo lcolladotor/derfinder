@@ -134,10 +134,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
         BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', SerialParam(),
             ...)
     } else {
-        mc.outfile <- .advanced_argument('mc.outfile', 
-            Sys.getenv('SGE_STDERR_PATH'), ...)
+        mc.log <- .advanced_argument('mc.log', TRUE, ...)
         BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', 
-            SnowParam(workers = file.cores, outfile = mc.outfile), ...)
+            SnowParam(workers = file.cores, log = mc.log), ...)
     }
     
     if(!is.null(totalMapped) & targetSize != 0) {

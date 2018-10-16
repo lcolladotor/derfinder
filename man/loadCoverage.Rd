@@ -4,8 +4,8 @@
 \alias{loadCoverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-loadCoverage(files, chr, cutoff = NULL, filter = "one", chrlen = NULL,
-  output = NULL, bai = NULL, ...)
+loadCoverage(files, chr, cutoff = NULL, filter = "one",
+  chrlen = NULL, output = NULL, bai = NULL, ...)
 }
 \arguments{
 \item{files}{A character vector with the full path to the sample BAM files

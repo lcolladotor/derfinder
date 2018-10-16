@@ -5,7 +5,8 @@
 \title{Change naming style for a set of sequence names}
 \usage{
 extendedMapSeqlevels(seqnames, style = getOption("chrsStyle", "UCSC"),
-  species = getOption("species", "homo_sapiens"), currentStyle = NULL, ...)
+  species = getOption("species", "homo_sapiens"), currentStyle = NULL,
+  ...)
 }
 \arguments{
 \item{seqnames}{A character vector with the sequence names.}

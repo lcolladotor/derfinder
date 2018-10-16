@@ -1,3 +1,13 @@
+CHANGES IN VERSION 1.15.4
+-------------------------
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+    o Switched from 'outfile' to 'log' when invoking
+        BiocParalle::SnowParam(). Thus define_cluster()
+        now has a mc.log argument instead of mc.outfile.
+
+
 CHANGES IN VERSION 1.15.2
 -------------------------
 

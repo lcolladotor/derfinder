@@ -4,7 +4,8 @@
 \alias{makeModels}
 \title{Build model matrices for differential expression}
 \usage{
-makeModels(sampleDepths, testvars, adjustvars = NULL, testIntercept = FALSE)
+makeModels(sampleDepths, testvars, adjustvars = NULL,
+  testIntercept = FALSE)
 }
 \arguments{
 \item{sampleDepths}{Per sample library size adjustments calculated with 

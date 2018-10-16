@@ -36,7 +36,7 @@ fuu <- function(...) {
 library('BiocParallel')
 test_that('Cluster setup', {
     expect_that(foo(), equals(SerialParam()))
-    expect_equal(foo(mc.cores = 2), SnowParam(2, outfile = Sys.getenv('SGE_STDERR_PATH')), tolerance = 0.1)
+    expect_equal(foo(mc.cores = 2), SnowParam(2, log = TRUE), tolerance = 0.1)
     expect_that(foo(), equals(fuu()))
-    expect_equal(fuu(cores = 4), SnowParam(4, outfile = Sys.getenv('SGE_STDERR_PATH')), tolerance = 0.1)
+    expect_equal(fuu(cores = 4), SnowParam(4, log = TRUE), tolerance = 0.1)
 })
