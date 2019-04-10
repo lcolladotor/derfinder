@@ -69,6 +69,7 @@ test_that('F-stat cutoff', {
 
 ## Check calculating the p-values. Specially check that the default arguments
 ## are the ones intended
+suppressWarnings(RNGversion("3.5.0"))
 regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, 
     chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular')
 

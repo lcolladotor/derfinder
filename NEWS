@@ -1,3 +1,11 @@
+CHANGES IN VERSION 1.17.2
+-------------------------
+
+BUG FIXES
+
+    o Use R's random seeds from version 3.5.0 for the test
+        thanks to https://twitter.com/StrictlyStat/status/1103303028751372289
+
 CHANGES IN VERSION 1.15.4
 -------------------------
 
