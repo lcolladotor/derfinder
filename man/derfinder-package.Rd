@@ -44,6 +44,6 @@ Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and
 Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 }
 \author{
-Leonardo Collado-Torres <lcollado@jhu.edu>
+Leonardo Collado-Torres <lcolladotor@gmail.com>
 }
 \keyword{package}
