@@ -5,7 +5,7 @@ author:
     affiliation:
     - &libd Lieber Institute for Brain Development, Johns Hopkins Medical Campus
     - &ccb Center for Computational Biology, Johns Hopkins University
-    email: leo.collado@libd.org
+    email: lcolladotor@gmail.com
 output: 
   BiocStyle::html_document:
     self_contained: yes
