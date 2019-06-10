@@ -1,3 +1,15 @@
+CHANGES IN VERSION 1.19.2
+-------------------------
+
+BUG FIXES
+
+    o railMatrix() and loadCoverage() helper functions now attempt to import a
+        BigWig file 3 times before giving up. Based on
+        http://bioconductor.org/developers/how-to/web-query/ and
+        https://github.com/leekgroup/recount/commit/8da982b309e2d19638166f263057d9f85bb64e3f
+        which will make these functions more robust to occasional web access
+        issues.
+
 CHANGES IN VERSION 1.17.3
 -------------------------
 
@@ -78,7 +90,7 @@ CHANGES IN VERSION 1.11.4
 -------------------------
 
 BUG FIXES
-    
+
     o regionMatrix() will now pass the hidden arguments 'species' and
         'currentStyle' to getRegionCoverage() so they can be used by
         extendedMapSeqlevels(). Related to
@@ -138,7 +150,7 @@ CHANGES IN VERSION 1.7.14
 NEW FEATURES
 
     o Added the function getTotalMapped() for calculating the total number of
-        mapped reads for a BAM file or the area under the curve (AUC) for a 
+        mapped reads for a BAM file or the area under the curve (AUC) for a
         BigWig file. This information can then be used with fullCoverage(),
         filterData() and other functions. Note that if you 'totalMapped'
         in fullCoverage() you should not use 'totalMapped' again in
@@ -206,7 +218,7 @@ BUG FIXES
         priority over 'file.cores'. Also, if 'file.cores = 1L', then the default
         will be to use SerialParam(), which was the implementation available
         prior to 1.5.11.
-    
+
 
 CHANGES IN VERSION 1.5.11
 -------------------------
@@ -264,8 +276,8 @@ CHANGES IN VERSION 1.3.3
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o Brought back the 'mc.outfile' argument for specifying the 'outfile' 
-        argument in SnowParam(). See more details at 
+    o Brought back the 'mc.outfile' argument for specifying the 'outfile'
+        argument in SnowParam(). See more details at
         https://stat.ethz.ch/pipermail/bioc-devel/2015-May/007531.html
 
 CHANGES IN VERSION 1.3.2
@@ -273,7 +285,7 @@ CHANGES IN VERSION 1.3.2
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o Deprecated functions with underscores in their names in favor of 
+    o Deprecated functions with underscores in their names in favor of
         camelCase functions. This was done to simplify the package.
 
 CHANGES IN VERSION 1.3.1
@@ -301,7 +313,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
     o Changed citation information to reference the bioRxiv pre-print
 
 BUG FIXES
-    
+
     o Polished the interaction with bumphunter >= 1.7.3
     o Updated the default cluster option now that BiocParallel::SnowParam()
         no longer has an 'outfile' argument.
@@ -311,7 +323,7 @@ CHANGES IN VERSION 1.1.16
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o analyzeChr() now uses annotateTranscripts() and matchGenes() from 
+    o analyzeChr() now uses annotateTranscripts() and matchGenes() from
         bumphunter version 1.7.3 (or greater). As announced at
         https://support.bioconductor.org/p/63568/ these changes in bumphunter
         allow straight forward use of non-human annotation. In analyzeChr()
@@ -364,13 +376,13 @@ CHANGES IN VERSION 1.1.3
 
 NEW FEATURES
 
-    o loadCoverage() and fullCoverage() now support BamFile and BigWigFile 
+    o loadCoverage() and fullCoverage() now support BamFile and BigWigFile
         objects
 
 BUG FIXES
 
-    o Fixed a bug in loadCoverage() when the input was a BamFileList. 
-        Implemented tests based on the bug. Bug reported at 
+    o Fixed a bug in loadCoverage() when the input was a BamFileList.
+        Implemented tests based on the bug. Bug reported at
         https://support.bioconductor.org/p/62073
 
 
@@ -394,12 +406,12 @@ CHANGES IN VERSION 0.0.80
 NEW FEATURES
 
     o Introductory vignette completed.
-    
+
 CHANGES IN VERSION 0.0.79
 -------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES
-    
+
     o mergeResults() can now calculate FWER adjusted p-values when provided with
         'optionsStats'. Updated analyzeChr() to supply the required information.
 
@@ -423,30 +435,30 @@ NEW FEATURES
         which is used only when 'fullCov' is NULL. Both functions will attempt
         to extract the coverage data from the raw files for the regions of
         interest in that case.
-        
+
         Special care has to be taken in order to guarantee that the coverage is
         the same as some reads might be discarded if the region is too narrow.
         See the advanced argument 'protectWhich' in loadCoverage() for more
         information. Also, if 'totalMapped' and 'targetSize' were used prior to
         filtering, they should be used again.
     o loadCoverage() has new advanced arguments that help when reading a
-        specific region (or regions) of the genome. 
+        specific region (or regions) of the genome.
 
 CHANGES IN VERSION 0.0.76
 -------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o loadCoverage() and fullCoverage() argument 'dirs' has been renamed to 
+    o loadCoverage() and fullCoverage() argument 'dirs' has been renamed to
         'files' for greater consistency with what it represents.
- 
+
 CHANGES IN VERSION 0.0.75
 -------------------------
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o regionMatrix() now returns the output of getRegionCoverage() so you don't
-        have to run it twice if you are interested in using 
+        have to run it twice if you are interested in using
         derfinderPlot::plotRegionCoverage()
     o regionMatrix()$regions now guesses the seqlengths
 
@@ -495,9 +507,9 @@ CHANGES IN VERSION 0.0.69
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o loadCoverage() and fullCoverage() now have a 'tilewidth' argument. When
-        specified GenomicFiles is used to read the coverage in chunks. In 
+        specified GenomicFiles is used to read the coverage in chunks. In
         theory, this can lead to lower memory usage at the expense of time.
-        
+
 CHANGES IN VERSION 0.0.67
 -------------------------
 
@@ -526,7 +538,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 CHANGES IN VERSION 0.0.65
 -------------------------
 
-    o Re-organized code for fstats.apply(). Note that improving 
+    o Re-organized code for fstats.apply(). Note that improving
         .transformSparseMatrix() would speed up the 'Matrix' method.
     o Note that all parallel functions have some overhead from loading derfinder
         on each worker. Check system.time(library(derfinder)) to see how long
@@ -539,7 +551,7 @@ CHANGES IN VERSION 0.0.64
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o fullCoverage() has several new arguments and now is a full parallel 
+    o fullCoverage() has several new arguments and now is a full parallel
         implementation of loadCoverage(). These changes were introduced since
         fullCoverage() no longer blows up in memory since version 0.0.62 and
         thus the new recommended use case is to call fullCoverage() instead of
@@ -553,10 +565,10 @@ NEW FEATURES
 
     o fstats.apply() now has 'method' and 'scalefac' arguments. The 'method'
         argument controls which of the 3 implementations to use. The old method
-        is called 'regular' now. The new method 'Rle' calculates the 
+        is called 'regular' now. The new method 'Rle' calculates the
         F-statistics without de-compressing the data, which is good for memory
         but gets considerably slower as the number of samples increases. The
-        default method is 'Matrix' which uses the Matrix package and is both 
+        default method is 'Matrix' which uses the Matrix package and is both
         faster (given that the coercion doesn't take long) and less memory
         intensive than the 'regular' method.
 
@@ -578,7 +590,7 @@ NEW FEATURES
 
     o Functions analyzeChr(), calculatePvalues(), calculateStats(),
         coverageToExon(), fullCoverage(), getRegionCoverage(), regionMatrix()
-        all have a new argument 'mc.output'. This is passed to 
+        all have a new argument 'mc.output'. This is passed to
         BiocParallel::SnowParam(outfile).
 
 SIGNIFICANT USER-VISIBLE CHANGES
@@ -597,11 +609,11 @@ CHANGES IN VERSION 0.0.61
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o filterData() and loadCoverage() now have arguments 'totalMapped' and 
+    o filterData() and loadCoverage() now have arguments 'totalMapped' and
         'targetSize'
-    o getRegionCoverage() and regionMatrix() can now work with list output from 
+    o getRegionCoverage() and regionMatrix() can now work with list output from
         loadCoverage() with a non-NULL cutoff
-    o regionMatrix() now has an argument 'runFilter' so it can be used with 
+    o regionMatrix() now has an argument 'runFilter' so it can be used with
         previous output from loadCoverage()/filterData() with 'returnMean=TRUE'
 
 CHANGES IN VERSION 0.0.60
@@ -610,9 +622,9 @@ CHANGES IN VERSION 0.0.60
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o analyzeChr(), annotateRegions(), calculatePvalues(), coverageToExon(),
-        findRegions(), fullCoverage(), getRegionCoverage(), 
+        findRegions(), fullCoverage(), getRegionCoverage(),
         makeGenomicState(), mergeResults(), plotCluster(), plotOverview()
-        now all have 'chrsStyle' as an argument to specify the chromosome 
+        now all have 'chrsStyle' as an argument to specify the chromosome
         naming convention used. Defaults to UCSC.
     o makeGenomicState() no longer has the 'addChrPrefix' argument. It has been
         replaced by 'chrsStyle' to use GenomeInfoDb to set the naming style.
@@ -638,7 +650,7 @@ CHANGES IN VERSION 0.0.57
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o regionMatrix() now relies on getRegionCoverage() instead of 
+    o regionMatrix() now relies on getRegionCoverage() instead of
         coverageToExon() making it faster and less memory intensive.
 
 CHANGES IN VERSION 0.0.56
@@ -653,7 +665,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
     o Made coverageToExon() more robust for different names in 'fullCov'.
     o filterData() and loadCoverage() have new arguments 'filter', 'returnMean',
-        and 'returnCoverage' which allow speeding up regionMatrix(). 
+        and 'returnCoverage' which allow speeding up regionMatrix().
         preprocessCoverage() was changed accordingly.
     o getRegionCoverage() now internally uses USCS names.
 
@@ -682,7 +694,7 @@ CHANGES IN VERSION 0.0.53
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o Now derfinder includes the genomic state output for hg19 chr21. This
-        allowed to implement examples for annotateRegions(), 
+        allowed to implement examples for annotateRegions(),
         getRegionCoverage(), plotRegionCoverage, and coverageToExon().
 
 
@@ -730,7 +742,7 @@ CHANGES IN VERSION 0.0.47
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o getRegionCoverage() now has a depth-adjustment argument
-    
+
 BUG FIXES
 
     o Fixed several bugs as suggested by Andrew Jaffe
@@ -746,9 +758,9 @@ SIGNIFICANT USER-VISIBLE CHANGES
         guidelines.
     o Dropped Rcpp and RcppArmadillo from F-stats calculation. More at
         https://github.com/lcolladotor/derfinder/pull/17
-    o Stored the results from some of the example data to speed up other 
+    o Stored the results from some of the example data to speed up other
         examples. Check ?genomeDataRaw, ?genomeFstats, ?genomeRegions
-        
+
 BUG FIXES
 
     o Fixed 'verbose' for getRegionCoverage()
@@ -765,7 +777,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 BUG FIXES
 
-    o Fixed NAMESPACE to match current bioc-devel (2.14) as suggested by Tim 
+    o Fixed NAMESPACE to match current bioc-devel (2.14) as suggested by Tim
         Triche.
 
 CHANGES IN VERSION 0.0.42
@@ -796,7 +808,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
     o mergeResults() will not merge pre-processed data by default
     o coverageToExon() now uses mclapply() when possible
-    
+
 CHANGES IN VERSION 0.0.39
 -------------------------
 
@@ -824,10 +836,10 @@ CHANGES IN VERSION 0.0.36
 NEW FEATURES
 
     o Added collapseFullCoverage()
-    
+
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o sampleDepth() has been greatly changed. It is now based on Hector 
+    o sampleDepth() has been greatly changed. It is now based on Hector
         Corrada's ideas implemented in metagenomeSeq.
     o Updated several man pages.
 
@@ -899,13 +911,13 @@ CHANGES IN VERSION 0.0.28
 NEW FEATURES
 
     o Added sampleDepth()
-    
+
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o generateReport() has been moved to it's own new package called
         derfinderReport. It is available at
         https://github.com/lcolladotor/derfinderReport
-    o Examples and analyzeChr() have been updated now that sampleDepth() was 
+    o Examples and analyzeChr() have been updated now that sampleDepth() was
         added
 
 
@@ -923,9 +935,9 @@ CHANGES IN VERSION 0.0.25
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
-    o Changed how makeModels() deals with cases when mod and mod0 are not full 
+    o Changed how makeModels() deals with cases when mod and mod0 are not full
         rank.
-    o plotCluster() now no longer depends on an active Internet connection for 
+    o plotCluster() now no longer depends on an active Internet connection for
         'hg19 = TRUE'.
 
 BUG FIXES
@@ -968,7 +980,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 BUG FIXES
 
-    o Fixed an important bug in finding candidate DERs. The example 
+    o Fixed an important bug in finding candidate DERs. The example
         for plotCluster() now includes code that was used for visualizing the
         bug.
     o Fixed some NAMESPACE issues
@@ -986,7 +998,7 @@ SIGNIFICANT USER-VISIBLE CHANGES
         track as it is redundant information
     o mergeResults() now also runs annotateRegions()
     o generateReport() now uses plotRegionCoverage() and includes MA-style plots
-    
+
 CHANGES IN VERSION 0.0.20
 -------------------------
 
@@ -1000,7 +1012,7 @@ CHANGES IN VERSION 0.0.19
 NEW FEATURES
 
     o Added makeGenomicState()
-    
+
 CHANGES IN VERSION 0.0.18
 -------------------------
 
@@ -1109,7 +1121,7 @@ CHANGES IN VERSION 0.0.8
 SIGNIFICANT USER-VISIBLE CHANGES
 
     o Attempted to reduce memory load in calculateStats() and calculatePvalues()
-    
+
 CHANGES IN VERSION 0.0.7
 ------------------------
 
@@ -1159,14 +1171,14 @@ CHANGES IN VERSION 0.0.2
 ------------------------
 
 NEW FEATURES
-    
+
     o Added clusterMakerRle(), findRegions(), and getSegmentsRle()
 
 CHANGES IN VERSION 0.0.1
 ------------------------
 
 NEW FEATURES
-    
+
     o Added calculateStats(), filterData(), fstats(), and fstats.apply()
 
 SIGNIFICANT USER-VISIBLE CHANGES
@@ -1179,7 +1191,7 @@ CHANGES IN VERSION 0.0.0
 
 NEW FEATURES
 
-    o Initialized the package (named derfinder2) from derfinder 
+    o Initialized the package (named derfinder2) from derfinder
         https://github.com/alyssafrazee/derfinder version 1.0.2
-        This version is available at 
+        This version is available at
         https://github.com/alyssafrazee/derfinder/tree/d49f7b28c26f075da36a50ab67c9d192ab2fd63d
