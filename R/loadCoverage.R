@@ -366,7 +366,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
         )
         if(!inherits(output, 'error'))
             break
-        Sys.sleep(runif(n = 1, min = 0, max = 2))
+        Sys.sleep(runif(n = 1, min = 2, max = 5))
         N.TRIES <- N.TRIES - 1L
     }
     if(N.TRIES == 0L) stop(conditionMessage(output))

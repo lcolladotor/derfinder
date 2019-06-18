@@ -248,7 +248,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
         )
         if(!inherits(regCov, 'error'))
             break
-        Sys.sleep(runif(n = 1, min = 0, max = 2))
+        Sys.sleep(runif(n = 1, min = 2, max = 5))
         N.TRIES <- N.TRIES - 1L
     }
     if(N.TRIES == 0L) stop(conditionMessage(regCov))
