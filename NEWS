@@ -1,3 +1,19 @@
+CHANGES IN VERSION 1.18.4
+-------------------------
+
+BUG FIXES
+
+    o railMatrix() and loadCoverage() helper functions had an issue when
+        the input set of regions was duplicated. This could be reproduced with
+
+sampleFile <- c('SRR387777' = 'http://duffel.rail.bio/recount/SRP009615/bw/SRR387777.bw')
+regs <- GenomicRanges::GRanges( 'chrY', IRanges(start = c(1, 1), width = 10), strand = '-')
+names(regs) <- c(1:2)
+result <- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')
+
+    This error affected recount and other reverse dependencies that use
+    derfinder for processing BigWig files.
+
 CHANGES IN VERSION 1.18.2
 -------------------------
 

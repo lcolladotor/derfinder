@@ -361,7 +361,7 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = 'one',
     N.TRIES <- 3L
     while(N.TRIES > 0L) {
         output <- tryCatch(
-            import(file, selection = range, as = 'RleList'),
+            import(file, selection = reduce(range), as = 'RleList'),
             error = identity
         )
         if(!inherits(output, 'error'))

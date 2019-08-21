@@ -71,6 +71,7 @@
 #'
 #' @importFrom BiocParallel bpmapply
 #' @importFrom GenomeInfoDb 'seqlengths<-'
+#' @importMethodsFrom GenomicRanges reduce
 #'
 #' @examples
 #'
@@ -243,7 +244,7 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     N.TRIES <- 3L
     while(N.TRIES > 0L) {
         regCov <- tryCatch(
-            import(sampleFile, selection = regs, as = 'RleList'),
+            import(sampleFile, selection = reduce(regs), as = 'RleList'),
             error = identity
         )
         if(!inherits(regCov, 'error'))

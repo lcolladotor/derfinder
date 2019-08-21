@@ -2,7 +2,8 @@
 #'
 #' @param name Name of the advanced argument to look for in ...
 #' @param value The default value of the advanged argument
-#' @keywords internal 
+#' @keywords internal
+#' @noRd
 .advanced_argument <- function(name, value, ...) {
     args <- list(...)
     if(!name %in% names(args)) {
@@ -23,16 +24,17 @@
 #'
 #' @importFrom methods formalArgs
 #' @keywords internal
+#' @noRd
 .runFunFormal <- function(fun, ..., hiddenArgs = NULL) {
     ## Identify the formal arguments and the supplied info
     formal <- formalArgs(fun)
     args <- list(...)
-    
+
     ## Match any of the remaining formal arguments and drop any of the
     ## extra stuff in ... which doesn't match the formal arguments
     input <- args[names(args) %in% formal]
     if(!is.null(hiddenArgs)) input <- c(input, hiddenArgs)
-    
+
     ## Evaluate the function
     result <- do.call(fun, input)
     return(result)
