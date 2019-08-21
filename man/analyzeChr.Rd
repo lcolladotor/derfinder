@@ -77,7 +77,7 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 \link[bumphunter]{smoother}.}
 
 \item{smoothFunction}{A function to be used for smoothing the F-statistics.
-Two functions are provided by the \code{bumphunter} package: 
+Two functions are provided by the \code{bumphunter} package:
 \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
 an element called \code{$fitted} that contains the smoothed F-statistics and

@@ -1,21 +1,21 @@
 #' Find non-zero regions in a Rle
 #'
-#' Find genomic regions for which a numeric vector is above (or below) 
-#' predefined thresholds. In other words, this function finds the candidate 
-#' Differentially Expressed Regions (candidate DERs). This is similar to 
-#' \link[bumphunter]{regionFinder} and is a helper function for 
+#' Find genomic regions for which a numeric vector is above (or below)
+#' predefined thresholds. In other words, this function finds the candidate
+#' Differentially Expressed Regions (candidate DERs). This is similar to
+#' \link[bumphunter]{regionFinder} and is a helper function for
 #' \link{calculatePvalues}.
-#' 
-#' @param position A logical Rle of genomic positions. This is generated in 
-#' \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage} 
+#'
+#' @param position A logical Rle of genomic positions. This is generated in
+#' \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage}
 #' if \code{colsubset} is not \code{NULL}.
-#' @param fstats A numeric Rle with the F-statistics. Usually obtained using 
+#' @param fstats A numeric Rle with the F-statistics. Usually obtained using
 #' \link{calculateStats}.
 #' @param chr A single element character vector specifying the chromosome name.
-#' @param oneTable If \code{TRUE} only one GRanges is returned. 
-#' Otherwise, a GRangesList with two components is returned: one for the 
+#' @param oneTable If \code{TRUE} only one GRanges is returned.
+#' Otherwise, a GRangesList with two components is returned: one for the
 #' regions with positive values and one for the negative values.
-#' @param maxClusterGap This determines the maximum gap between candidate DERs. 
+#' @param maxClusterGap This determines the maximum gap between candidate DERs.
 #' It should be greater than \code{maxRegionGap} (0 by default).
 #' @param cutoff Threshold applied to the \code{fstats} used to determine the #' regions.
 #' @param segmentIR An IRanges object with the genomic positions that are
@@ -26,7 +26,7 @@
 #' @param weights Weights used by the smoother as described in
 #' \link[bumphunter]{smoother}.
 #' @param smoothFunction A function to be used for smoothing the F-statistics.
-#' Two functions are provided by the \code{bumphunter} package: 
+#' Two functions are provided by the \code{bumphunter} package:
 #' \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
 #' you are using your own custom function, it has to return a named list with
 #' an element called \code{$fitted} that contains the smoothed F-statistics and
@@ -36,12 +36,12 @@
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along
 #' the way.}
 #' \item{basic }{ If \code{TRUE} a DataFrame is returned that has only basic
-#' information on the candidate DERs. This is used in \link{calculatePvalues} 
+#' information on the candidate DERs. This is used in \link{calculatePvalues}
 #' to speed up permutation calculations. Default: \code{FALSE}.}
-#' \item{maxRegionGap }{ This determines the maximum number of gaps between two 
+#' \item{maxRegionGap }{ This determines the maximum number of gaps between two
 #' genomic positions to be considered part of the same candidate region. The
 #' default is 0L.}
 #' }
@@ -50,18 +50,18 @@
 #'
 #' When \code{smooth = TRUE}, \code{...} is passed to the internal function
 #' \code{.smootherFstats}. This internal function has the advanced argument
-#' \code{maxClusterGap} (same as above) and passes \code{...} to 
+#' \code{maxClusterGap} (same as above) and passes \code{...} to
 #' \link{define_cluster} and the formal arguments of \code{smoothFun}.
 #'
-#' @return Either a GRanges or a GRangesList as determined by \code{oneTable}. 
+#' @return Either a GRanges or a GRangesList as determined by \code{oneTable}.
 #' Each of them has the following metadata variables.
 #' \describe{
 #' \item{value }{ The mean of the values of \code{y} for the given region.}
-#' \item{area }{  The absolute value of the sum of the values of \code{y} for 
+#' \item{area }{  The absolute value of the sum of the values of \code{y} for
 #' the given region.}
-#' \item{indexStart }{ The start position of the region in terms of the index 
+#' \item{indexStart }{ The start position of the region in terms of the index
 #' for \code{y}.}
-#' \item{indexEnd }{ The end position of the region in terms of the index for 
+#' \item{indexEnd }{ The end position of the region in terms of the index for
 #' \code{y}.}
 #' \item{cluster }{ The cluser ID.}
 #' \item{clusterL }{ The total length of the cluster.}
@@ -71,8 +71,8 @@
 #'
 #' @seealso \link{calculatePvalues}
 #'
-#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
-#' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
+#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper
+#' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 #' 1.1.10.
 #'
 #' @author Leonardo Collado-Torres
@@ -86,9 +86,9 @@
 #' @importFrom bumphunter locfitByCluster runmedByCluster
 #' @examples
 #' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, 
+#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
 #'     colsubset=NULL)
-#' 
+#'
 #' ## Get the F statistics
 #' fstats <- genomeFstats
 #'
@@ -112,46 +112,46 @@
 #'
 
 
-findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE, 
+findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-    segmentIR = NULL, smooth = FALSE,  weights = NULL, 
+    segmentIR = NULL, smooth = FALSE,  weights = NULL,
     smoothFunction = bumphunter::locfitByCluster, ...){
-    
+
     ## Advanged arguments
 # @param basic If \code{TRUE} a DataFrame is returned that has only basic
 # information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
     basic <- .advanced_argument('basic', FALSE, ...)
 
 
-# @param maxRegionGap This determines the maximum number of gaps between two 
-# genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER). 
+# @param maxRegionGap This determines the maximum number of gaps between two
+# genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER).
     maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
 
-# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# @param verbose If \code{TRUE} basic status updates will be printed along the
 # way.
     verbose <- .advanced_argument('verbose', TRUE, ...)
 
     if (maxClusterGap < maxRegionGap) {
         warning("'maxClusterGap' is less than 'maxRegionGap' which nullifies it's intended use.")
     }
-    
+
     if (!basic) {
         if (is.null(segmentIR) | smooth) {
             stopifnot(!is.null(position))
         }
         if(smooth) {
-            if (verbose) 
+            if (verbose)
                 message(paste(Sys.time(), 'findRegions: smoothing'))
             fstats <- .smootherFstats(fstats = fstats, position = position, weights = weights, smoothFunction = smoothFunction, ...)
         }
     } else {
         if(smooth) warning("Ignoring 'smooth' = TRUE since 'basic' = TRUE")
     }
-    
-    
+
+
     ## Identify the segments
     if (is.null(segmentIR)) {
-        if (verbose) 
+        if (verbose)
             message(paste(Sys.time(),
                 'findRegions: identifying potential segments'))
         if(!any(position)) {
@@ -161,42 +161,42 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         segmentIR <- .clusterMakerRle(position, maxGap = maxRegionGap,
             ranges = TRUE)
     }
-    
+
     ## Create the F-stats segments
-    if (verbose) 
+    if (verbose)
         message(paste(Sys.time(),
             'findRegions: segmenting information'))
     segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, ...)
-    
+
     ## Work only with those that have some information
     hasInfo <- sapply(segments, length) != 0
-    
+
     ## Stop if there are no segments
     if (!any(hasInfo)) {
-        if (verbose) 
+        if (verbose)
             message(paste(Sys.time(),
                 'findRegions: found no segments to work with!!'))
         return(NULL)
     }
-    
+
     ## Proceed of there is some data to work with
     segments <- segments[hasInfo]
-    
+
     ## Find the actual DERs
-    if (verbose) 
+    if (verbose)
         message(paste(Sys.time(),
             'findRegions: identifying candidate regions'))
     ders <- lapply(segments, function(fcut) {
         ## Merge with segment ranges
         all <- c(fcut, segmentIR)
-        
+
         ## Find all the small pieces
         pieces <- disjoin(all)
-        
+
         ## Find the actual DERs
         Views(fstats, pieces[queryHits(findOverlaps(pieces, fcut))])
     })
-    
+
     ## Sadly, this is required to map the positions of the index
     ## to the chr positions.  It's 275 mb in RAM for a length of
     ## 72097604 instead of 4.7 Mb in Rle world.  The good thing is
@@ -204,63 +204,63 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     if (!basic) {
         pos <- which(position)
     }
-    
+
     ## Build the output shell
     res <- vector('list', sum(hasInfo))
     names(res) <- names(hasInfo)[hasInfo]
-    
+
     ## Use UCSC names for homo_sapiens by default
     chr <- extendedMapSeqlevels(chr, ...)
-    
+
     for (i in names(hasInfo)[hasInfo]) {
         if (!basic) {
             ## Define the chr ranges
-            pos.ir <- IRanges(start = pos[start(ders[[i]])], 
+            pos.ir <- IRanges(start = pos[start(ders[[i]])],
                 width = width(ders[[i]]))
-            
+
             ## Actually build the GRanges
-            res[[i]] <- GRanges(seqnames = Rle(chr, length(ders[[i]])), 
-                ranges = pos.ir, value = mean(ders[[i]]), 
+            res[[i]] <- GRanges(seqnames = Rle(chr, length(ders[[i]])),
+                ranges = pos.ir, value = mean(ders[[i]]),
                 area = abs(sum(ders[[i]])), indexStart = start(ders[[i]]),
                 indexEnd = end(ders[[i]]))
-            
+
             ## Identify clusters
-            if (verbose) 
+            if (verbose)
                 message(paste(Sys.time(),
                     'findRegions: identifying region clusters'))
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
             cluster <- .clusterMakerRle(regionPos, maxClusterGap)
-            
+
             ## Extract DERs ranges and shift the IR to the cluster' scale
             derCWs <- cumsum(width(ranges(ders[[i]])))
-            derIR <- IRanges(start = c(1, derCWs[-length(derCWs)] + 
+            derIR <- IRanges(start = c(1, derCWs[-length(derCWs)] +
                 1), end = derCWs)
             clus <- Views(cluster, derIR)
-            
+
             ## Finally, identify the clusters
             clusterFinal <- as.integer(mean(clus))
             clusterWidth <- tapply(pos.ir, clusterFinal, function(x) {
                 max(end(x)) - min(start(x)) + 1
             })
-            
+
             res[[i]]$cluster <- Rle(clusterFinal)
             res[[i]]$clusterL <- Rle(clusterWidth[clusterFinal])
-            
+
         } else {
             ## Actually build the GRanges
-            res[[i]] <- DataFrame(area = Rle(abs(sum(ders[[i]]))), 
+            res[[i]] <- DataFrame(area = Rle(abs(sum(ders[[i]]))),
                 width = Rle(width(ders[[i]])), stat = Rle(mean(ders[[i]])),
                 check.names = FALSE)
         }
-        
+
     }
-    
+
     if (!basic) {
         ## Fix names and format
         names(res) <- gsub('Index', '', names(res))
         res <- GRangesList(res)
-        
+
         ## Finish up
         if (oneTable) {
             res <- unlist(res)
@@ -268,7 +268,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     } else {
         res <- do.call(rbind, res)
     }
-    
+
     return(res)
 }
 
@@ -280,27 +280,27 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
 #' Segment a Rle into positive, zero, and negative regions
 #'
-#' Given two cutoffs, L and U, this function slices a numerical Rle into up and 
-#' down sections. It is a wrapper for \link[IRanges]{slice} with functionality 
+#' Given two cutoffs, L and U, this function slices a numerical Rle into up and
+#' down sections. It is a wrapper for \link[IRanges]{slice} with functionality
 #' inspired from \link[bumphunter]{getSegments}.
 #'
-#' 
+#'
 #' @param x A numeric Rle.
-#' @param cutoff A numeric vector of length either 1 or 2. If length is 1, U 
-#' will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The 
-#' function will furthermore always use the minimum of cutoff for L and the 
+#' @param cutoff A numeric vector of length either 1 or 2. If length is 1, U
+#' will be cutoff and L will be -cutoff. Otherwise it specifies L and U. The
+#' function will furthermore always use the minimum of cutoff for L and the
 #' maximum for U.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
-#' @return A list of IRanges objects, one for the up segments and one for the 
+#' @return A list of IRanges objects, one for the up segments and one for the
 #' down segments.
 #'
-#' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice}, 
+#' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice},
 #' \link{findRegions}
 #'
 #' @author Leonardo Collado-Torres
 #'
-#' @keywords internal 
+#' @keywords internal
 #' @importMethodsFrom IRanges quantile
 #' @importFrom IRanges slice
 #' @import S4Vectors
@@ -313,16 +313,16 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #'
 #' ## It's quite fast
 #' system.time(segs <- derfinder:::.getSegmentsRle(data, cutoff, verbose=TRUE))
-#' 
+#'
 #' \dontrun{
-#' ## The output is different in look than the one from getSegments() but it's 
+#' ## The output is different in look than the one from getSegments() but it's
 #' ## use is similar.
-#' ## Plus it can be transformed into the same format as the ouptut from 
+#' ## Plus it can be transformed into the same format as the ouptut from
 #' ## .getSegmentsRle().
 #' library('bumphunter')
 #' cluster <- derfinder:::.clusterMakerRle(pos, 100L)
 #' foo <- function() {
-#'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff, 
+#'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff,
 #'     assumeSorted=TRUE)[c('upIndex', 'dnIndex')]
 #'     segs.ir <- lapply(segs2, function(ind) {
 #'         tmp <- lapply(ind, function(segment) {
@@ -333,18 +333,18 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #'     })
 #'     return(segs.ir)
 #' }
-#' identical(foo(), segs) 
+#' identical(foo(), segs)
 #'
 #' }
 #'
-
+#' @noRd
 .getSegmentsRle <- function(x, cutoff = quantile(x, 0.99, na.rm = TRUE), ...) {
-    
+
     ## Advanged arguments
-# @param verbose If \code{TRUE} basic status updates will be printed along the 
+# @param verbose If \code{TRUE} basic status updates will be printed along the
 # way.
     verbose <- .advanced_argument('verbose', FALSE, ...)
-    
+
     ## Select the cutoff
     if (verbose) message(paste(Sys.time(),
         '.getSegmentsRle: segmenting with cutoff(s)',
@@ -354,7 +354,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         cutoff <- c(-cutoff, cutoff)
     }
     cutoff <- sort(cutoff)
-    
+
     ## Find the segments
     result <- lapply(c('upIndex', 'dnIndex'), function(ind) {
         if(ind == 'upIndex') {
@@ -375,33 +375,33 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
 #' Make clusters of genomic locations based on distance in Rle() world
 #'
-#' Genomic locations are grouped into clusters based on distance: locations 
-#' that are close to each other are assigned to the same cluster. The operation 
-#' is performed on each chromosome independently. This is very similar to 
+#' Genomic locations are grouped into clusters based on distance: locations
+#' that are close to each other are assigned to the same cluster. The operation
+#' is performed on each chromosome independently. This is very similar to
 #' \link[bumphunter]{clusterMaker}.
 #'
 #' @details
-#' \link[bumphunter]{clusterMaker} adapted to Rle world. Assumes that the data 
+#' \link[bumphunter]{clusterMaker} adapted to Rle world. Assumes that the data
 #' is sorted and that everything is in a single chromosome.
-#' It is also almost as fast as the original version with the advantage that 
+#' It is also almost as fast as the original version with the advantage that
 #' everything is in Rle() world.
-#' 
+#'
 #' It is a a helper function for \link{findRegions}.
-#' 
+#'
 #' @param position A logical Rle indicating the chromosome positions.
-#' @param maxGap An integer. Genomic locations within \code{maxGap} from each 
+#' @param maxGap An integer. Genomic locations within \code{maxGap} from each
 #' other are labeled as part of the same cluster.
-#' @param ranges If \code{TRUE} then an IRanges object is returned instead of 
+#' @param ranges If \code{TRUE} then an IRanges object is returned instead of
 #' the usual integer Rle.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
-#' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it 
+#' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it
 #' is an IRanges object with one range per cluster.
 #'
-#' @keywords internal 
+#' @keywords internal
 #' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
-#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
-#' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
+#' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper
+#' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 #' 1.1.10.
 #' @author Leonardo Collado-Torres
 #'
@@ -416,31 +416,32 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' cluster <- .clusterMakerRle(pos, 100L)
 #' cluster
 #'
+#' @noRd
 
 .clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE, ...) {
     ## Instead of using which(), identify the regions of the chr
     ## with data
-    ir <- IRanges(start = start(position)[runValue(position)], 
+    ir <- IRanges(start = start(position)[runValue(position)],
         end = end(position)[runValue(position)])
-    
+
     ## Apply the gap reduction
     ir.red <- reduce(ir, min.gapwidth = maxGap + 1)
-    
+
     ## Identify the clusters
-    clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position, 
+    clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position,
         ir.red)))
     ## Note that sum(Views(pos, ir.red)) is faster than
     ## sapply(ir.red, function(x) sum(pos[x]))
-    
+
     ## Group the information into an IRanges object
     if (ranges) {
         csum <- cumsum(runLength(clusterIDs))
-        result <- IRanges(start = c(1, csum[-length(csum)] + 
+        result <- IRanges(start = c(1, csum[-length(csum)] +
             1), end = csum)
     } else {
         result <- clusterIDs
     }
-    
+
     ## Done
     return(result)
 }
@@ -451,13 +452,13 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Based on bumphunter::smoother
 
     ## Advanced arguments
-# @param maxClusterGap This determines the maximum gap between candidate DERs. 
+# @param maxClusterGap This determines the maximum gap between candidate DERs.
 # It should be greater than \code{maxRegionGap} (0 by default).
     maxClusterGap <- .advanced_argument('maxClusterGap', 300L, ...)
-    
+
     ## Identify clusters
     cluster <- .clusterMakerRle(position, maxGap = maxClusterGap)
-    
+
     ## Define computing cluster
     BPPARAM <- define_cluster(...)
     cores <- bpworkers(BPPARAM)
@@ -489,8 +490,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
     ## Get back a Rle
     res <- unlist(RleList(res), use.names = FALSE)
-    
-    return(res)  
+
+    return(res)
 }
 
 
@@ -499,9 +500,9 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
 .smoothFstatsFun <- function(y, x, cluster, weights, smoothFun, ...) {
     hostPackage <- environmentName(environment(smoothFun))
-    requireNamespace(hostPackage)    
+    requireNamespace(hostPackage)
     smoothed <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
-    
+
     ## Use original values if they were not smoothed
     if(any(!smoothed$smoothed)) {
         if(is(y, 'Rle')) {
@@ -509,9 +510,9 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         } else {
             smoothed$fitted[!smoothed$smoothed] <- y[!smoothed$smoothed]
         }
-        
+
     }
-    
+
     ## Extract only the smoothed data
     res <- Rle(smoothed$fitted)
     return(res)

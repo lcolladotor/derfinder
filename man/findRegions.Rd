@@ -10,20 +10,20 @@ findRegions(position = NULL, fstats, chr, oneTable = TRUE,
   smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
-\item{position}{A logical Rle of genomic positions. This is generated in 
-\link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage} 
+\item{position}{A logical Rle of genomic positions. This is generated in
+\link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage}
 if \code{colsubset} is not \code{NULL}.}
 
-\item{fstats}{A numeric Rle with the F-statistics. Usually obtained using 
+\item{fstats}{A numeric Rle with the F-statistics. Usually obtained using
 \link{calculateStats}.}
 
 \item{chr}{A single element character vector specifying the chromosome name.}
 
-\item{oneTable}{If \code{TRUE} only one GRanges is returned. 
-Otherwise, a GRangesList with two components is returned: one for the 
+\item{oneTable}{If \code{TRUE} only one GRanges is returned.
+Otherwise, a GRangesList with two components is returned: one for the
 regions with positive values and one for the negative values.}
 
-\item{maxClusterGap}{This determines the maximum gap between candidate DERs. 
+\item{maxClusterGap}{This determines the maximum gap between candidate DERs.
 It should be greater than \code{maxRegionGap} (0 by default).}
 
 \item{cutoff}{Threshold applied to the \code{fstats} used to determine the #' regions.}
@@ -39,7 +39,7 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 \link[bumphunter]{smoother}.}
 
 \item{smoothFunction}{A function to be used for smoothing the F-statistics.
-Two functions are provided by the \code{bumphunter} package: 
+Two functions are provided by the \code{bumphunter} package:
 \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
 an element called \code{$fitted} that contains the smoothed F-statistics and
@@ -50,12 +50,12 @@ original values will be used.}
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
 \item{basic }{ If \code{TRUE} a DataFrame is returned that has only basic
-information on the candidate DERs. This is used in \link{calculatePvalues} 
+information on the candidate DERs. This is used in \link{calculatePvalues}
 to speed up permutation calculations. Default: \code{FALSE}.}
-\item{maxRegionGap }{ This determines the maximum number of gaps between two 
+\item{maxRegionGap }{ This determines the maximum number of gaps between two
 genomic positions to be considered part of the same candidate region. The
 default is 0L.}
 }
@@ -64,29 +64,29 @@ Passed to \link{extendedMapSeqlevels} and the internal function
 
 When \code{smooth = TRUE}, \code{...} is passed to the internal function
 \code{.smootherFstats}. This internal function has the advanced argument
-\code{maxClusterGap} (same as above) and passes \code{...} to 
+\code{maxClusterGap} (same as above) and passes \code{...} to
 \link{define_cluster} and the formal arguments of \code{smoothFun}.}
 }
 \value{
-Either a GRanges or a GRangesList as determined by \code{oneTable}. 
+Either a GRanges or a GRangesList as determined by \code{oneTable}.
 Each of them has the following metadata variables.
 \describe{
 \item{value }{ The mean of the values of \code{y} for the given region.}
-\item{area }{  The absolute value of the sum of the values of \code{y} for 
+\item{area }{  The absolute value of the sum of the values of \code{y} for
 the given region.}
-\item{indexStart }{ The start position of the region in terms of the index 
+\item{indexStart }{ The start position of the region in terms of the index
 for \code{y}.}
-\item{indexEnd }{ The end position of the region in terms of the index for 
+\item{indexEnd }{ The end position of the region in terms of the index for
 \code{y}.}
 \item{cluster }{ The cluser ID.}
 \item{clusterL }{ The total length of the cluster.}
 }
 }
 \description{
-Find genomic regions for which a numeric vector is above (or below) 
-predefined thresholds. In other words, this function finds the candidate 
-Differentially Expressed Regions (candidate DERs). This is similar to 
-\link[bumphunter]{regionFinder} and is a helper function for 
+Find genomic regions for which a numeric vector is above (or below)
+predefined thresholds. In other words, this function finds the candidate
+Differentially Expressed Regions (candidate DERs). This is similar to
+\link[bumphunter]{regionFinder} and is a helper function for
 \link{calculatePvalues}.
 }
 \details{
@@ -94,7 +94,7 @@ Differentially Expressed Regions (candidate DERs). This is similar to
 }
 \examples{
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, 
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
     colsubset=NULL)
 
 ## Get the F statistics
@@ -120,8 +120,8 @@ regs_smooth
 
 }
 \references{
-Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper 
-D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version 
+Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper
+D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 1.1.10.
 }
 \seealso{

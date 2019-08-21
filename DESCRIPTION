@@ -2,8 +2,8 @@ Package: derfinder
 Type: Package
 Title: Annotation-agnostic differential expression analysis of RNA-seq data at
     base-pair resolution via the DER Finder approach
-Version: 1.19.3
-Date: 2019-06-18
+Version: 1.19.4
+Date: 2019-08-21
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcolladotor@gmail.com", comment = c(ORCID = "0000-0003-2140-308X")),
     person(c("Alyssa", "C."), "Frazee", role = c("ctb"),
@@ -60,4 +60,4 @@ URL: https://github.com/lcolladotor/derfinder
 BugReports: https://support.bioconductor.org/t/derfinder/
 biocViews: DifferentialExpression, Sequencing, RNASeq, ChIPSeq,
     DifferentialPeakCalling, Software, ImmunoOncology
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
