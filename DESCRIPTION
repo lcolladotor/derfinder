@@ -2,7 +2,7 @@ Package: derfinder
 Type: Package
 Title: Annotation-agnostic differential expression analysis of RNA-seq data at
     base-pair resolution via the DER Finder approach
-Version: 1.19.4
+Version: 1.19.5
 Date: 2019-08-21
 Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     = "lcolladotor@gmail.com", comment = c(ORCID = "0000-0003-2140-308X")),
@@ -13,7 +13,7 @@ Authors@R: c(person("Leonardo", "Collado-Torres", role = c("aut", "cre"), email
     "Leek", role = c("aut", "ths"), email = "jtleek@gmail.com",
     comment = c(ORCID = "0000-0002-2873-2671")))
 Depends:
-    R(>= 3.2)
+    R (>= 3.5.0)
 Imports:
     BiocGenerics (>= 0.25.1),
     AnnotationDbi (>= 1.27.9),
@@ -31,7 +31,7 @@ Imports:
     qvalue (>= 1.99.0),
     Rsamtools (>= 1.25.0),
     rtracklayer,
-    S4Vectors (>= 0.9.38)
+    S4Vectors (>= 0.23.19)
 Suggests:
     BiocStyle (>= 2.5.19),
     biovizBase,
