@@ -39,7 +39,7 @@ BiocManager::valid()
 
 `r Biocpkg('derfinder')` is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. That is, packages like `r Biocpkg('Rsamtools')`, `r Biocpkg('GenomicAlignments')` and `r Biocpkg('rtracklayer')` that allow you to import the data. A `r Biocpkg('derfinder')` user is not expected to deal with those packages directly but will need to be familiar with `r Biocpkg('GenomicRanges')` to understand the results `r Biocpkg('derfinder')` generates. It might also prove to be highly beneficial to check the `r Biocpkg('BiocParallel')` package for performing parallel computations.
 
-If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startBioC/#.VkOKbq6rRuU).
+If you are asking yourself the question "Where do I start using Bioconductor?" you might be interested in [this blog post](http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU).
 
 ## Asking for help
 
