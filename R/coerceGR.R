@@ -1,31 +1,31 @@
 #' Coerce the coverage to a GRanges object for a given sample
 #' 
-#' Given the output of \link{fullCoverage}, coerce the coverage to a 
-#' \link[GenomicRanges:GRanges-class]{GRanges} object.
+#' Given the output of [fullCoverage], coerce the coverage to a 
+#' [GRanges][GenomicRanges::GRanges-class] object.
 #'
 #' @param sample The name or integer index of the sample of interest to coerce
-#' to a \code{GRanges} object.
+#' to a `GRanges` object.
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}.
+#' [loadCoverage] used with `returnCoverage = TRUE`. Can be generated 
+#' using [fullCoverage].
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{seqlengths }{ A named vector with the sequence lengths of the 
-#' chromosomes. This argument is passed to \link[GenomicRanges:GRanges-class]{GRanges}. By
-#' default this is \code{NULL} and inferred from the data.}
+#' chromosomes. This argument is passed to [GRanges][GenomicRanges::GRanges-class]. By
+#' default this is `NULL` and inferred from the data.}
 #' }
-#' Passed to \link{define_cluster}.
+#' Passed to [define_cluster].
 #'
-#' @return A \link[GenomicRanges:GRanges-class]{GRanges} object with \code{score} metadata 
+#' @return A [GRanges][GenomicRanges::GRanges-class] object with `score` metadata 
 #' vector containing the coverage information for the specified sample. The 
 #' ranges reported are only those for regions of the genome with coverage 
 #' greater than zero.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges:GRanges-class]{GRanges}
+#' @seealso [GRanges][GenomicRanges::GRanges-class]
 #' @export
 #'
 #' @importFrom BiocParallel bpmapply

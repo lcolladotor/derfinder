@@ -1,25 +1,25 @@
 #' Export coverage to BigWig files
 #'
-#' Using output from \link{fullCoverage}, export the coverage from all the
-#' samples to BigWig files using \link{createBwSample}.
+#' Using output from [fullCoverage], export the coverage from all the
+#' samples to BigWig files using [createBwSample].
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}.
+#' [loadCoverage] used with `returnCoverage = TRUE`. Can be generated 
+#' using [fullCoverage].
 #' @param path The path where the BigWig files will be created.
-#' @param keepGR If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} objects 
-#' created by \link{coerceGR} grouped into a \link[GenomicRanges:GRangesList-class]{GRangesList} 
+#' @param keepGR If `TRUE`, the [GRanges][GenomicRanges::GRanges-class] objects 
+#' created by [coerceGR] grouped into a [GRangesList][GenomicRanges::GRangesList-class] 
 #' are returned. Otherwise they are discarded.
-#' @param ... Arguments passed to \link{createBwSample}.
+#' @param ... Arguments passed to [createBwSample].
 #'
-#' @return If \code{keepGR = TRUE}, then a \link[GenomicRanges:GRangesList-class]{GRangesList}
-#' with the output for \link{coerceGR} for each of the samples.
+#' @return If `keepGR = TRUE`, then a [GRangesList][GenomicRanges::GRangesList-class]
+#' with the output for [coerceGR] for each of the samples.
 #'
 #' @details Use at most one core per chromosome.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer]{export}, 
-#' \link{createBwSample}, \link{coerceGR}
+#' @seealso [GRangesList][GenomicRanges::GRangesList-class], [export][rtracklayer::export], 
+#' [createBwSample], [coerceGR]
 #' @export
 #'
 #' @importMethodsFrom GenomicRanges names

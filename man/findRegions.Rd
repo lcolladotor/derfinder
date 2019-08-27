@@ -36,11 +36,11 @@ permutation calculations.}
 is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 
 \item{weights}{Weights used by the smoother as described in
-\link[bumphunter]{smoother}.}
+\link[bumphunter:smoother]{smoother}.}
 
 \item{smoothFunction}{A function to be used for smoothing the F-statistics.
 Two functions are provided by the \code{bumphunter} package:
-\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+\link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
 an element called \code{$fitted} that contains the smoothed F-statistics and
 an element claled \code{$smoothed} that is a logical vector indicating
@@ -86,11 +86,11 @@ for \code{y}.}
 Find genomic regions for which a numeric vector is above (or below)
 predefined thresholds. In other words, this function finds the candidate
 Differentially Expressed Regions (candidate DERs). This is similar to
-\link[bumphunter]{regionFinder} and is a helper function for
+\link[bumphunter:regionFinder]{regionFinder} and is a helper function for
 \link{calculatePvalues}.
 }
 \details{
-\link[bumphunter]{regionFinder} adapted to Rle world.
+\link[bumphunter:regionFinder]{regionFinder} adapted to Rle world.
 }
 \examples{
 ## Preprocess the data

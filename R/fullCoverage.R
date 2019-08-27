@@ -9,51 +9,51 @@
 #' @param files A character vector with the full path to the sample BAM files
 #' (or BigWig files). 
 #' The names are used for the column names of the DataFrame. Check 
-#' \link{rawFiles} for constructing \code{files}. \code{files} can also be a 
-#' \code{BamFileList} object created with \link[Rsamtools:BamFile-class]{BamFileList} or a
-#' \code{BigWigFileList} object created with \link[rtracklayer:BigWigFile]{BigWigFileList}.
+#' [rawFiles] for constructing `files`. `files` can also be a 
+#' `BamFileList` object created with [BamFileList][Rsamtools::BamFile-class] or a
+#' `BigWigFileList` object created with [BigWigFileList][rtracklayer::BigWigFile].
 #' @param chrs The chromosome of the files to read. The format has to match the
 #' one used in the input files.
-#' @param bai The full path to the BAM index files. If \code{NULL} it is 
+#' @param bai The full path to the BAM index files. If `NULL` it is 
 #' assumed that the BAM index files are in the same location as the BAM files 
-#' and that they have the .bai extension. Ignored if \code{files} is a 
-#' \code{BamFileList} object.
-#' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL}, 
+#' and that they have the .bai extension. Ignored if `files` is a 
+#' `BamFileList` object.
+#' @param chrlens The chromosome lengths in base pairs. If it's `NULL`, 
 #' the chromosome length is extracted from the BAM files. Otherwise, it should 
-#' have the same length as \code{chrs}.
-#' @param outputs This argument is passed to the \code{output} argument of 
-#' \link{loadCoverage}. If \code{NULL} or \code{'auto'} it is then recycled.
+#' have the same length as `chrs`.
+#' @param outputs This argument is passed to the `output` argument of 
+#' [loadCoverage]. If `NULL` or `'auto'` it is then recycled.
 #' @inheritParams loadCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{mc.cores }{ How many cores to use for reading the chromosome
 #' information. There's no benefit of using a number greater than the number
 #' of chromosomes. Also note that your harddisk speed will limit how much
-#' you get from using a higher \code{mc.cores} value.}
+#' you get from using a higher `mc.cores` value.}
 #' \item{mc.cores.load }{ Controls the number of cores to be used per chr for 
 #' loading the data which is only useful in the scenario that you are loading
-#' in genome tiles. If not supplied, it uses \code{mc.cores} for
-#' \link{loadCoverage}. Default: 1. If you are using genome tiles, the total
-#' number of cores you'll use will be \code{mc.cores} times 
-#' \code{mc.cores.load}.}
+#' in genome tiles. If not supplied, it uses `mc.cores` for
+#' [loadCoverage]. Default: 1. If you are using genome tiles, the total
+#' number of cores you'll use will be `mc.cores` times 
+#' `mc.cores.load`.}
 #' }
-#' Passed to \link{loadCoverage}, \link{define_cluster} and 
-#' \link{extendedMapSeqlevels}.
-#' Note that \link{filterData} is used internally 
-#' by \link{loadCoverage} (and hence \link{fullCoverage}) and has the important 
-#' arguments \code{totalMapped} and \code{targetSize} which can be used to 
-#' normalize the coverage by library size. See \link{getTotalMapped} for
-#' calculating \code{totalMapped}.
+#' Passed to [loadCoverage], [define_cluster] and 
+#' [extendedMapSeqlevels].
+#' Note that [filterData] is used internally 
+#' by [loadCoverage] (and hence [fullCoverage]) and has the important 
+#' arguments `totalMapped` and `targetSize` which can be used to 
+#' normalize the coverage by library size. See [getTotalMapped] for
+#' calculating `totalMapped`.
 #'
 #' @return A list with one element per chromosome.
 #' \describe{ Each element is a DataFrame with the coverage information 
-#' produced by \link{loadCoverage}.
+#' produced by [loadCoverage].
 #' }
 #'
-#' @seealso \link{loadCoverage}, \link{filterData}, \link{getTotalMapped}
+#' @seealso [loadCoverage], [filterData], [getTotalMapped]
 #'
 #' @author Leonardo Collado-Torres
 #' @export

@@ -3,73 +3,73 @@
 #' Find genomic regions for which a numeric vector is above (or below)
 #' predefined thresholds. In other words, this function finds the candidate
 #' Differentially Expressed Regions (candidate DERs). This is similar to
-#' \link[bumphunter]{regionFinder} and is a helper function for
-#' \link{calculatePvalues}.
+#' [regionFinder][bumphunter::regionFinder] and is a helper function for
+#' [calculatePvalues].
 #'
 #' @param position A logical Rle of genomic positions. This is generated in
-#' \link{loadCoverage}. Note that it gets updated in \link{preprocessCoverage}
-#' if \code{colsubset} is not \code{NULL}.
+#' [loadCoverage]. Note that it gets updated in [preprocessCoverage]
+#' if `colsubset` is not `NULL`.
 #' @param fstats A numeric Rle with the F-statistics. Usually obtained using
-#' \link{calculateStats}.
+#' [calculateStats].
 #' @param chr A single element character vector specifying the chromosome name.
-#' @param oneTable If \code{TRUE} only one GRanges is returned.
+#' @param oneTable If `TRUE` only one GRanges is returned.
 #' Otherwise, a GRangesList with two components is returned: one for the
 #' regions with positive values and one for the negative values.
 #' @param maxClusterGap This determines the maximum gap between candidate DERs.
-#' It should be greater than \code{maxRegionGap} (0 by default).
-#' @param cutoff Threshold applied to the \code{fstats} used to determine the #' regions.
+#' It should be greater than `maxRegionGap` (0 by default).
+#' @param cutoff Threshold applied to the `fstats` used to determine the #' regions.
 #' @param segmentIR An IRanges object with the genomic positions that are
-#' potentials DERs. This is used in \link{calculatePvalues} to speed up
+#' potentials DERs. This is used in [calculatePvalues] to speed up
 #' permutation calculations.
-#' @param smooth Whether to smooth the F-statistics (\code{fstats}) or not. This
-#' is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.
+#' @param smooth Whether to smooth the F-statistics (`fstats`) or not. This
+#' is by default `FALSE`. For RNA-seq data we recommend using `FALSE`.
 #' @param weights Weights used by the smoother as described in
-#' \link[bumphunter]{smoother}.
+#' [smoother][bumphunter::smoother].
 #' @param smoothFunction A function to be used for smoothing the F-statistics.
-#' Two functions are provided by the \code{bumphunter} package:
-#' \link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+#' Two functions are provided by the `bumphunter` package:
+#' [loessByCluster][bumphunter::loessByCluster] and [runmedByCluster][bumphunter::runmedByCluster]. If
 #' you are using your own custom function, it has to return a named list with
-#' an element called \code{$fitted} that contains the smoothed F-statistics and
-#' an element claled \code{$smoothed} that is a logical vector indicating
+#' an element called `$fitted` that contains the smoothed F-statistics and
+#' an element claled `$smoothed` that is a logical vector indicating
 #' whether the F-statistics were smoothed or not. If they are not smoothed, the
 #' original values will be used.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along
 #' the way.}
-#' \item{basic }{ If \code{TRUE} a DataFrame is returned that has only basic
-#' information on the candidate DERs. This is used in \link{calculatePvalues}
-#' to speed up permutation calculations. Default: \code{FALSE}.}
+#' \item{basic }{ If `TRUE` a DataFrame is returned that has only basic
+#' information on the candidate DERs. This is used in [calculatePvalues]
+#' to speed up permutation calculations. Default: `FALSE`.}
 #' \item{maxRegionGap }{ This determines the maximum number of gaps between two
 #' genomic positions to be considered part of the same candidate region. The
 #' default is 0L.}
 #' }
-#' Passed to \link{extendedMapSeqlevels} and the internal function
-#' \code{.getSegmentsRle} that has by default \code{verbose = FALSE}.
+#' Passed to [extendedMapSeqlevels] and the internal function
+#' `.getSegmentsRle` that has by default `verbose = FALSE`.
 #'
-#' When \code{smooth = TRUE}, \code{...} is passed to the internal function
-#' \code{.smootherFstats}. This internal function has the advanced argument
-#' \code{maxClusterGap} (same as above) and passes \code{...} to
-#' \link{define_cluster} and the formal arguments of \code{smoothFun}.
+#' When `smooth = TRUE`, `...` is passed to the internal function
+#' `.smootherFstats`. This internal function has the advanced argument
+#' `maxClusterGap` (same as above) and passes `...` to
+#' [define_cluster] and the formal arguments of `smoothFun`.
 #'
-#' @return Either a GRanges or a GRangesList as determined by \code{oneTable}.
+#' @return Either a GRanges or a GRangesList as determined by `oneTable`.
 #' Each of them has the following metadata variables.
 #' \describe{
-#' \item{value }{ The mean of the values of \code{y} for the given region.}
-#' \item{area }{  The absolute value of the sum of the values of \code{y} for
+#' \item{value }{ The mean of the values of `y` for the given region.}
+#' \item{area }{  The absolute value of the sum of the values of `y` for
 #' the given region.}
 #' \item{indexStart }{ The start position of the region in terms of the index
-#' for \code{y}.}
+#' for `y`.}
 #' \item{indexEnd }{ The end position of the region in terms of the index for
-#' \code{y}.}
+#' `y`.}
 #' \item{cluster }{ The cluser ID.}
 #' \item{clusterL }{ The total length of the cluster.}
 #' }
 #'
-#' @details \link[bumphunter]{regionFinder} adapted to Rle world.
+#' @details [regionFinder][bumphunter::regionFinder] adapted to Rle world.
 #'
-#' @seealso \link{calculatePvalues}
+#' @seealso [calculatePvalues]
 #'
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper
 #' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
@@ -281,8 +281,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' Segment a Rle into positive, zero, and negative regions
 #'
 #' Given two cutoffs, L and U, this function slices a numerical Rle into up and
-#' down sections. It is a wrapper for \link[IRanges]{slice} with functionality
-#' inspired from \link[bumphunter]{getSegments}.
+#' down sections. It is a wrapper for [slice][IRanges::slice] with functionality
+#' inspired from [getSegments][bumphunter::getSegments].
 #'
 #'
 #' @param x A numeric Rle.
@@ -295,8 +295,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' @return A list of IRanges objects, one for the up segments and one for the
 #' down segments.
 #'
-#' @seealso \link[bumphunter]{getSegments}, \link[IRanges]{slice},
-#' \link{findRegions}
+#' @seealso [getSegments][bumphunter::getSegments], [slice][IRanges::slice],
+#' [findRegions]
 #'
 #' @author Leonardo Collado-Torres
 #'
@@ -378,28 +378,28 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' Genomic locations are grouped into clusters based on distance: locations
 #' that are close to each other are assigned to the same cluster. The operation
 #' is performed on each chromosome independently. This is very similar to
-#' \link[bumphunter]{clusterMaker}.
+#' [clusterMaker][bumphunter::clusterMaker].
 #'
 #' @details
-#' \link[bumphunter]{clusterMaker} adapted to Rle world. Assumes that the data
+#' [clusterMaker][bumphunter::clusterMaker] adapted to Rle world. Assumes that the data
 #' is sorted and that everything is in a single chromosome.
 #' It is also almost as fast as the original version with the advantage that
 #' everything is in Rle() world.
 #'
-#' It is a a helper function for \link{findRegions}.
+#' It is a a helper function for [findRegions].
 #'
 #' @param position A logical Rle indicating the chromosome positions.
-#' @param maxGap An integer. Genomic locations within \code{maxGap} from each
+#' @param maxGap An integer. Genomic locations within `maxGap` from each
 #' other are labeled as part of the same cluster.
-#' @param ranges If \code{TRUE} then an IRanges object is returned instead of
+#' @param ranges If `TRUE` then an IRanges object is returned instead of
 #' the usual integer Rle.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #'
-#' @return An integer Rle with the cluster IDs. If \code{ranges=TRUE} then it
+#' @return An integer Rle with the cluster IDs. If `ranges=TRUE` then it
 #' is an IRanges object with one range per cluster.
 #'
 #' @keywords internal
-#' @seealso \link[bumphunter]{clusterMaker}, \link{findRegions}
+#' @seealso [clusterMaker][bumphunter::clusterMaker], [findRegions]
 #' @references Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper
 #' D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 #' 1.1.10.

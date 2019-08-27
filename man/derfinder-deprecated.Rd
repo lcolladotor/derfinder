@@ -27,8 +27,8 @@ These functions are provided for compatibility with older version of
 The following functions are deprecated and will be made defunct.
 
 \itemize{
-    \item{advancedArg}{ Not needed now that the advanced arguments are
-    documented on the help pages of each function.}
+\item{advancedArg}{ Not needed now that the advanced arguments are
+documented on the help pages of each function.}
 }
 }
 \examples{

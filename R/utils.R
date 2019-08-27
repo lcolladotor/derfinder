@@ -18,7 +18,7 @@
 #'
 #' @param fun A function to use (the actual function, not the character)
 #' @param ... A set of arguments. Only those matching the formal definition of
-#' \code{fun} will be used when evaluating \code{fun}.
+#' `fun` will be used when evaluating `fun`.
 #' @param hiddenArgs A named list of additional arguments to use that are not
 #' part of the formal definition of the function.
 #'

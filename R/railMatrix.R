@@ -4,15 +4,15 @@
 #' Rail (available at http://rail.bio) generates coverage BigWig files. These
 #' files are faster to load in R and to process. Rail creates an un-adjusted
 #' coverage BigWig file per sample and an adjusted summary coverage BigWig file
-#' by chromosome (median or mean). \link{railMatrix} reads in the mean (or
+#' by chromosome (median or mean). [railMatrix] reads in the mean (or
 #' median) coverage BigWig file and applies a threshold cutoff to identify
 #' expressed regions (ERs). Then it goes back to the sample coverage BigWig
 #' files and extracts the base level coverage for each sample. Finally it
 #' summarizes this information in a matrix with one row per ERs and one column
-#' per sample. This function is similar to \link{regionMatrix} but is faster
+#' per sample. This function is similar to [regionMatrix] but is faster
 #' thanks to the advantages presented by BigWig files.
 #'
-#' Given a set of un-filtered coverage data (see \link{fullCoverage}), create
+#' Given a set of un-filtered coverage data (see [fullCoverage]), create
 #' candidate regions by applying a cutoff on the coverage values,
 #' and obtain a count matrix where the number of rows corresponds to the number
 #' of candidate regions and the number of columns corresponds to the number of
@@ -24,44 +24,44 @@
 #' @param summaryFiles A character vector (or BigWigFileList) with the paths to
 #' the summary BigWig files created by Rail. Either mean or median files. These
 #' are library size adjusted by default in Rail. The order of the files in this
-#' vector must match the order in \code{chrs}.
+#' vector must match the order in `chrs`.
 #' @param sampleFiles A character vector with the paths to the BigWig files
 #' by sample. These files are unadjusted for library size.
 #' @param targetSize The target library size to adjust the coverage to. Used
-#' only when \code{totalMapped} is specified. By default, it adjusts to
+#' only when `totalMapped` is specified. By default, it adjusts to
 #' libraries with 40 million reads, which matches the default used in Rail.
 #' @inheritParams filterData
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
 #' @param maxClusterGap This determines the maximum gap between candidate ERs.
 #' @param file.cores Number of cores used for loading the BigWig files per chr.
-#' @param chrlens The chromosome lengths in base pairs. If it's \code{NULL},
+#' @param chrlens The chromosome lengths in base pairs. If it's `NULL`,
 #' the chromosome length is extracted from the BAM files. Otherwise, it should
-#' have the same length as \code{chrs}.
+#' have the same length as `chrs`.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along
-#' the way. Default: \code{TRUE}.}
-#' \item{verbose.load }{ If \code{TRUE} basic status updates will be printed
-#' along the way when loading data. Default: \code{TRUE}.}
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along
+#' the way. Default: `TRUE`.}
+#' \item{verbose.load }{ If `TRUE` basic status updates will be printed
+#' along the way when loading data. Default: `TRUE`.}
 #' \item{BPPARAM.railChr }{ A BPPARAM object to use for the chr step. Set to
-#' \link[BiocParallel:SerialParam-class]{SerialParam} when \code{file.cores = 1} and
-#' \link[BiocParallel:SnowParam-class]{SnowParam} otherwise.}
+#' [SerialParam][BiocParallel::SerialParam-class] when `file.cores = 1` and
+#' [SnowParam][BiocParallel::SnowParam-class] otherwise.}
 #' \item{chunksize }{ Chunksize to use. Default: 1000.}
 #' }
-#' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
+#' Passed to [filterData], [findRegions] and [define_cluster].
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list
 #' with two components.
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
-#' returned by \link{findRegions}.}
+#' returned by [findRegions].}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
 #'
-#' @details This function uses several other \link{derfinder-package}
+#' @details This function uses several other [derfinder-package]
 #' functions. Inspect the code if interested.
 #'
 #' You should use at most one core per chromosome.
@@ -72,6 +72,7 @@
 #' @importFrom BiocParallel bpmapply
 #' @importFrom GenomeInfoDb 'seqlengths<-'
 #' @importMethodsFrom GenomicRanges reduce
+#' @importFrom stats runif
 #'
 #' @examples
 #'

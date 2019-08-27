@@ -9,44 +9,44 @@ annotateRegions(regions, genomicState, annotate = TRUE, ...)
 \arguments{
 \item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
 
-\item{genomicState}{A GRanges object created with \link{makeGenomicState}. 
-It can be either the \code{genomicState$fullGenome} or 
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
 \code{genomicState$codingGenome} component.}
 
-\item{annotate}{If \code{TRUE} then the regions are annotated by the genomic 
-state. Otherwise, only the overlaps between the regions and the genomic 
+\item{annotate}{If \code{TRUE} then the regions are annotated by the genomic
+state. Otherwise, only the overlaps between the regions and the genomic
 states are computed.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
 \item{ignore.strand }{ Passed on to
-\link[GenomicRanges]{findOverlaps-methods} and
+\link[GenomicRanges:findOverlaps-methods]{findOverlaps-methods} and
 \link[GenomicRanges:findOverlaps-methods]{countOverlaps}. Default: \code{TRUE}.}
 }
 Passed to \link{extendedMapSeqlevels}, \link[GenomicRanges:findOverlaps-methods]{countOverlaps}
-and \link[GenomicRanges]{findOverlaps-methods}.}
+and \link[GenomicRanges:findOverlaps-methods]{findOverlaps-methods}.}
 }
 \value{
-A list with elements \code{countTable} and \code{annotationList} 
-(only if \code{annotate=TRUE}). 
+A list with elements \code{countTable} and \code{annotationList}
+(only if \code{annotate=TRUE}).
 \describe{
-\item{countTable }{This is a data.frame with the number of overlaps from the 
-regions vs the genomic states with one type per column. For example, if 
-\code{fullOrCoding='full'} then the columns are \code{exon}, 
+\item{countTable }{This is a data.frame with the number of overlaps from the
+regions vs the genomic states with one type per column. For example, if
+\code{fullOrCoding='full'} then the columns are \code{exon},
 \code{intergenic} and \code{intron}.}
-\item{annotationList }{This is a \code{GRangesList} with the genomic states 
-that overlapped with the regions. The 
-names of this \code{GRangesList} correspond to the region index in 
+\item{annotationList }{This is a \code{GRangesList} with the genomic states
+that overlapped with the regions. The
+names of this \code{GRangesList} correspond to the region index in
 \code{regions}.}
 }
 }
 \description{
-This function takes the regions found in \link{calculatePvalues} and assigns 
-them genomic states contructed with \link{makeGenomicState}. The main 
-workhorse functions are \link[GenomicRanges:findOverlaps-methods]{countOverlaps} and 
+This function takes the regions found in \link{calculatePvalues} and assigns
+them genomic states contructed with \link{makeGenomicState}. The main
+workhorse functions are \link[GenomicRanges:findOverlaps-methods]{countOverlaps} and
 \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
 }
 \details{

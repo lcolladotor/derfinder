@@ -15,8 +15,8 @@ analyzeChr(chr, coverageInfo, models, cutoffPre = 5,
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE} and
 the resulting \code{GRanges} object.}
 
-\item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with 
-the coverage data and a logical Rle --\code{$position}-- with the positions 
+\item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
+the coverage data and a logical Rle --\code{$position}-- with the positions
 that passed the cutoff. This object is generated using \link{loadCoverage}.
 You should have specified a cutoff value for \link{loadCoverage} unless
 that you are using \code{colsubset} which will force a filtering step
@@ -24,61 +24,61 @@ with \link{filterData} when running \link{preprocessCoverage}.}
 
 \item{models}{The output from \link{makeModels}.}
 
-\item{cutoffPre}{This argument is passed to \link{preprocessCoverage} 
+\item{cutoffPre}{This argument is passed to \link{preprocessCoverage}
 (\code{cutoff}).}
 
-\item{cutoffFstat}{This is used to determine the cutoff argument of 
-\link{calculatePvalues} and it's behaviour is determined by 
+\item{cutoffFstat}{This is used to determine the cutoff argument of
+\link{calculatePvalues} and it's behaviour is determined by
 \code{cutoffType}.}
 
-\item{cutoffType}{If set to \code{empirical}, the \code{cutoffFstat} 
-(example: 0.99) quantile is used via \link{quantile}. If set to 
-\code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is 
-calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is 
+\item{cutoffType}{If set to \code{empirical}, the \code{cutoffFstat}
+(example: 0.99) quantile is used via \link{quantile}. If set to
+\code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is
+calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is
 passed to \link{calculatePvalues} without any other calculation.}
 
-\item{nPermute}{The number of permutations. Note that for a full chromosome, 
-a small amount (10) of permutations is sufficient. If set to 0, no 
-permutations are performed and thus no null regions are used, however, the 
+\item{nPermute}{The number of permutations. Note that for a full chromosome,
+a small amount (10) of permutations is sufficient. If set to 0, no
+permutations are performed and thus no null regions are used, however, the
 \code{$regions} component is created.}
 
-\item{seeds}{An integer vector of length \code{nPermute} specifying the 
+\item{seeds}{An integer vector of length \code{nPermute} specifying the
 seeds to be used for each permutation. If \code{NULL} no seeds are used.}
 
-\item{groupInfo}{A factor specifying the group membership of each sample 
-that can later be used with the plotting functions in the 
+\item{groupInfo}{A factor specifying the group membership of each sample
+that can later be used with the plotting functions in the
 \code{derfinderPlot} package.}
 
-\item{txdb}{This argument is passed to 
-\link[bumphunter]{annotateTranscripts}. If \code{NULL}, 
-\link[TxDb.Hsapiens.UCSC.hg19.knownGene:package]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
+\item{txdb}{This argument is passed to
+\link[bumphunter:annotateTranscripts]{annotateTranscripts}. If \code{NULL},
+\link[TxDb.Hsapiens.UCSC.hg19.knownGene:package]{TxDb.Hsapiens.UCSC.hg19.knownGene}
 is used.}
 
-\item{writeOutput}{If \code{TRUE}, output Rdata files are created at each 
-step inside a directory with the chromosome name (example: 'chr21' if 
-\code{chrnum='21'}). One Rdata file is created for each component described 
+\item{writeOutput}{If \code{TRUE}, output Rdata files are created at each
+step inside a directory with the chromosome name (example: 'chr21' if
+\code{chrnum='21'}). One Rdata file is created for each component described
 in the return section.}
 
-\item{runAnnotation}{If \code{TRUE} \link[bumphunter]{annotateTranscripts} 
-and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.}
+\item{runAnnotation}{If \code{TRUE} \link[bumphunter:annotateTranscripts]{annotateTranscripts}
+and \link[bumphunter:matchGenes]{matchGenes} are run. Otherwise these steps are skipped.}
 
-\item{lowMemDir}{If specified, each chunk is saved into a separate Rdata 
-file under \code{lowMemDir} and later loaded in 
-\link[derfinderHelper]{fstats.apply} when 
-running \link{calculateStats} and \link{calculatePvalues}. Using this option 
-helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
-loads only the data needed for the chunk processing. The downside is a bit 
+\item{lowMemDir}{If specified, each chunk is saved into a separate Rdata
+file under \code{lowMemDir} and later loaded in
+\link[derfinderHelper:fstats.apply]{fstats.apply} when
+running \link{calculateStats} and \link{calculatePvalues}. Using this option
+helps reduce the memory load as each fork in \link[BiocParallel:bplapply]{bplapply}
+loads only the data needed for the chunk processing. The downside is a bit
 longer computation time due to input/output.}
 
 \item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
 is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 
 \item{weights}{Weights used by the smoother as described in
-\link[bumphunter]{smoother}.}
+\link[bumphunter:smoother]{smoother}.}
 
 \item{smoothFunction}{A function to be used for smoothing the F-statistics.
 Two functions are provided by the \code{bumphunter} package:
-\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+\link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
 an element called \code{$fitted} that contains the smoothed F-statistics and
 an element claled \code{$smoothed} that is a logical vector indicating
@@ -88,17 +88,17 @@ original values will be used.}
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way. Default \code{TRUE}.}
 \item{scalefac }{ This argument is passed to \link{preprocessCoverage}.}
 \item{chunksize }{ This argument is passed to \link{preprocessCoverage}.}
-\item{returnOutput }{ If \code{TRUE}, it returns a list with the results 
+\item{returnOutput }{ If \code{TRUE}, it returns a list with the results
 from each step. Otherwise, it returns \code{NULL}. Default: the opposite of
 \code{writeOutput}.}
 }
 Passed to \link{extendedMapSeqlevels}, \link{preprocessCoverage},
 \link{calculateStats}, \link{calculatePvalues},
-\link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes},
+\link[bumphunter:annotateTranscripts]{annotateTranscripts}, \link[bumphunter:matchGenes]{matchGenes},
 and \link{define_cluster}.}
 }
 \value{
@@ -109,22 +109,22 @@ If \code{returnOutput=TRUE}, a list with six components:
 \item{coveragePrep }{ The output from \link{preprocessCoverage}.}
 \item{fstats}{ The output from \link{calculateStats}.}
 \item{regions}{ The output from \link{calculatePvalues}.}
-\item{annotation}{ The output from \link[bumphunter]{matchGenes}.}
+\item{annotation}{ The output from \link[bumphunter:matchGenes]{matchGenes}.}
 }
-These are the same components that are written to Rdata files if 
+These are the same components that are written to Rdata files if
 \code{writeOutput=TRUE}.
 }
 \description{
-This is a major wrapper for running several key functions from this package. 
-It is meant to be used after \link{loadCoverage} has been used for a 
-specific chromosome. The steps run include \link{makeModels}, 
-\link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues} 
-and annotating with \link[bumphunter]{annotateTranscripts} and
-\link[bumphunter]{matchGenes}.
+This is a major wrapper for running several key functions from this package.
+It is meant to be used after \link{loadCoverage} has been used for a
+specific chromosome. The steps run include \link{makeModels},
+\link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues}
+and annotating with \link[bumphunter:annotateTranscripts]{annotateTranscripts} and
+\link[bumphunter:matchGenes]{matchGenes}.
 }
 \details{
 If you are working with data from an organism different from 'Homo sapiens'
-specify so by setting the global 'species' and 'chrsStyle' options. For 
+specify so by setting the global 'species' and 'chrsStyle' options. For
 example:
 \code{options(species = 'arabidopsis_thaliana')}
 \code{options(chrsStyle = 'NCBI')}
@@ -151,9 +151,9 @@ results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
 names(results)
 }
 \seealso{
-\link{makeModels}, \link{preprocessCoverage}, 
-\link{calculateStats}, \link{calculatePvalues}, 
-\link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
+\link{makeModels}, \link{preprocessCoverage},
+\link{calculateStats}, \link{calculatePvalues},
+\link[bumphunter:annotateTranscripts]{annotateTranscripts}, \link[bumphunter:matchGenes]{matchGenes}
 }
 \author{
 Leonardo Collado-Torres

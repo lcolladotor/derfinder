@@ -1,38 +1,38 @@
 #' Calculate F-statistics at base pair resolution from a loaded BAM files
 #'
-#' After defining the models of interest (see \link{makeModels}) and 
-#' pre-processing the data (see \link{preprocessCoverage}), use 
-#' \link{calculateStats} to calculate the F-statistics at base-pair resolution.
+#' After defining the models of interest (see [makeModels]) and 
+#' pre-processing the data (see [preprocessCoverage]), use 
+#' [calculateStats] to calculate the F-statistics at base-pair resolution.
 #' 
-#' @param coveragePrep A list with \code{$coverageProcessed}, 
-#' \code{$mclapplyIndex}, and \code{$position} normally generated using 
-#' \link{preprocessCoverage}.
-#' @param models A list with \code{$mod} and \code{$mod0} normally generated 
-#' using \link{makeModels}.
+#' @param coveragePrep A list with `$coverageProcessed`, 
+#' `$mclapplyIndex`, and `$position` normally generated using 
+#' [preprocessCoverage].
+#' @param models A list with `$mod` and `$mod0` normally generated 
+#' using [makeModels].
 #' @param lowMemDir The directory where the processed chunks are saved when 
-#' using \link{preprocessCoverage} with a specified \code{lowMemDir}.
+#' using [preprocessCoverage] with a specified `lowMemDir`.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{scalefac }{ This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-#' in \link{preprocessCoverage}. Default: 32.}
+#' [fstats.apply][derfinderHelper::fstats.apply] and should be the same as the one used 
+#' in [preprocessCoverage]. Default: 32.}
 #' \item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-#' details in \link[derfinderHelper]{fstats.apply}.}
+#' details in [fstats.apply][derfinderHelper::fstats.apply].}
 #' \item{adjustF }{ A single value to adjust that is added in the denominator 
 #' of the F-stat calculation. Useful when the Residual Sum of Squares of the 
 #' alternative model is very small. Default: 0.}
 #' }
-#' Passed to \link{define_cluster}.
+#' Passed to [define_cluster].
 #'
 #' @return A numeric Rle with the F-statistics per base pair that passed the 
 #' cutoff.
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @seealso \link{makeModels}, \link{preprocessCoverage}
+#' @seealso [makeModels], [preprocessCoverage]
 #' @importFrom BiocParallel bplapply bpworkers
 #' @importMethodsFrom IRanges ncol '[[' length unlist
 #' @importFrom IRanges RleList

@@ -11,46 +11,46 @@ calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
   weights = NULL, smoothFunction = bumphunter::locfitByCluster, ...)
 }
 \arguments{
-\item{coveragePrep}{A list with \code{$coverageProcessed}, 
-\code{$mclapplyIndex}, and \code{$position} normally generated using 
+\item{coveragePrep}{A list with \code{$coverageProcessed},
+\code{$mclapplyIndex}, and \code{$position} normally generated using
 \link{preprocessCoverage}.}
 
-\item{models}{A list with \code{$mod} and \code{$mod0} normally generated 
+\item{models}{A list with \code{$mod} and \code{$mod0} normally generated
 using \link{makeModels}.}
 
-\item{fstats}{A numerical Rle with the F-statistics normally generated using 
+\item{fstats}{A numerical Rle with the F-statistics normally generated using
 \link{calculateStats}.}
 
-\item{nPermute}{The number of permutations. Note that for a full chromosome, 
-a small amount (10) of permutations is sufficient. If set to 0, no 
-permutations are performed and thus no null regions are used, however, the 
+\item{nPermute}{The number of permutations. Note that for a full chromosome,
+a small amount (10) of permutations is sufficient. If set to 0, no
+permutations are performed and thus no null regions are used, however, the
 \code{$regions} component is created.}
 
-\item{seeds}{An integer vector of length \code{nPermute} specifying the 
+\item{seeds}{An integer vector of length \code{nPermute} specifying the
 seeds to be used for each permutation. If \code{NULL} no seeds are used.}
 
-\item{chr}{A single element character vector specifying the chromosome name. 
+\item{chr}{A single element character vector specifying the chromosome name.
 This argument is passed to \link{findRegions}.}
 
 \item{cutoff}{F-statistic cutoff to use to determine segments.}
 
-\item{significantCut}{A vector of length two specifiying the cutoffs used to 
-determine significance. The first element is used to determine significance 
-for the P-values, while the second element is used for the Q-values (FDR 
+\item{significantCut}{A vector of length two specifiying the cutoffs used to
+determine significance. The first element is used to determine significance
+for the P-values, while the second element is used for the Q-values (FDR
 adjusted P-values).}
 
-\item{lowMemDir}{The directory where the processed chunks are saved when 
+\item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
 \item{smooth}{Whether to smooth the F-statistics (\code{fstats}) or not. This
 is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 
 \item{weights}{Weights used by the smoother as described in
-\link[bumphunter]{smoother}.}
+\link[bumphunter:smoother]{smoother}.}
 
 \item{smoothFunction}{A function to be used for smoothing the F-statistics.
 Two functions are provided by the \code{bumphunter} package:
-\link[bumphunter]{loessByCluster} and \link[bumphunter]{runmedByCluster}. If
+\link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
 an element called \code{$fitted} that contains the smoothed F-statistics and
 an element claled \code{$smoothed} that is a logical vector indicating
@@ -60,54 +60,54 @@ original values will be used.}
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{scalefac }{ This argument is passed to 
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+\item{scalefac }{ This argument is passed to
+\link[derfinderHelper:fstats.apply]{fstats.apply} and should be the same as the one used
 in \link{preprocessCoverage}. Default: 32.}
-\item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-details in \link[derfinderHelper]{fstats.apply}.}
-\item{adjustF }{ A single value to adjust that is added in the denominator 
-of the F-stat calculation. Useful when the Residual Sum of Squares of the 
+\item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See
+details in \link[derfinderHelper:fstats.apply]{fstats.apply}.}
+\item{adjustF }{ A single value to adjust that is added in the denominator
+of the F-stat calculation. Useful when the Residual Sum of Squares of the
 alternative model is very small. Default: 0.}
-\item{writeOutput }{ If \code{TRUE} then the regions are saved before 
+\item{writeOutput }{ If \code{TRUE} then the regions are saved before
 calculating q-values, and then overwritten once the q-values are written.
-This argument was introduced to save the results from the permutations (can 
+This argument was introduced to save the results from the permutations (can
 take some time) to investigate the problem described at
 https://support.bioconductor.org/p/62026/}
 \item{maxRegionGap }{ Passed to internal functions of \link{findRegions}.
 Default: 0.}
 }
-Passed to \link{findRegions}, \code{smoothFunction} and 
+Passed to \link{findRegions}, \code{smoothFunction} and
 \link{define_cluster}.}
 }
 \value{
 A list with four components:
 \describe{
-\item{regions }{ is a GRanges with metadata columns given by 
-\link{findRegions} with the additional metadata column \code{pvalues}: 
-p-value of the region calculated via permutations of the samples; 
-\code{qvalues}: the qvalues calculated using \link[qvalue]{qvalue}; 
-\code{significant}: whether the p-value is less than 0.05 (by default); 
-\code{significantQval}: whether the q-value is less than 0.10 (by default). 
-It also includes the mean coverage of the region (mean from the mean 
+\item{regions }{ is a GRanges with metadata columns given by
+\link{findRegions} with the additional metadata column \code{pvalues}:
+p-value of the region calculated via permutations of the samples;
+\code{qvalues}: the qvalues calculated using \link[qvalue:qvalue]{qvalue};
+\code{significant}: whether the p-value is less than 0.05 (by default);
+\code{significantQval}: whether the q-value is less than 0.10 (by default).
+It also includes the mean coverage of the region (mean from the mean
 coverage at each base calculated in \link{preprocessCoverage}). Furthermore,
-if \code{groupInfo} was not \code{NULL} in \link{preprocessCoverage}, then 
-the group mean coverage is calculated as well as the log 2 fold change 
+if \code{groupInfo} was not \code{NULL} in \link{preprocessCoverage}, then
+the group mean coverage is calculated as well as the log 2 fold change
 (using group 1 as the reference). }
-\item{nullStats}{ is a numeric Rle with the mean of the null statistics by 
+\item{nullStats}{ is a numeric Rle with the mean of the null statistics by
 segment.}
-\item{nullWidths}{ is a numeric Rle with the length of each of the segments 
-in the null distribution. The area can be obtained by multiplying the 
+\item{nullWidths}{ is a numeric Rle with the length of each of the segments
+in the null distribution. The area can be obtained by multiplying the
 absolute \code{nullstats} by the corresponding lengths.}
-\item{nullPermutation}{ is a Rle with the permutation number from which the 
+\item{nullPermutation}{ is a Rle with the permutation number from which the
 null region originated from.}
 }
 }
 \description{
-First, this function finds the regions of interest according to specified 
-cutoffs. Then it permutes the samples and re-calculates the F-statistics. 
-The area of the statistics from these segments are then used to calculate 
+First, this function finds the regions of interest according to specified
+cutoffs. Then it permutes the samples and re-calculates the F-statistics.
+The area of the statistics from these segments are then used to calculate
 p-values for the original regions.
 }
 \examples{
@@ -178,8 +178,8 @@ head(annotation)
 
 }
 \seealso{
-\link{findRegions}, \link[derfinderHelper]{fstats.apply}, 
-\link[qvalue]{qvalue}
+\link{findRegions}, \link[derfinderHelper:fstats.apply]{fstats.apply},
+\link[qvalue:qvalue]{qvalue}
 }
 \author{
 Leonardo Collado-Torres

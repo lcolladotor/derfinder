@@ -12,17 +12,17 @@ to a \code{GRanges} object.}
 
 \item{path}{The path where the BigWig file will be created.}
 
-\item{fullCov}{A list where each element is the result from 
-\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
+\item{fullCov}{A list where each element is the result from
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}.}
 
-\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} object 
+\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} object
 created by \link{coerceGR} is returned. Otherwise it is discarded.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
 }
 Passed to \link{coerceGR}.}
@@ -34,8 +34,8 @@ the output from \link{coerceGR}.
 }
 \description{
 Given the output of \link{fullCoverage}, this function coerces the coverage
-to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then 
-exports the coverage to a BigWig file using \link[rtracklayer]{export}.
+to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then
+exports the coverage to a BigWig file using \link[rtracklayer:export]{export}.
 }
 \examples{
 ## Create a small fullCov object with data only for chr21
@@ -50,7 +50,7 @@ bw <- createBwSample('ERR009101', 'createBwSample-example',
 bw
 }
 \seealso{
-\link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer]{export}, 
+\link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer:export]{export},
 link{coerceGR}
 }
 \author{

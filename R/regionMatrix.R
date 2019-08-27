@@ -1,6 +1,6 @@
 #' Identify regions data by a coverage filter and get a count matrix
 #'
-#' Given a set of un-filtered coverage data (see \link{fullCoverage}), create
+#' Given a set of un-filtered coverage data (see [fullCoverage]), create
 #' candidate regions by applying a cutoff on the coverage values,
 #' and obtain a count matrix where the number of rows corresponds to the number
 #' of candidate regions and the number of columns corresponds to the number of 
@@ -8,57 +8,57 @@
 #' region.
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}. If \code{runFilter = FALSE}, then 
-#' \code{returnMean = TRUE} must have been used.
+#' [loadCoverage] used with `returnCoverage = TRUE`. Can be generated 
+#' using [fullCoverage]. If `runFilter = FALSE`, then 
+#' `returnMean = TRUE` must have been used.
 #' @inheritParams filterData
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
 #' @param totalMapped A vector with the total number of reads mapped for each 
 #' sample. The vector should be in the same order as the samples in
-#' \code{fullCov}. Providing this argument adjusts the coverage to reads in 
-#' \code{targetSize} library prior to filtering. See \link{getTotalMapped} for
+#' `fullCov`. Providing this argument adjusts the coverage to reads in 
+#' `targetSize` library prior to filtering. See [getTotalMapped] for
 #' calculating this vector.
 #' @param targetSize The target library size to adjust the coverage to. Used
-#' only when \code{totalMapped} is specified. By default, it adjusts to 
+#' only when `totalMapped` is specified. By default, it adjusts to 
 #' libraries with 80 million reads.
-#' @param runFilter This controls whether to run \link{filterData} or not. If 
-#' set to \code{FALSE} then \code{returnMean = TRUE} must have been used to 
-#' create each element of \code{fullCov} and the data must have been
-#' normalized (\code{totalMapped} equal to \code{targetSize}).
-#' @param returnBP If \code{TRUE}, returns \code{$bpCoverage} explained below.
+#' @param runFilter This controls whether to run [filterData] or not. If 
+#' set to `FALSE` then `returnMean = TRUE` must have been used to 
+#' create each element of `fullCov` and the data must have been
+#' normalized (`totalMapped` equal to `targetSize`).
+#' @param returnBP If `TRUE`, returns `$bpCoverage` explained below.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
-#' \item{chrsStyle }{ Default: \code{UCSC}. Passed to
-#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
-#' \item{species }{ Default: \code{homo_sapiens}. Passed to
-#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
-#' \item{currentStyle }{ Default: \code{NULL}. Passed to
-#' \link{extendedMapSeqlevels} via \link{getRegionCoverage}.}
+#' \item{chrsStyle }{ Default: `UCSC`. Passed to
+#' [extendedMapSeqlevels] via [getRegionCoverage].}
+#' \item{species }{ Default: `homo_sapiens`. Passed to
+#' [extendedMapSeqlevels] via [getRegionCoverage].}
+#' \item{currentStyle }{ Default: `NULL`. Passed to
+#' [extendedMapSeqlevels] via [getRegionCoverage].}
 #' }
-#' Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
+#' Passed to [filterData], [findRegions] and [define_cluster].
 #'
-#' Note that \link{filterData} is used internally 
-#' by \link{loadCoverage} (and hence \code{fullCoverage}) and has the important 
-#' arguments \code{totalMapped} and \code{targetSize} which can be used to 
-#' normalize the coverage by library size. If you already used these arguments #' when creating the \code{fullCov} object, then don't specify them a second 
-#' time in \link{regionMatrix}. If you have not used these arguments, we 
+#' Note that [filterData] is used internally 
+#' by [loadCoverage] (and hence `fullCoverage`) and has the important 
+#' arguments `totalMapped` and `targetSize` which can be used to 
+#' normalize the coverage by library size. If you already used these arguments #' when creating the `fullCov` object, then don't specify them a second 
+#' time in [regionMatrix]. If you have not used these arguments, we 
 #' recommend using them to normalize the mean coverage.
 #'
 #' @return A list with one entry per chromosome. Then per chromosome, a list 
 #' with three components.
 #' \describe{
 #' \item{regions }{ A set of regions based on the coverage filter cutoff as
-#' returned by \link{findRegions}.}
-#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when \code{returnBP = TRUE}.}
+#' returned by [findRegions].}
+#' \item{bpCoverage }{ A list with one element per region. Each element is a matrix with numbers of rows equal to the number of base pairs in the region and number of columns equal to the number of samples. It contains the base-level coverage information for the regions. Only returned when `returnBP = TRUE`.}
 #' \item{coverageMatrix }{  A matrix with the mean coverage by sample for each
 #' candidate region.}
 #' }
 #'
-#' @details This function uses several other \link{derfinder-package} 
+#' @details This function uses several other [derfinder-package] 
 #' functions. Inspect the code if interested.
 #'
 #' You should use at most one core per chromosome.

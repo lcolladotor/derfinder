@@ -6,21 +6,21 @@
 #' and the second one is via identifying expressed regions.
 #'
 #' The single base-level F-statistics analysis pipeline involves loading the
-#' sample BAM files using \link{rawFiles} and \link{loadCoverage},
-#' pre-processing the data by using \link{preprocessCoverage}, calculating the
-#' F-statistics (while adjusting for some confounders) using \link{makeModels}
-#' and \link{calculateStats}, calculating the p-values and finding the regions
-#' of interest using \link{calculatePvalues}, and finally annotating them using
-#' \link[bumphunter]{matchGenes} from the bumphunter package.
+#' sample BAM files using [rawFiles] and [loadCoverage],
+#' pre-processing the data by using [preprocessCoverage], calculating the
+#' F-statistics (while adjusting for some confounders) using [makeModels]
+#' and [calculateStats], calculating the p-values and finding the regions
+#' of interest using [calculatePvalues], and finally annotating them using
+#' [matchGenes][bumphunter::matchGenes] from the bumphunter package.
 #'
 #' The DER Finder at the expressed regions-level is done with
-#' the \link{regionMatrix} or \link{railMatrix} functions depending on the
+#' the [regionMatrix] or [railMatrix] functions depending on the
 #' input data.
 #'
 #' Details about both approaches are further described in the vignettes.
 #'
 #' The DER Finder approach can also be used to identify differentially bounded
-#' ChIP-seq regions (peaks). In particular, \link{analyzeChr} has parameters
+#' ChIP-seq regions (peaks). In particular, [analyzeChr] has parameters
 #' that allow smoothing of the F-statistics which can be useful for anlayzing
 #' ChIP-seq data. This use case is further explained in the users guide
 #' vignette.

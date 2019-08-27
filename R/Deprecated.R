@@ -4,7 +4,7 @@
 #' \sQuote{derfinder} only and will be defunct at the next release.
 #'
 #' @param fun The name of a function(s) that has advanced arguments in
-#' \code{package}.
+#' `package`.
 #' @param package The name of the package where the function is stored. Only
 #' 'derfinder', 'derfinderPlot', and 'regionReport' are accepted.
 #' @param browse Whether to open the URLs in a browser.

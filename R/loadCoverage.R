@@ -7,56 +7,56 @@
 #' @param files A character vector with the full path to the sample BAM files
 #' (or BigWig files).
 #' The names are used for the column names of the DataFrame. Check
-#' \link{rawFiles} for constructing \code{files}. \code{files} can also be a
-#' \link[Rsamtools:BamFile-class]{BamFileList}, \link[Rsamtools:BamFile-class]{BamFile},
-#' \link[rtracklayer:BigWigFile]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.
+#' [rawFiles] for constructing `files`. `files` can also be a
+#' [BamFileList][Rsamtools::BamFile-class], [BamFile][Rsamtools::BamFile-class],
+#' [BigWigFileList][rtracklayer::BigWigFile], or [BigWigFile][rtracklayer::BigWigFile] object.
 #' @param chr Chromosome to read. Should be in the format matching the one used
 #' in the raw data.
-#' @param cutoff This argument is passed to \link{filterData}.
+#' @param cutoff This argument is passed to [filterData].
 #' @inheritParams filterData
-#' @param chrlen The chromosome length in base pairs. If it's \code{NULL}, the
+#' @param chrlen The chromosome length in base pairs. If it's `NULL`, the
 #' chromosome length is extracted from the BAM files.
-#' @param output If \code{NULL} then no output is saved in disk. If \code{auto}
+#' @param output If `NULL` then no output is saved in disk. If `auto`
 #' then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
 #' for example). If another character is specified, then that name is used for #' the output file.
-#' @param bai The full path to the BAM index files. If \code{NULL} it is
+#' @param bai The full path to the BAM index files. If `NULL` it is
 #' assumed that the BAM index files are in the same location as the BAM files
-#' and that they have the .bai extension. Ignored if \code{files} is a
-#' \code{BamFileList} object or if \code{inputType=='BigWig'}.
+#' and that they have the .bai extension. Ignored if `files` is a
+#' `BamFileList` object or if `inputType=='BigWig'`.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along
 #' the way.}
-#' \item{inputType }{ Has to be either \code{bam} or \code{BigWig}. It specifies
-#' the format of the raw data files. By default it's set to \code{bam} before
+#' \item{inputType }{ Has to be either `bam` or `BigWig`. It specifies
+#' the format of the raw data files. By default it's set to `bam` before
 #' trying to guess it from the file names.}
-#' \item{tilewidth }{ When specified, \link[GenomicRanges]{tileGenome} is used
+#' \item{tilewidth }{ When specified, [tileGenome][GenomicRanges::tileGenome] is used
 #' to break up the chromosome into chunks. We don't recommend this for BAM
 #' files as the coverage in the borders of the chunks might be slightly off.}
-#' \item{which }{ \code{NULL} by default. When a \code{GRanges} is specified,
+#' \item{which }{ `NULL` by default. When a `GRanges` is specified,
 #' this specific region of the genome is loaded instead of the full chromosome.}
 #' \item{fileStyle }{ The naming style of the chromosomes in the input files.
-#' If the global option \code{chrsStyle} is not set, the naming style won't be
+#' If the global option `chrsStyle` is not set, the naming style won't be
 #' changed. This option is useful when you want to use a specific naming style
 #' but the raw files use another style.}
-#' \item{protectWhich }{ When not \code{NULL} and \code{which} is specified,
-#' this argument specifies by how much the ranges in \code{which} will be
+#' \item{protectWhich }{ When not `NULL` and `which` is specified,
+#' this argument specifies by how much the ranges in `which` will be
 #' expanded. This helps get the same base level coverage you would get from
 #' reading the coverage for a full chromosome from BAM files. Otherwise some
 #' reads might be excluded and thus the base level coverage will be lower.
-#' \code{NULL} by default.}
+#' `NULL` by default.}
 #' \item{drop.D }{ Whether to drop the bases with 'D' in the CIGAR strings
-#' or to include them. Only used with BAM files. \code{FALSE} by default.}
+#' or to include them. Only used with BAM files. `FALSE` by default.}
 #' \item{sampleNames }{ Column names to be used the samples. By default it's
-#' \code{names(files)}.}
+#' `names(files)`.}
 #' }
-#' Passed to \link{extendedMapSeqlevels}, \link{define_cluster},
-#' \link[Rsamtools:ScanBamParam-class]{scanBamFlag} and \link{filterData}.
-#' Note that \link{filterData} is used internally
-#' by \link{loadCoverage} and has the important arguments \code{totalMapped}
-#' and \code{targetSize} which can be used to normalize the coverage by
-#' library size. See \link{getTotalMapped} for calculating \code{totalMapped}.
+#' Passed to [extendedMapSeqlevels], [define_cluster],
+#' [scanBamFlag][Rsamtools::ScanBamParam-class] and [filterData].
+#' Note that [filterData] is used internally
+#' by [loadCoverage] and has the important arguments `totalMapped`
+#' and `targetSize` which can be used to normalize the coverage by
+#' library size. See [getTotalMapped] for calculating `totalMapped`.
 #'
 #' @return A list with two components.
 #' \describe{
@@ -69,23 +69,23 @@
 #'
 #' @details
 #'
-#' The \code{...} argument can be used to control which alignments to consider
-#' when reading from BAM files. See \link[Rsamtools:ScanBamParam-class]{scanBamFlag}.
+#' The `...` argument can be used to control which alignments to consider
+#' when reading from BAM files. See [scanBamFlag][Rsamtools::ScanBamParam-class].
 #'
 #' Parallelization for loading the data in chunks is used only used when
-#' \code{tilewidth} is specified. You may use up to one core per tile.
+#' `tilewidth` is specified. You may use up to one core per tile.
 #'
-#' If you set the advanced argument \code{drop.D = TRUE}, bases with CIGAR
+#' If you set the advanced argument `drop.D = TRUE`, bases with CIGAR
 #' string "D" (deletion from reference) will be excluded from the base-level
 #' coverage calculation.
 #'
 #' If you are working with data from an organism different from 'Homo sapiens'
 #' specify so by setting the global 'species' and 'chrsStyle' options. For
 #' example:
-#' \code{options(species = 'arabidopsis_thaliana')}
-#' \code{options(chrsStyle = 'NCBI')}
+#' `options(species = 'arabidopsis_thaliana')`
+#' `options(chrsStyle = 'NCBI')`
 #'
-#' @seealso \link{fullCoverage}, \link{getTotalMapped}
+#' @seealso [fullCoverage], [getTotalMapped]
 #'
 #' @author Leonardo Collado-Torres, Andrew Jaffe
 #' @export
@@ -104,6 +104,7 @@
 #' @importMethodsFrom Rsamtools names
 #' @importMethodsFrom rtracklayer import import.bw
 #' @importFrom methods is
+#' @importFrom stats runif
 #' @examples
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')
 #' files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',

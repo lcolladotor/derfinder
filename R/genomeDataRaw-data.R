@@ -1,9 +1,9 @@
 #' Genome samples processed data
 #'
 #' 10kb region from chr21 processed for 31 RNA-seq samples described in 
-#' \link{genomeInfo}. The TopHat BAM files are included in the package and this 
-#' is the output of \link{loadCoverage} applied to it with \code{cutoff=NULL}. 
-#' For more information check the example of \link{loadCoverage}.
+#' [genomeInfo]. The TopHat BAM files are included in the package and this 
+#' is the output of [loadCoverage] applied to it with `cutoff=NULL`. 
+#' For more information check the example of [loadCoverage].
 #'
 #' @references
 #' 1. Pickrell JK, Marioni JC, Pai AA, Degner JF, Engelhardt BE, Nkadori E, 
@@ -21,8 +21,8 @@
 #' \describe{
 #' \item{coverage }{  is a DataFrame object where each column represents a 
 #' sample.}
-#' \item{position }{ is \code{NULL} because no bases were filtered.}
+#' \item{position }{ is `NULL` because no bases were filtered.}
 #' }
 #' @keywords datasets
-#' @seealso \link{loadCoverage}, \link{genomeInfo}
+#' @seealso [loadCoverage], [genomeInfo]
 NULL 

@@ -23,14 +23,14 @@ by sample. These files are unadjusted for library size.}
 \item{L}{The width of the reads used. Either a vector of length 1 or length
 equal to the number of samples.}
 
-\item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled 
+\item{cutoff}{The base-pair level cutoff to use. It's behavior is controlled
 by \code{filter}.}
 
 \item{maxClusterGap}{This determines the maximum gap between candidate ERs.}
 
-\item{totalMapped}{A vector with the total number of reads mapped for each 
+\item{totalMapped}{A vector with the total number of reads mapped for each
 sample. The vector should be in the same order as the samples in \code{data}.
-Providing this data adjusts the coverage to reads in \code{targetSize} 
+Providing this data adjusts the coverage to reads in \code{targetSize}
 library prior to filtering. See \link{getTotalMapped} for
 calculating this vector.}
 

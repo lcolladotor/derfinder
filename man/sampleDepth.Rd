@@ -7,42 +7,44 @@
 sampleDepth(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...)
 }
 \arguments{
-\item{collapsedFull}{The full coverage data collapsed by sample as produced 
+\item{collapsedFull}{The full coverage data collapsed by sample as produced
 by \link{collapseFullCoverage}.}
 
-\item{probs}{Number(s) between 0 and 1 representing the quantile(s) of 
+\item{probs}{Number(s) between 0 and 1 representing the quantile(s) of
 interest. For example, 0.5 is the median.}
 
-\item{scalefac}{Number added to the sample coverage adjustments before the 
+\item{scalefac}{Number added to the sample coverage adjustments before the
 log2 transformation.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{nonzero }{ If \code{TRUE} only the nonzero counts are used to 
+\item{nonzero }{ If \code{TRUE} only the nonzero counts are used to
 calculate the library size adjustment. Default: \code{TRUE}.}
-\item{center }{ If \code{TRUE} the sample coverage adjustements are 
+\item{center }{ If \code{TRUE} the sample coverage adjustements are
 centered. In some cases, this could be helpful for interpretation purposes.
 Default: \code{FALSE}.}
 }}
 }
 \value{
-A matrix (vector of \code{length(probs) == 1}) with the library size depth 
-adjustments per sample to be used in \link{makeModels}. The number of rows 
+A matrix (vector of \code{length(probs) == 1}) with the library size depth
+adjustments per sample to be used in \link{makeModels}. The number of rows
 corresponds to the number of quantiles used for the sample adjustments.
 }
 \description{
-For a given data set calculate the per-sample coverage adjustments. Hector 
-Corrada's group proposed calculating the sum of the coverage for genes below 
-a given sample quantile. In this function, we calculate the sample quantiles 
-of interest by sample, and then the sum of the coverage for bases below or 
-equal to quantiles of interest. The resulting values are transformed {log2(x 
-+ scalefac)} to avoid very large numbers that could potentially affect the 
-stability of the F-statistics calculation. The sample coverage adjustments 
-are then used in \link{makeModels} for constructing the null and alternative 
+For a given data set calculate the per-sample coverage adjustments. Hector
+Corrada's group proposed calculating the sum of the coverage for genes below
+a given sample quantile. In this function, we calculate the sample quantiles
+of interest by sample, and then the sum of the coverage for bases below or
+equal to quantiles of interest. The resulting values are transformed {log2(x
+\itemize{
+\item scalefac)} to avoid very large numbers that could potentially affect the
+stability of the F-statistics calculation. The sample coverage adjustments
+are then used in \link{makeModels} for constructing the null and alternative
 models.
+}
 }
 \examples{
 ## Collapse the coverage information
@@ -54,8 +56,8 @@ sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5, 1), verbose=TRUE)
 sampleDepths
 }
 \references{
-Paulson, J. N., Stine, O. C., Bravo, H. C. & Pop, M. Differential abundance 
-analysis for microbial marker-gene surveys. Nat. Methods (2013). 
+Paulson, J. N., Stine, O. C., Bravo, H. C. & Pop, M. Differential abundance
+analysis for microbial marker-gene surveys. Nat. Methods (2013).
 doi:10.1038/nmeth.2658
 }
 \seealso{
