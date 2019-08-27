@@ -6,18 +6,18 @@
 \title{Genomic State for Hsapiens.UCSC.hg19.knownGene}
 \format{A GRangesList with two components.
 \describe{
-\item{fullGenome }{ classifies each region as either being exon, intron or 
+\item{fullGenome }{ classifies each region as either being exon, intron or
 intergenic.}
-\item{codingGenome }{ classfies the regions as being promoter, exon, intro, 
+\item{codingGenome }{ classfies the regions as being promoter, exon, intro,
 5UTR, 3UTR or intergenic.}
 }}
 \description{
-Pre-computed genomic state for Hsapiens UCSC hg19 knownGene annotation built 
-using \link[derfinder]{makeGenomicState} for 
-TxDb.Hsapiens.UCSC.hg19.knownGene version 2.14.0. The object has been subset 
+Pre-computed genomic state for Hsapiens UCSC hg19 knownGene annotation built
+using \link[derfinder:makeGenomicState]{makeGenomicState} for
+TxDb.Hsapiens.UCSC.hg19.knownGene version 2.14.0. The object has been subset
 for chr21 only.
 }
 \seealso{
-\link[derfinder]{makeGenomicState}
+\link[derfinder:makeGenomicState]{makeGenomicState}
 }
 \keyword{datasets}

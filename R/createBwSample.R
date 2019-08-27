@@ -1,31 +1,31 @@
 #' Create a BigWig file with the coverage information for a given sample
 #'
-#' Given the output of \link{fullCoverage}, this function coerces the coverage
-#' to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then 
-#' exports the coverage to a BigWig file using \link[rtracklayer]{export}.
+#' Given the output of [fullCoverage], this function coerces the coverage
+#' to a [GRanges][GenomicRanges::GRanges-class] object using [coerceGR] and then 
+#' exports the coverage to a BigWig file using [export][rtracklayer::export].
 #' 
 #' @param sample The name or integer index of the sample of interest to coerce
-#' to a \code{GRanges} object.
+#' to a `GRanges` object.
 #' @param path The path where the BigWig file will be created.
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}.
-#' @param keepGR If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} object 
-#' created by \link{coerceGR} is returned. Otherwise it is discarded.
+#' [loadCoverage] used with `returnCoverage = TRUE`. Can be generated 
+#' using [fullCoverage].
+#' @param keepGR If `TRUE`, the [GRanges][GenomicRanges::GRanges-class] object 
+#' created by [coerceGR] is returned. Otherwise it is discarded.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' }
-#' Passed to \link{coerceGR}.
+#' Passed to [coerceGR].
 #'
 #' @return Creates a BigWig file with the coverage information (regions with
-#' coverage greater than zero) for a given sample. If \code{keepGR} it returns
-#' the output from \link{coerceGR}.
+#' coverage greater than zero) for a given sample. If `keepGR` it returns
+#' the output from [coerceGR].
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer]{export}, 
+#' @seealso [GRanges][GenomicRanges::GRanges-class], [export][rtracklayer::export], 
 #' link{coerceGR}
 #' @export
 #'

@@ -1,6 +1,6 @@
 #' Candidate DERs for example data
 #'
-#' Candidate Differentially Expressed Regions (DERs) for the example data. For more information check \link{calculatePvalues}.
+#' Candidate Differentially Expressed Regions (DERs) for the example data. For more information check [calculatePvalues].
 #'
 #'
 #' @name genomeRegions
@@ -17,5 +17,5 @@
 #' candidate DER.}
 #' }
 #' @keywords datasets
-#' @seealso \link{calculatePvalues}
+#' @seealso [calculatePvalues]
 NULL 

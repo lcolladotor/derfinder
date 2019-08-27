@@ -17,7 +17,7 @@ pre-processing the data by using \link{preprocessCoverage}, calculating the
 F-statistics (while adjusting for some confounders) using \link{makeModels}
 and \link{calculateStats}, calculating the p-values and finding the regions
 of interest using \link{calculatePvalues}, and finally annotating them using
-\link[bumphunter]{matchGenes} from the bumphunter package.
+\link[bumphunter:matchGenes]{matchGenes} from the bumphunter package.
 
 The DER Finder at the expressed regions-level is done with
 the \link{regionMatrix} or \link{railMatrix} functions depending on the
@@ -44,6 +44,6 @@ Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and
 Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
 }
 \author{
-Leonardo Collado-Torres <lcolladotor@gmail.com>
+Leonardo Collado-Torres \href{mailto:lcolladotor@gmail.com}{lcolladotor@gmail.com}
 }
 \keyword{package}

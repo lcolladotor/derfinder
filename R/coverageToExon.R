@@ -1,53 +1,53 @@
 #' Extract coverage information for exons
 #'
 #' This function extracts the coverage information calculated by 
-#' \link{fullCoverage} for a set of exons determined by 
-#' \link{makeGenomicState}. The underlying code is similar to 
-#' \link{getRegionCoverage} with additional tweaks for calculating RPKM values.
+#' [fullCoverage] for a set of exons determined by 
+#' [makeGenomicState]. The underlying code is similar to 
+#' [getRegionCoverage] with additional tweaks for calculating RPKM values.
 #' 
 #' @inheritParams getRegionCoverage
 #' @inheritParams annotateRegions
 #' @param L The width of the reads used. Either a vector of length 1 or length
 #' equal to the number of samples.
-#' @param returnType If \code{raw}, then the raw coverage information per exon 
-#' is returned. If \code{rpkm}, RPKM values are calculated for each exon.
+#' @param returnType If `raw`, then the raw coverage information per exon 
+#' is returned. If `rpkm`, RPKM values are calculated for each exon.
 #' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{BPPARAM.strandStep }{ A BPPARAM object to use for the strand step. If
-#' not specified, then \code{strandCores} specifies the number of cores to use
+#' not specified, then `strandCores` specifies the number of cores to use
 #' for the strand step. The actual number of cores used is the minimum of
-#' \code{strandCores}, \code{mc.cores} and the number of strands in the data.}
+#' `strandCores`, `mc.cores` and the number of strands in the data.}
 #' \item{BPPARAM.chrStep }{ A BPPRAM object to use for the chr step. If not
-#' specified, then \code{mc.cores} specifies the number of cores to use for 
+#' specified, then `mc.cores` specifies the number of cores to use for 
 #' the chr step. The actual number of cores used is the minimum of
-#' \code{mc.cores} and the number of samples.}
+#' `mc.cores` and the number of samples.}
 #' }
-#' Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.
+#' Passed to [extendedMapSeqlevels] and [define_cluster].
 #'
-#' @return A matrix (nrow = number of exons in \code{genomicState} 
-#' corresponding to the chromosomes in \code{fullCov}, ncol = number of 
+#' @return A matrix (nrow = number of exons in `genomicState` 
+#' corresponding to the chromosomes in `fullCov`, ncol = number of 
 #' samples) with the number of reads (or RPKM) per exon. The row names 
-#' correspond to the row indexes of \code{genomicState$fullGenome}  (if 
-#' \code{fullOrCoding='full'}) or \code{genomicState$codingGenome} (if 
-#' \code{fullOrCoding='coding'}).
+#' correspond to the row indexes of `genomicState$fullGenome`  (if 
+#' `fullOrCoding='full'`) or `genomicState$codingGenome` (if 
+#' `fullOrCoding='coding'`).
 #'
 #' @details
 #' Parallelization is used twice.
 #' First, it is used by strand. Second, for processing the exons by 
-#' chromosome. So there is no gain in using \code{mc.cores} greater than the 
+#' chromosome. So there is no gain in using `mc.cores` greater than the 
 #' maximum of the number of strands and number of chromosomes.
 #'
-#' If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+#' If `fullCov` is `NULL` and `files` is specified, this function
 #' will attempt to read the coverage from the files. Note that if you used
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link{fullCoverage}, \link{getRegionCoverage}
+#' @seealso [fullCoverage], [getRegionCoverage]
 #' @export
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels

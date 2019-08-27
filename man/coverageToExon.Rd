@@ -8,63 +8,63 @@ coverageToExon(fullCov = NULL, genomicState, L = NULL,
   returnType = "raw", files = NULL, ...)
 }
 \arguments{
-\item{fullCov}{A list where each element is the result from 
-\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
+\item{fullCov}{A list where each element is the result from
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}. Alternatively, specify \code{files} to extract
-the coverage information from the regions of interest. This can be 
+the coverage information from the regions of interest. This can be
 helpful if you do not wish to store \code{fullCov} for memory reasons.}
 
-\item{genomicState}{A GRanges object created with \link{makeGenomicState}. 
-It can be either the \code{genomicState$fullGenome} or 
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
 \code{genomicState$codingGenome} component.}
 
 \item{L}{The width of the reads used. Either a vector of length 1 or length
 equal to the number of samples.}
 
-\item{returnType}{If \code{raw}, then the raw coverage information per exon 
+\item{returnType}{If \code{raw}, then the raw coverage information per exon
 is returned. If \code{rpkm}, RPKM values are calculated for each exon.}
 
 \item{files}{A character vector with the full path to the sample BAM files
-(or BigWig files). 
-The names are used for the column names of the DataFrame. Check 
-\link{rawFiles} for constructing \code{files}. \code{files} can also be a 
+(or BigWig files).
+The names are used for the column names of the DataFrame. Check
+\link{rawFiles} for constructing \code{files}. \code{files} can also be a
 \code{BamFileList} object created with \link[Rsamtools:BamFile-class]{BamFileList} or a
 \code{BigWigFileList} object created with \link[rtracklayer:BigWigFile]{BigWigFileList}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
 \item{BPPARAM.strandStep }{ A BPPARAM object to use for the strand step. If
 not specified, then \code{strandCores} specifies the number of cores to use
 for the strand step. The actual number of cores used is the minimum of
 \code{strandCores}, \code{mc.cores} and the number of strands in the data.}
 \item{BPPARAM.chrStep }{ A BPPRAM object to use for the chr step. If not
-specified, then \code{mc.cores} specifies the number of cores to use for 
+specified, then \code{mc.cores} specifies the number of cores to use for
 the chr step. The actual number of cores used is the minimum of
 \code{mc.cores} and the number of samples.}
 }
 Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.}
 }
 \value{
-A matrix (nrow = number of exons in \code{genomicState} 
-corresponding to the chromosomes in \code{fullCov}, ncol = number of 
-samples) with the number of reads (or RPKM) per exon. The row names 
-correspond to the row indexes of \code{genomicState$fullGenome}  (if 
-\code{fullOrCoding='full'}) or \code{genomicState$codingGenome} (if 
+A matrix (nrow = number of exons in \code{genomicState}
+corresponding to the chromosomes in \code{fullCov}, ncol = number of
+samples) with the number of reads (or RPKM) per exon. The row names
+correspond to the row indexes of \code{genomicState$fullGenome}  (if
+\code{fullOrCoding='full'}) or \code{genomicState$codingGenome} (if
 \code{fullOrCoding='coding'}).
 }
 \description{
-This function extracts the coverage information calculated by 
-\link{fullCoverage} for a set of exons determined by 
-\link{makeGenomicState}. The underlying code is similar to 
+This function extracts the coverage information calculated by
+\link{fullCoverage} for a set of exons determined by
+\link{makeGenomicState}. The underlying code is similar to
 \link{getRegionCoverage} with additional tweaks for calculating RPKM values.
 }
 \details{
 Parallelization is used twice.
-First, it is used by strand. Second, for processing the exons by 
-chromosome. So there is no gain in using \code{mc.cores} greater than the 
+First, it is used by strand. Second, for processing the exons by
+chromosome. So there is no gain in using \code{mc.cores} greater than the
 maximum of the number of strands and number of chromosomes.
 
 If \code{fullCov} is \code{NULL} and \code{files} is specified, this function

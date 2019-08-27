@@ -4,29 +4,29 @@
 #' for each sample from all the chromosomes. The resulting information per 
 #' sample is the number of bases with coverage 0, 1, etc. It is similar to 
 #' using table() on a regular vector. This information is then used by 
-#' \link{sampleDepth} for calculating the sample depth adjustments. The data 
-#' set can loaded to R using (see \link{fullCoverage}) and optionally filtered 
-#' using \link{filterData}. 
+#' [sampleDepth] for calculating the sample depth adjustments. The data 
+#' set can loaded to R using (see [fullCoverage]) and optionally filtered 
+#' using [filterData]. 
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link[derfinder]{loadCoverage} used with \code{cutoff=NULL}. Can be 
-#' generated using \link{fullCoverage}.
-#' @param colsubset Which columns of \code{coverageInfo$coverage} to use.
-#' @param save If \code{TRUE}, the result is saved as 'collapsedFull.Rdata'.
+#' [loadCoverage][derfinder::loadCoverage] used with `cutoff=NULL`. Can be 
+#' generated using [fullCoverage].
+#' @param colsubset Which columns of `coverageInfo$coverage` to use.
+#' @param save If `TRUE`, the result is saved as 'collapsedFull.Rdata'.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
-#' the way. Default: \code{FALSE}.}
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
+#' the way. Default: `FALSE`.}
 #' }
 #'
 #' @return 
 #' A list with one element per sample. Then per sample, a list with two vector 
-#' elements: \code{values} and \code{weights}. The first one is the coverage 
+#' elements: `values` and `weights`. The first one is the coverage 
 #' value and the second one is the number of bases with that value.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{fullCoverage}, \link{sampleDepth}
+#' @seealso [fullCoverage], [sampleDepth]
 #' @export
 #' @importMethodsFrom IRanges names '['
 #' @import S4Vectors

@@ -1,44 +1,44 @@
 #' Assign genomic states to regions
 #'
-#' This function takes the regions found in \link{calculatePvalues} and assigns 
-#' them genomic states contructed with \link{makeGenomicState}. The main 
-#' workhorse functions are \link[GenomicRanges:findOverlaps-methods]{countOverlaps} and 
-#' \link[GenomicRanges:findOverlaps-methods]{findOverlaps}.
+#' This function takes the regions found in [calculatePvalues] and assigns 
+#' them genomic states contructed with [makeGenomicState]. The main 
+#' workhorse functions are [countOverlaps][GenomicRanges::findOverlaps-methods] and 
+#' [findOverlaps][GenomicRanges::findOverlaps-methods].
 #' 
-#' @param regions The \code{$regions} output from \link{calculatePvalues}.
-#' @param genomicState A GRanges object created with \link{makeGenomicState}. 
-#' It can be either the \code{genomicState$fullGenome} or 
-#' \code{genomicState$codingGenome} component.
-#' @param annotate If \code{TRUE} then the regions are annotated by the genomic 
+#' @param regions The `$regions` output from [calculatePvalues].
+#' @param genomicState A GRanges object created with [makeGenomicState]. 
+#' It can be either the `genomicState$fullGenome` or 
+#' `genomicState$codingGenome` component.
+#' @param annotate If `TRUE` then the regions are annotated by the genomic 
 #' state. Otherwise, only the overlaps between the regions and the genomic 
 #' states are computed.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{ignore.strand }{ Passed on to
-#' \link[GenomicRanges]{findOverlaps-methods} and
-#' \link[GenomicRanges:findOverlaps-methods]{countOverlaps}. Default: \code{TRUE}.}
+#' [findOverlaps-methods][GenomicRanges::findOverlaps-methods] and
+#' [countOverlaps][GenomicRanges::findOverlaps-methods]. Default: `TRUE`.}
 #' }
-#' Passed to \link{extendedMapSeqlevels}, \link[GenomicRanges:findOverlaps-methods]{countOverlaps}
-#' and \link[GenomicRanges]{findOverlaps-methods}.
+#' Passed to [extendedMapSeqlevels], [countOverlaps][GenomicRanges::findOverlaps-methods]
+#' and [findOverlaps-methods][GenomicRanges::findOverlaps-methods].
 #'
-#' @return A list with elements \code{countTable} and \code{annotationList} 
-#' (only if \code{annotate=TRUE}). 
+#' @return A list with elements `countTable` and `annotationList` 
+#' (only if `annotate=TRUE`). 
 #' \describe{
 #' \item{countTable }{This is a data.frame with the number of overlaps from the 
 #' regions vs the genomic states with one type per column. For example, if 
-#' \code{fullOrCoding='full'} then the columns are \code{exon}, 
-#' \code{intergenic} and \code{intron}.}
-#' \item{annotationList }{This is a \code{GRangesList} with the genomic states 
+#' `fullOrCoding='full'` then the columns are `exon`, 
+#' `intergenic` and `intron`.}
+#' \item{annotationList }{This is a `GRangesList` with the genomic states 
 #' that overlapped with the regions. The 
-#' names of this \code{GRangesList} correspond to the region index in 
-#' \code{regions}.}
+#' names of this `GRangesList` correspond to the region index in 
+#' `regions`.}
 #' }
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link{makeGenomicState}, \link{calculatePvalues}
+#' @seealso [makeGenomicState], [calculatePvalues]
 #' @export
 #' @importFrom GenomeInfoDb renameSeqlevels seqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$'
@@ -47,8 +47,8 @@
 #' @import S4Vectors
 #'
 #' @details
-#' You might want to specify arguments such as \code{minoverlap} to control
-#' how the overlaps are determined. See \link[GenomicRanges:findOverlaps-methods]{findOverlaps}
+#' You might want to specify arguments such as `minoverlap` to control
+#' how the overlaps are determined. See [findOverlaps][GenomicRanges::findOverlaps-methods]
 #' for further details.
 #'
 #' @examples

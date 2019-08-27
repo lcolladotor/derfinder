@@ -7,11 +7,11 @@
 #' equal to quantiles of interest. The resulting values are transformed {log2(x 
 #' + scalefac)} to avoid very large numbers that could potentially affect the 
 #' stability of the F-statistics calculation. The sample coverage adjustments 
-#' are then used in \link{makeModels} for constructing the null and alternative 
+#' are then used in [makeModels] for constructing the null and alternative 
 #' models.
 #' 
 #' @param collapsedFull The full coverage data collapsed by sample as produced 
-#' by \link{collapseFullCoverage}.
+#' by [collapseFullCoverage].
 #' @param probs Number(s) between 0 and 1 representing the quantile(s) of 
 #' interest. For example, 0.5 is the median.
 #' @param scalefac Number added to the sample coverage adjustments before the 
@@ -19,18 +19,18 @@
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
-#' \item{nonzero }{ If \code{TRUE} only the nonzero counts are used to 
-#' calculate the library size adjustment. Default: \code{TRUE}.}
-#' \item{center }{ If \code{TRUE} the sample coverage adjustements are 
+#' \item{nonzero }{ If `TRUE` only the nonzero counts are used to 
+#' calculate the library size adjustment. Default: `TRUE`.}
+#' \item{center }{ If `TRUE` the sample coverage adjustements are 
 #' centered. In some cases, this could be helpful for interpretation purposes.
-#' Default: \code{FALSE}.}
+#' Default: `FALSE`.}
 #' }
 #'
 #' @return 
-#' A matrix (vector of \code{length(probs) == 1}) with the library size depth 
-#' adjustments per sample to be used in \link{makeModels}. The number of rows 
+#' A matrix (vector of `length(probs) == 1`) with the library size depth 
+#' adjustments per sample to be used in [makeModels]. The number of rows 
 #' corresponds to the number of quantiles used for the sample adjustments. 
 #'
 #' @references
@@ -39,7 +39,7 @@
 #' doi:10.1038/nmeth.2658
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{collapseFullCoverage}, \link{makeModels}
+#' @seealso [collapseFullCoverage], [makeModels]
 #' @export
 #' @importFrom Hmisc wtd.quantile
 #' @examples

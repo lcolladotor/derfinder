@@ -7,15 +7,15 @@
 #' 
 #' @inheritParams calculateStats
 #' @param fstats A numerical Rle with the F-statistics normally generated using 
-#' \link{calculateStats}.
+#' [calculateStats].
 #' @param nPermute The number of permutations. Note that for a full chromosome, 
 #' a small amount (10) of permutations is sufficient. If set to 0, no 
 #' permutations are performed and thus no null regions are used, however, the 
-#' \code{$regions} component is created.
-#' @param seeds An integer vector of length \code{nPermute} specifying the 
-#' seeds to be used for each permutation. If \code{NULL} no seeds are used.
+#' `$regions` component is created.
+#' @param seeds An integer vector of length `nPermute` specifying the 
+#' seeds to be used for each permutation. If `NULL` no seeds are used.
 #' @param chr A single element character vector specifying the chromosome name. 
-#' This argument is passed to \link{findRegions}.
+#' This argument is passed to [findRegions].
 #' @param cutoff F-statistic cutoff to use to determine segments.
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
@@ -24,53 +24,53 @@
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{scalefac }{ This argument is passed to 
-#' \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-#' in \link{preprocessCoverage}. Default: 32.}
+#' [fstats.apply][derfinderHelper::fstats.apply] and should be the same as the one used 
+#' in [preprocessCoverage]. Default: 32.}
 #' \item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-#' details in \link[derfinderHelper]{fstats.apply}.}
+#' details in [fstats.apply][derfinderHelper::fstats.apply].}
 #' \item{adjustF }{ A single value to adjust that is added in the denominator 
 #' of the F-stat calculation. Useful when the Residual Sum of Squares of the 
 #' alternative model is very small. Default: 0.}
-#' \item{writeOutput }{ If \code{TRUE} then the regions are saved before 
+#' \item{writeOutput }{ If `TRUE` then the regions are saved before 
 #' calculating q-values, and then overwritten once the q-values are written.
 #' This argument was introduced to save the results from the permutations (can 
 #' take some time) to investigate the problem described at
 #' https://support.bioconductor.org/p/62026/}
-#' \item{maxRegionGap }{ Passed to internal functions of \link{findRegions}.
+#' \item{maxRegionGap }{ Passed to internal functions of [findRegions].
 #' Default: 0.}
 #' }
-#' Passed to \link{findRegions}, \code{smoothFunction} and 
-#' \link{define_cluster}.
+#' Passed to [findRegions], `smoothFunction` and 
+#' [define_cluster].
 #' @inheritParams findRegions
 #'
 #' @return A list with four components:
 #' \describe{
 #' \item{regions }{ is a GRanges with metadata columns given by 
-#' \link{findRegions} with the additional metadata column \code{pvalues}: 
+#' [findRegions] with the additional metadata column `pvalues`: 
 #' p-value of the region calculated via permutations of the samples; 
-#' \code{qvalues}: the qvalues calculated using \link[qvalue]{qvalue}; 
-#' \code{significant}: whether the p-value is less than 0.05 (by default); 
-#' \code{significantQval}: whether the q-value is less than 0.10 (by default). 
+#' `qvalues`: the qvalues calculated using [qvalue][qvalue::qvalue]; 
+#' `significant`: whether the p-value is less than 0.05 (by default); 
+#' `significantQval`: whether the q-value is less than 0.10 (by default). 
 #' It also includes the mean coverage of the region (mean from the mean 
-#' coverage at each base calculated in \link{preprocessCoverage}). Furthermore,
-#' if \code{groupInfo} was not \code{NULL} in \link{preprocessCoverage}, then 
+#' coverage at each base calculated in [preprocessCoverage]). Furthermore,
+#' if `groupInfo` was not `NULL` in [preprocessCoverage], then 
 #' the group mean coverage is calculated as well as the log 2 fold change 
 #' (using group 1 as the reference). }
 #' \item{nullStats}{ is a numeric Rle with the mean of the null statistics by 
 #' segment.}
 #' \item{nullWidths}{ is a numeric Rle with the length of each of the segments 
 #' in the null distribution. The area can be obtained by multiplying the 
-#' absolute \code{nullstats} by the corresponding lengths.}
+#' absolute `nullstats` by the corresponding lengths.}
 #' \item{nullPermutation}{ is a Rle with the permutation number from which the 
 #' null region originated from.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{findRegions}, \link[derfinderHelper]{fstats.apply}, 
-#' \link[qvalue]{qvalue}
+#' @seealso [findRegions], [fstats.apply][derfinderHelper::fstats.apply], 
+#' [qvalue][qvalue::qvalue]
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol mean lapply unlist cbind
 #' @importFrom IRanges Views RleList values 'values<-' nrow

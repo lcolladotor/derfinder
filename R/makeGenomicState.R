@@ -1,27 +1,27 @@
 #' Obtain the genomic state per region from annotation
 #'
 #' This function summarizes the annotation contained in a 
-#' \link[GenomicFeatures:TxDb-class]{TxDb} at each given base of the genome based 
+#' [TxDb][GenomicFeatures::TxDb-class] at each given base of the genome based 
 #' on annotated transcripts. It groups contiguous base pairs classified as the 
 #' same type into regions.
 #' 
-#' @param txdb A \link[GenomicFeatures:TxDb-class]{TxDb} object with chromosome lengths
-#' (check \code{seqlengths(txdb)}). If you are using a 
-#' \link[GenomicFeatures:TxDb-class]{TxDb} object created from a GFF/GTF file, you will
-#' find this \url{https://support.bioconductor.org/p/93235/} useful.
+#' @param txdb A [TxDb][GenomicFeatures::TxDb-class] object with chromosome lengths
+#' (check `seqlengths(txdb)`). If you are using a 
+#' [TxDb][GenomicFeatures::TxDb-class] object created from a GFF/GTF file, you will
+#' find this <https://support.bioconductor.org/p/93235/> useful.
 #' @param chrs The names of the chromosomes to use as denoted in the 
-#' \code{txdb} object. Check \link[GenomicFeatures:TxDb-class]{isActiveSeq}.
-#' @param ... Arguments passed to \link{extendedMapSeqlevels}.
+#' `txdb` object. Check [isActiveSeq][GenomicFeatures::TxDb-class].
+#' @param ... Arguments passed to [extendedMapSeqlevels].
 #'
-#' @return A \code{GRangesList} object with two elements: \code{fullGenome} and 
-#' \code{codingGenome}. Both have metadata information for the type of region 
+#' @return A `GRangesList` object with two elements: `fullGenome` and 
+#' `codingGenome`. Both have metadata information for the type of region 
 #' (theRegion), transcript IDs (tx_id), transcript name (tx_name), and gene ID 
-#' (gene_id). \code{fullGenome} classifies each region as either being exon, 
-#' intron or intergenic. \code{codingGenome} classfies the regions as being 
+#' (gene_id). `fullGenome` classifies each region as either being exon, 
+#' intron or intergenic. `codingGenome` classfies the regions as being 
 #' promoter, exon, intro, 5UTR, 3UTR or intergenic.
 #'
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link[GenomicFeatures:TxDb-class]{TxDb}
+#' @seealso [TxDb][GenomicFeatures::TxDb-class]
 #' @export
 #'
 #' @importFrom GenomicFeatures isActiveSeq 'isActiveSeq<-' intronsByTranscript 

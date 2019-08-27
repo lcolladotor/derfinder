@@ -3,20 +3,20 @@
 #' Builds the model matrices for testing for differential expression by 
 #' comparing a model with a grouping factor versus one without it. It adjusts 
 #' for the confounders specified and the median coverage of each sample. The 
-#' resulting models can be used in \link{calculateStats}.
+#' resulting models can be used in [calculateStats].
 #' 
 #' @param sampleDepths Per sample library size adjustments calculated with 
-#' \link{sampleDepth}.
+#' [sampleDepth].
 #' @param testvars A vector or matrix specifying the variables to test. For 
 #' example, a factor with the group memberships when testing for differences 
 #' across groups. It's length should match the number of columns used from 
-#' \code{coverageInfo$coverage}.
+#' `coverageInfo$coverage`.
 #' @param adjustvars Optional matrix of adjustment variables (e.g. measured 
 #' confounders, output from SVA, etc.) to use in fitting linear models to each 
 #' nucleotide. These variables have to be specified by sample and the number of 
 #' rows must match the number of columns used. It will also work if it is a 
 #' vector of the correct length.
-#' @param testIntercept If \code{TRUE} then \code{testvars} is ignored and mod0 
+#' @param testIntercept If `TRUE` then `testvars` is ignored and mod0 
 #' will contain the column medians and any adjusting variables specified, but 
 #' no intercept.
 #'
@@ -27,7 +27,7 @@
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{sampleDepth}, \link{calculateStats}
+#' @seealso [sampleDepth], [calculateStats]
 #' @export
 #'
 #' @importMethodsFrom IRanges ncol median '['

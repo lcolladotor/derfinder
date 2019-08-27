@@ -1,20 +1,20 @@
 #' Construct full paths to a group of raw input files
 #'
 #' For a group of samples this function creates the list of paths to the raw 
-#' input files which can then be used in \link{loadCoverage}. The raw input
+#' input files which can then be used in [loadCoverage]. The raw input
 #' files are either BAM files or BigWig files.
 #' 
-#' @param datadir The main directory where each of the \code{sampledirs} is a 
-#' sub-directory of \code{datadir}.
+#' @param datadir The main directory where each of the `sampledirs` is a 
+#' sub-directory of `datadir`.
 #' @param sampledirs A character vector with the names of the sample 
-#' directories. If \code{datadir} is \code{NULL} it is then assumed that 
-#' \code{sampledirs} specifies the full path to each sample.
-#' @param samplepatt If specified and \code{sampledirs} is set to \code{NULL}, 
-#' then the directories matching this pattern in \code{datadir} (set to 
-#' \code{.} if it's set to \code{NULL}) are used as the sample directories.
+#' directories. If `datadir` is `NULL` it is then assumed that 
+#' `sampledirs` specifies the full path to each sample.
+#' @param samplepatt If specified and `sampledirs` is set to `NULL`, 
+#' then the directories matching this pattern in `datadir` (set to 
+#' `.` if it's set to `NULL`) are used as the sample directories.
 #' @param fileterm Name of the BAM or BigWig file used in each sample. By 
-#' default it is set to \code{accepted_hits.bam} since that is the automatic 
-#' name generated when aligning with TopHat. If \code{NULL} it is then ignored 
+#' default it is set to `accepted_hits.bam` since that is the automatic 
+#' name generated when aligning with TopHat. If `NULL` it is then ignored 
 #' when reading the rawfiles. This can be useful if all the raw files are 
 #' stored in a single directory.
 #'
@@ -25,7 +25,7 @@
 #'
 #' @author Leonardo Collado-Torres
 #' @export
-#' @seealso \link{loadCoverage}
+#' @seealso [loadCoverage]
 #' @examples
 #' ## Get list of BAM files included in derfinder
 #' datadir <- system.file('extdata', 'genomeData', package='derfinder')

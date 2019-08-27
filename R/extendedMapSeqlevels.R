@@ -5,46 +5,46 @@
 #' valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
 #' (UCSC style). If the information from GenomeInfoDb is not available, the 
 #' original sequence names will be returned. To disable this functionality
-#' specify set \code{chrsStyle} to \code{NULL}.
+#' specify set `chrsStyle` to `NULL`.
 #'
 #' @param seqnames A character vector with the sequence names.
 #' @param style A single character vector specifying the naming style to use
 #' for renaming the sequence names.
 #' @param species A single character vector with the species of interest: it has
 #' to match the valid species names supported in GenomeInfoDb. See
-#' \code{names(GenomeInfoDb::genomeStyles())}. If \code{species = NULL}, 
+#' `names(GenomeInfoDb::genomeStyles())`. If `species = NULL`, 
 #' a guess will be made using the available information in GenomeInfoDb.
 #' @param currentStyle A single character vector with the currently used
-#' naming style. If \code{NULL}, a guess will be made from the naming styles
-#' supported by \code{species}.
+#' naming style. If `NULL`, a guess will be made from the naming styles
+#' supported by `species`.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' \item{chrsStyle }{ The naming style of the chromosomes. By default, 
-#' \code{UCSC}. See \link[GenomeInfoDb]{seqlevelsStyle}. Set to \code{NULL} to
-#' disable this function. This is used when \code{style} is missing, which is
-#' normally the case when \code{extendedMapSeqlevels} is called by other
+#' `UCSC`. See [seqlevelsStyle][GenomeInfoDb::seqlevelsStyle]. Set to `NULL` to
+#' disable this function. This is used when `style` is missing, which is
+#' normally the case when `extendedMapSeqlevels` is called by other
 #' functions.}
 #' }
 #'
-#' @return A vector of sequence names using the specified naming \code{style}.
+#' @return A vector of sequence names using the specified naming `style`.
 #'
 #' @author L. Collado-Torres
 #' @export
 #'
-#' @details This function is inspired from \link[GenomeInfoDb:seqlevelsStyle]{mapSeqlevels}
+#' @details This function is inspired from [mapSeqlevels][GenomeInfoDb::seqlevelsStyle]
 #' with the difference that it will return the original sequence names if
 #' the species, current naming style or target naming style are not supported
 #' in GenomeInfoDb.
 #'
-#' If you want to disable this function, set \code{chrsStyle} to \code{NULL}.
+#' If you want to disable this function, set `chrsStyle` to `NULL`.
 #' From other functions in derfinder that pass the
-#' \code{...} argument to this function, use \code{chrsStyle = NULL}.
+#' `...` argument to this function, use `chrsStyle = NULL`.
 #' This can be useful when working
 #' with organisms that are absent from GenomeInfoDb as documented in
-#' \url{https://support.bioconductor.org/p/95521/}.
+#' <https://support.bioconductor.org/p/95521/>.
 #'
 #' @examples
 #'

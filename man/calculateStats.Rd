@@ -7,39 +7,39 @@
 calculateStats(coveragePrep, models, lowMemDir = NULL, ...)
 }
 \arguments{
-\item{coveragePrep}{A list with \code{$coverageProcessed}, 
-\code{$mclapplyIndex}, and \code{$position} normally generated using 
+\item{coveragePrep}{A list with \code{$coverageProcessed},
+\code{$mclapplyIndex}, and \code{$position} normally generated using
 \link{preprocessCoverage}.}
 
-\item{models}{A list with \code{$mod} and \code{$mod0} normally generated 
+\item{models}{A list with \code{$mod} and \code{$mod0} normally generated
 using \link{makeModels}.}
 
-\item{lowMemDir}{The directory where the processed chunks are saved when 
+\item{lowMemDir}{The directory where the processed chunks are saved when
 using \link{preprocessCoverage} with a specified \code{lowMemDir}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{scalefac }{ This argument is passed to 
-\link[derfinderHelper]{fstats.apply} and should be the same as the one used 
+\item{scalefac }{ This argument is passed to
+\link[derfinderHelper:fstats.apply]{fstats.apply} and should be the same as the one used
 in \link{preprocessCoverage}. Default: 32.}
-\item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-details in \link[derfinderHelper]{fstats.apply}.}
-\item{adjustF }{ A single value to adjust that is added in the denominator 
-of the F-stat calculation. Useful when the Residual Sum of Squares of the 
+\item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See
+details in \link[derfinderHelper:fstats.apply]{fstats.apply}.}
+\item{adjustF }{ A single value to adjust that is added in the denominator
+of the F-stat calculation. Useful when the Residual Sum of Squares of the
 alternative model is very small. Default: 0.}
 }
 Passed to \link{define_cluster}.}
 }
 \value{
-A numeric Rle with the F-statistics per base pair that passed the 
+A numeric Rle with the F-statistics per base pair that passed the
 cutoff.
 }
 \description{
-After defining the models of interest (see \link{makeModels}) and 
-pre-processing the data (see \link{preprocessCoverage}), use 
+After defining the models of interest (see \link{makeModels}) and
+pre-processing the data (see \link{preprocessCoverage}), use
 \link{calculateStats} to calculate the F-statistics at base-pair resolution.
 }
 \examples{

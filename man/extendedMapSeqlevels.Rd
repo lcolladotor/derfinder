@@ -16,7 +16,7 @@ for renaming the sequence names.}
 
 \item{species}{A single character vector with the species of interest: it has
 to match the valid species names supported in GenomeInfoDb. See
-\code{names(GenomeInfoDb::genomeStyles())}. If \code{species = NULL}, 
+\code{names(GenomeInfoDb::genomeStyles())}. If \code{species = NULL},
 a guess will be made using the available information in GenomeInfoDb.}
 
 \item{currentStyle}{A single character vector with the currently used
@@ -26,10 +26,10 @@ supported by \code{species}.}
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{chrsStyle }{ The naming style of the chromosomes. By default, 
-\code{UCSC}. See \link[GenomeInfoDb]{seqlevelsStyle}. Set to \code{NULL} to
+\item{chrsStyle }{ The naming style of the chromosomes. By default,
+\code{UCSC}. See \link[GenomeInfoDb:seqlevelsStyle]{seqlevelsStyle}. Set to \code{NULL} to
 disable this function. This is used when \code{style} is missing, which is
 normally the case when \code{extendedMapSeqlevels} is called by other
 functions.}
@@ -39,10 +39,10 @@ functions.}
 A vector of sequence names using the specified naming \code{style}.
 }
 \description{
-If available, use the information from GenomeInfoDb for your species of 
-interest to map the sequence names from the style currently used to another 
-valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2' 
-(UCSC style). If the information from GenomeInfoDb is not available, the 
+If available, use the information from GenomeInfoDb for your species of
+interest to map the sequence names from the style currently used to another
+valid style. For example, for Homo sapiens map '2' (NCBI style) to 'chr2'
+(UCSC style). If the information from GenomeInfoDb is not available, the
 original sequence names will be returned. To disable this functionality
 specify set \code{chrsStyle} to \code{NULL}.
 }

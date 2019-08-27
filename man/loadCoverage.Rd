@@ -13,14 +13,14 @@ loadCoverage(files, chr, cutoff = NULL, filter = "one",
 The names are used for the column names of the DataFrame. Check
 \link{rawFiles} for constructing \code{files}. \code{files} can also be a
 \link[Rsamtools:BamFile-class]{BamFileList}, \link[Rsamtools:BamFile-class]{BamFile},
-\link[rtracklayer:BigWigFile]{BigWigFileList}, or \link[rtracklayer]{BigWigFile} object.}
+\link[rtracklayer:BigWigFile]{BigWigFileList}, or \link[rtracklayer:BigWigFile]{BigWigFile} object.}
 
 \item{chr}{Chromosome to read. Should be in the format matching the one used
 in the raw data.}
 
 \item{cutoff}{This argument is passed to \link{filterData}.}
 
-\item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In 
+\item{filter}{Has to be either \code{'one'} (default) or \code{'mean'}. In
 the first case, at least one sample has to have coverage above \code{cutoff}.
 In the second case, the mean coverage has to be greater than \code{cutoff}.}
 
@@ -44,7 +44,7 @@ the way.}
 \item{inputType }{ Has to be either \code{bam} or \code{BigWig}. It specifies
 the format of the raw data files. By default it's set to \code{bam} before
 trying to guess it from the file names.}
-\item{tilewidth }{ When specified, \link[GenomicRanges]{tileGenome} is used
+\item{tilewidth }{ When specified, \link[GenomicRanges:tileGenome]{tileGenome} is used
 to break up the chromosome into chunks. We don't recommend this for BAM
 files as the coverage in the borders of the chunks might be slightly off.}
 \item{which }{ \code{NULL} by default. When a \code{GRanges} is specified,

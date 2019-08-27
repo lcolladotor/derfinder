@@ -1,38 +1,38 @@
 #' Merge results from different chromosomes
 #'
-#' This function merges the results from running \link{analyzeChr} on several 
-#' chromosomes and assigns genomic states using \link{annotateRegions}. It 
+#' This function merges the results from running [analyzeChr] on several 
+#' chromosomes and assigns genomic states using [annotateRegions]. It 
 #' re-calculates the p-values and q-values using the pooled areas from the null 
 #' regions from all chromosomes. Once the results have been merged, 
-#' \code{derfinderReport::generateReport} can be used to generate an HTML 
-#' report of the results. The \code{derfinderReport} package is available at 
+#' `derfinderReport::generateReport` can be used to generate an HTML 
+#' report of the results. The `derfinderReport` package is available at 
 #' https://github.com/lcolladotor/derfinderReport.
 #' 
 #' @param chrs The chromosomes of the files to be merged.
 #' @param prefix The main data directory path, which can be useful if 
-#' \link{analyzeChr} is used for several parameters and the results are saved 
+#' [analyzeChr] is used for several parameters and the results are saved 
 #' in different directories.
 #' @param significantCut A vector of length two specifiying the cutoffs used to 
 #' determine significance. The first element is used to determine significance 
 #' for the P-values and FWER adjusted P-values, while the second element is 
 #' used for the Q-values (FDR adjusted P-values) similar to
-#' \link{calculatePvalues}.
+#' [calculatePvalues].
 #' @param minoverlap Determines the mininum overlap needed when annotating 
-#' regions with \link{annotateRegions}.
-#' @param mergePrep If \code{TRUE} the output from \link{preprocessCoverage} is 
+#' regions with [annotateRegions].
+#' @param mergePrep If `TRUE` the output from [preprocessCoverage] is 
 #' merged. 
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
-#' \item{optionsStats }{ The options used in \link{analyzeChr}. By default 
-#' \code{NULL} and will be inferred from the output files.}
+#' \item{optionsStats }{ The options used in [analyzeChr]. By default 
+#' `NULL` and will be inferred from the output files.}
 #' \item{cutoffFstatUsed }{ The actual F-statistic cutoff used. This can be 
-#' obtained from the logs or from the output of \link{analyzeChr}. If 
-#' \code{NULL} then this function will attempt to re-calculate it.}
+#' obtained from the logs or from the output of [analyzeChr]. If 
+#' `NULL` then this function will attempt to re-calculate it.}
 #' }
-#' Passed to \link{annotateRegions} and \link{extendedMapSeqlevels}.
+#' Passed to [annotateRegions] and [extendedMapSeqlevels].
 #' @inheritParams annotateRegions
 #'
 #'
@@ -45,19 +45,19 @@
 #' statistic, width, chromosome and permutation identifier. It's ordered by the 
 #' statistics}
 #' \item{fullRegions.Rdata}{ GRanges object with regions found and with full 
-#' annotation from \link[bumphunter]{matchGenes}. Note that the column 
-#' \code{strand} from \link[bumphunter]{matchGenes} is renamed to 
-#' \code{annoStrand} to comply with GRanges specifications. }
+#' annotation from [matchGenes][bumphunter::matchGenes]. Note that the column 
+#' `strand` from [matchGenes][bumphunter::matchGenes] is renamed to 
+#' `annoStrand` to comply with GRanges specifications. }
 #' \item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data 
 #' from all chromosomes.}
 #' \item{fullAnnotatedRegions.Rdata}{ A list as constructed in 
-#' \link{annotateRegions} with the assigned genomic states.}
+#' [annotateRegions] with the assigned genomic states.}
 #' \item{optionsMerge.Rdata}{ A list with the options used when merging the 
-#' results. Used in \code{derfinderReport::generateReport}.}
+#' results. Used in `derfinderReport::generateReport`.}
 #' }
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{analyzeChr}, \link{calculatePvalues}, \link{annotateRegions}
+#' @seealso [analyzeChr], [calculatePvalues], [annotateRegions]
 #' @export
 #'
 #' @importFrom GenomicRanges GRangesList
@@ -69,7 +69,7 @@
 #' @importFrom qvalue qvalue
 #'
 #' @details If you want to calculate the FWER adjusted P-values, supply 
-#' \code{optionsStats} which is produced by \link{analyzeChr}.
+#' `optionsStats` which is produced by [analyzeChr].
 #'
 #' @examples
 #' ## The output will be saved in the 'generateReport-example' directory

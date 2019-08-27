@@ -11,35 +11,35 @@ mergeResults(chrs = c(1:22, "X", "Y"), prefix = ".",
 \arguments{
 \item{chrs}{The chromosomes of the files to be merged.}
 
-\item{prefix}{The main data directory path, which can be useful if 
-\link{analyzeChr} is used for several parameters and the results are saved 
+\item{prefix}{The main data directory path, which can be useful if
+\link{analyzeChr} is used for several parameters and the results are saved
 in different directories.}
 
-\item{significantCut}{A vector of length two specifiying the cutoffs used to 
-determine significance. The first element is used to determine significance 
-for the P-values and FWER adjusted P-values, while the second element is 
+\item{significantCut}{A vector of length two specifiying the cutoffs used to
+determine significance. The first element is used to determine significance
+for the P-values and FWER adjusted P-values, while the second element is
 used for the Q-values (FDR adjusted P-values) similar to
 \link{calculatePvalues}.}
 
-\item{genomicState}{A GRanges object created with \link{makeGenomicState}. 
-It can be either the \code{genomicState$fullGenome} or 
+\item{genomicState}{A GRanges object created with \link{makeGenomicState}.
+It can be either the \code{genomicState$fullGenome} or
 \code{genomicState$codingGenome} component.}
 
-\item{minoverlap}{Determines the mininum overlap needed when annotating 
+\item{minoverlap}{Determines the mininum overlap needed when annotating
 regions with \link{annotateRegions}.}
 
-\item{mergePrep}{If \code{TRUE} the output from \link{preprocessCoverage} is 
+\item{mergePrep}{If \code{TRUE} the output from \link{preprocessCoverage} is
 merged.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{optionsStats }{ The options used in \link{analyzeChr}. By default 
+\item{optionsStats }{ The options used in \link{analyzeChr}. By default
 \code{NULL} and will be inferred from the output files.}
-\item{cutoffFstatUsed }{ The actual F-statistic cutoff used. This can be 
-obtained from the logs or from the output of \link{analyzeChr}. If 
+\item{cutoffFstatUsed }{ The actual F-statistic cutoff used. This can be
+obtained from the logs or from the output of \link{analyzeChr}. If
 \code{NULL} then this function will attempt to re-calculate it.}
 }
 Passed to \link{annotateRegions} and \link{extendedMapSeqlevels}.}
@@ -47,35 +47,35 @@ Passed to \link{annotateRegions} and \link{extendedMapSeqlevels}.}
 \value{
 Seven Rdata files.
 \describe{
-\item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list 
+\item{fullFstats.Rdata }{ Full F-statistics from all chromosomes in a list
 of Rle objects.}
 \item{fullTime.Rdata }{ Timing information from all chromosomes.}
-\item{fullNullSummary.Rdata}{ A DataFrame with the null region information: 
-statistic, width, chromosome and permutation identifier. It's ordered by the 
+\item{fullNullSummary.Rdata}{ A DataFrame with the null region information:
+statistic, width, chromosome and permutation identifier. It's ordered by the
 statistics}
-\item{fullRegions.Rdata}{ GRanges object with regions found and with full 
-annotation from \link[bumphunter]{matchGenes}. Note that the column 
-\code{strand} from \link[bumphunter]{matchGenes} is renamed to 
+\item{fullRegions.Rdata}{ GRanges object with regions found and with full
+annotation from \link[bumphunter:matchGenes]{matchGenes}. Note that the column
+\code{strand} from \link[bumphunter:matchGenes]{matchGenes} is renamed to
 \code{annoStrand} to comply with GRanges specifications. }
-\item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data 
+\item{fullCoveragePrep.Rdata}{ A list with the pre-processed coverage data
 from all chromosomes.}
-\item{fullAnnotatedRegions.Rdata}{ A list as constructed in 
+\item{fullAnnotatedRegions.Rdata}{ A list as constructed in
 \link{annotateRegions} with the assigned genomic states.}
-\item{optionsMerge.Rdata}{ A list with the options used when merging the 
+\item{optionsMerge.Rdata}{ A list with the options used when merging the
 results. Used in \code{derfinderReport::generateReport}.}
 }
 }
 \description{
-This function merges the results from running \link{analyzeChr} on several 
-chromosomes and assigns genomic states using \link{annotateRegions}. It 
-re-calculates the p-values and q-values using the pooled areas from the null 
-regions from all chromosomes. Once the results have been merged, 
-\code{derfinderReport::generateReport} can be used to generate an HTML 
-report of the results. The \code{derfinderReport} package is available at 
+This function merges the results from running \link{analyzeChr} on several
+chromosomes and assigns genomic states using \link{annotateRegions}. It
+re-calculates the p-values and q-values using the pooled areas from the null
+regions from all chromosomes. Once the results have been merged,
+\code{derfinderReport::generateReport} can be used to generate an HTML
+report of the results. The \code{derfinderReport} package is available at
 https://github.com/lcolladotor/derfinderReport.
 }
 \details{
-If you want to calculate the FWER adjusted P-values, supply 
+If you want to calculate the FWER adjusted P-values, supply
 \code{optionsStats} which is produced by \link{analyzeChr}.
 }
 \examples{

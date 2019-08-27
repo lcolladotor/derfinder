@@ -10,29 +10,29 @@ coerceGR(sample, fullCov, ...)
 \item{sample}{The name or integer index of the sample of interest to coerce
 to a \code{GRanges} object.}
 
-\item{fullCov}{A list where each element is the result from 
-\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
+\item{fullCov}{A list where each element is the result from
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
 \describe{
-\item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+\item{verbose }{ If \code{TRUE} basic status updates will be printed along
 the way.}
-\item{seqlengths }{ A named vector with the sequence lengths of the 
+\item{seqlengths }{ A named vector with the sequence lengths of the
 chromosomes. This argument is passed to \link[GenomicRanges:GRanges-class]{GRanges}. By
 default this is \code{NULL} and inferred from the data.}
 }
 Passed to \link{define_cluster}.}
 }
 \value{
-A \link[GenomicRanges:GRanges-class]{GRanges} object with \code{score} metadata 
-vector containing the coverage information for the specified sample. The 
-ranges reported are only those for regions of the genome with coverage 
+A \link[GenomicRanges:GRanges-class]{GRanges} object with \code{score} metadata
+vector containing the coverage information for the specified sample. The
+ranges reported are only those for regions of the genome with coverage
 greater than zero.
 }
 \description{
-Given the output of \link{fullCoverage}, coerce the coverage to a 
+Given the output of \link{fullCoverage}, coerce the coverage to a
 \link[GenomicRanges:GRanges-class]{GRanges} object.
 }
 \examples{

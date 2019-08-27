@@ -1,34 +1,34 @@
 #' Extract coverage information for a set of regions
 #'
 #' This function extracts the raw coverage information calculated by 
-#' \link{fullCoverage} at each base for a set of regions found with 
-#' \link{calculatePvalues}. It can further calculate the mean coverage per 
+#' [fullCoverage] at each base for a set of regions found with 
+#' [calculatePvalues]. It can further calculate the mean coverage per 
 #' sample for each region.
 #' 
 #' @param fullCov A list where each element is the result from 
-#' \link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
-#' using \link{fullCoverage}. Alternatively, specify \code{files} to extract
+#' [loadCoverage] used with `returnCoverage = TRUE`. Can be generated 
+#' using [fullCoverage]. Alternatively, specify `files` to extract
 #' the coverage information from the regions of interest. This can be 
-#' helpful if you do not wish to store \code{fullCov} for memory reasons.
-#' @param regions The \code{$regions} output from \link{calculatePvalues}. It 
+#' helpful if you do not wish to store `fullCov` for memory reasons.
+#' @param regions The `$regions` output from [calculatePvalues]. It 
 #' is important that the seqlengths information is provided.
 #' @param totalMapped The total number of reads mapped for each sample. 
-#' Providing this data adjusts the coverage to reads in \code{targetSize} 
+#' Providing this data adjusts the coverage to reads in `targetSize` 
 #' library. By default, to reads per 80 million reads.
 #' @param targetSize The target library size to adjust the coverage to. Used
-#' only when \code{totalMapped} is specified.
+#' only when `totalMapped` is specified.
 #' @inheritParams fullCoverage
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
 #' the way.}
 #' }
-#' Passed to \link{extendedMapSeqlevels} and \link{define_cluster}.
+#' Passed to [extendedMapSeqlevels] and [define_cluster].
 #'
-#' When \code{fullCov} is \code{NULL}, \code{...} has the advanced argument
-#' \code{protectWhich} (default 30000) from \link{loadCoverage}. Also 
-#' \code{...} is passed to \link{fullCoverage} for loading the data on the fly. 
+#' When `fullCov` is `NULL`, `...` has the advanced argument
+#' `protectWhich` (default 30000) from [loadCoverage]. Also 
+#' `...` is passed to [fullCoverage] for loading the data on the fly. 
 #' This can be useful for loading the data from a specific region (or small 
 #' sets of regions) without having to load in memory the output the coverage 
 #' information from all the genome.
@@ -36,10 +36,10 @@
 #' @return a list of data.frame where each data.frame has the coverage 
 #' information (nrow = width of region, ncol = number of samples) for a given 
 #' region. The names of the list correspond to the region indexes in 
-#' \code{regions}
+#' `regions`
 #' 
 #' @author Andrew Jaffe, Leonardo Collado-Torres
-#' @seealso \link{fullCoverage}, \link{calculatePvalues}
+#' @seealso [fullCoverage], [calculatePvalues]
 #' @export
 #' @importFrom GenomicRanges seqnames
 #' @importFrom GenomeInfoDb seqlevels renameSeqlevels
@@ -51,13 +51,13 @@
 #' @import S4Vectors
 #' @importFrom BiocParallel bpmapply
 #'
-#' @details When \code{fullCov} is the output of \link{loadCoverage} with
-#' \code{cutoff} non-NULL, \link{getRegionCoverage} assumes that the regions
-#' come from the same data. Meaning that \link{filterData} was not used again.
+#' @details When `fullCov` is the output of [loadCoverage] with
+#' `cutoff` non-NULL, [getRegionCoverage] assumes that the regions
+#' come from the same data. Meaning that [filterData] was not used again.
 #' This ensures that the regions are a subset of the data available in 
-#' \code{fullCov}.
+#' `fullCov`.
 #'
-#' If \code{fullCov} is \code{NULL} and \code{files} is specified, this function
+#' If `fullCov` is `NULL` and `files` is specified, this function
 #' will attempt to read the coverage from the files. Note that if you used
 #' 'totalMapped' and 'targetSize' before, you will have to specify them again
 #' to get the same results. 

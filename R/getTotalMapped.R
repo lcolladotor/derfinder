@@ -9,8 +9,8 @@
 #' the mitocondrial chromosome.
 #'
 #' @param rawFile Either a BAM file or a BigWig file.
-#' @param chrs If \code{NULL}, all the chromosomes will be used. Otherwise,
-#' only those in \code{chrs} will be used.
+#' @param chrs If `NULL`, all the chromosomes will be used. Otherwise,
+#' only those in `chrs` will be used.
 #'
 #' @return The total number of mapped reads for a BAM file or the AUC for a
 #' BigWig file in a single element vector.

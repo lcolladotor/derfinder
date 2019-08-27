@@ -1,80 +1,80 @@
 #' Run the derfinder analysis on a chromosome
 #'
 #' This is a major wrapper for running several key functions from this package. 
-#' It is meant to be used after \link{loadCoverage} has been used for a 
-#' specific chromosome. The steps run include \link{makeModels}, 
-#' \link{preprocessCoverage}, \link{calculateStats}, \link{calculatePvalues} 
-#' and annotating with \link[bumphunter]{annotateTranscripts} and
-#' \link[bumphunter]{matchGenes}. 
+#' It is meant to be used after [loadCoverage] has been used for a 
+#' specific chromosome. The steps run include [makeModels], 
+#' [preprocessCoverage], [calculateStats], [calculatePvalues] 
+#' and annotating with [annotateTranscripts][bumphunter::annotateTranscripts] and
+#' [matchGenes][bumphunter::matchGenes]. 
 #' 
-#' @param chr Used for naming the output files when \code{writeOutput=TRUE} and
-#' the resulting \code{GRanges} object.
-#' @param models The output from \link{makeModels}.
-#' @param cutoffPre This argument is passed to \link{preprocessCoverage} 
-#' (\code{cutoff}).
+#' @param chr Used for naming the output files when `writeOutput=TRUE` and
+#' the resulting `GRanges` object.
+#' @param models The output from [makeModels].
+#' @param cutoffPre This argument is passed to [preprocessCoverage] 
+#' (`cutoff`).
 #' @inheritParams preprocessCoverage
 #' @param cutoffFstat This is used to determine the cutoff argument of 
-#' \link{calculatePvalues} and it's behaviour is determined by 
-#' \code{cutoffType}.
-#' @param cutoffType If set to \code{empirical}, the \code{cutoffFstat} 
-#' (example: 0.99) quantile is used via \link{quantile}. If set to 
-#' \code{theoretical}, the theoretical \code{cutoffFstats} (example: 1e-08) is 
-#' calculated via \link{qf}. If set to \code{manual}, \code{cutoffFstats} is 
-#' passed to \link{calculatePvalues} without any other calculation.
+#' [calculatePvalues] and it's behaviour is determined by 
+#' `cutoffType`.
+#' @param cutoffType If set to `empirical`, the `cutoffFstat` 
+#' (example: 0.99) quantile is used via [quantile]. If set to 
+#' `theoretical`, the theoretical `cutoffFstats` (example: 1e-08) is 
+#' calculated via [qf]. If set to `manual`, `cutoffFstats` is 
+#' passed to [calculatePvalues] without any other calculation.
 #' @inheritParams calculatePvalues
 #' @param groupInfo A factor specifying the group membership of each sample 
 #' that can later be used with the plotting functions in the 
-#' \code{derfinderPlot} package.
+#' `derfinderPlot` package.
 #' @param txdb This argument is passed to 
-#' \link[bumphunter]{annotateTranscripts}. If \code{NULL}, 
-#' \link[TxDb.Hsapiens.UCSC.hg19.knownGene:package]{TxDb.Hsapiens.UCSC.hg19.knownGene} 
+#' [annotateTranscripts][bumphunter::annotateTranscripts]. If `NULL`, 
+#' [TxDb.Hsapiens.UCSC.hg19.knownGene][TxDb.Hsapiens.UCSC.hg19.knownGene::package] 
 #' is used.
-#' @param writeOutput If \code{TRUE}, output Rdata files are created at each 
+#' @param writeOutput If `TRUE`, output Rdata files are created at each 
 #' step inside a directory with the chromosome name (example: 'chr21' if 
-#' \code{chrnum='21'}). One Rdata file is created for each component described 
+#' `chrnum='21'`). One Rdata file is created for each component described 
 #' in the return section.
-#' @param runAnnotation If \code{TRUE} \link[bumphunter]{annotateTranscripts} 
-#' and \link[bumphunter]{matchGenes} are run. Otherwise these steps are skipped.
+#' @param runAnnotation If `TRUE` [annotateTranscripts][bumphunter::annotateTranscripts] 
+#' and [matchGenes][bumphunter::matchGenes] are run. Otherwise these steps are skipped.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
-#' the way. Default \code{TRUE}.}
-#' \item{scalefac }{ This argument is passed to \link{preprocessCoverage}.}
-#' \item{chunksize }{ This argument is passed to \link{preprocessCoverage}.}
-#' \item{returnOutput }{ If \code{TRUE}, it returns a list with the results 
-#' from each step. Otherwise, it returns \code{NULL}. Default: the opposite of
-#' \code{writeOutput}.}
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
+#' the way. Default `TRUE`.}
+#' \item{scalefac }{ This argument is passed to [preprocessCoverage].}
+#' \item{chunksize }{ This argument is passed to [preprocessCoverage].}
+#' \item{returnOutput }{ If `TRUE`, it returns a list with the results 
+#' from each step. Otherwise, it returns `NULL`. Default: the opposite of
+#' `writeOutput`.}
 #' }
-#' Passed to \link{extendedMapSeqlevels}, \link{preprocessCoverage},
-#' \link{calculateStats}, \link{calculatePvalues},
-#' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes},
-#' and \link{define_cluster}.
+#' Passed to [extendedMapSeqlevels], [preprocessCoverage],
+#' [calculateStats], [calculatePvalues],
+#' [annotateTranscripts][bumphunter::annotateTranscripts], [matchGenes][bumphunter::matchGenes],
+#' and [define_cluster].
 #' @inheritParams findRegions
 #'
-#' @return If \code{returnOutput=TRUE}, a list with six components:
+#' @return If `returnOutput=TRUE`, a list with six components:
 #' \describe{
 #' \item{timeinfo }{ The wallclock timing information for each step.}
 #' \item{optionsStats }{ The main options used when running this function.}
-#' \item{coveragePrep }{ The output from \link{preprocessCoverage}.}
-#' \item{fstats}{ The output from \link{calculateStats}.}
-#' \item{regions}{ The output from \link{calculatePvalues}.}
-#' \item{annotation}{ The output from \link[bumphunter]{matchGenes}.}
+#' \item{coveragePrep }{ The output from [preprocessCoverage].}
+#' \item{fstats}{ The output from [calculateStats].}
+#' \item{regions}{ The output from [calculatePvalues].}
+#' \item{annotation}{ The output from [matchGenes][bumphunter::matchGenes].}
 #' }
 #' These are the same components that are written to Rdata files if 
-#' \code{writeOutput=TRUE}.
+#' `writeOutput=TRUE`.
 #'
 #' @details
 #' If you are working with data from an organism different from 'Homo sapiens'
 #' specify so by setting the global 'species' and 'chrsStyle' options. For 
 #' example:
-#' \code{options(species = 'arabidopsis_thaliana')}
-#' \code{options(chrsStyle = 'NCBI')}
+#' `options(species = 'arabidopsis_thaliana')`
+#' `options(chrsStyle = 'NCBI')`
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{makeModels}, \link{preprocessCoverage}, 
-#' \link{calculateStats}, \link{calculatePvalues}, 
-#' \link[bumphunter]{annotateTranscripts}, \link[bumphunter]{matchGenes}
+#' @seealso [makeModels], [preprocessCoverage], 
+#' [calculateStats], [calculatePvalues], 
+#' [annotateTranscripts][bumphunter::annotateTranscripts], [matchGenes][bumphunter::matchGenes]
 #' @export
 #' @import S4Vectors
 #' @importFrom bumphunter annotateTranscripts matchGenes

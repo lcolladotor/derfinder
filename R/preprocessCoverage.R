@@ -1,86 +1,86 @@
 #' Transform and split the data
 #'
-#' This function takes the coverage data from \link{loadCoverage}, scales the 
+#' This function takes the coverage data from [loadCoverage], scales the 
 #' data, does the log2 transformation, and splits it into appropriate chunks 
-#' for using \link{calculateStats}.
+#' for using [calculateStats].
 #' 
-#' @param coverageInfo A list containing a DataFrame --\code{$coverage}-- with 
-#' the coverage data and a logical Rle --\code{$position}-- with the positions 
-#' that passed the cutoff. This object is generated using \link{loadCoverage}.
-#' You should have specified a cutoff value for \link{loadCoverage} unless
-#' that you are using \code{colsubset} which will force a filtering step
-#' with \link{filterData} when running \link{preprocessCoverage}.
+#' @param coverageInfo A list containing a DataFrame --`$coverage`-- with 
+#' the coverage data and a logical Rle --`$position`-- with the positions 
+#' that passed the cutoff. This object is generated using [loadCoverage].
+#' You should have specified a cutoff value for [loadCoverage] unless
+#' that you are using `colsubset` which will force a filtering step
+#' with [filterData] when running [preprocessCoverage].
 #' @param groupInfo A factor specifying the group membership of each sample. If 
-#' \code{NULL} no group mean coverages are calculated. If the factor has more 
+#' `NULL` no group mean coverages are calculated. If the factor has more 
 #' than one level, the first one will be used to calculate the log2 fold change 
-#' in \link{calculatePvalues}.
+#' in [calculatePvalues].
 #' @inheritParams filterData
 #' @param colsubset Optional vector of column indices of 
-#' \code{coverageInfo$coverage} that denote samples you wish to include in 
+#' `coverageInfo$coverage` that denote samples you wish to include in 
 #' analysis. 
 #' @param lowMemDir If specified, each chunk is saved into a separate Rdata 
-#' file under \code{lowMemDir} and later loaded in 
-#' \link[derfinderHelper]{fstats.apply} when 
-#' running \link{calculateStats} and \link{calculatePvalues}. Using this option 
-#' helps reduce the memory load as each fork in \link[BiocParallel]{bplapply} 
+#' file under `lowMemDir` and later loaded in 
+#' [fstats.apply][derfinderHelper::fstats.apply] when 
+#' running [calculateStats] and [calculatePvalues]. Using this option 
+#' helps reduce the memory load as each fork in [bplapply][BiocParallel::bplapply] 
 #' loads only the data needed for the chunk processing. The downside is a bit 
 #' longer computation time due to input/output.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If \code{TRUE} basic status updates will be printed along 
-#' the way. Default: \code{FALSE}.}
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
+#' the way. Default: `FALSE`.}
 #' \item{toMatrix }{ Determines whether the data in the chunk should already be 
 #' saved as a Matrix object, which can be useful to reduce the computation time 
-#' of the F-statistics. Only used when \code{lowMemDir} is not \code{NULL} and
-#' by in that case set to \code{TRUE} by default.}
+#' of the F-statistics. Only used when `lowMemDir` is not `NULL` and
+#' by in that case set to `TRUE` by default.}
 #' \item{mc.cores }{ Number of cores you will use for calculating the 
 #' statistics.}
 #' \item{scalefac }{ A log 2 transformation is used on the count tables, so 
 #' zero counts present a problem.  What number should we add to the entire 
 #' matrix? Default: 32.}
-#' \item{chunksize }{ How many rows of \code{coverageInfo$coverage} should be 
+#' \item{chunksize }{ How many rows of `coverageInfo$coverage` should be 
 #' processed at a time? Default: 5 million. Reduce this number if you have
 #' hundreds of samples to reduce the memory burden while sacrificing some
 #' speed.}
 #' }
 #'
-#' @details If \code{chunksize} is \code{NULL}, then \code{mc.cores} is used to 
-#' determine the \code{chunksize}. This is useful if you want to split the data 
+#' @details If `chunksize` is `NULL`, then `mc.cores` is used to 
+#' determine the `chunksize`. This is useful if you want to split the data 
 #' so each core gets the same amount of data (up to rounding).
 #'
-#' Computing the indexes and using those for \code{mclapply} reduces 
+#' Computing the indexes and using those for `mclapply` reduces 
 #' memory copying as described by Ryan Thompson and illustrated in approach #4 
-#' at \url{http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-when-using-mclapply}
+#' at <http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-when-using-mclapply>
 #'
-#' If \code{lowMemDir} is specified then \code{$coverageProcessed} is NULL and 
-#' \code{$mclapplyIndex} is a vector with the chunk identifiers.
+#' If `lowMemDir` is specified then `$coverageProcessed` is NULL and 
+#' `$mclapplyIndex` is a vector with the chunk identifiers.
 #'
 #' @return A list with five components.
 #' \describe{
 #' \item{coverageProcessed }{ contains the processed coverage information in a 
 #' DataFrame object. Each column represents a sample and the coverage 
-#' information is scaled and log2 transformed. Note that if \code{colsubset} is 
-#' not \code{NULL} the number of columns will be less than those in 
-#' \code{coverageInfo$coverage}. The total number of rows depends on the number 
-#' of base pairs that passed the \code{cutoff} and the information stored is 
-#' the coverage at that given base. Further note that \link{filterData} is 
-#' re-applied if \code{colsubset} is not \code{NULL} and could thus lead to 
-#' fewer rows compared to \code{coverageInfo$coverage}. }
+#' information is scaled and log2 transformed. Note that if `colsubset` is 
+#' not `NULL` the number of columns will be less than those in 
+#' `coverageInfo$coverage`. The total number of rows depends on the number 
+#' of base pairs that passed the `cutoff` and the information stored is 
+#' the coverage at that given base. Further note that [filterData] is 
+#' re-applied if `colsubset` is not `NULL` and could thus lead to 
+#' fewer rows compared to `coverageInfo$coverage`. }
 #' \item{mclapplyIndex }{ is a list of logical Rle objects. They contain the 
-#' partioning information according to \code{chunksize}.}
+#' partioning information according to `chunksize`.}
 #' \item{position }{  is a logical Rle with the positions of the chromosome 
 #' that passed the cutoff.}
 #' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each 
 #' filtered base.}
 #' \item{groupMeans }{ is a list of Rle objects containing the mean coverage at 
 #' each filtered base calculated by group. This list has length 0 if 
-#' \code{groupInfo=NULL}.}
+#' `groupInfo=NULL`.}
 #' }
-#' Passed to \link{filterData} when \code{colsubset} is specified.
+#' Passed to [filterData] when `colsubset` is specified.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso \link{filterData}, \link{loadCoverage}, \link{calculateStats}
+#' @seealso [filterData], [loadCoverage], [calculateStats]
 #' @export
 #'
 #' @importMethodsFrom IRanges ncol nrow '[' '[[' '[[<-'

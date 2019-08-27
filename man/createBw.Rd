@@ -7,14 +7,14 @@
 createBw(fullCov, path = ".", keepGR = TRUE, ...)
 }
 \arguments{
-\item{fullCov}{A list where each element is the result from 
-\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated 
+\item{fullCov}{A list where each element is the result from
+\link{loadCoverage} used with \code{returnCoverage = TRUE}. Can be generated
 using \link{fullCoverage}.}
 
 \item{path}{The path where the BigWig files will be created.}
 
-\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} objects 
-created by \link{coerceGR} grouped into a \link[GenomicRanges:GRangesList-class]{GRangesList} 
+\item{keepGR}{If \code{TRUE}, the \link[GenomicRanges:GRanges-class]{GRanges} objects
+created by \link{coerceGR} grouped into a \link[GenomicRanges:GRangesList-class]{GRangesList}
 are returned. Otherwise they are discarded.}
 
 \item{...}{Arguments passed to \link{createBwSample}.}
@@ -53,7 +53,7 @@ bws[[2]]
 
 }
 \seealso{
-\link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer]{export}, 
+\link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer:export]{export},
 \link{createBwSample}, \link{coerceGR}
 }
 \author{
