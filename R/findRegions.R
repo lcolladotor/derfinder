@@ -17,7 +17,8 @@
 #' regions with positive values and one for the negative values.
 #' @param maxClusterGap This determines the maximum gap between candidate DERs.
 #' It should be greater than `maxRegionGap` (0 by default).
-#' @param cutoff Threshold applied to the `fstats` used to determine the #' regions.
+#' @param cutoff Threshold applied to the `fstats` used to determine the
+#' regions.
 #' @param segmentIR An IRanges object with the genomic positions that are
 #' potentials DERs. This is used in [calculatePvalues] to speed up
 #' permutation calculations.

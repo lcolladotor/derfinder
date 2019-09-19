@@ -29,7 +29,8 @@ chromosome length is extracted from the BAM files.}
 
 \item{output}{If \code{NULL} then no output is saved in disk. If \code{auto}
 then an automatic name is constructed using UCSC names (chrXCovInfo.Rdata
-for example). If another character is specified, then that name is used for #' the output file.}
+for example). If another character is specified, then that name is used for
+the output file.}
 
 \item{bai}{The full path to the BAM index files. If \code{NULL} it is
 assumed that the BAM index files are in the same location as the BAM files
