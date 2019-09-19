@@ -4,7 +4,7 @@ windowsFlag <- .Platform$OS.type != 'windows'
 
 # Setup
 datadir <- system.file('extdata', 'genomeData', package='derfinder')
-files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$', 
+files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',
     fileterm = NULL)
 ## Shorten the column names
 names(files) <- gsub('_accepted_hits.bam', '', names(files))
@@ -14,7 +14,7 @@ bogus <- rawFiles(datadir = datadir, samplepatt = "bw")
 test_that('Finding files', {
     expect_that(rawFiles(datadir = NULL, sampledirs = NULL),
         throws_error("Either 'samplepatt' or 'sampledirs' must be non-NULL."))
-    expect_that(length(bogus), equals(0))    
+    expect_that(length(bogus), equals(0))
 })
 
 ## Load BAM data
@@ -51,7 +51,7 @@ if(windowsFlag) {
     dir.create('bw')
 
     test_that('Create BigWig files', {
-        expect_that(bws <- createBw(list('chr21' = dataRaw), path = 'bw'), 
+        expect_that(bws <- createBw(list('chr21' = dataRaw), path = 'bw'),
             gives_warning())
         expect_that(is(bws, "GRangesList"), is_identical_to(TRUE))
         expect_that(length(bws), equals(31))
@@ -63,21 +63,21 @@ if(windowsFlag) {
     ## Identify BigWig files
     bigwigs <- rawFiles(datadir = "bw", samplepatt = "bw", fileterm = NULL)
     names(bigwigs) <- gsub('.bw', '', names(bigwigs))
-    
+
     ## Load BigWig
     dataBW <- loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL,
         inputType = "BigWig")
     dataRaw.bw <- dataRaw
     dataRaw.bw$coverage <- dataRaw.bw$coverage[, names(bigwigs)]
-    
+
     test_that('Load BigWig data', {
         expect_that(dataRaw.bw, equals(dataBW))
         expect_that(loadCoverage(bigwigs, chr = '21', cutoff = NULL,
             inputType = "BigWig", verbose = FALSE), throws_error())
-        expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL, 
+        expect_that(loadCoverage(bigwigs, chr = 'chr21', cutoff = NULL,
             verbose = FALSE), equals(dataRaw.bw))
     })
-    
+
     b1 <- system.file('extdata', 'AMY', 'HSB113.bw', package = 'derfinderData')
     b2 <- BigWigFile(b1)
     test_that('AUC: BigWig', {
@@ -111,7 +111,7 @@ test_that('Load with fullCoverage()', {
 })
 
 if(windowsFlag) {
-    fullCov.bw <- fullCoverage(files = bigwigs, chrs = 'chr21', 
+    fullCov.bw <- fullCoverage(files = bigwigs, chrs = 'chr21',
         inputType = 'BigWig')
     test_that('Load with fullCoverage() via BigWigs', {
         expect_that(list('chr21' = dataBW$coverage), is_identical_to(fullCov.bw))
@@ -155,10 +155,10 @@ test_that('Filtering', {
     expect_that(filterData(dataRaw$coverage, filter = 'two'), throws_error())
     expect_that(filterData(dataRaw$coverage, cutoff = 10,
         verbose = FALSE)$position, is_identical_to(Rle(FALSE, 48129895)))
-    expect_that(dim(filterData(dataRaw$coverage, cutoff = 0.5, filter = 'mean', 
+    expect_that(dim(filterData(dataRaw$coverage, cutoff = 0.5, filter = 'mean',
         verbose = FALSE)$coverage), equals(c(273, 31)))
     expect_that(nrow(filt$coverage), is_identical_to(sum(filt$position)))
-    
+
 })
 
 
@@ -225,3 +225,9 @@ filt <- filterData(l, 5)
 test_that('Naming is preserved', {
     expect_equal(colnames(filt$coverage), names(l))
 })
+
+
+## Clean up
+if(windowsFlag) {
+    unlink('bw', recursive = TRUE)
+}

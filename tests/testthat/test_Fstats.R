@@ -5,7 +5,7 @@ library('GenomicRanges')
 ## Check that the sample depths are correctly calculated
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
     verbose = TRUE)
-    
+
 sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
 
 sample.manual <- sapply(collapsedFull, function(x) { log2(sum(x$values * x$weights) + 32)})
@@ -15,7 +15,7 @@ names(sample.manual) <- paste0(names(sample.manual), ".100%")
 test_that('sampleDepths', {
     expect_that(lapply(genomeData$coverage[1:2], function(x) { vals <- unique(runValue(x)); weights <- sapply(vals, function(y) { sum(x == y)}); return(list(values = vals, weights = weights)) }), equals(collapseFullCoverage(list(genomeData$coverage), colsubset = 1:2)))
     expect_that(sampleDepth(collapsedFull, probs=c(1), verbose = FALSE), equals(sample.manual))
-    
+
 })
 
 
@@ -70,7 +70,7 @@ test_that('F-stat cutoff', {
 ## Check calculating the p-values. Specially check that the default arguments
 ## are the ones intended
 suppressWarnings(RNGversion("3.5.0"))
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, 
+regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10,
     chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular')
 
 test_that('calculatePvalues', {
@@ -92,11 +92,11 @@ fullRegions.included <- fullRegions
 
 ## Make a fresh copy
 initialPath <- getwd()
-dir.create('generateReport-example-rerun', showWarnings = FALSE, 
+dir.create('generateReport-example-rerun', showWarnings = FALSE,
     recursive = TRUE)
 setwd(file.path(initialPath, 'generateReport-example-rerun'))
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-    verbose=TRUE) 
+    verbose=TRUE)
 sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
     verbose=TRUE)
 groupInfo <- genomeInfo$pop
@@ -105,12 +105,12 @@ models <- makeModels(sampleDepths, testvars=groupInfo, adjustvars=adjustvars)
 analyzeChr(chr='21', coverageInfo=genomeData, models=models,
     cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=groupInfo,
     mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
-    
+
 ## Merge fresh results
 setwd(initialPath)
 mergeResults(chrs='21', prefix='generateReport-example-rerun',
     genomicState=genomicState$fullGenome)
-    
+
 ## Load results
 load(file.path('generateReport-example-rerun' , 'fullRegions.Rdata'))
 fullRegions.rerun <- fullRegions
@@ -124,11 +124,11 @@ test_that('mergeResults', {
 
 library('TxDb.Hsapiens.UCSC.hg19.knownGene')
 
-results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
-    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
+results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
+    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1,
     writeOutput=FALSE, returnOutput=TRUE, method='regular')
-results.param <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
-    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
+results.param <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
+    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1,
     writeOutput=FALSE, returnOutput=TRUE, method='regular', maxRegionGap = 0L,
     maxClusterGap = 300L, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene, scalefac = 32)
 
@@ -138,3 +138,9 @@ test_that('analyzeChr', {
     expect_that(results$coveragePrep, equals(results.param$coveragePrep))
     expect_that(c(results$optionsStats[-which(names(results$optionsStats) == 'analyzeCall')], list(maxRegionGap = 0L, maxClusterGap = 300L, scalefac = 32)), is_equivalent_to(results.param$optionsStats[-which(names(results.param$optionsStats) == 'analyzeCall')]))
 })
+
+
+## Clean up
+unlink('generateReport-example', recursive = TRUE)
+unlink('generateReport-example-rerun', recursive = TRUE)
+unlink('chr21', recursive = TRUE)
