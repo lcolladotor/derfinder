@@ -53,7 +53,8 @@ Passed to \link{filterData}, \link{findRegions} and \link{define_cluster}.
 Note that \link{filterData} is used internally
 by \link{loadCoverage} (and hence \code{fullCoverage}) and has the important
 arguments \code{totalMapped} and \code{targetSize} which can be used to
-normalize the coverage by library size. If you already used these arguments #' when creating the \code{fullCov} object, then don't specify them a second
+normalize the coverage by library size. If you already used these arguments
+when creating the \code{fullCov} object, then don't specify them a second
 time in \link{regionMatrix}. If you have not used these arguments, we
 recommend using them to normalize the mean coverage.}
 }
@@ -94,21 +95,21 @@ fullCov <- list('chr21' = DataFrame(x, y, z))
 libSize <- sapply(fullCov$chr21, sum)
 
 ## Run region matrix normalizing the coverage
-regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L, 
+regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
 
 \dontrun{
 ## You can alternatively use filterData() on fullCov to reduce the required
 ## memory before using regionMatrix(). This can be useful when mc.cores > 1
-filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean', 
+filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
     cutoff=5, totalMapped = libSize, targetSize = 4e4)
-regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L, 
+regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36, runFilter=FALSE)
 }
 
 ## regionMatrix() can work with multiple chrs as shown below.
 fullCov2 <- list('chr21' = DataFrame(x, y, z), 'chr22' = DataFrame(x, y, z))
-regionMat2 <- regionMatrix(fullCov = fullCov2, maxRegionGap = 10L, 
+regionMat2 <- regionMatrix(fullCov = fullCov2, maxRegionGap = 10L,
     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
 
 ## Combine results from multiple chromosomes

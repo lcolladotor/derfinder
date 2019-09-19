@@ -26,7 +26,8 @@ regions with positive values and one for the negative values.}
 \item{maxClusterGap}{This determines the maximum gap between candidate DERs.
 It should be greater than \code{maxRegionGap} (0 by default).}
 
-\item{cutoff}{Threshold applied to the \code{fstats} used to determine the #' regions.}
+\item{cutoff}{Threshold applied to the \code{fstats} used to determine the
+regions.}
 
 \item{segmentIR}{An IRanges object with the genomic positions that are
 potentials DERs. This is used in \link{calculatePvalues} to speed up
