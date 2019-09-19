@@ -1,3 +1,20 @@
+# derfinder 1.19.9
+
+BUG FIXES
+
+* Fixed an important bug in `findRegions()` that affected the end
+positions of the regions when `maxRegionGap` was supplied with a value greater
+than the default of `0` and the data was filtered (so `position` was not all
+`TRUE` in the `findRegions()` call). To check this scenario now there is a new
+unit test under `tests/testthat/test-maxRegionGap.R`.
+* The above bug went unnoticed in `getRegionCoverage()` and thus for
+`regionMatrix()` for the same type of situations (filtered data with a non-zero
+`maxRegionGap`). The coverage values are ok, it's just the end positions of the
+regions returned by `findRegions()` that were incorrect and that would need to
+be re-computed with the fixed version.
+* Changed some internal tests to check `bumphunter::loessByCluster()` instead of
+`bumphunter::runmedByCluster()` given some issues with the second one.
+
 # derfinder 1.19.8
 
 * Added a `NEWS.md` file to track changes to the package.

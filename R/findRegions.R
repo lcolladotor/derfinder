@@ -216,7 +216,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         if (!basic) {
             ## Define the chr ranges
             pos.ir <- IRanges(start = pos[start(ders[[i]])],
-                width = width(ders[[i]]))
+                end = pos[end(ders[[i]])])
 
             ## Actually build the GRanges
             res[[i]] <- GRanges(seqnames = Rle(chr, length(ders[[i]])),

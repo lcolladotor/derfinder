@@ -18,9 +18,9 @@ test_that('.getSegmentsRle', {
 })
 
 
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3, 
+prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
     colsubset=NULL)
-prep.small <- preprocessCoverage(genomeData, cutoff=1, scalefac=32, 
+prep.small <- preprocessCoverage(genomeData, cutoff=1, scalefac=32,
     chunksize=1e3, colsubset=1:2, groupInfo = factor(letters[1:2]))
 data.small <- filterData(genomeData$coverage[1:2], 1, genomeData$position)
 tmp <- sapply(data.small$coverage, identity)
@@ -45,8 +45,8 @@ basic.check <- DataFrame(area = Rle(sums), width = Rle(c(6, 15, 36)))
 basic.check$stat <- basic.check$area / basic.check$width
 
 library('bumphunter')
-regs2 <- regionFinder(as.numeric(genomeFstats), rep('chr21', length(genomeFstats)), 
-    which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE, 
+regs2 <- regionFinder(as.numeric(genomeFstats), rep('chr21', length(genomeFstats)),
+    which(prep$position), cluster=NULL, assumeSorted=TRUE, verbose=TRUE,
     order=FALSE, maxGap=1)
 
 test_that('findRegions', {
@@ -54,8 +54,8 @@ test_that('findRegions', {
     expect_that(width(regs.small[1:2]), equals(runLength(genomeFstats[seq_len(32)] > 1)[runValue(genomeFstats[seq_len(32)] > 1)]))
     expect_that(width(regs.small[3]), equals(runLength(genomeFstats[32 + seq_len(36)] > 1)[runValue(genomeFstats[32 + seq_len(36)] > 1)]))
     expect_that(regs.small.basic, equals(basic.check))
-    expect_that(ranges(findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, cutoff = 0, maxRegionGap = 1e5, maxClusterGap = 1e6)), equals(IRanges(47407537, 47408970, names = 'up')))
-    expect_equal(findRegions(position = FALSE), NULL)
+    expect_that(ranges(findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, cutoff = 0, maxRegionGap = 1e5, maxClusterGap = 1e6)), equals(IRanges(min(which(prep$position)), max(which(prep$position)), names = 'up')))
+    expect_equal(suppressWarnings(findRegions(position = FALSE)), NULL)
 })
 
 
@@ -72,12 +72,12 @@ test_that('findRegions-smoother', {
 # Works right now because bumphunter was loaded previously in the session,
 # otherwise it would fail due to https://github.com/ririzarr/bumphunter/issues/7
 regs_s1 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE)
-regs_s2 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster)
+regs_s2 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::loessByCluster)
 regs_s3 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, minNum = 1435)
 
 test_that('findRegions-smooth-regions', {
     expect_equal(length(regs_s1), 1)
-    expect_equal(length(regs_s2), 2)
+    expect_equal(length(regs_s2), 1)
     expect_equal(regs, regs_s3)
 })
 
@@ -89,7 +89,7 @@ if('SnowParam' %in% names(registered())) {
         ## Won't work now due to https://github.com/ririzarr/bumphunter/issues/7
         regs_s4 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2, maxClusterGap = 1256)
         regs_s5 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2)
-        regs_s6 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::runmedByCluster, mc.cores = 2)
+        regs_s6 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, smoothFunction = bumphunter::loessByCluster, mc.cores = 2)
         regs_s7 <- findRegions(prep$position, genomeFstats, 'chr21', verbose=TRUE, smooth = TRUE, mc.cores = 2, maxClusterGap = 1256, minNum = 1435)
         ## The following code use to fail before version 1.5.34
         smoothF <- derfinder:::.smootherFstats(genomeFstats, prep$position, maxClusterGap = 1256, mc.cores = 2)
