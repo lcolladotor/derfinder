@@ -1,4 +1,11 @@
-# derfinder 1.19.9
+# derfinder 1.18.9
+
+BUG FIXES
+
+* Port recent changes from the devel branch of derfinder (1.19.9) to the
+release branch. Match the version numbers to reduce any confusion.
+
+# derfinder 1.18.7
 
 BUG FIXES
 
@@ -15,12 +22,12 @@ be re-computed with the fixed version.
 * Changed some internal tests to check `bumphunter::loessByCluster()` instead of
 `bumphunter::runmedByCluster()` given some issues with the second one.
 
-# derfinder 1.19.8
+# derfinder 1.18.6
 
 * Added a `NEWS.md` file to track changes to the package.
 
 
-# derfinder 1.19.4
+# derfinder 1.18.4
 
 BUG FIXES
 
@@ -37,7 +44,7 @@ result <- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')
 This error affected recount and other reverse dependencies that use
 derfinder for processing BigWig files.
 
-# derfinder 1.19.2
+# derfinder 1.18.2
 
 
 BUG FIXES
