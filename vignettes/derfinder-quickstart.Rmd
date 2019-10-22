@@ -28,7 +28,9 @@ vignette: >
 `R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. `r Biocpkg('derfinder')` is a `R` package available via the [Bioconductor](http://bioconductor/packages/derfinder) repository for packages. `R` can be installed on any operating system from [CRAN](https://cran.r-project.org/) after which you can install `r Biocpkg('derfinder')` by using the following commands in your `R` session:
 
 ```{r 'installDer', eval = FALSE}
-install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
 BiocManager::install("derfinder")
 
 ## Check that you have a valid Bioconductor installation

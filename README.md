@@ -23,8 +23,10 @@ Get R 3.5.x from [CRAN](http://cran.r-project.org/).
 
 ```R
 ## From Bioconductor
-install.packages("BiocManager")
-BiocManager::install('derfinder')
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("derfinder")
 
 ## Suggested:
 BiocManager::install(c('derfinderPlot', 'regionReport'))
