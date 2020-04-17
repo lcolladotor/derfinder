@@ -4,8 +4,15 @@
 \alias{filterData}
 \title{Filter the positions of interest}
 \usage{
-filterData(data, cutoff = NULL, index = NULL, filter = "one",
-  totalMapped = NULL, targetSize = 8e+07, ...)
+filterData(
+  data,
+  cutoff = NULL,
+  index = NULL,
+  filter = "one",
+  totalMapped = NULL,
+  targetSize = 8e+07,
+  ...
+)
 }
 \arguments{
 \item{data}{Either a list of Rle objects or a DataFrame with the coverage
@@ -81,10 +88,10 @@ statistics.
 }
 \examples{
 ## Construct some toy data
-library('IRanges')
-x <- Rle(round(runif(1e4, max=10)))
-y <- Rle(round(runif(1e4, max=10)))
-z <- Rle(round(runif(1e4, max=10)))
+library("IRanges")
+x <- Rle(round(runif(1e4, max = 10)))
+y <- Rle(round(runif(1e4, max = 10)))
+z <- Rle(round(runif(1e4, max = 10)))
 DF <- DataFrame(x, y, z)
 
 ## Filter the data
@@ -92,9 +99,8 @@ filt1 <- filterData(DF, 5)
 filt1
 
 ## Filter again but only using the first two samples
-filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
+filt2 <- filterData(filt1$coverage[, 1:2], 5, index = filt1$position)
 filt2
-
 }
 \seealso{
 \link{loadCoverage}, \link{preprocessCoverage},

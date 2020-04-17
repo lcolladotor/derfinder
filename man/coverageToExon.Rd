@@ -4,8 +4,14 @@
 \alias{coverageToExon}
 \title{Extract coverage information for exons}
 \usage{
-coverageToExon(fullCov = NULL, genomicState, L = NULL,
-  returnType = "raw", files = NULL, ...)
+coverageToExon(
+  fullCov = NULL,
+  genomicState,
+  L = NULL,
+  returnType = "raw",
+  files = NULL,
+  ...
+)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -74,17 +80,19 @@ to get the same results.
 }
 \examples{
 ## Obtain fullCov object
-fullCov <- list('21'=genomeDataRaw$coverage)
+fullCov <- list("21" = genomeDataRaw$coverage)
 
 ## Use only the first two exons
 smallGenomicState <- genomicState
-smallGenomicState$fullGenome <- smallGenomicState$fullGenome[ 
-    which(smallGenomicState$fullGenome$theRegion == 'exon')[1:2] ]
+smallGenomicState$fullGenome <- smallGenomicState$fullGenome[
+    which(smallGenomicState$fullGenome$theRegion == "exon")[1:2]
+]
 
 ## Finally, get the coverage information for each exon
-exonCov <- coverageToExon(fullCov=fullCov,
-    genomicState=smallGenomicState$fullGenome, L=36)
-
+exonCov <- coverageToExon(
+    fullCov = fullCov,
+    genomicState = smallGenomicState$fullGenome, L = 36
+)
 }
 \seealso{
 \link{fullCoverage}, \link{getRegionCoverage}

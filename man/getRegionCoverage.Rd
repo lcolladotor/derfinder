@@ -4,8 +4,14 @@
 \alias{getRegionCoverage}
 \title{Extract coverage information for a set of regions}
 \usage{
-getRegionCoverage(fullCov = NULL, regions, totalMapped = NULL,
-  targetSize = 8e+07, files = NULL, ...)
+getRegionCoverage(
+  fullCov = NULL,
+  regions,
+  totalMapped = NULL,
+  targetSize = 8e+07,
+  files = NULL,
+  ...
+)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -14,7 +20,7 @@ using \link{fullCoverage}. Alternatively, specify \code{files} to extract
 the coverage information from the regions of interest. This can be
 helpful if you do not wish to store \code{fullCov} for memory reasons.}
 
-\item{regions}{The \code{$regions} output from \link{calculatePvalues}. It
+\item{regions}{The \verb{$regions} output from \link{calculatePvalues}. It
 is important that the seqlengths information is provided.}
 
 \item{totalMapped}{The total number of reads mapped for each sample.
@@ -74,16 +80,19 @@ You should use at most one core per chromosome.
 }
 \examples{
 ## Obtain fullCov object
-fullCov <- list('21'=genomeDataRaw$coverage)
+fullCov <- list("21" = genomeDataRaw$coverage)
 
 ## Assign chr lengths using hg19 information, use only first two regions
-library('GenomicRanges')
-data(hg19Ideogram, package = 'biovizBase', envir = environment())
+library("GenomicRanges")
 regions <- genomeRegions$regions[1:2]
-seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
+seqlengths(regions) <- seqlengths(getChromInfoFromUCSC("hg19",
+    as.Seqinfo = TRUE
+))[
+    mapSeqlevels(names(seqlengths(regions)), "UCSC")
+]
 
 ## Finally, get the region coverage
-regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
+regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions)
 }
 \seealso{
 \link{fullCoverage}, \link{calculatePvalues}

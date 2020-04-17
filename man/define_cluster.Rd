@@ -32,7 +32,6 @@ define_cluster(mc.cores = 1)
 
 ## Note that BPPARAM.custom takes precedence
 define_cluster(mc.cores = 2, BPPARAM.custom = BiocParallel::SerialParam())
-
 }
 \author{
 Leonardo Collado-Torres

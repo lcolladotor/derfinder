@@ -7,11 +7,11 @@
 calculateStats(coveragePrep, models, lowMemDir = NULL, ...)
 }
 \arguments{
-\item{coveragePrep}{A list with \code{$coverageProcessed},
-\code{$mclapplyIndex}, and \code{$position} normally generated using
+\item{coveragePrep}{A list with \verb{$coverageProcessed},
+\verb{$mclapplyIndex}, and \verb{$position} normally generated using
 \link{preprocessCoverage}.}
 
-\item{models}{A list with \code{$mod} and \code{$mod0} normally generated
+\item{models}{A list with \verb{$mod} and \verb{$mod0} normally generated
 using \link{makeModels}.}
 
 \item{lowMemDir}{The directory where the processed chunks are saved when
@@ -44,11 +44,12 @@ pre-processing the data (see \link{preprocessCoverage}), use
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-    verbose = TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose = TRUE
+)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), verbose = TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -56,18 +57,20 @@ adjustvars <- data.frame(genomeInfo$gender)
 models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32,
-    chunksize=1e3, colsubset=NULL)
+prep <- preprocessCoverage(genomeData,
+    cutoff = 0, scalefac = 32,
+    chunksize = 1e3, colsubset = NULL
+)
 
 ## Run the function
-fstats <- calculateStats(prep, models, verbose=TRUE, method='regular')
+fstats <- calculateStats(prep, models, verbose = TRUE, method = "regular")
 fstats
-
 \dontrun{
 ## Compare vs pre-packaged F-statistics
-library('testthat')
+library("testthat")
 expect_that(fstats, is_equivalent_to(genomeFstats))
 }
+
 }
 \seealso{
 \link{makeModels}, \link{preprocessCoverage}

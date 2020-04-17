@@ -87,50 +87,50 @@
 #' @importFrom bumphunter locfitByCluster runmedByCluster
 #' @examples
 #' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
-#'     colsubset=NULL)
+#' prep <- preprocessCoverage(genomeData,
+#'     cutoff = 0, scalefac = 32, chunksize = 1e3,
+#'     colsubset = NULL
+#' )
 #'
 #' ## Get the F statistics
 #' fstats <- genomeFstats
 #'
 #' ## Find the regions
-#' regs <- findRegions(prep$position, fstats, 'chr21', verbose=TRUE)
+#' regs <- findRegions(prep$position, fstats, "chr21", verbose = TRUE)
 #' regs
-#'
 #' \dontrun{
 #' ## Once you have the regions you can proceed to annotate them
-#' library('bumphunter')
+#' library("bumphunter")
 #' genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene)
 #' annotation <- matchGenes(regs, genes)
 #' annotation
 #' }
 #'
 #' # Find regions with smoothing the F-statistics by bumphunter::runmedByCluster
-#' regs_smooth <- findRegions(prep$position, fstats, 'chr21', verbose = TRUE,
-#'     smoothFunction = bumphunter::runmedByCluster)
+#' regs_smooth <- findRegions(prep$position, fstats, "chr21",
+#'     verbose = TRUE,
+#'     smoothFunction = bumphunter::runmedByCluster
+#' )
 #' ## Compare against the object regs obtained earlier
 #' regs_smooth
-#'
-
-
 findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-    segmentIR = NULL, smooth = FALSE,  weights = NULL,
-    smoothFunction = bumphunter::locfitByCluster, ...){
+    segmentIR = NULL, smooth = FALSE, weights = NULL,
+    smoothFunction = bumphunter::locfitByCluster, ...) {
 
     ## Advanged arguments
-# @param basic If \code{TRUE} a DataFrame is returned that has only basic
-# information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
-    basic <- .advanced_argument('basic', FALSE, ...)
+    # @param basic If \code{TRUE} a DataFrame is returned that has only basic
+    # information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
+    basic <- .advanced_argument("basic", FALSE, ...)
 
 
-# @param maxRegionGap This determines the maximum number of gaps between two
-# genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER).
-    maxRegionGap <- .advanced_argument('maxRegionGap', 0L, ...)
+    # @param maxRegionGap This determines the maximum number of gaps between two
+    # genomic positions to be considered part of the same candidate Differentially Expressed Region (candidate DER).
+    maxRegionGap <- .advanced_argument("maxRegionGap", 0L, ...)
 
-# @param verbose If \code{TRUE} basic status updates will be printed along the
-# way.
-    verbose <- .advanced_argument('verbose', TRUE, ...)
+    # @param verbose If \code{TRUE} basic status updates will be printed along the
+    # way.
+    verbose <- .advanced_argument("verbose", TRUE, ...)
 
     if (maxClusterGap < maxRegionGap) {
         warning("'maxClusterGap' is less than 'maxRegionGap' which nullifies it's intended use.")
@@ -140,33 +140,42 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         if (is.null(segmentIR) | smooth) {
             stopifnot(!is.null(position))
         }
-        if(smooth) {
-            if (verbose)
-                message(paste(Sys.time(), 'findRegions: smoothing'))
+        if (smooth) {
+            if (verbose) {
+                  message(paste(Sys.time(), "findRegions: smoothing"))
+              }
             fstats <- .smootherFstats(fstats = fstats, position = position, weights = weights, smoothFunction = smoothFunction, ...)
         }
     } else {
-        if(smooth) warning("Ignoring 'smooth' = TRUE since 'basic' = TRUE")
+        if (smooth) warning("Ignoring 'smooth' = TRUE since 'basic' = TRUE")
     }
 
 
     ## Identify the segments
     if (is.null(segmentIR)) {
-        if (verbose)
-            message(paste(Sys.time(),
-                'findRegions: identifying potential segments'))
-        if(!any(position)) {
-            warning('Found no regions')
+        if (verbose) {
+              message(paste(
+                  Sys.time(),
+                  "findRegions: identifying potential segments"
+              ))
+          }
+        if (!any(position)) {
+            warning("Found no regions")
             return(NULL)
         }
-        segmentIR <- .clusterMakerRle(position, maxGap = maxRegionGap,
-            ranges = TRUE)
+        segmentIR <- .clusterMakerRle(position,
+            maxGap = maxRegionGap,
+            ranges = TRUE
+        )
     }
 
     ## Create the F-stats segments
-    if (verbose)
-        message(paste(Sys.time(),
-            'findRegions: segmenting information'))
+    if (verbose) {
+          message(paste(
+              Sys.time(),
+              "findRegions: segmenting information"
+          ))
+      }
     segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, ...)
 
     ## Work only with those that have some information
@@ -174,9 +183,12 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
     ## Stop if there are no segments
     if (!any(hasInfo)) {
-        if (verbose)
-            message(paste(Sys.time(),
-                'findRegions: found no segments to work with!!'))
+        if (verbose) {
+              message(paste(
+                  Sys.time(),
+                  "findRegions: found no segments to work with!!"
+              ))
+          }
         return(NULL)
     }
 
@@ -184,9 +196,12 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     segments <- segments[hasInfo]
 
     ## Find the actual DERs
-    if (verbose)
-        message(paste(Sys.time(),
-            'findRegions: identifying candidate regions'))
+    if (verbose) {
+          message(paste(
+              Sys.time(),
+              "findRegions: identifying candidate regions"
+          ))
+      }
     ders <- lapply(segments, function(fcut) {
         ## Merge with segment ranges
         all <- c(fcut, segmentIR)
@@ -207,7 +222,7 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     }
 
     ## Build the output shell
-    res <- vector('list', sum(hasInfo))
+    res <- vector("list", sum(hasInfo))
     names(res) <- names(hasInfo)[hasInfo]
 
     ## Use UCSC names for homo_sapiens by default
@@ -216,19 +231,26 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     for (i in names(hasInfo)[hasInfo]) {
         if (!basic) {
             ## Define the chr ranges
-            pos.ir <- IRanges(start = pos[start(ders[[i]])],
-                end = pos[end(ders[[i]])])
+            pos.ir <- IRanges(
+                start = pos[start(ders[[i]])],
+                end = pos[end(ders[[i]])]
+            )
 
             ## Actually build the GRanges
-            res[[i]] <- GRanges(seqnames = Rle(chr, length(ders[[i]])),
+            res[[i]] <- GRanges(
+                seqnames = Rle(chr, length(ders[[i]])),
                 ranges = pos.ir, value = mean(ders[[i]]),
                 area = abs(sum(ders[[i]])), indexStart = start(ders[[i]]),
-                indexEnd = end(ders[[i]]))
+                indexEnd = end(ders[[i]])
+            )
 
             ## Identify clusters
-            if (verbose)
-                message(paste(Sys.time(),
-                    'findRegions: identifying region clusters'))
+            if (verbose) {
+                  message(paste(
+                      Sys.time(),
+                      "findRegions: identifying region clusters"
+                  ))
+              }
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
             cluster <- .clusterMakerRle(regionPos, maxClusterGap)
@@ -247,19 +269,19 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
             res[[i]]$cluster <- Rle(clusterFinal)
             res[[i]]$clusterL <- Rle(clusterWidth[clusterFinal])
-
         } else {
             ## Actually build the GRanges
-            res[[i]] <- DataFrame(area = Rle(abs(sum(ders[[i]]))),
+            res[[i]] <- DataFrame(
+                area = Rle(abs(sum(ders[[i]]))),
                 width = Rle(width(ders[[i]])), stat = Rle(mean(ders[[i]])),
-                check.names = FALSE)
+                check.names = FALSE
+            )
         }
-
     }
 
     if (!basic) {
         ## Fix names and format
-        names(res) <- gsub('Index', '', names(res))
+        names(res) <- gsub("Index", "", names(res))
         res <- GRangesList(res)
 
         ## Finish up
@@ -306,50 +328,53 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' @importFrom IRanges slice
 #' @import S4Vectors
 #' @examples
-#' library('IRanges')
+#' library("IRanges")
 #' set.seed(20130725)
-#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
+#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob = c(0.05, 0.95)))
 #' data <- Rle(rnorm(sum(pos)))
 #' cutoff <- quantile(data, .99, na.rm = TRUE)
 #'
 #' ## It's quite fast
-#' system.time(segs <- derfinder:::.getSegmentsRle(data, cutoff, verbose=TRUE))
-#'
+#' system.time(segs <- derfinder:::.getSegmentsRle(data, cutoff, verbose = TRUE))
 #' \dontrun{
 #' ## The output is different in look than the one from getSegments() but it's
 #' ## use is similar.
 #' ## Plus it can be transformed into the same format as the ouptut from
 #' ## .getSegmentsRle().
-#' library('bumphunter')
+#' library("bumphunter")
 #' cluster <- derfinder:::.clusterMakerRle(pos, 100L)
 #' foo <- function() {
 #'     segs2 <- getSegments(as.numeric(data), as.integer(cluster), cutoff,
-#'     assumeSorted=TRUE)[c('upIndex', 'dnIndex')]
+#'         assumeSorted = TRUE
+#'     )[c("upIndex", "dnIndex")]
 #'     segs.ir <- lapply(segs2, function(ind) {
 #'         tmp <- lapply(ind, function(segment) {
-#'             c('start'=min(segment), 'end'=max(segment))
+#'             c("start" = min(segment), "end" = max(segment))
 #'         })
 #'         info <- do.call(rbind, tmp)
-#'         IRanges(start=info[,'start'], end=info[,'end'])
+#'         IRanges(start = info[, "start"], end = info[, "end"])
 #'     })
 #'     return(segs.ir)
 #' }
 #' identical(foo(), segs)
-#'
 #' }
 #'
 #' @noRd
 .getSegmentsRle <- function(x, cutoff = quantile(x, 0.99, na.rm = TRUE), ...) {
 
     ## Advanged arguments
-# @param verbose If \code{TRUE} basic status updates will be printed along the
-# way.
-    verbose <- .advanced_argument('verbose', FALSE, ...)
+    # @param verbose If \code{TRUE} basic status updates will be printed along the
+    # way.
+    verbose <- .advanced_argument("verbose", FALSE, ...)
 
     ## Select the cutoff
-    if (verbose) message(paste(Sys.time(),
-        '.getSegmentsRle: segmenting with cutoff(s)',
-        paste(cutoff, collapse=', ')))
+    if (verbose) {
+        message(paste(
+            Sys.time(),
+            ".getSegmentsRle: segmenting with cutoff(s)",
+            paste(cutoff, collapse = ", ")
+        ))
+    }
     stopifnot(length(cutoff) <= 2)
     if (length(cutoff) == 1) {
         cutoff <- c(-cutoff, cutoff)
@@ -357,15 +382,15 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     cutoff <- sort(cutoff)
 
     ## Find the segments
-    result <- lapply(c('upIndex', 'dnIndex'), function(ind) {
-        if(ind == 'upIndex') {
-            fcut <- slice(x=x, lower=cutoff[2], rangesOnly=TRUE)
+    result <- lapply(c("upIndex", "dnIndex"), function(ind) {
+        if (ind == "upIndex") {
+            fcut <- slice(x = x, lower = cutoff[2], rangesOnly = TRUE)
         } else {
-            fcut <- slice(x=x, upper=cutoff[1], rangesOnly=TRUE)
+            fcut <- slice(x = x, upper = cutoff[1], rangesOnly = TRUE)
         }
         return(fcut)
     })
-    names(result) <- c('upIndex', 'dnIndex')
+    names(result) <- c("upIndex", "dnIndex")
 
     ## Done!
     return(result)
@@ -411,26 +436,29 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #' @import S4Vectors
 #'
 #' @examples
-#' library('IRanges')
+#' library("IRanges")
 #' set.seed(20130725)
-#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob=c(0.05, 0.95)))
+#' pos <- Rle(sample(c(TRUE, FALSE), 1e5, TRUE, prob = c(0.05, 0.95)))
 #' cluster <- .clusterMakerRle(pos, 100L)
 #' cluster
-#'
 #' @noRd
 
 .clusterMakerRle <- function(position, maxGap = 300L, ranges = FALSE, ...) {
     ## Instead of using which(), identify the regions of the chr
     ## with data
-    ir <- IRanges(start = start(position)[runValue(position)],
-        end = end(position)[runValue(position)])
+    ir <- IRanges(
+        start = start(position)[runValue(position)],
+        end = end(position)[runValue(position)]
+    )
 
     ## Apply the gap reduction
     ir.red <- reduce(ir, min.gapwidth = maxGap + 1)
 
     ## Identify the clusters
-    clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(position,
-        ir.red)))
+    clusterIDs <- Rle(seq_len(length(ir.red)), sum(Views(
+        position,
+        ir.red
+    )))
     ## Note that sum(Views(pos, ir.red)) is faster than
     ## sapply(ir.red, function(x) sum(pos[x]))
 
@@ -453,9 +481,9 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Based on bumphunter::smoother
 
     ## Advanced arguments
-# @param maxClusterGap This determines the maximum gap between candidate DERs.
-# It should be greater than \code{maxRegionGap} (0 by default).
-    maxClusterGap <- .advanced_argument('maxClusterGap', 300L, ...)
+    # @param maxClusterGap This determines the maximum gap between candidate DERs.
+    # It should be greater than \code{maxRegionGap} (0 by default).
+    maxClusterGap <- .advanced_argument("maxClusterGap", 300L, ...)
 
     ## Identify clusters
     cluster <- .clusterMakerRle(position, maxGap = maxClusterGap)
@@ -464,11 +492,13 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     BPPARAM <- define_cluster(...)
     cores <- bpworkers(BPPARAM)
 
-    if(cores > 1) {
+    if (cores > 1) {
         IndexesChunks <- split(runValue(cluster), cut(runValue(cluster),
-            breaks = cores))
-        iChunks <- rep(seq_len(cores), sapply(IndexesChunks, function(i)
-            sum(cluster %in% i)))
+            breaks = cores
+        ))
+        iChunks <- rep(seq_len(cores), sapply(IndexesChunks, function(i) {
+              sum(cluster %in% i)
+          }))
     } else {
         iChunks <- rep(1, length(cluster))
     }
@@ -478,16 +508,18 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     posChunks <- split(which(position), iChunks)
     clusterChunks <- split(cluster, iChunks)
 
-    if(is.null(weights)) {
-        weightChunks <- vector('list', length = length(unique(iChunks)))
+    if (is.null(weights)) {
+        weightChunks <- vector("list", length = length(unique(iChunks)))
     } else {
         weightChunks <- split(weights, iChunks)
     }
 
     ## Run in parallel
     res <- bpmapply(.smoothFstatsFun, fstatsChunks, posChunks, clusterChunks,
-        weightChunks, MoreArgs = list(smoothFun = smoothFunction, ...),
-        BPPARAM = BPPARAM)
+        weightChunks,
+        MoreArgs = list(smoothFun = smoothFunction, ...),
+        BPPARAM = BPPARAM
+    )
 
     ## Get back a Rle
     res <- unlist(RleList(res), use.names = FALSE)
@@ -505,13 +537,12 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     smoothed <- .runFunFormal(smoothFun, y = y, x = x, cluster = cluster, weights = weights, ...)
 
     ## Use original values if they were not smoothed
-    if(any(!smoothed$smoothed)) {
-        if(is(y, 'Rle')) {
+    if (any(!smoothed$smoothed)) {
+        if (is(y, "Rle")) {
             smoothed$fitted[!smoothed$smoothed] <- as.vector(y[!smoothed$smoothed])
         } else {
             smoothed$fitted[!smoothed$smoothed] <- y[!smoothed$smoothed]
         }
-
     }
 
     ## Extract only the smoothed data

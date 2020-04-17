@@ -73,47 +73,54 @@
 #'
 #' @examples
 #' ## Create some toy data
-#' library('IRanges')
-#' x <- Rle(round(runif(1e4, max=10)))
-#' y <- Rle(round(runif(1e4, max=10)))
-#' z <- Rle(round(runif(1e4, max=10)))
-#' fullCov <- list('chr21' = DataFrame(x, y, z))
+#' library("IRanges")
+#' x <- Rle(round(runif(1e4, max = 10)))
+#' y <- Rle(round(runif(1e4, max = 10)))
+#' z <- Rle(round(runif(1e4, max = 10)))
+#' fullCov <- list("chr21" = DataFrame(x, y, z))
 #'
 #' ## Calculate a proxy of library size
 #' libSize <- sapply(fullCov$chr21, sum)
 #'
 #' ## Run region matrix normalizing the coverage
-#' regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
-#'     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
-#'
+#' regionMat <- regionMatrix(
+#'     fullCov = fullCov, maxRegionGap = 10L,
+#'     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4
+#' )
 #' \dontrun{
 #' ## You can alternatively use filterData() on fullCov to reduce the required
 #' ## memory before using regionMatrix(). This can be useful when mc.cores > 1
-#' filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
-#'     cutoff=5, totalMapped = libSize, targetSize = 4e4)
-#' regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
-#'     maxClusterGap = 300L, L = 36, runFilter=FALSE)
+#' filteredCov <- lapply(fullCov, filterData,
+#'     returnMean = TRUE, filter = "mean",
+#'     cutoff = 5, totalMapped = libSize, targetSize = 4e4
+#' )
+#' regionMat2 <- regionMatrix(filteredCov,
+#'     maxRegionGap = 10L,
+#'     maxClusterGap = 300L, L = 36, runFilter = FALSE
+#' )
 #' }
 #'
 #' ## regionMatrix() can work with multiple chrs as shown below.
-#' fullCov2 <- list('chr21' = DataFrame(x, y, z), 'chr22' = DataFrame(x, y, z))
-#' regionMat2 <- regionMatrix(fullCov = fullCov2, maxRegionGap = 10L,
-#'     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
+#' fullCov2 <- list("chr21" = DataFrame(x, y, z), "chr22" = DataFrame(x, y, z))
+#' regionMat2 <- regionMatrix(
+#'     fullCov = fullCov2, maxRegionGap = 10L,
+#'     maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4
+#' )
 #'
 #' ## Combine results from multiple chromosomes
-#' library('GenomicRanges')
+#' library("GenomicRanges")
 #'
 #' ## First extract the data
-#' regs <- unlist(GRangesList(lapply(regionMat2, '[[', 'regions')))
-#' covMat <- do.call(rbind, lapply(regionMat2, '[[', 'coverageMatrix'))
-#' covBp <- do.call(c, lapply(regionMat2, '[[', 'bpCoverage'))
+#' regs <- unlist(GRangesList(lapply(regionMat2, "[[", "regions")))
+#' covMat <- do.call(rbind, lapply(regionMat2, "[[", "coverageMatrix"))
+#' covBp <- do.call(c, lapply(regionMat2, "[[", "bpCoverage"))
 #' ## Force the names to match
 #' names(regs) <- rownames(covMat) <- names(covBp) <- seq_len(length(regs))
 #' ## Combine into a list (not really needed)
-#' mergedRegionMat <- list('regions' = regs, 'coverageMatrix' = covMat,
-#'     'bpCoverage' = covBp)
-#'
-
+#' mergedRegionMat <- list(
+#'     "regions" = regs, "coverageMatrix" = covMat,
+#'     "bpCoverage" = covBp
+#' )
 regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
     targetSize = 80e6, runFilter = TRUE, returnBP = TRUE, ...) {
 
@@ -122,78 +129,96 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
 
     ## fullCov has to be named
     stopifnot(!is.null(names(fullCov)))
-    verbose <- .advanced_argument('verbose', TRUE, ...)
+    verbose <- .advanced_argument("verbose", TRUE, ...)
 
-    if(!runFilter) {
-        if(totalMapped != targetSize) {
+    if (!runFilter) {
+        if (totalMapped != targetSize) {
             stop("When using 'runFilter' = FALSE the arguments 'totalMapped' and 'targetSize' are not used. If you have not normalized the data, please do so before running regionMatrix(runFilter = FALSE).")
         }
     } else {
-        if(all(totalMapped == targetSize)) {
-            if(verbose) message("By using totalMapped equal to targetSize, regionMatrix() assumes that you have normalized the data already in fullCoverage(), loadCoverage() or filterData().")
+        if (all(totalMapped == targetSize)) {
+            if (verbose) message("By using totalMapped equal to targetSize, regionMatrix() assumes that you have normalized the data already in fullCoverage(), loadCoverage() or filterData().")
         }
     }
 
     ## If filtering has been run, check that the information is there
-    if(!runFilter) {
-        if(!all(sapply(fullCov, function(x) { all(c('coverage', 'position', 'meanCoverage') %in% names(x)) })))
-            stop("When 'runFilter' = FALSE, all the elements of 'fullCov' are expected to be the output from filterData(..., returnMean=TRUE) with some non-NULL 'cutoff'.")
+    if (!runFilter) {
+        if (!all(sapply(fullCov, function(x) {
+            all(c("coverage", "position", "meanCoverage") %in% names(x))
+        }))) {
+              stop("When 'runFilter' = FALSE, all the elements of 'fullCov' are expected to be the output from filterData(..., returnMean=TRUE) with some non-NULL 'cutoff'.")
+          }
     }
 
     ## Define args
-    moreArgs <- list(cutoff = cutoff, L = L, totalMapped = totalMapped,
+    moreArgs <- list(
+        cutoff = cutoff, L = L, totalMapped = totalMapped,
         targetSize = targetSize, runFilter = runFilter,
-        returnBP = returnBP, ...)
+        returnBP = returnBP, ...
+    )
 
     ## Define cluster
     BPPARAM <- define_cluster(...)
 
     ## Get regions per chr
-    bpmapply(.regionMatrixByChr, fullCov, names(fullCov), MoreArgs = moreArgs,
-        SIMPLIFY = FALSE, BPPARAM = BPPARAM)
+    bpmapply(.regionMatrixByChr, fullCov, names(fullCov),
+        MoreArgs = moreArgs,
+        SIMPLIFY = FALSE, BPPARAM = BPPARAM
+    )
 }
 
 .regionMatrixByChr <- function(covInfo, chr, cutoff, L, totalMapped,
     targetSize, runFilter, returnBP, ...) {
+    verbose <- .advanced_argument("verbose", TRUE, ...)
+    chrsStyle <- .advanced_argument("chrsStyle", getOption(
+        "chrsStyle",
+        "UCSC"
+    ), ...)
+    species <- .advanced_argument("species", getOption(
+        "species",
+        "homo_sapiens"
+    ), ...)
+    currentStyle <- .advanced_argument("currentStyle", NULL, ...)
 
 
-    verbose <- .advanced_argument('verbose', TRUE, ...)
-    chrsStyle <- .advanced_argument('chrsStyle', getOption('chrsStyle',
-        'UCSC'), ...)
-    species <- .advanced_argument('species', getOption('species',
-        'homo_sapiens'), ...)
-    currentStyle <- .advanced_argument('currentStyle', NULL, ...)
 
-
-
-    if (verbose)
-        message(paste(Sys.time(), 'regionMatrix: processing', chr))
+    if (verbose) {
+          message(paste(Sys.time(), "regionMatrix: processing", chr))
+      }
 
     ## Filter by 'one' or 'mean' and get mean coverage
-    if(runFilter) {
-        if(all(c('coverage', 'position') %in% names(covInfo))) {
-            filt <- filterData(data = covInfo$coverage, cutoff = cutoff,
+    if (runFilter) {
+        if (all(c("coverage", "position") %in% names(covInfo))) {
+            filt <- filterData(
+                data = covInfo$coverage, cutoff = cutoff,
                 returnMean = TRUE, returnCoverage = TRUE,
-                index = covInfo$position, filter = 'mean',
-                totalMapped = totalMapped, targetSize = targetSize, ...)
+                index = covInfo$position, filter = "mean",
+                totalMapped = totalMapped, targetSize = targetSize, ...
+            )
         } else {
-            filt <- filterData(data = covInfo, cutoff = cutoff,
-                returnMean = TRUE, returnCoverage = TRUE, filter = 'mean',
-                totalMapped = totalMapped, targetSize = targetSize, ...)
+            filt <- filterData(
+                data = covInfo, cutoff = cutoff,
+                returnMean = TRUE, returnCoverage = TRUE, filter = "mean",
+                totalMapped = totalMapped, targetSize = targetSize, ...
+            )
         }
-        #if(is.null(filt$position)) filt$position <- Rle(TRUE, length(filt$meanCoverage))
+        # if(is.null(filt$position)) filt$position <- Rle(TRUE, length(filt$meanCoverage))
 
         ## Identify regions
-        regs <- findRegions(position = filt$position,
-            fstats = filt$meanCoverage, chr = chr, cutoff = cutoff, ...)
+        regs <- findRegions(
+            position = filt$position,
+            fstats = filt$meanCoverage, chr = chr, cutoff = cutoff, ...
+        )
 
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(filt)
         seqlengths <- length(filt$position)
     } else {
         ## Identify regions
-        regs <- findRegions(position = covInfo$position,
-            fstats = covInfo$meanCoverage, chr = chr, cutoff = cutoff, ...)
+        regs <- findRegions(
+            position = covInfo$position,
+            fstats = covInfo$meanCoverage, chr = chr, cutoff = cutoff, ...
+        )
 
         ## Prepare for getRegionCoverage
         fullCovTmp <- list(covInfo)
@@ -201,10 +226,12 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
     }
 
     ## If there are no regions, return NULL
-    if(is.null(regs)) {
-        if(returnBP) {
-            return(list(regions = GRanges(), coverageMatrix = NULL,
-                bpCoverage = NULL))
+    if (is.null(regs)) {
+        if (returnBP) {
+            return(list(
+                regions = GRanges(), coverageMatrix = NULL,
+                bpCoverage = NULL
+            ))
         } else {
             return(list(regions = GRanges(), coverageMatrix = NULL))
         }
@@ -221,32 +248,35 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
     names(fullCovTmp) <- chr
 
     ## Get region coverage
-    regionCov <- getRegionCoverage(fullCov = fullCovTmp, regions = regs,
+    regionCov <- getRegionCoverage(
+        fullCov = fullCovTmp, regions = regs,
         totalMapped = NULL, targetSize = 0, verbose = verbose,
         chrsStyle = chrsStyle, mc.cores = 1L, species = species,
-        currentStyle = currentStyle)
+        currentStyle = currentStyle
+    )
 
-    if(verbose) message(paste(Sys.time(), "regionMatrix: calculating coverageMatrix"))
+    if (verbose) message(paste(Sys.time(), "regionMatrix: calculating coverageMatrix"))
     covMat <- lapply(regionCov, colSums)
     covMat <- do.call(rbind, covMat)
 
-    if(verbose) message(paste(Sys.time(), "regionMatrix: adjusting coverageMatrix for 'L'"))
-    if(length(L) == 1) {
+    if (verbose) message(paste(Sys.time(), "regionMatrix: adjusting coverageMatrix for 'L'"))
+    if (length(L) == 1) {
         covMat <- covMat / L
     } else if (length(L) == ncol(covMat)) {
-        for(i in length(L)) covMat[, i] <- covMat[, i] / L[i]
+        for (i in length(L)) covMat[, i] <- covMat[, i] / L[i]
     } else {
         warning("Invalid 'L' value so it won't be used. It has to either be a integer/numeric vector of length 1 or length equal to the number of samples.")
     }
 
     ## Finish
-    if(returnBP) {
-        res <- list(regions = regs, coverageMatrix = covMat,
-            bpCoverage = regionCov)
+    if (returnBP) {
+        res <- list(
+            regions = regs, coverageMatrix = covMat,
+            bpCoverage = regionCov
+        )
     } else {
         res <- list(regions = regs, coverageMatrix = covMat)
     }
 
     return(res)
-
 }

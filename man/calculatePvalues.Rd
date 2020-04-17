@@ -4,18 +4,28 @@
 \alias{calculatePvalues}
 \title{Calculate p-values and identify regions}
 \usage{
-calculatePvalues(coveragePrep, models, fstats, nPermute = 1L,
-  seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute), chr,
+calculatePvalues(
+  coveragePrep,
+  models,
+  fstats,
+  nPermute = 1L,
+  seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
+  chr,
   cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-  significantCut = c(0.05, 0.1), lowMemDir = NULL, smooth = FALSE,
-  weights = NULL, smoothFunction = bumphunter::locfitByCluster, ...)
+  significantCut = c(0.05, 0.1),
+  lowMemDir = NULL,
+  smooth = FALSE,
+  weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster,
+  ...
+)
 }
 \arguments{
-\item{coveragePrep}{A list with \code{$coverageProcessed},
-\code{$mclapplyIndex}, and \code{$position} normally generated using
+\item{coveragePrep}{A list with \verb{$coverageProcessed},
+\verb{$mclapplyIndex}, and \verb{$position} normally generated using
 \link{preprocessCoverage}.}
 
-\item{models}{A list with \code{$mod} and \code{$mod0} normally generated
+\item{models}{A list with \verb{$mod} and \verb{$mod0} normally generated
 using \link{makeModels}.}
 
 \item{fstats}{A numerical Rle with the F-statistics normally generated using
@@ -24,7 +34,7 @@ using \link{makeModels}.}
 \item{nPermute}{The number of permutations. Note that for a full chromosome,
 a small amount (10) of permutations is sufficient. If set to 0, no
 permutations are performed and thus no null regions are used, however, the
-\code{$regions} component is created.}
+\verb{$regions} component is created.}
 
 \item{seeds}{An integer vector of length \code{nPermute} specifying the
 seeds to be used for each permutation. If \code{NULL} no seeds are used.}
@@ -52,8 +62,8 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 Two functions are provided by the \code{bumphunter} package:
 \link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
-an element called \code{$fitted} that contains the smoothed F-statistics and
-an element claled \code{$smoothed} that is a logical vector indicating
+an element called \verb{$fitted} that contains the smoothed F-statistics and
+an element claled \verb{$smoothed} that is a logical vector indicating
 whether the F-statistics were smoothed or not. If they are not smoothed, the
 original values will be used.}
 
@@ -112,11 +122,12 @@ p-values for the original regions.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-    verbose = TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose = TRUE
+)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), verbose = TRUE)
 
 ## Build the models
 group <- genomeInfo$pop
@@ -126,8 +137,10 @@ models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 ## Preprocess the data
 ## Automatic chunksize used to then compare 1 vs 4 cores in the 'do not run'
 ## section
-prep <- preprocessCoverage(genomeData, groupInfo = group, cutoff = 0, 
-    scalefac = 32, chunksize = NULL, colsubset = NULL, mc.cores = 4)
+prep <- preprocessCoverage(genomeData,
+    groupInfo = group, cutoff = 0,
+    scalefac = 32, chunksize = NULL, colsubset = NULL, mc.cores = 4
+)
 
 ## Get the F statistics
 fstats <- genomeFstats
@@ -139,41 +152,47 @@ fstats <- genomeFstats
 cutoff <- 1
 
 ## Calculate the p-values and define the regions of interest.
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=1, seeds=1, 
-    chr = 'chr21', cutoff = cutoff, mc.cores = 1, method = 'regular')
+regsWithP <- calculatePvalues(prep, models, fstats,
+    nPermute = 1, seeds = 1,
+    chr = "chr21", cutoff = cutoff, mc.cores = 1, method = "regular"
+)
 regsWithP
-
 \dontrun{
 ## Calculate again, but with 10 permutations instead of just 1
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10, 
-    chr='chr21', cutoff=cutoff, mc.cores=2, method='regular')
+regsWithP <- calculatePvalues(prep, models, fstats,
+    nPermute = 10, seeds = 1:10,
+    chr = "chr21", cutoff = cutoff, mc.cores = 2, method = "regular"
+)
 
 ## Check that they are the same as the previously calculated regions
 library(testthat)
 expect_that(regsWithP, equals(genomeRegions))
 
 ## Histogram of the theoretical p-values by region
-hist(pf(regsWithP$regions$value, df1-df0, n-df1), main='Distribution 
-    original p-values by region', freq=FALSE)
+hist(pf(regsWithP$regions$value, df1 - df0, n - df1), main = "Distribution
+    original p-values by region", freq = FALSE)
 
 ## Histogram of the permutted p-values by region
-hist(regsWithP$regions$pvalues, main='Distribution permutted p-values by 
-    region', freq=FALSE)
+hist(regsWithP$regions$pvalues, main = "Distribution permutted p-values by
+    region", freq = FALSE)
 
 ## MA style plot
-library('ggplot2')
-ma <- data.frame(mean=regsWithP$regions$meanCoverage, 
-    log2FoldChange=regsWithP$regions$log2FoldChangeYRIvsCEU)
-ggplot(ma, aes(x=log2(mean), y=log2FoldChange)) + geom_point() + 
-    ylab('Fold Change (log2)') + xlab('Mean coverage (log2)') + 
-    labs(title='MA style plot')
+library("ggplot2")
+ma <- data.frame(
+    mean = regsWithP$regions$meanCoverage,
+    log2FoldChange = regsWithP$regions$log2FoldChangeYRIvsCEU
+)
+ggplot(ma, aes(x = log2(mean), y = log2FoldChange)) +
+    geom_point() +
+    ylab("Fold Change (log2)") +
+    xlab("Mean coverage (log2)") +
+    labs(title = "MA style plot")
 
 ## Annotate the results
-library('bumphunter')
+library("bumphunter")
 genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene)
 annotation <- matchGenes(regsWithP$regions, genes)
 head(annotation)
-
 }
 
 }

@@ -32,14 +32,14 @@ Use at most one core per chromosome.
 }
 \examples{
 ## Create a small fullCov object with data only for chr21
-fullCov <- list('chr21' = genomeDataRaw)
+fullCov <- list("chr21" = genomeDataRaw)
 
 ## Keep only 2 samples
 fullCov$chr21$coverage <- fullCov$chr21$coverage[c(1, 31)]
 
 ## Create the BigWig files for all samples in a test dir
-dir.create('createBw-example')
-bws <- createBw(fullCov, 'createBw-example')
+dir.create("createBw-example")
+bws <- createBw(fullCov, "createBw-example")
 
 ## Explore the output
 bws
@@ -51,6 +51,8 @@ bws[[1]]
 ## is empty and no BigWig file is created for that sample.
 bws[[2]]
 
+
+## Exports fullCoverage() output to BigWig files
 }
 \seealso{
 \link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer:export]{export},

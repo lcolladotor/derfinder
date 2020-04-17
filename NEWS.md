@@ -1,3 +1,18 @@
+# derfinder 1.21.2
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* Documentation website is now available at
+http://lcolladotor.github.io/derfinder/. It gets updated with every commit on
+the master branch (bioc-devel) using GitHub Actions and pkgdown.
+
+# derfinder 1.21.1
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* Use GenomeInfoDb::getChromInfoFromUCSC() when possible instead of data
+from biovizBase::hg19Ideogram for getting the hg19 chromosome lengths.
+
 # derfinder 1.19.9
 
 BUG FIXES

@@ -38,14 +38,15 @@ using \link{filterData}.
 }
 \examples{
 ## Collapse the coverage information for the filtered data
-collapsedFull <- collapseFullCoverage(list(genomeData), 
-    verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData),
+    verbose = TRUE
+)
 collapsedFull
-
 \dontrun{
 ## You can also collapsed the raw data
-collapsedFullRaw <- collapseFullCoverage(list(genomeDataRaw), verbose=TRUE)
+collapsedFullRaw <- collapseFullCoverage(list(genomeDataRaw), verbose = TRUE)
 }
+
 }
 \seealso{
 \link{fullCoverage}, \link{sampleDepth}

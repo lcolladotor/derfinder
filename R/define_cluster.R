@@ -4,7 +4,7 @@
 #' useful for cases with nested parallelizations.
 #' @param ... Advanced arguments are:
 #' \describe{
-#' \item{mc.cores }{ If 1 (default), then [SerialParam][BiocParallel::SerialParam-class] will 
+#' \item{mc.cores }{ If 1 (default), then [SerialParam][BiocParallel::SerialParam-class] will
 #' be used. If greater than 1, then it specifies the number of workers for
 #' [SnowParam][BiocParallel::SnowParam-class].}
 #' \item{mc.log }{ Passed to `log` when using
@@ -25,16 +25,14 @@
 #'
 #' ## Note that BPPARAM.custom takes precedence
 #' define_cluster(mc.cores = 2, BPPARAM.custom = BiocParallel::SerialParam())
-#'
-
-define_cluster <- function(cores = 'mc.cores', ...) {
+define_cluster <- function(cores = "mc.cores", ...) {
     args <- list(...)
-    if('BPPARAM.custom' %in% names(args)) {
+    if ("BPPARAM.custom" %in% names(args)) {
         return(args$BPPARAM.custom)
     } else {
-        mc.cores <- .advanced_argument(cores, getOption('mc.cores', 1L), ...)
-        if(mc.cores > 1) {
-            mc.log <- .advanced_argument('mc.log', TRUE, ...)
+        mc.cores <- .advanced_argument(cores, getOption("mc.cores", 1L), ...)
+        if (mc.cores > 1) {
+            mc.log <- .advanced_argument("mc.log", TRUE, ...)
             BPPARAM <- SnowParam(workers = mc.cores, log = mc.log)
         } else {
             BPPARAM <- SerialParam()

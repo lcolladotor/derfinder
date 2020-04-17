@@ -4,8 +4,12 @@
 \alias{rawFiles}
 \title{Construct full paths to a group of raw input files}
 \usage{
-rawFiles(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
-  fileterm = "accepted_hits.bam")
+rawFiles(
+  datadir = NULL,
+  sampledirs = NULL,
+  samplepatt = NULL,
+  fileterm = "accepted_hits.bam"
+)
 }
 \arguments{
 \item{datadir}{The main directory where each of the \code{sampledirs} is a
@@ -39,9 +43,11 @@ This function can also be used to identify a set of BigWig files.
 }
 \examples{
 ## Get list of BAM files included in derfinder
-datadir <- system.file('extdata', 'genomeData', package='derfinder')
-files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
-    fileterm=NULL)
+datadir <- system.file("extdata", "genomeData", package = "derfinder")
+files <- rawFiles(
+    datadir = datadir, samplepatt = "*accepted_hits.bam$",
+    fileterm = NULL
+)
 files
 }
 \seealso{

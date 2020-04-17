@@ -4,8 +4,16 @@
 \alias{regionMatrix}
 \title{Identify regions data by a coverage filter and get a count matrix}
 \usage{
-regionMatrix(fullCov, cutoff = 5, L, totalMapped = 8e+07,
-  targetSize = 8e+07, runFilter = TRUE, returnBP = TRUE, ...)
+regionMatrix(
+  fullCov,
+  cutoff = 5,
+  L,
+  totalMapped = 8e+07,
+  targetSize = 8e+07,
+  runFilter = TRUE,
+  returnBP = TRUE,
+  ...
+)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
@@ -34,7 +42,7 @@ set to \code{FALSE} then \code{returnMean = TRUE} must have been used to
 create each element of \code{fullCov} and the data must have been
 normalized (\code{totalMapped} equal to \code{targetSize}).}
 
-\item{returnBP}{If \code{TRUE}, returns \code{$bpCoverage} explained below.}
+\item{returnBP}{If \code{TRUE}, returns \verb{$bpCoverage} explained below.}
 
 \item{...}{Arguments passed to other methods and/or advanced arguments.
 Advanced arguments:
@@ -85,46 +93,54 @@ You should use at most one core per chromosome.
 }
 \examples{
 ## Create some toy data
-library('IRanges')
-x <- Rle(round(runif(1e4, max=10)))
-y <- Rle(round(runif(1e4, max=10)))
-z <- Rle(round(runif(1e4, max=10)))
-fullCov <- list('chr21' = DataFrame(x, y, z))
+library("IRanges")
+x <- Rle(round(runif(1e4, max = 10)))
+y <- Rle(round(runif(1e4, max = 10)))
+z <- Rle(round(runif(1e4, max = 10)))
+fullCov <- list("chr21" = DataFrame(x, y, z))
 
 ## Calculate a proxy of library size
 libSize <- sapply(fullCov$chr21, sum)
 
 ## Run region matrix normalizing the coverage
-regionMat <- regionMatrix(fullCov = fullCov, maxRegionGap = 10L,
-    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
-
+regionMat <- regionMatrix(
+    fullCov = fullCov, maxRegionGap = 10L,
+    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4
+)
 \dontrun{
 ## You can alternatively use filterData() on fullCov to reduce the required
 ## memory before using regionMatrix(). This can be useful when mc.cores > 1
-filteredCov <- lapply(fullCov, filterData, returnMean=TRUE, filter='mean',
-    cutoff=5, totalMapped = libSize, targetSize = 4e4)
-regionMat2 <- regionMatrix(filteredCov, maxRegionGap = 10L,
-    maxClusterGap = 300L, L = 36, runFilter=FALSE)
+filteredCov <- lapply(fullCov, filterData,
+    returnMean = TRUE, filter = "mean",
+    cutoff = 5, totalMapped = libSize, targetSize = 4e4
+)
+regionMat2 <- regionMatrix(filteredCov,
+    maxRegionGap = 10L,
+    maxClusterGap = 300L, L = 36, runFilter = FALSE
+)
 }
 
 ## regionMatrix() can work with multiple chrs as shown below.
-fullCov2 <- list('chr21' = DataFrame(x, y, z), 'chr22' = DataFrame(x, y, z))
-regionMat2 <- regionMatrix(fullCov = fullCov2, maxRegionGap = 10L,
-    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4)
+fullCov2 <- list("chr21" = DataFrame(x, y, z), "chr22" = DataFrame(x, y, z))
+regionMat2 <- regionMatrix(
+    fullCov = fullCov2, maxRegionGap = 10L,
+    maxClusterGap = 300L, L = 36, totalMapped = libSize, targetSize = 4e4
+)
 
 ## Combine results from multiple chromosomes
-library('GenomicRanges')
+library("GenomicRanges")
 
 ## First extract the data
-regs <- unlist(GRangesList(lapply(regionMat2, '[[', 'regions')))
-covMat <- do.call(rbind, lapply(regionMat2, '[[', 'coverageMatrix'))
-covBp <- do.call(c, lapply(regionMat2, '[[', 'bpCoverage'))
+regs <- unlist(GRangesList(lapply(regionMat2, "[[", "regions")))
+covMat <- do.call(rbind, lapply(regionMat2, "[[", "coverageMatrix"))
+covBp <- do.call(c, lapply(regionMat2, "[[", "bpCoverage"))
 ## Force the names to match
 names(regs) <- rownames(covMat) <- names(covBp) <- seq_len(length(regs))
 ## Combine into a list (not really needed)
-mergedRegionMat <- list('regions' = regs, 'coverageMatrix' = covMat,
-    'bpCoverage' = covBp)
-
+mergedRegionMat <- list(
+    "regions" = regs, "coverageMatrix" = covMat,
+    "bpCoverage" = covBp
+)
 }
 \author{
 Leonardo Collado-Torres

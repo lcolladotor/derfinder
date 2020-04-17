@@ -4,10 +4,19 @@
 \alias{findRegions}
 \title{Find non-zero regions in a Rle}
 \usage{
-findRegions(position = NULL, fstats, chr, oneTable = TRUE,
-  maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-  segmentIR = NULL, smooth = FALSE, weights = NULL,
-  smoothFunction = bumphunter::locfitByCluster, ...)
+findRegions(
+  position = NULL,
+  fstats,
+  chr,
+  oneTable = TRUE,
+  maxClusterGap = 300L,
+  cutoff = quantile(fstats, 0.99, na.rm = TRUE),
+  segmentIR = NULL,
+  smooth = FALSE,
+  weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster,
+  ...
+)
 }
 \arguments{
 \item{position}{A logical Rle of genomic positions. This is generated in
@@ -43,8 +52,8 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 Two functions are provided by the \code{bumphunter} package:
 \link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
-an element called \code{$fitted} that contains the smoothed F-statistics and
-an element claled \code{$smoothed} that is a logical vector indicating
+an element called \verb{$fitted} that contains the smoothed F-statistics and
+an element claled \verb{$smoothed} that is a logical vector indicating
 whether the F-statistics were smoothed or not. If they are not smoothed, the
 original values will be used.}
 
@@ -95,30 +104,32 @@ Differentially Expressed Regions (candidate DERs). This is similar to
 }
 \examples{
 ## Preprocess the data
-prep <- preprocessCoverage(genomeData, cutoff=0, scalefac=32, chunksize=1e3,
-    colsubset=NULL)
+prep <- preprocessCoverage(genomeData,
+    cutoff = 0, scalefac = 32, chunksize = 1e3,
+    colsubset = NULL
+)
 
 ## Get the F statistics
 fstats <- genomeFstats
 
 ## Find the regions
-regs <- findRegions(prep$position, fstats, 'chr21', verbose=TRUE)
+regs <- findRegions(prep$position, fstats, "chr21", verbose = TRUE)
 regs
-
 \dontrun{
 ## Once you have the regions you can proceed to annotate them
-library('bumphunter')
+library("bumphunter")
 genes <- annotateTranscripts(TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene)
 annotation <- matchGenes(regs, genes)
 annotation
 }
 
 # Find regions with smoothing the F-statistics by bumphunter::runmedByCluster
-regs_smooth <- findRegions(prep$position, fstats, 'chr21', verbose = TRUE,
-    smoothFunction = bumphunter::runmedByCluster)
+regs_smooth <- findRegions(prep$position, fstats, "chr21",
+    verbose = TRUE,
+    smoothFunction = bumphunter::runmedByCluster
+)
 ## Compare against the object regs obtained earlier
 regs_smooth
-
 }
 \references{
 Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper

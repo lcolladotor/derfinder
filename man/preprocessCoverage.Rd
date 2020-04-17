@@ -4,12 +4,18 @@
 \alias{preprocessCoverage}
 \title{Transform and split the data}
 \usage{
-preprocessCoverage(coverageInfo, groupInfo = NULL, cutoff = 5,
-  colsubset = NULL, lowMemDir = NULL, ...)
+preprocessCoverage(
+  coverageInfo,
+  groupInfo = NULL,
+  cutoff = 5,
+  colsubset = NULL,
+  lowMemDir = NULL,
+  ...
+)
 }
 \arguments{
-\item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
-the coverage data and a logical Rle --\code{$position}-- with the positions
+\item{coverageInfo}{A list containing a DataFrame --\verb{$coverage}-- with
+the coverage data and a logical Rle --\verb{$position}-- with the positions
 that passed the cutoff. This object is generated using \link{loadCoverage}.
 You should have specified a cutoff value for \link{loadCoverage} unless
 that you are using \code{colsubset} which will force a filtering step
@@ -93,13 +99,15 @@ Computing the indexes and using those for \code{mclapply} reduces
 memory copying as described by Ryan Thompson and illustrated in approach #4
 at \url{http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-when-using-mclapply}
 
-If \code{lowMemDir} is specified then \code{$coverageProcessed} is NULL and
-\code{$mclapplyIndex} is a vector with the chunk identifiers.
+If \code{lowMemDir} is specified then \verb{$coverageProcessed} is NULL and
+\verb{$mclapplyIndex} is a vector with the chunk identifiers.
 }
 \examples{
 ## Split the data and transform appropriately before using calculateStats()
-dataReady <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32, 
-    chunksize = 1e3, colsubset = NULL, verbose = TRUE)
+dataReady <- preprocessCoverage(genomeData,
+    cutoff = 0, scalefac = 32,
+    chunksize = 1e3, colsubset = NULL, verbose = TRUE
+)
 names(dataReady)
 dataReady
 }

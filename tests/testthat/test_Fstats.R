@@ -1,21 +1,29 @@
-context('F statistics')
+context("F statistics")
 
-library('GenomicRanges')
+library("GenomicRanges")
 
 ## Check that the sample depths are correctly calculated
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-    verbose = TRUE)
+    verbose = TRUE
+)
 
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
+sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), verbose = TRUE)
 
-sample.manual <- sapply(collapsedFull, function(x) { log2(sum(x$values * x$weights) + 32)})
+sample.manual <- sapply(collapsedFull, function(x) {
+    log2(sum(x$values * x$weights) + 32)
+})
 names(sample.manual) <- paste0(names(sample.manual), ".100%")
 
 
-test_that('sampleDepths', {
-    expect_that(lapply(genomeData$coverage[1:2], function(x) { vals <- unique(runValue(x)); weights <- sapply(vals, function(y) { sum(x == y)}); return(list(values = vals, weights = weights)) }), equals(collapseFullCoverage(list(genomeData$coverage), colsubset = 1:2)))
-    expect_that(sampleDepth(collapsedFull, probs=c(1), verbose = FALSE), equals(sample.manual))
-
+test_that("sampleDepths", {
+    expect_that(lapply(genomeData$coverage[1:2], function(x) {
+        vals <- unique(runValue(x))
+        weights <- sapply(vals, function(y) {
+            sum(x == y)
+        })
+        return(list(values = vals, weights = weights))
+    }), equals(collapseFullCoverage(list(genomeData$coverage), colsubset = 1:2)))
+    expect_that(sampleDepth(collapsedFull, probs = c(1), verbose = FALSE), equals(sample.manual))
 })
 
 
@@ -28,17 +36,19 @@ testvars <- group
 adjustVar1 <- adjustvars[[1]]
 models.manual <- list(mod = model.matrix(~ testvars + sampleDepths + adjustVar1), mod0 = model.matrix(~ sampleDepths + adjustVar1))
 
-test_that('makeModels', {
+test_that("makeModels", {
     expect_that(models, equals(models.manual))
     expect_that(makeModels(sampleDepths, testvars = group, adjustvars = adjustvars, testIntercept = TRUE), equals(list(mod = model.matrix(~ sampleDepths + adjustVar1), mod0 = model.matrix(~ 0 + sampleDepths + adjustVar1))))
 })
 
 
-prep <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32,
-    chunksize=1e3, colsubset=NULL)
+prep <- preprocessCoverage(genomeData,
+    cutoff = 0, scalefac = 32,
+    chunksize = 1e3, colsubset = NULL
+)
 
 ## Manually calculate the F-stats
-fstats <- calculateStats(prep, models, verbose=TRUE, method='regular')
+fstats <- calculateStats(prep, models, verbose = TRUE, method = "regular")
 prep$coverageProcessed
 
 n <- ncol(prep$coverageProcessed)
@@ -54,93 +64,112 @@ rss1 <- (resid1 * resid1) %*% rep(1L, n)
 
 fstats.manual <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (rss1 / (n - df1))))
 
-test_that('calculateFstats', {
+test_that("calculateFstats", {
     expect_that(fstats, equals(fstats.manual))
     expect_that(fstats, is_equivalent_to(genomeFstats))
 })
 
 ## Check that the F-stat cutoff is properly constructed
-test_that('F-stat cutoff', {
-    expect_that(derfinder:::.calcFstatCutoff('empirical', 0.5, Rle(1:2, rep(10, 2))), equals(c('50%' = 1.5)))
-    expect_that(derfinder:::.calcFstatCutoff('theoretical', 0.05, models = models), equals(qf(0.05, 4 - 3, 31 - 4, lower.tail = FALSE)))
-    expect_that(derfinder:::.calcFstatCutoff('manual', 1), equals(1))
+test_that("F-stat cutoff", {
+    expect_that(derfinder:::.calcFstatCutoff("empirical", 0.5, Rle(1:2, rep(10, 2))), equals(c("50%" = 1.5)))
+    expect_that(derfinder:::.calcFstatCutoff("theoretical", 0.05, models = models), equals(qf(0.05, 4 - 3, 31 - 4, lower.tail = FALSE)))
+    expect_that(derfinder:::.calcFstatCutoff("manual", 1), equals(1))
 })
 
 
 ## Check calculating the p-values. Specially check that the default arguments
 ## are the ones intended
 suppressWarnings(RNGversion("3.5.0"))
-regsWithP <- calculatePvalues(prep, models, fstats, nPermute=10, seeds=1:10,
-    chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular')
+regsWithP <- calculatePvalues(prep, models, fstats,
+    nPermute = 10, seeds = 1:10,
+    chr = "chr21", cutoff = 1, mc.cores = 1, method = "regular"
+)
 
-test_that('calculatePvalues', {
+test_that("calculatePvalues", {
     expect_that(regsWithP, is_equivalent_to(genomeRegions))
-    expect_that(calculatePvalues(prep, models, fstats, nPermute=1, seeds=11, chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular'), equals(calculatePvalues(prep, models, fstats, nPermute=1, seeds=11, chr = 'chr21', cutoff = 1, mc.cores = 1, method = 'regular', maxRegionGap = 0L, maxClusterGap = 300L, verbose = TRUE, scalefac = 32, adjustF = 0)))
+    expect_that(calculatePvalues(prep, models, fstats, nPermute = 1, seeds = 11, chr = "chr21", cutoff = 1, mc.cores = 1, method = "regular"), equals(calculatePvalues(prep, models, fstats, nPermute = 1, seeds = 11, chr = "chr21", cutoff = 1, mc.cores = 1, method = "regular", maxRegionGap = 0L, maxClusterGap = 300L, verbose = TRUE, scalefac = 32, adjustF = 0)))
     expect_that(derfinder:::.calcPval(1:2, 1:4), equals(c(0.8, 0.6)))
-    expect_that(derfinder:::.calculateFWER(10, 1:4, rep(c(1, 3), each=2), 3, 1:2), equals(c(1, 0.75)))
+    expect_that(derfinder:::.calculateFWER(10, 1:4, rep(c(1, 3), each = 2), 3, 1:2), equals(c(1, 0.75)))
 })
 
 
 ## Check merging results
-dir.create('generateReport-example', showWarnings = FALSE, recursive = TRUE)
-file.copy(system.file(file.path('extdata', 'chr21'), package='derfinder',
-    mustWork=TRUE), 'generateReport-example', recursive=TRUE)
-mergeResults(chrs='21', prefix='generateReport-example',
-    genomicState=genomicState$fullGenome)
-load(file.path('generateReport-example' , 'fullRegions.Rdata'))
+dir.create("generateReport-example", showWarnings = FALSE, recursive = TRUE)
+file.copy(system.file(file.path("extdata", "chr21"),
+    package = "derfinder",
+    mustWork = TRUE
+), "generateReport-example", recursive = TRUE)
+mergeResults(
+    chrs = "21", prefix = "generateReport-example",
+    genomicState = genomicState$fullGenome
+)
+load(file.path("generateReport-example", "fullRegions.Rdata"))
 fullRegions.included <- fullRegions
 
 ## Make a fresh copy
 initialPath <- getwd()
-dir.create('generateReport-example-rerun', showWarnings = FALSE,
-    recursive = TRUE)
-setwd(file.path(initialPath, 'generateReport-example-rerun'))
+dir.create("generateReport-example-rerun",
+    showWarnings = FALSE,
+    recursive = TRUE
+)
+setwd(file.path(initialPath, "generateReport-example-rerun"))
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
-    verbose=TRUE)
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE,
-    verbose=TRUE)
+    verbose = TRUE
+)
+sampleDepths <- sampleDepth(collapsedFull,
+    probs = c(0.5), nonzero = TRUE,
+    verbose = TRUE
+)
 groupInfo <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=groupInfo, adjustvars=adjustvars)
-analyzeChr(chr='21', coverageInfo=genomeData, models=models,
-    cutoffFstat=1, cutoffType='manual', seeds=20140330, groupInfo=groupInfo,
-    mc.cores=1, writeOutput=TRUE, returnOutput=FALSE)
+models <- makeModels(sampleDepths, testvars = groupInfo, adjustvars = adjustvars)
+analyzeChr(
+    chr = "21", coverageInfo = genomeData, models = models,
+    cutoffFstat = 1, cutoffType = "manual", seeds = 20140330, groupInfo = groupInfo,
+    mc.cores = 1, writeOutput = TRUE, returnOutput = FALSE
+)
 
 ## Merge fresh results
 setwd(initialPath)
-mergeResults(chrs='21', prefix='generateReport-example-rerun',
-    genomicState=genomicState$fullGenome)
+mergeResults(
+    chrs = "21", prefix = "generateReport-example-rerun",
+    genomicState = genomicState$fullGenome
+)
 
 ## Load results
-load(file.path('generateReport-example-rerun' , 'fullRegions.Rdata'))
+load(file.path("generateReport-example-rerun", "fullRegions.Rdata"))
 fullRegions.rerun <- fullRegions
 
-test_that('mergeResults', {
+test_that("mergeResults", {
     expect_that(ranges(fullRegions.included), is_equivalent_to(ranges(genomeRegions$regions)))
     expect_that(fullRegions.included, is_equivalent_to(fullRegions.rerun))
-    expect_that(dir('generateReport-example'), equals(dir('generateReport-example-rerun')))
+    expect_that(dir("generateReport-example"), equals(dir("generateReport-example-rerun")))
 })
 
 
-library('TxDb.Hsapiens.UCSC.hg19.knownGene')
+library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 
-results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
-    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1,
-    writeOutput=FALSE, returnOutput=TRUE, method='regular')
-results.param <- analyzeChr(chr='21', coverageInfo=genomeData, models=models,
-    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1,
-    writeOutput=FALSE, returnOutput=TRUE, method='regular', maxRegionGap = 0L,
-    maxClusterGap = 300L, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene, scalefac = 32)
+results <- analyzeChr(
+    chr = "21", coverageInfo = genomeData, models = models,
+    cutoffFstat = 1, cutoffType = "manual", groupInfo = groupInfo, mc.cores = 1,
+    writeOutput = FALSE, returnOutput = TRUE, method = "regular"
+)
+results.param <- analyzeChr(
+    chr = "21", coverageInfo = genomeData, models = models,
+    cutoffFstat = 1, cutoffType = "manual", groupInfo = groupInfo, mc.cores = 1,
+    writeOutput = FALSE, returnOutput = TRUE, method = "regular", maxRegionGap = 0L,
+    maxClusterGap = 300L, txdb = TxDb.Hsapiens.UCSC.hg19.knownGene, scalefac = 32
+)
 
-test_that('analyzeChr', {
+test_that("analyzeChr", {
     expect_that(results$regions, equals(results.param$regions))
     expect_that(results$annotation, equals(results.param$annotation))
     expect_that(results$coveragePrep, equals(results.param$coveragePrep))
-    expect_that(c(results$optionsStats[-which(names(results$optionsStats) == 'analyzeCall')], list(maxRegionGap = 0L, maxClusterGap = 300L, scalefac = 32)), is_equivalent_to(results.param$optionsStats[-which(names(results.param$optionsStats) == 'analyzeCall')]))
+    expect_that(c(results$optionsStats[-which(names(results$optionsStats) == "analyzeCall")], list(maxRegionGap = 0L, maxClusterGap = 300L, scalefac = 32)), is_equivalent_to(results.param$optionsStats[-which(names(results.param$optionsStats) == "analyzeCall")]))
 })
 
 
 ## Clean up
-unlink('generateReport-example', recursive = TRUE)
-unlink('generateReport-example-rerun', recursive = TRUE)
-unlink('chr21', recursive = TRUE)
+unlink("generateReport-example", recursive = TRUE)
+unlink("generateReport-example-rerun", recursive = TRUE)
+unlink("chr21", recursive = TRUE)

@@ -4,19 +4,32 @@
 \alias{analyzeChr}
 \title{Run the derfinder analysis on a chromosome}
 \usage{
-analyzeChr(chr, coverageInfo, models, cutoffPre = 5,
-  cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1,
+analyzeChr(
+  chr,
+  coverageInfo,
+  models,
+  cutoffPre = 5,
+  cutoffFstat = 1e-08,
+  cutoffType = "theoretical",
+  nPermute = 1,
   seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-  groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
-  lowMemDir = file.path(chr, "chunksDir"), smooth = FALSE,
-  weights = NULL, smoothFunction = bumphunter::locfitByCluster, ...)
+  groupInfo,
+  txdb = NULL,
+  writeOutput = TRUE,
+  runAnnotation = TRUE,
+  lowMemDir = file.path(chr, "chunksDir"),
+  smooth = FALSE,
+  weights = NULL,
+  smoothFunction = bumphunter::locfitByCluster,
+  ...
+)
 }
 \arguments{
 \item{chr}{Used for naming the output files when \code{writeOutput=TRUE} and
 the resulting \code{GRanges} object.}
 
-\item{coverageInfo}{A list containing a DataFrame --\code{$coverage}-- with
-the coverage data and a logical Rle --\code{$position}-- with the positions
+\item{coverageInfo}{A list containing a DataFrame --\verb{$coverage}-- with
+the coverage data and a logical Rle --\verb{$position}-- with the positions
 that passed the cutoff. This object is generated using \link{loadCoverage}.
 You should have specified a cutoff value for \link{loadCoverage} unless
 that you are using \code{colsubset} which will force a filtering step
@@ -40,7 +53,7 @@ passed to \link{calculatePvalues} without any other calculation.}
 \item{nPermute}{The number of permutations. Note that for a full chromosome,
 a small amount (10) of permutations is sufficient. If set to 0, no
 permutations are performed and thus no null regions are used, however, the
-\code{$regions} component is created.}
+\verb{$regions} component is created.}
 
 \item{seeds}{An integer vector of length \code{nPermute} specifying the
 seeds to be used for each permutation. If \code{NULL} no seeds are used.}
@@ -80,8 +93,8 @@ is by default \code{FALSE}. For RNA-seq data we recommend using \code{FALSE}.}
 Two functions are provided by the \code{bumphunter} package:
 \link[bumphunter:loessByCluster]{loessByCluster} and \link[bumphunter:runmedByCluster]{runmedByCluster}. If
 you are using your own custom function, it has to return a named list with
-an element called \code{$fitted} that contains the smoothed F-statistics and
-an element claled \code{$smoothed} that is a logical vector indicating
+an element called \verb{$fitted} that contains the smoothed F-statistics and
+an element claled \verb{$smoothed} that is a logical vector indicating
 whether the F-statistics were smoothed or not. If they are not smoothed, the
 original values will be used.}
 
@@ -131,23 +144,28 @@ example:
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-    verbose = TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose = TRUE
+)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), nonzero=TRUE, 
-    verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull,
+    probs = c(0.5), nonzero = TRUE,
+    verbose = TRUE
+)
 
 ## Build the models
 groupInfo <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=groupInfo, adjustvars=adjustvars)
+models <- makeModels(sampleDepths, testvars = groupInfo, adjustvars = adjustvars)
 
 ## Analyze the chromosome
-results <- analyzeChr(chr='21', coverageInfo=genomeData, models=models, 
-    cutoffFstat=1, cutoffType='manual', groupInfo=groupInfo, mc.cores=1, 
-    writeOutput=FALSE, returnOutput=TRUE, method='regular',
-    runAnnotation = FALSE)
+results <- analyzeChr(
+    chr = "21", coverageInfo = genomeData, models = models,
+    cutoffFstat = 1, cutoffType = "manual", groupInfo = groupInfo, mc.cores = 1,
+    writeOutput = FALSE, returnOutput = TRUE, method = "regular",
+    runAnnotation = FALSE
+)
 names(results)
 }
 \seealso{

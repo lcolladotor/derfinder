@@ -28,8 +28,9 @@ vignette: >
 `R` is an open-source statistical environment which can be easily modified to enhance its functionality via packages. `r Biocpkg('derfinder')` is a `R` package available via the [Bioconductor](http://bioconductor/packages/derfinder) repository for packages. `R` can be installed on any operating system from [CRAN](https://cran.r-project.org/) after which you can install `r Biocpkg('derfinder')` by using the following commands in your `R` session:
 
 ```{r 'installDer', eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+      install.packages("BiocManager")
+  }
 
 BiocManager::install("derfinder")
 
@@ -55,7 +56,7 @@ We hope that `r Biocpkg('derfinder')` will be useful for your research. Please u
 
 ```{r 'citation'}
 ## Citation info
-citation('derfinder')
+citation("derfinder")
 ```
 
 # Quick start to using to `r Biocpkg('derfinder')`
@@ -65,96 +66,107 @@ citation('derfinder')
 startTime <- Sys.time()
 
 ## Bib setup
-library('knitcitations')
+library("knitcitations")
 
 ## Load knitcitations with a clean bibliography
 cleanbib()
-cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+cite_options(hyperlink = "to.doc", citation_format = "text", style = "html")
 # Note links won't show for now due to the following issue
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-bib <- c(knitcitations = citation('knitcitations'),
-    derfinder = citation('derfinder')[1], 
-    BiocStyle = citation('BiocStyle'),
-    knitrBootstrap = citation('knitrBootstrap'), 
-    knitr = citation('knitr')[3],
-    rmarkdown = citation('rmarkdown'),
-    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished',
-        key = 'brainspan',
-        title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.',
-        author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
-    originalder = citation('derfinder')[2],
+bib <- c(
+    knitcitations = citation("knitcitations"),
+    derfinder = citation("derfinder")[1],
+    BiocStyle = citation("BiocStyle"),
+    knitrBootstrap = citation("knitrBootstrap"),
+    knitr = citation("knitr")[3],
+    rmarkdown = citation("rmarkdown")[1],
+    brainspan = RefManageR::BibEntry(
+        bibtype = "Unpublished",
+        key = "brainspan",
+        title = "Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.",
+        author = "BrainSpan", year = 2011, url = "http://www.brainspan.org/"
+    ),
+    originalder = citation("derfinder")[2],
     R = citation(),
-    IRanges = citation('IRanges'),
-    sessioninfo = citation('sessioninfo'),
-    testthat = citation('testthat'),
-    GenomeInfoDb = RefManageR::BibEntry(bibtype = 'manual',
-        key = 'GenomeInfoDb',
-        author = 'Sonali Arora and Martin Morgan and Marc Carlson and H. Pagès',
+    IRanges = citation("IRanges"),
+    sessioninfo = citation("sessioninfo"),
+    testthat = citation("testthat"),
+    GenomeInfoDb = RefManageR::BibEntry(
+        bibtype = "manual",
+        key = "GenomeInfoDb",
+        author = "Sonali Arora and Martin Morgan and Marc Carlson and H. Pagès",
         title = "GenomeInfoDb: Utilities for manipulating chromosome and other 'seqname' identifiers",
-        year = 2017, doi = '10.18129/B9.bioc.GenomeInfoDb'),
-    GenomicRanges = citation('GenomicRanges'),
-    ggplot2 = citation('ggplot2'),
-    biovizBase = citation('biovizBase'),
-    bumphunter = citation('bumphunter')[1],
-    TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
-    AnnotationDbi = RefManageR::BibEntry(bibtype = 'manual',
-        key = 'AnnotationDbi',
-        author = 'Hervé Pagès and Marc Carlson and Seth Falcon and Nianhua Li',
-        title = 'AnnotationDbi: Annotation Database Interface',
-        year = 2017, doi = '10.18129/B9.bioc.AnnotationDbi'),
-    BiocParallel = citation('BiocParallel'),
-    derfinderHelper = citation('derfinderHelper'),
-    GenomicAlignments = citation('GenomicAlignments'),
-    GenomicFeatures = citation('GenomicFeatures'),
-    GenomicFiles = citation('GenomicFiles'),
-    Hmisc = citation('Hmisc'),
-    qvalue = citation('qvalue'),
-    Rsamtools = citation('Rsamtools'),
-    rtracklayer = citation('rtracklayer'),
-    S4Vectors = RefManageR::BibEntry(bibtype = 'manual', key = 'S4Vectors',
-        author = 'Hervé Pagès and Michael Lawrence and Patrick Aboyoun',
+        year = 2017, doi = "10.18129/B9.bioc.GenomeInfoDb"
+    ),
+    GenomicRanges = citation("GenomicRanges"),
+    ggplot2 = citation("ggplot2"),
+    bumphunter = citation("bumphunter")[1],
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation("TxDb.Hsapiens.UCSC.hg19.knownGene"),
+    AnnotationDbi = RefManageR::BibEntry(
+        bibtype = "manual",
+        key = "AnnotationDbi",
+        author = "Hervé Pagès and Marc Carlson and Seth Falcon and Nianhua Li",
+        title = "AnnotationDbi: Annotation Database Interface",
+        year = 2017, doi = "10.18129/B9.bioc.AnnotationDbi"
+    ),
+    BiocParallel = citation("BiocParallel"),
+    derfinderHelper = citation("derfinderHelper"),
+    GenomicAlignments = citation("GenomicAlignments"),
+    GenomicFeatures = citation("GenomicFeatures"),
+    GenomicFiles = citation("GenomicFiles"),
+    Hmisc = citation("Hmisc"),
+    qvalue = citation("qvalue"),
+    Rsamtools = citation("Rsamtools"),
+    rtracklayer = citation("rtracklayer"),
+    S4Vectors = RefManageR::BibEntry(
+        bibtype = "manual", key = "S4Vectors",
+        author = "Hervé Pagès and Michael Lawrence and Patrick Aboyoun",
         title = "S4Vectors: S4 implementation of vector-like and list-like objects",
-        year = 2017, doi = '10.18129/B9.bioc.S4Vectors'),
-    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article',
-        key = 'bumphunterPaper',
-        title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies',
-        author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A',
-        year = 2012, journal = 'International Journal of Epidemiology'),
-    derfinderData = citation('derfinderData')
+        year = 2017, doi = "10.18129/B9.bioc.S4Vectors"
+    ),
+    bumphunterPaper = RefManageR::BibEntry(
+        bibtype = "article",
+        key = "bumphunterPaper",
+        title = "Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies",
+        author = "Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A",
+        year = 2012, journal = "International Journal of Epidemiology"
+    ),
+    derfinderData = citation("derfinderData")
 )
 
-write.bibtex(bib, file = 'quickstartRef.bib')
+write.bibtex(bib, file = "quickstartRef.bib")
 
 ## Working on Windows?
-windowsFlag <- .Platform$OS.type == 'windows'
+windowsFlag <- .Platform$OS.type == "windows"
 ```
 
 Here is a very quick example of a DER Finder analysis. This analysis is explained in more detail later on in this document.
 
 ```{r 'ultraQuick', eval = FALSE}
 ## Load libraries
-library('derfinder')
-library('derfinderData')
-library('GenomicRanges')
+library("derfinder")
+library("derfinderData")
+library("GenomicRanges")
 
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
-    samplepatt = 'bw', fileterm = NULL)
-names(files) <- gsub('.bw', '', names(files))
+files <- rawFiles(system.file("extdata", "AMY", package = "derfinderData"),
+    samplepatt = "bw", fileterm = NULL
+)
+names(files) <- gsub(".bw", "", names(files))
 
 ## Load the data from disk -- On Windows you have to load data from Bam files
-fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE)
+fullCov <- fullCoverage(files = files, chrs = "chr21", verbose = FALSE)
 
 ## Get the region matrix of Expressed Regions (ERs)
 regionMat <- regionMatrix(fullCov, cutoff = 30, L = 76, verbose = FALSE)
 
 ## Get pheno table
-pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
+pheno <- subset(brainspanPheno, structure_acronym == "AMY")
 
 ## Identify which ERs are differentially expressed, that is, find the DERs
-library('DESeq2')
+library("DESeq2")
 
 ## Round matrix
 counts <- round(regionMat$chr21$coverageMatrix)
@@ -163,7 +175,7 @@ counts <- round(regionMat$chr21$coverageMatrix)
 dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
 
 ## Perform DE analysis
-dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local')
+dse <- DESeq(dse, test = "LRT", reduced = ~gender, fitType = "local")
 
 ## Extract results
 mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions), results(dse))
@@ -187,9 +199,9 @@ We first load the required packages.
 
 ```{r 'start', message=FALSE}
 ## Load libraries
-library('derfinder')
-library('derfinderData')
-library('GenomicRanges')
+library("derfinder")
+library("derfinderData")
+library("GenomicRanges")
 ```
 
 
@@ -197,9 +209,10 @@ Next, we need to locate the chromosome 21 coverage files for a set of 12 samples
 
 ```{r 'locateAMYfiles'}
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
-    samplepatt = 'bw', fileterm = NULL)
-names(files) <- gsub('.bw', '', names(files))
+files <- rawFiles(system.file("extdata", "AMY", package = "derfinderData"),
+    samplepatt = "bw", fileterm = NULL
+)
+names(files) <- gsub(".bw", "", names(files))
 ```
 
 Next, we can load the full coverage data into memory using the `fullCoverage()` function. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
@@ -207,16 +220,19 @@ Next, we can load the full coverage data into memory using the `fullCoverage()` 
 
 ```{r 'getData', eval = !windowsFlag}
 ## Load the data from disk
-fullCov <- fullCoverage(files = files, chrs = 'chr21', verbose = FALSE,
-    totalMapped = rep(1, length(files)), targetSize = 1)
+fullCov <- fullCoverage(
+    files = files, chrs = "chr21", verbose = FALSE,
+    totalMapped = rep(1, length(files)), targetSize = 1
+)
 ```
 
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
 ## Load data in Windows case
-foo <- function() { 
-    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData',
-        package = 'derfinderData'))
-    return(fullCovAMY) 
+foo <- function() {
+    load(system.file("extdata", "fullCov", "fullCovAMY.RData",
+        package = "derfinderData"
+    ))
+    return(fullCovAMY)
 }
 fullCov <- foo()
 ```
@@ -261,14 +277,14 @@ We can then use the coverage matrix and packages such as `r Biocpkg('limma')`, `
 
 ```{r 'phenoData'}
 ## Get pheno table
-pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
+pheno <- subset(brainspanPheno, structure_acronym == "AMY")
 ```
 
 Now we can identify the DERs using a rounded version of the coverage matrix.
 
 ```{r 'identifyDERsDESeq2'}
 ## Identify which ERs are differentially expressed, that is, find the DERs
-library('DESeq2')
+library("DESeq2")
 
 ## Round matrix
 counts <- round(regionMat$chr21$coverageMatrix)
@@ -277,11 +293,13 @@ counts <- round(regionMat$chr21$coverageMatrix)
 dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
 
 ## Perform DE analysis
-dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local')
+dse <- DESeq(dse, test = "LRT", reduced = ~gender, fitType = "local")
 
 ## Extract results
-mcols(regionMat$chr21$regions) <- c(mcols(regionMat$chr21$regions),
-    results(dse))
+mcols(regionMat$chr21$regions) <- c(
+    mcols(regionMat$chr21$regions),
+    results(dse)
+)
 
 ## Save info in an object with a shorter name
 ers <- regionMat$chr21$regions
@@ -294,20 +312,22 @@ We can then compare the DERs against known annotation to see which DERs overlap 
 ## Find overlaps between regions and summarized genomic annotation
 annoRegs <- annotateRegions(ers, genomicState$fullGenome, verbose = FALSE)
 
-library('derfinderPlot')
-venn <- vennRegions(annoRegs, counts.col = 'blue',
-    main = 'Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation')
+library("derfinderPlot")
+venn <- vennRegions(annoRegs,
+    counts.col = "blue",
+    main = "Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation"
+)
 ```
 
 We can also identify the nearest annotated feature. In this case, we'll look for the nearest known gene from the UCSC hg19 annotation.
 
 ```{r 'nearestGene'}
 ## Load database of interest
-library('TxDb.Hsapiens.UCSC.hg19.knownGene')
-txdb <- keepSeqlevels(TxDb.Hsapiens.UCSC.hg19.knownGene, 'chr21')
+library("TxDb.Hsapiens.UCSC.hg19.knownGene")
+txdb <- keepSeqlevels(TxDb.Hsapiens.UCSC.hg19.knownGene, "chr21")
 
 ## Find nearest feature
-library('bumphunter')
+library("bumphunter")
 genes <- annotateTranscripts(txdb)
 annotation <- matchGenes(ers, subject = genes)
 
@@ -321,10 +341,12 @@ We can check the base-level coverage information for some of our DERs. In this e
 ```{r 'firstfive', fig.cap = paste0("Base-pair resolution plot of differentially expressed region ", 1:5, ".")}
 ## Extract the region coverage
 regionCov <- regionMat$chr21$bpCoverage
-plotRegionCoverage(regions = ers, regionCoverage = regionCov, 
-    groupInfo = pheno$group, nearestAnnotation = annotation, 
+plotRegionCoverage(
+    regions = ers, regionCoverage = regionCov,
+    groupInfo = pheno$group, nearestAnnotation = annotation,
     annotatedRegions = annoRegs, whichRegions = seq_len(5), txdb = txdb,
-    scalefac = 1, ask = FALSE, verbose = FALSE)
+    scalefac = 1, ask = FALSE, verbose = FALSE
+)
 ```
 
 You can then use the `r Biocpkg('regionReport')` package to generate interactive HTML reports exploring the results.
@@ -351,7 +373,6 @@ This package was made possible thanks to:
 * `r Biocpkg('Rsamtools')` `r citep(bib[['Rsamtools']])`
 * `r Biocpkg('rtracklayer')` `r citep(bib[['rtracklayer']])`
 * `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
-* `r Biocpkg('biovizBase')` `r citep(bib[['biovizBase']])`
 * `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
 * `r CRANpkg('sessioninfo')` `r citep(bib[['sessioninfo']])`
 * `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
@@ -366,17 +387,17 @@ Code for creating the vignette
 
 ```{r createVignette, eval=FALSE}
 ## Create the vignette
-library('rmarkdown')
-system.time(render('derfinder-quickstart.Rmd', 'BiocStyle::html_document'))
+library("rmarkdown")
+system.time(render("derfinder-quickstart.Rmd", "BiocStyle::html_document"))
 
 ## Extract the R code
-library('knitr')
-knit('derfinder-quickstart.Rmd', tangle = TRUE)
+library("knitr")
+knit("derfinder-quickstart.Rmd", tangle = TRUE)
 ```
 
 ```{r createVignette2}
 ## Clean up
-file.remove('quickstartRef.bib')
+file.remove("quickstartRef.bib")
 ```
 
 Date the vignette was generated.
@@ -391,14 +412,14 @@ Wallclock time spent generating the vignette.
 ```{r reproducibility2, echo=FALSE}
 ## Processing time in seconds
 totalTime <- diff(c(startTime, Sys.time()))
-round(totalTime, digits=3)
+round(totalTime, digits = 3)
 ```
 
 `R` session information.
 
 ```{r reproducibility3, echo=FALSE}
 ## Session info
-library('sessioninfo')
+library("sessioninfo")
 options(width = 120)
 session_info()
 ```

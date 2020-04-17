@@ -4,13 +4,15 @@
 \name{genomicState}
 \alias{genomicState}
 \title{Genomic State for Hsapiens.UCSC.hg19.knownGene}
-\format{A GRangesList with two components.
+\format{
+A GRangesList with two components.
 \describe{
 \item{fullGenome }{ classifies each region as either being exon, intron or
 intergenic.}
 \item{codingGenome }{ classfies the regions as being promoter, exon, intro,
 5UTR, 3UTR or intergenic.}
-}}
+}
+}
 \description{
 Pre-computed genomic state for Hsapiens UCSC hg19 knownGene annotation built
 using \link[derfinder:makeGenomicState]{makeGenomicState} for

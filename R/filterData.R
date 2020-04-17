@@ -1,34 +1,34 @@
 #' Filter the positions of interest
 #'
-#' For a group of samples this function reads the coverage information for a 
-#' specific chromosome directly from the BAM files. It then merges them into a 
-#' DataFrame and removes the bases that do not pass the cutoff. This is a 
+#' For a group of samples this function reads the coverage information for a
+#' specific chromosome directly from the BAM files. It then merges them into a
+#' DataFrame and removes the bases that do not pass the cutoff. This is a
 #' helper function for [loadCoverage] and [preprocessCoverage].
-#' 
-#' @param data Either a list of Rle objects or a DataFrame with the coverage 
+#'
+#' @param data Either a list of Rle objects or a DataFrame with the coverage
 #' information.
-#' @param cutoff The base-pair level cutoff to use. It's behavior is controlled 
+#' @param cutoff The base-pair level cutoff to use. It's behavior is controlled
 #' by `filter`.
-#' @param index A logical Rle with the positions of the chromosome that passed 
-#' the cutoff. If `NULL` it is assumed that this is the first time using 
+#' @param index A logical Rle with the positions of the chromosome that passed
+#' the cutoff. If `NULL` it is assumed that this is the first time using
 #' [filterData] and thus no previous index exists.
-#' @param filter Has to be either `'one'` (default) or `'mean'`. In 
+#' @param filter Has to be either `'one'` (default) or `'mean'`. In
 #' the first case, at least one sample has to have coverage above `cutoff`.
 #' In the second case, the mean coverage has to be greater than `cutoff`.
-#' @param totalMapped A vector with the total number of reads mapped for each 
+#' @param totalMapped A vector with the total number of reads mapped for each
 #' sample. The vector should be in the same order as the samples in `data`.
-#' Providing this data adjusts the coverage to reads in `targetSize` 
+#' Providing this data adjusts the coverage to reads in `targetSize`
 #' library prior to filtering. See [getTotalMapped] for
 #' calculating this vector.
 #' @param targetSize The target library size to adjust the coverage to. Used
-#' only when `totalMapped` is specified. By default, it adjusts to 
+#' only when `totalMapped` is specified. By default, it adjusts to
 #' libraries with 80 million reads.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along
 #' the way.}
-#' \item{returnMean }{ If `TRUE` the mean coverage is included in the 
+#' \item{returnMean }{ If `TRUE` the mean coverage is included in the
 #' result. `FALSE` by default.}
 #' \item{returnCoverage }{ If `TRUE`, the coverage DataFrame is returned.
 #' `TRUE` by default.}
@@ -37,29 +37,29 @@
 #' @return A list with up to three components.
 #'
 #' \describe{
-#' \item{coverage }{ is a DataFrame object where each column represents a 
-#' sample. The number of rows depends on the number of base pairs that passed 
-#' the cutoff and the information stored is the coverage at that given base. 
+#' \item{coverage }{ is a DataFrame object where each column represents a
+#' sample. The number of rows depends on the number of base pairs that passed
+#' the cutoff and the information stored is the coverage at that given base.
 #' Included only when `returnCoverage = TRUE`.}
-#' \item{position }{  is a logical Rle with the positions of the chromosome 
+#' \item{position }{  is a logical Rle with the positions of the chromosome
 #' that passed the cutoff.}
-#' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each base. 
+#' \item{meanCoverage }{ is a numeric Rle with the mean coverage at each base.
 #' Included only when `returnMean = TRUE`.}
-#' \item{colnames }{ Specifies the column names to be used for the results 
+#' \item{colnames }{ Specifies the column names to be used for the results
 #' DataFrame. If `NULL`, names from `data` are used.}
 #' \item{smoothMean }{ Whether to smooth the mean. Used only when
-#' `filter = 'mean'`. This option is used internally by 
+#' `filter = 'mean'`. This option is used internally by
 #' [regionMatrix].}
 #' }
-#' Passed to the internal function `.smootherFstats`, see 
+#' Passed to the internal function `.smootherFstats`, see
 #' [findRegions].
 #'
-#' @details If `cutoff` is `NULL` then the data is grouped into 
-#' DataFrame without applying any cutoffs. This can be useful if you want to 
-#' use [loadCoverage] to build the coverage DataFrame without applying any 
-#' cutoffs for other downstream purposes like plotting the coverage values of a 
-#' given region. You can always specify the `colsubset` argument in 
-#' [preprocessCoverage] to filter the data before calculating the F 
+#' @details If `cutoff` is `NULL` then the data is grouped into
+#' DataFrame without applying any cutoffs. This can be useful if you want to
+#' use [loadCoverage] to build the coverage DataFrame without applying any
+#' cutoffs for other downstream purposes like plotting the coverage values of a
+#' given region. You can always specify the `colsubset` argument in
+#' [preprocessCoverage] to filter the data before calculating the F
 #' statistics.
 #'
 #' @author Leonardo Collado-Torres
@@ -73,10 +73,10 @@
 #' [getTotalMapped]
 #' @examples
 #' ## Construct some toy data
-#' library('IRanges')
-#' x <- Rle(round(runif(1e4, max=10)))
-#' y <- Rle(round(runif(1e4, max=10)))
-#' z <- Rle(round(runif(1e4, max=10)))
+#' library("IRanges")
+#' x <- Rle(round(runif(1e4, max = 10)))
+#' y <- Rle(round(runif(1e4, max = 10)))
+#' z <- Rle(round(runif(1e4, max = 10)))
 #' DF <- DataFrame(x, y, z)
 #'
 #' ## Filter the data
@@ -84,58 +84,58 @@
 #' filt1
 #'
 #' ## Filter again but only using the first two samples
-#' filt2 <- filterData(filt1$coverage[, 1:2], 5, index=filt1$position)
+#' filt2 <- filterData(filt1$coverage[, 1:2], 5, index = filt1$position)
 #' filt2
-#'
-
-filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
+filterData <- function(data, cutoff = NULL, index = NULL, filter = "one",
     totalMapped = NULL, targetSize = 80e6, ...) {
-        
+
     ## Check filter
-    stopifnot(filter %in% c('one', 'mean'))
-    
+    stopifnot(filter %in% c("one", "mean"))
+
     ## Advanged arguments
-# @param verbose If \code{TRUE} basic status updates will be printed along the 
-# way.
-    verbose <- .advanced_argument('verbose', TRUE, ...)
+    # @param verbose If \code{TRUE} basic status updates will be printed along the
+    # way.
+    verbose <- .advanced_argument("verbose", TRUE, ...)
 
 
 
-# @param returnMean If \code{TRUE} the mean coverage is included in the result.
-    returnMean <- .advanced_argument('returnMean', FALSE, ...)
+    # @param returnMean If \code{TRUE} the mean coverage is included in the result.
+    returnMean <- .advanced_argument("returnMean", FALSE, ...)
 
 
 
-# @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
-    returnCoverage <- .advanced_argument('returnCoverage', TRUE, ...)
+    # @param returnCoverage If \code{TRUE}, the coverage DataFrame is returned.
+    returnCoverage <- .advanced_argument("returnCoverage", TRUE, ...)
 
 
-# @param colnames Specifies the column names to be used for the results 
-# DataFrame. If \code{NULL}, names from \code{data} are used.
-    colnames <- .advanced_argument('colnames', NULL, ...)
+    # @param colnames Specifies the column names to be used for the results
+    # DataFrame. If \code{NULL}, names from \code{data} are used.
+    colnames <- .advanced_argument("colnames", NULL, ...)
 
     ## Initialize meanCov
     meanCov <- NULL
-    
+
     ## library size adjustments
-    if(!is.null(totalMapped) & targetSize != 0) {
+    if (!is.null(totalMapped) & targetSize != 0) {
         mappedPerXM <- totalMapped / targetSize
-        
+
         ## Normalize to a given library size
-        if (verbose) 
-            message(paste(Sys.time(), 'filterData: normalizing coverage'))
+        if (verbose) {
+              message(paste(Sys.time(), "filterData: normalizing coverage"))
+          }
         data <- mapply(function(x, d) x / d, data, mappedPerXM)
-        if (verbose) 
-            message(paste(Sys.time(), 'filterData: done normalizing coverage'))
+        if (verbose) {
+              message(paste(Sys.time(), "filterData: done normalizing coverage"))
+          }
     }
-    
+
     ## If there is no cutoff to apply, just build the DataFrame
     if (is.null(cutoff)) {
         newindex <- NULL
         finalidx <- index
     } else {
         ## Construct the filtering index
-        if(filter == 'one') {
+        if (filter == "one") {
             for (i in seq_len(length(data))) {
                 if (i == 1) {
                     newindex <- data[[i]] > cutoff
@@ -143,18 +143,18 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
                     newindex <- newindex | data[[i]] > cutoff
                 }
             }
-        } else if (filter == 'mean') {
-            meanCov <- Reduce('+', data) / length(data)
-            
-            smoothMean <- .advanced_argument('smoothMean', FALSE, ...)
-            if(smoothMean) {
-                if(verbose) message(paste(Sys.time(), 'filterData: smoothing mean coverage'))
+        } else if (filter == "mean") {
+            meanCov <- Reduce("+", data) / length(data)
+
+            smoothMean <- .advanced_argument("smoothMean", FALSE, ...)
+            if (smoothMean) {
+                if (verbose) message(paste(Sys.time(), "filterData: smoothing mean coverage"))
                 newindex <- Rle(TRUE, length(meanCov))
                 meanCov <- derfinder:::.smootherFstats(fstats = meanCov, position = newindex, ...)
-            }            
+            }
             newindex <- meanCov > cutoff
         }
-        
+
         ## Build the final index
         if (!is.null(index)) {
             finalidx <- index
@@ -163,22 +163,22 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
             finalidx <- newindex
         }
     }
-    
+
     ## Keep only bases that pass the cutoff
-    if(returnMean) {
-        if(is.null(meanCov)) {
+    if (returnMean) {
+        if (is.null(meanCov)) {
             ## Calculate the mean if needed
-            meanCov <- Reduce('+', data) / length(data)
+            meanCov <- Reduce("+", data) / length(data)
         }
-        if(!is.null(newindex)) {
+        if (!is.null(newindex)) {
             meanCovFiltered <- meanCov[newindex]
         } else {
             meanCovFiltered <- meanCov
         }
     }
-    
-    if(returnCoverage) {
-        if (is(data, 'DataFrame')) {
+
+    if (returnCoverage) {
+        if (is(data, "DataFrame")) {
             if (!is.null(newindex)) {
                 DF <- data[newindex, ]
             } else {
@@ -195,41 +195,47 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = 'one',
             }
         }
     }
-        
+
     ## Info for the user
     if (verbose) {
-        if(returnCoverage) {
-            message(paste(Sys.time(), 'filterData: originally there were', 
-                length(data[[1]]), 'rows, now there are', NROW(DF), 
-                'rows. Meaning that', 100 - round(NROW(DF)/length(data[[1]]) * 
-                    100, 2), 'percent was filtered.'))
+        if (returnCoverage) {
+            message(paste(
+                Sys.time(), "filterData: originally there were",
+                length(data[[1]]), "rows, now there are", NROW(DF),
+                "rows. Meaning that", 100 - round(NROW(DF) / length(data[[1]]) *
+                    100, 2), "percent was filtered."
+            ))
         } else if (returnMean) {
-            message(paste(Sys.time(), 'filterData: originally there were', 
-                length(data[[1]]), 'rows, now there are', 
-                length(meanCovFiltered), 'rows. Meaning that', 100 - 
-                round(length(meanCovFiltered)/length(data[[1]]) * 
-                    100, 2), 'percent was filtered.'))
+            message(paste(
+                Sys.time(), "filterData: originally there were",
+                length(data[[1]]), "rows, now there are",
+                length(meanCovFiltered), "rows. Meaning that", 100 -
+                    round(length(meanCovFiltered) / length(data[[1]]) *
+                        100, 2), "percent was filtered."
+            ))
         }
     }
-    
+
     ## Assign column names
-    if(returnCoverage) {
+    if (returnCoverage) {
         if (!is.null(colnames)) {
             colnames(DF) <- colnames
         }
     }
-    
+
     ## Make the final resulting object.
-    if(returnMean & returnCoverage) {
-        res <- list(coverage = DF, position = finalidx, 
-            meanCoverage = meanCovFiltered)   
-    } else if (!returnMean & returnCoverage){
+    if (returnMean & returnCoverage) {
+        res <- list(
+            coverage = DF, position = finalidx,
+            meanCoverage = meanCovFiltered
+        )
+    } else if (!returnMean & returnCoverage) {
         res <- list(coverage = DF, position = finalidx)
     } else if (returnMean & !returnCoverage) {
         res <- list(position = finalidx, meanCoverage = meanCovFiltered)
     } else {
         res <- list(position = finalidx)
     }
-    
+
     return(res)
 }

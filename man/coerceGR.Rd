@@ -37,15 +37,19 @@ Given the output of \link{fullCoverage}, coerce the coverage to a
 }
 \examples{
 ## Create a small fullCov object with data only for chr21
-fullCov <- list('chr21' = genomeDataRaw)
+fullCov <- list("chr21" = genomeDataRaw)
 
 ## Coerce to a GRanges the first sample
-gr <- createBwSample('ERR009101', fullCov = fullCov,
-    seqlengths = c('chr21' = 48129895))
+gr <- createBwSample("ERR009101",
+    fullCov = fullCov,
+    seqlengths = c("chr21" = 48129895)
+)
 
 ## Explore the output
 gr
 
+
+## Coerces fullCoverage() output to GRanges for a given sample
 }
 \seealso{
 \link[GenomicRanges:GRanges-class]{GRanges}

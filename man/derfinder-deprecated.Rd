@@ -33,10 +33,9 @@ documented on the help pages of each function.}
 }
 \examples{
 ## Open the advanced argument docs for loadCoverage()
-if(interactive()) {
-    advancedArg('loadCoverage')
+if (interactive()) {
+    advancedArg("loadCoverage")
 } else {
-    (advancedArg('loadCoverage', browse = FALSE))
+    (advancedArg("loadCoverage", browse = FALSE))
 }
-
 }

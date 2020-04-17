@@ -4,8 +4,16 @@
 \alias{loadCoverage}
 \title{Load the coverage information from a group of BAM files}
 \usage{
-loadCoverage(files, chr, cutoff = NULL, filter = "one",
-  chrlen = NULL, output = NULL, bai = NULL, ...)
+loadCoverage(
+  files,
+  chr,
+  cutoff = NULL,
+  filter = "one",
+  chrlen = NULL,
+  output = NULL,
+  bai = NULL,
+  ...
+)
 }
 \arguments{
 \item{files}{A character vector with the full path to the sample BAM files
@@ -105,30 +113,35 @@ example:
 \code{options(chrsStyle = 'NCBI')}
 }
 \examples{
-datadir <- system.file('extdata', 'genomeData', package='derfinder')
-files <- rawFiles(datadir = datadir, samplepatt = '*accepted_hits.bam$',
-    fileterm = NULL)
+datadir <- system.file("extdata", "genomeData", package = "derfinder")
+files <- rawFiles(
+    datadir = datadir, samplepatt = "*accepted_hits.bam$",
+    fileterm = NULL
+)
 ## Shorten the column names
-names(files) <- gsub('_accepted_hits.bam', '', names(files))
+names(files) <- gsub("_accepted_hits.bam", "", names(files))
 
 ## Read and filter the data, only for 2 files
-dataSmall <- loadCoverage(files = files[1:2], chr = '21', cutoff = 0)
-
+dataSmall <- loadCoverage(files = files[1:2], chr = "21", cutoff = 0)
 \dontrun{
 ## Export to BigWig files
-createBw(list('chr21' = dataSmall))
+createBw(list("chr21" = dataSmall))
 
 ## Load data from BigWig files
-dataSmall.bw <- loadCoverage(c(ERR009101 = 'ERR009101.bw', ERR009102 =
-    'ERR009102.bw'), chr = 'chr21')
+dataSmall.bw <- loadCoverage(c(
+    ERR009101 = "ERR009101.bw", ERR009102 =
+        "ERR009102.bw"
+), chr = "chr21")
 
 ## Compare them
-mapply(function(x, y) { x - y }, dataSmall$coverage, dataSmall.bw$coverage)
+mapply(function(x, y) {
+    x - y
+}, dataSmall$coverage, dataSmall.bw$coverage)
 
 ## Note that the only difference is the type of Rle (integer vs numeric) used
 ## to store the data.
-
 }
+
 }
 \seealso{
 \link{fullCoverage}, \link{getTotalMapped}

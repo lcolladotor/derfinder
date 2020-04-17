@@ -28,10 +28,10 @@ the mitocondrial chromosome.
 \examples{
 
 ## Get the total number of mapped reads for an example BAM file:
-bam <- system.file('extdata', 'genomeData', 'ERR009102_accepted_hits.bam',
-    package='derfinder', mustWork=TRUE)
+bam <- system.file("extdata", "genomeData", "ERR009102_accepted_hits.bam",
+    package = "derfinder", mustWork = TRUE
+)
 getTotalMapped(bam)
-
 }
 \author{
 Leonardo Collado-Torres

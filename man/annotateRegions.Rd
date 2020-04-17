@@ -7,7 +7,7 @@
 annotateRegions(regions, genomicState, annotate = TRUE, ...)
 }
 \arguments{
-\item{regions}{The \code{$regions} output from \link{calculatePvalues}.}
+\item{regions}{The \verb{$regions} output from \link{calculatePvalues}.}
 
 \item{genomicState}{A GRanges object created with \link{makeGenomicState}.
 It can be either the \code{genomicState$fullGenome} or
@@ -56,8 +56,10 @@ for further details.
 }
 \examples{
 ## Annotate regions, first two only
-annotatedRegions <- annotateRegions(regions=genomeRegions$regions[1:2], 
-    genomicState=genomicState$fullGenome, minoverlap=1)
+annotatedRegions <- annotateRegions(
+    regions = genomeRegions$regions[1:2],
+    genomicState = genomicState$fullGenome, minoverlap = 1
+)
 annotatedRegions
 }
 \seealso{

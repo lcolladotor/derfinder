@@ -5,8 +5,15 @@
 \title{Load the unfiltered coverage information from a group of BAM files and a
 list of chromosomes}
 \usage{
-fullCoverage(files, chrs, bai = NULL, chrlens = NULL, outputs = NULL,
-  cutoff = NULL, ...)
+fullCoverage(
+  files,
+  chrs,
+  bai = NULL,
+  chrlens = NULL,
+  outputs = NULL,
+  cutoff = NULL,
+  ...
+)
 }
 \arguments{
 \item{files}{A character vector with the full path to the sample BAM files
@@ -70,24 +77,28 @@ the unfiltered coverage by sample into a DataFrame. The end result is a list
 with one such DataFrame objects per chromosome.
 }
 \examples{
-datadir <- system.file('extdata', 'genomeData', package='derfinder')
-files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
-    fileterm=NULL)
+datadir <- system.file("extdata", "genomeData", package = "derfinder")
+files <- rawFiles(
+    datadir = datadir, samplepatt = "*accepted_hits.bam$",
+    fileterm = NULL
+)
 ## Shorten the column names
-names(files) <- gsub('_accepted_hits.bam', '', names(files))
+names(files) <- gsub("_accepted_hits.bam", "", names(files))
 
 ## Read and filter the data, only for 1 file
-fullCov <- fullCoverage(files=files[1], chrs=c('21', '22'))
+fullCov <- fullCoverage(files = files[1], chrs = c("21", "22"))
 fullCov
-
 \dontrun{
-## You can then use filterData() to filter the data if you want to. 
+## You can then use filterData() to filter the data if you want to.
 ## Use bplapply() if you want to do so with multiple cores as shown below.
-library('BiocParallel')
+library("BiocParallel")
 p <- SnowParam(2L)
 bplapply(fullCov, function(x) {
-    library('derfinder'); filterData(x, cutoff=0) }, BPPARAM = p)
+    library("derfinder")
+    filterData(x, cutoff = 0)
+}, BPPARAM = p)
 }
+
 }
 \seealso{
 \link{loadCoverage}, \link{filterData}, \link{getTotalMapped}

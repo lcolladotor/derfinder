@@ -4,8 +4,7 @@
 \alias{makeModels}
 \title{Build model matrices for differential expression}
 \usage{
-makeModels(sampleDepths, testvars, adjustvars = NULL,
-  testIntercept = FALSE)
+makeModels(sampleDepths, testvars, adjustvars = NULL, testIntercept = FALSE)
 }
 \arguments{
 \item{sampleDepths}{Per sample library size adjustments calculated with
@@ -41,17 +40,20 @@ resulting models can be used in \link{calculateStats}.
 }
 \examples{
 ## Collapse the coverage information
-collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-    verbose=TRUE)
+collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+    verbose = TRUE
+)
 
 ## Calculate library size adjustments
-sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), nonzero=TRUE, 
-    verbose=TRUE)
+sampleDepths <- sampleDepth(collapsedFull,
+    probs = c(0.5), nonzero = TRUE,
+    verbose = TRUE
+)
 
 ## Build the models
 group <- genomeInfo$pop
 adjustvars <- data.frame(genomeInfo$gender)
-models <- makeModels(sampleDepths, testvars=group, adjustvars=adjustvars)
+models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 names(models)
 models
 }

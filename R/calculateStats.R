@@ -1,33 +1,33 @@
 #' Calculate F-statistics at base pair resolution from a loaded BAM files
 #'
-#' After defining the models of interest (see [makeModels]) and 
-#' pre-processing the data (see [preprocessCoverage]), use 
+#' After defining the models of interest (see [makeModels]) and
+#' pre-processing the data (see [preprocessCoverage]), use
 #' [calculateStats] to calculate the F-statistics at base-pair resolution.
-#' 
-#' @param coveragePrep A list with `$coverageProcessed`, 
-#' `$mclapplyIndex`, and `$position` normally generated using 
+#'
+#' @param coveragePrep A list with `$coverageProcessed`,
+#' `$mclapplyIndex`, and `$position` normally generated using
 #' [preprocessCoverage].
-#' @param models A list with `$mod` and `$mod0` normally generated 
+#' @param models A list with `$mod` and `$mod0` normally generated
 #' using [makeModels].
-#' @param lowMemDir The directory where the processed chunks are saved when 
+#' @param lowMemDir The directory where the processed chunks are saved when
 #' using [preprocessCoverage] with a specified `lowMemDir`.
 #' @param ... Arguments passed to other methods and/or advanced arguments.
 #' Advanced arguments:
 #' \describe{
-#' \item{verbose }{ If `TRUE` basic status updates will be printed along 
+#' \item{verbose }{ If `TRUE` basic status updates will be printed along
 #' the way.}
-#' \item{scalefac }{ This argument is passed to 
-#' [fstats.apply][derfinderHelper::fstats.apply] and should be the same as the one used 
+#' \item{scalefac }{ This argument is passed to
+#' [fstats.apply][derfinderHelper::fstats.apply] and should be the same as the one used
 #' in [preprocessCoverage]. Default: 32.}
-#' \item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
+#' \item{method }{ Has to be either 'Matrix' (default), 'Rle' or 'regular'. See
 #' details in [fstats.apply][derfinderHelper::fstats.apply].}
-#' \item{adjustF }{ A single value to adjust that is added in the denominator 
-#' of the F-stat calculation. Useful when the Residual Sum of Squares of the 
+#' \item{adjustF }{ A single value to adjust that is added in the denominator
+#' of the F-stat calculation. Useful when the Residual Sum of Squares of the
 #' alternative model is very small. Default: 0.}
 #' }
 #' Passed to [define_cluster].
 #'
-#' @return A numeric Rle with the F-statistics per base pair that passed the 
+#' @return A numeric Rle with the F-statistics per base pair that passed the
 #' cutoff.
 #'
 #' @author Leonardo Collado-Torres
@@ -40,87 +40,93 @@
 #'
 #' @examples
 #' ## Collapse the coverage information
-#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage), 
-#'     verbose = TRUE)
-#' 
+#' collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
+#'     verbose = TRUE
+#' )
+#'
 #' ## Calculate library size adjustments
-#' sampleDepths <- sampleDepth(collapsedFull, probs=c(0.5), verbose = TRUE)
-#' 
+#' sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5), verbose = TRUE)
+#'
 #' ## Build the models
 #' group <- genomeInfo$pop
 #' adjustvars <- data.frame(genomeInfo$gender)
 #' models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 #'
 #' ## Preprocess the data
-#' prep <- preprocessCoverage(genomeData, cutoff = 0, scalefac = 32,
-#'     chunksize=1e3, colsubset=NULL)
-#' 
-#' ## Run the function
-#' fstats <- calculateStats(prep, models, verbose=TRUE, method='regular')
-#' fstats
+#' prep <- preprocessCoverage(genomeData,
+#'     cutoff = 0, scalefac = 32,
+#'     chunksize = 1e3, colsubset = NULL
+#' )
 #'
+#' ## Run the function
+#' fstats <- calculateStats(prep, models, verbose = TRUE, method = "regular")
+#' fstats
 #' \dontrun{
 #' ## Compare vs pre-packaged F-statistics
-#' library('testthat')
+#' library("testthat")
 #' expect_that(fstats, is_equivalent_to(genomeFstats))
 #' }
-
+#'
 calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
-    
-    stopifnot(length(intersect(names(coveragePrep), c('coverageProcessed', 
-        'mclapplyIndex', 'position'))) == 3)
-    stopifnot(length(intersect(names(models), c('mod', 'mod0'))) == 
+    stopifnot(length(intersect(names(coveragePrep), c(
+        "coverageProcessed",
+        "mclapplyIndex", "position"
+    ))) == 3)
+    stopifnot(length(intersect(names(models), c("mod", "mod0"))) ==
         2)
-    
+
     ## Advanged arguments
-# @param verbose If \code{TRUE} basic status updates will be printed along the 
-# way.
-    verbose <- .advanced_argument('verbose', TRUE, ...)
+    # @param verbose If \code{TRUE} basic status updates will be printed along the
+    # way.
+    verbose <- .advanced_argument("verbose", TRUE, ...)
 
 
-# @param scalefac This argument is passed to 
-# \link[derfinderHelper]{fstats.apply} and should be the same as the one used 
-# in \link{preprocessCoverage}.
-    scalefac <- .advanced_argument('scalefac', 32, ...)    
+    # @param scalefac This argument is passed to
+    # \link[derfinderHelper]{fstats.apply} and should be the same as the one used
+    # in \link{preprocessCoverage}.
+    scalefac <- .advanced_argument("scalefac", 32, ...)
 
 
-# @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See 
-# details in derfinderHelper::fstats.apply().
-    method <- .advanced_argument('method', 'Matrix', ...)
+    # @param method Has to be either 'Matrix' (default), 'Rle' or 'regular'. See
+    # details in derfinderHelper::fstats.apply().
+    method <- .advanced_argument("method", "Matrix", ...)
 
 
-# @param adjustF A single value to adjust that is added in the denominator of 
-# the F-stat calculation. Useful when the Residual Sum of Squares of the 
-# alternative model is very small.
-    adjustF <- .advanced_argument('adjustF', 0, ...)
+    # @param adjustF A single value to adjust that is added in the denominator of
+    # the F-stat calculation. Useful when the Residual Sum of Squares of the
+    # alternative model is very small.
+    adjustF <- .advanced_argument("adjustF", 0, ...)
 
-    if (is.null(lowMemDir) & is.null(coveragePrep$coverageProcessed)) 
-        stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
-    
+    if (is.null(lowMemDir) & is.null(coveragePrep$coverageProcessed)) {
+          stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
+      }
+
     ## Define cluster
     BPPARAM <- define_cluster(...)
-    
+
     if (is.null(lowMemDir)) {
         ## Check that the columns match
         numcol <- ncol(coveragePrep$coverageProcessed)
         if (numcol != dim(models$mod)[1]) {
             stop("The alternative model 'models$mod' is not compatible with the number of samples in 'coveragePrep$coverageProcessed'. Check the dimensions of the alternative model.")
         }
-        
+
         if (length(coveragePrep$coverageProcessed) < bpworkers(BPPARAM)) {
             warning("The number of chunks in coveragePrep$coverageProcessed is smaller than the number of cores selected. For using all the cores specified consider splitting the data into more chunks.")
         }
     }
-        
+
     ## Fit a model to each row (chunk) of database:
-    if (verbose) 
-        message(paste(Sys.time(), 'calculateStats: calculating the F-statistics'))
-    fstats.output <- bplapply(coveragePrep$mclapplyIndex, fstats.apply, 
-        data = coveragePrep$coverageProcessed, mod = models$mod, 
+    if (verbose) {
+          message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
+      }
+    fstats.output <- bplapply(coveragePrep$mclapplyIndex, fstats.apply,
+        data = coveragePrep$coverageProcessed, mod = models$mod,
         mod0 = models$mod0, lowMemDir = lowMemDir, scalefac = scalefac,
-        method = method, adjustF = adjustF, BPPARAM = BPPARAM)
+        method = method, adjustF = adjustF, BPPARAM = BPPARAM
+    )
     result <- unlist(RleList(fstats.output), use.names = FALSE)
-    
+
     ## Done =)
-    return(result)    
+    return(result)
 }

@@ -77,37 +77,41 @@
 #' @examples
 #'
 #' ## BigWig files are not supported in Windows
-#' if(.Platform$OS.type != 'windows') {
+#' if (.Platform$OS.type != "windows") {
 #'     ## Get data
-#'     library('derfinderData')
+#'     library("derfinderData")
 #'
 #'     ## Identify sample files
-#'     sampleFiles <- rawFiles(system.file('extdata', 'AMY', package =
-#'         'derfinderData'), samplepatt = 'bw', fileterm = NULL)
-#'     names(sampleFiles) <- gsub('.bw', '', names(sampleFiles))
+#'     sampleFiles <- rawFiles(system.file("extdata", "AMY",
+#'         package =
+#'             "derfinderData"
+#'     ), samplepatt = "bw", fileterm = NULL)
+#'     names(sampleFiles) <- gsub(".bw", "", names(sampleFiles))
 #'
 #'     ## Create the mean bigwig file. This file is normally created by Rail
 #'     ## but in this example we'll create it manually.
-#'     library('GenomicRanges')
-#'     fullCov <- fullCoverage(files = sampleFiles, chrs = 'chr21')
-#'     meanCov <- Reduce('+', fullCov$chr21) / ncol(fullCov$chr21)
-#'     createBw(list('chr21' = DataFrame('meanChr21' = meanCov)), keepGR =
-#'         FALSE)
+#'     library("GenomicRanges")
+#'     fullCov <- fullCoverage(files = sampleFiles, chrs = "chr21")
+#'     meanCov <- Reduce("+", fullCov$chr21) / ncol(fullCov$chr21)
+#'     createBw(list("chr21" = DataFrame("meanChr21" = meanCov)),
+#'         keepGR =
+#'             FALSE
+#'     )
 #'
-#'     summaryFile <- 'meanChr21.bw'
+#'     summaryFile <- "meanChr21.bw"
 #'
 #'     ## Get the regions
-#'     regionMat <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile,
+#'     regionMat <- railMatrix(
+#'         chrs = "chr21", summaryFiles = summaryFile,
 #'         sampleFiles = sampleFiles, L = 76, cutoff = 5.1,
-#'         maxClusterGap = 3000L)
+#'         maxClusterGap = 3000L
+#'     )
 #'
 #'     ## Explore results
 #'     names(regionMat$chr21)
 #'     regionMat$chr21$regions
 #'     dim(regionMat$chr21$coverageMatrix)
 #' }
-
-
 railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6,
     file.cores = 1L, chrlens = NULL, ...) {
@@ -119,62 +123,73 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
     stopifnot(length(L) != 1 | length(L) != length(sampleFiles))
-    if(!is.null(totalMapped)) stopifnot(length(totalMapped) != 1 | length(totalMapped) != length(sampleFiles))
+    if (!is.null(totalMapped)) stopifnot(length(totalMapped) != 1 | length(totalMapped) != length(sampleFiles))
 
     ## Verbose value
-    verbose <- .advanced_argument('verbose', TRUE, ...)
-    verbose.load <- .advanced_argument('verbose.load', TRUE, ...)
+    verbose <- .advanced_argument("verbose", TRUE, ...)
+    verbose.load <- .advanced_argument("verbose.load", TRUE, ...)
 
     ## For the bpmapply call to work
-    if(is.null(chrlens)) chrlens <- rep(list(NULL), length(chrs))
+    if (is.null(chrlens)) chrlens <- rep(list(NULL), length(chrs))
 
     ## Define cluster used for per chromosome
     BPPARAM <- define_cluster(...)
 
     ## Define cluster used for loading BigWig files
-    if(file.cores == 1L) {
-        BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr', SerialParam(),
-            ...)
+    if (file.cores == 1L) {
+        BPPARAM.railChr <- .advanced_argument(
+            "BPPARAM.railChr", SerialParam(),
+            ...
+        )
     } else {
-        mc.log <- .advanced_argument('mc.log', TRUE, ...)
-        BPPARAM.railChr <- .advanced_argument('BPPARAM.railChr',
-            SnowParam(workers = file.cores, log = mc.log), ...)
+        mc.log <- .advanced_argument("mc.log", TRUE, ...)
+        BPPARAM.railChr <- .advanced_argument(
+            "BPPARAM.railChr",
+            SnowParam(workers = file.cores, log = mc.log), ...
+        )
     }
 
-    if(!is.null(totalMapped) & targetSize != 0) {
+    if (!is.null(totalMapped) & targetSize != 0) {
         mappedPerXM <- totalMapped / targetSize
     } else {
         mappedPerXM <- rep(list(NULL), length(sampleFiles))
     }
 
     ## Chunksize to use
-    chunksize <- .advanced_argument('chunksize', 1000, ...)
+    chunksize <- .advanced_argument("chunksize", 1000, ...)
 
 
     regionMat <- bpmapply(.railMatrixChr, chrs, summaryFiles, chrlens,
-        SIMPLIFY = FALSE, MoreArgs = list(sampleFiles = sampleFiles, L = L,
+        SIMPLIFY = FALSE, MoreArgs = list(
+            sampleFiles = sampleFiles, L = L,
             maxClusterGap = maxClusterGap, cutoff = cutoff,
             mappedPerXM = mappedPerXM, regionschunk = chunksize,
             BPPARAM.railChr = BPPARAM.railChr, verbose = verbose,
-            verboseLoad = verbose.load, ...),
-        BPPARAM = BPPARAM)
+            verboseLoad = verbose.load, ...
+        ),
+        BPPARAM = BPPARAM
+    )
     return(regionMat)
 }
 
 
 .railMatrixChr <- function(chr, summaryFile, chrlen, sampleFiles, L = NULL,
-    cutoff = NULL,  maxClusterGap = 300L, mappedPerXM = mappedPerXM,
+    cutoff = NULL, maxClusterGap = 300L, mappedPerXM = mappedPerXM,
     regionschunk = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE,
     verboseLoad = TRUE, ...) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr, chrlen = chrlen)
 
-    filteredMean <- filterData(meanCov$coverage, cutoff = cutoff, filter = 'mean', returnMean = TRUE, ...)
-    regs <- findRegions(position = filteredMean$position,
+    filteredMean <- filterData(meanCov$coverage, cutoff = cutoff, filter = "mean", returnMean = TRUE, ...)
+    regs <- findRegions(
+        position = filteredMean$position,
         fstats = filteredMean$meanCoverage, chr = chr,
-        maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose, ...)
+        maxClusterGap = maxClusterGap, cutoff = cutoff, verbose = verbose, ...
+    )
 
     ## If there are no regions, return NULL
-    if(is.null(regs)) return(list(regions = GRanges(), coverageMatrix = NULL))
+    if (is.null(regs)) {
+        return(list(regions = GRanges(), coverageMatrix = NULL))
+    }
 
     ## Format appropriately
     names(regs) <- seq_len(length(regs))
@@ -187,49 +202,56 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
 
     ## Get coverage matrix by chunks of regions
     nChunks <- length(regs) %/% regionschunk
-    if(length(regs) %% regionschunk > 0) nChunks <- nChunks + 1
+    if (length(regs) %% regionschunk > 0) nChunks <- nChunks + 1
 
     ## Split regions into chunks
-    if(nChunks == 1) {
+    if (nChunks == 1) {
         regs_split <- list(regs)
-        names(regs_split) <- '1'
+        names(regs_split) <- "1"
     } else {
         regs_split <- split(regs, cut(seq_len(length(regs)),
-            breaks = nChunks, labels = FALSE))
+            breaks = nChunks, labels = FALSE
+        ))
     }
 
     ## Actually calculate the coverage matrix
     resChunks <- lapply(regs_split, .railMatChrRegion,
         sampleFiles = sampleFiles, chr = chr, mappedPerXM = mappedPerXM,
         L = L, verbose = verbose, BPPARAM.railChr = BPPARAM.railChr,
-        verboseLoad = verboseLoad, chrlen = chrlen)
+        verboseLoad = verboseLoad, chrlen = chrlen
+    )
 
 
     ## Finish
     result <- list(
         regions = regs,
-        coverageMatrix = do.call(rbind, lapply(resChunks, '[[',
-            'coverageMatrix'))
+        coverageMatrix = do.call(rbind, lapply(
+            resChunks, "[[",
+            "coverageMatrix"
+        ))
     )
     return(result)
 }
 
 .railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L,
     verbose = TRUE, verboseLoad = TRUE, chrlen, BPPARAM.railChr) {
-
-    if(verbose) message(paste(Sys.time(), 'railMatrix: processing regions', paste(range(as.integer(names(regions))), collapse = ' to ')))
+    if (verbose) message(paste(Sys.time(), "railMatrix: processing regions", paste(range(as.integer(names(regions))), collapse = " to ")))
 
     ## Get the region coverage matrix
     covMat <- bpmapply(.railMatChrRegionCov, sampleFiles, mappedPerXM, L,
-        BPPARAM = BPPARAM.railChr, MoreArgs = list(chr = chr, regs = regions,
-            verbose = verboseLoad))
+        BPPARAM = BPPARAM.railChr, MoreArgs = list(
+            chr = chr, regs = regions,
+            verbose = verboseLoad
+        )
+    )
 
     ## For the case when length(regions) == 1
-    if(is.vector(covMat)) covMat <- as.matrix(t(covMat))
+    if (is.vector(covMat)) covMat <- as.matrix(t(covMat))
 
     ## Name approopriately if possible
-    if(!any(is.na(match(colnames(covMat), sampleFiles))))
-    colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
+    if (!any(is.na(match(colnames(covMat), sampleFiles)))) {
+          colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
+      }
 
     ## Finish
     res <- list(coverageMatrix = covMat)
@@ -238,25 +260,26 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
 
 .railMatChrRegionCov <- function(sampleFile, mappedPerXM, L, chr, regs,
     verbose = TRUE) {
-    if(verbose) message(paste(Sys.time(), 'railMatrix: processing file', sampleFile))
+    if (verbose) message(paste(Sys.time(), "railMatrix: processing file", sampleFile))
 
     ## Based on http://bioconductor.org/developers/how-to/web-query/
     ## and https://github.com/leekgroup/recount/commit/8da982b309e2d19638166f263057d9f85bb64e3f
     N.TRIES <- 3L
-    while(N.TRIES > 0L) {
+    while (N.TRIES > 0L) {
         regCov <- tryCatch(
-            import(sampleFile, selection = reduce(regs), as = 'RleList'),
+            import(sampleFile, selection = reduce(regs), as = "RleList"),
             error = identity
         )
-        if(!inherits(regCov, 'error'))
-            break
+        if (!inherits(regCov, "error")) {
+              break
+          }
         Sys.sleep(runif(n = 1, min = 2, max = 5))
         N.TRIES <- N.TRIES - 1L
     }
-    if(N.TRIES == 0L) stop(conditionMessage(regCov))
+    if (N.TRIES == 0L) stop(conditionMessage(regCov))
 
     regCov <- regCov[[chr]]
-    if(!is.null(mappedPerXM)) {
+    if (!is.null(mappedPerXM)) {
         regCov <- regCov / mappedPerXM
     }
     sum(Views(regCov, ranges(regs))) / L

@@ -32,70 +32,80 @@ Please read the [basics of using `derfinder`](http://bioconductor.org/packages/r
 startTime <- Sys.time()
 
 ## Bib setup
-library('knitcitations')
+library("knitcitations")
 
 ## Load knitcitations with a clean bibliography
 cleanbib()
-cite_options(hyperlink = 'to.doc', citation_format = 'text', style = 'html')
+cite_options(hyperlink = "to.doc", citation_format = "text", style = "html")
 # Note links won't show for now due to the following issue
 # https://github.com/cboettig/knitcitations/issues/63
 
 ## Write bibliography information
-bib <- c(knitcitations = citation('knitcitations'),
-    derfinder = citation('derfinder')[1], 
-    BiocStyle = citation('BiocStyle'),
-    knitrBootstrap = citation('knitrBootstrap'), 
-    knitr = citation('knitr')[3],
-    rmarkdown = citation('rmarkdown'),
-    brainspan = RefManageR::BibEntry(bibtype = 'Unpublished',
-        key = 'brainspan',
-        title = 'Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.',
-        author = 'BrainSpan', year = 2011, url = 'http://www.brainspan.org/'),
-    originalder = citation('derfinder')[2],
+bib <- c(
+    knitcitations = citation("knitcitations"),
+    derfinder = citation("derfinder")[1],
+    BiocStyle = citation("BiocStyle"),
+    knitrBootstrap = citation("knitrBootstrap"),
+    knitr = citation("knitr")[3],
+    rmarkdown = citation("rmarkdown")[1],
+    brainspan = RefManageR::BibEntry(
+        bibtype = "Unpublished",
+        key = "brainspan",
+        title = "Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.",
+        author = "BrainSpan", year = 2011, url = "http://www.brainspan.org/"
+    ),
+    originalder = citation("derfinder")[2],
     R = citation(),
-    IRanges = citation('IRanges'),
-    sessioninfo = citation('sessioninfo'),
-    testthat = citation('testthat'),
-    GenomeInfoDb = RefManageR::BibEntry(bibtype = 'manual',
-        key = 'GenomeInfoDb',
-        author = 'Sonali Arora and Martin Morgan and Marc Carlson and H. Pagès',
+    IRanges = citation("IRanges"),
+    sessioninfo = citation("sessioninfo"),
+    testthat = citation("testthat"),
+    GenomeInfoDb = RefManageR::BibEntry(
+        bibtype = "manual",
+        key = "GenomeInfoDb",
+        author = "Sonali Arora and Martin Morgan and Marc Carlson and H. Pagès",
         title = "GenomeInfoDb: Utilities for manipulating chromosome and other 'seqname' identifiers",
-        year = 2017, doi = '10.18129/B9.bioc.GenomeInfoDb'),
-    GenomicRanges = citation('GenomicRanges'),
-    ggplot2 = citation('ggplot2'),
-    biovizBase = citation('biovizBase'),
-    bumphunter = citation('bumphunter')[1],
-    TxDb.Hsapiens.UCSC.hg19.knownGene = citation('TxDb.Hsapiens.UCSC.hg19.knownGene'),
-    AnnotationDbi = RefManageR::BibEntry(bibtype = 'manual',
-        key = 'AnnotationDbi',
-        author = 'Hervé Pagès and Marc Carlson and Seth Falcon and Nianhua Li',
-        title = 'AnnotationDbi: Annotation Database Interface',
-        year = 2017, doi = '10.18129/B9.bioc.AnnotationDbi'),
-    BiocParallel = citation('BiocParallel'),
-    derfinderHelper = citation('derfinderHelper'),
-    GenomicAlignments = citation('GenomicAlignments'),
-    GenomicFeatures = citation('GenomicFeatures'),
-    GenomicFiles = citation('GenomicFiles'),
-    Hmisc = citation('Hmisc'),
-    qvalue = citation('qvalue'),
-    Rsamtools = citation('Rsamtools'),
-    rtracklayer = citation('rtracklayer'),
-    S4Vectors = RefManageR::BibEntry(bibtype = 'manual', key = 'S4Vectors',
-        author = 'Hervé Pagès and Michael Lawrence and Patrick Aboyoun',
+        year = 2017, doi = "10.18129/B9.bioc.GenomeInfoDb"
+    ),
+    GenomicRanges = citation("GenomicRanges"),
+    ggplot2 = citation("ggplot2"),
+    bumphunter = citation("bumphunter")[1],
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation("TxDb.Hsapiens.UCSC.hg19.knownGene"),
+    AnnotationDbi = RefManageR::BibEntry(
+        bibtype = "manual",
+        key = "AnnotationDbi",
+        author = "Hervé Pagès and Marc Carlson and Seth Falcon and Nianhua Li",
+        title = "AnnotationDbi: Annotation Database Interface",
+        year = 2017, doi = "10.18129/B9.bioc.AnnotationDbi"
+    ),
+    BiocParallel = citation("BiocParallel"),
+    derfinderHelper = citation("derfinderHelper"),
+    GenomicAlignments = citation("GenomicAlignments"),
+    GenomicFeatures = citation("GenomicFeatures"),
+    GenomicFiles = citation("GenomicFiles"),
+    Hmisc = citation("Hmisc"),
+    qvalue = citation("qvalue"),
+    Rsamtools = citation("Rsamtools"),
+    rtracklayer = citation("rtracklayer"),
+    S4Vectors = RefManageR::BibEntry(
+        bibtype = "manual", key = "S4Vectors",
+        author = "Hervé Pagès and Michael Lawrence and Patrick Aboyoun",
         title = "S4Vectors: S4 implementation of vector-like and list-like objects",
-        year = 2017, doi = '10.18129/B9.bioc.S4Vectors'),
-    bumphunterPaper = RefManageR::BibEntry(bibtype = 'article',
-        key = 'bumphunterPaper',
-        title = 'Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies',
-        author = 'Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A',
-        year = 2012, journal = 'International Journal of Epidemiology'),
-    derfinderData = citation('derfinderData')
+        year = 2017, doi = "10.18129/B9.bioc.S4Vectors"
+    ),
+    bumphunterPaper = RefManageR::BibEntry(
+        bibtype = "article",
+        key = "bumphunterPaper",
+        title = "Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies",
+        author = "Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A",
+        year = 2012, journal = "International Journal of Epidemiology"
+    ),
+    derfinderData = citation("derfinderData")
 )
 
-write.bibtex(bib, file = 'derfinderUsersGuideRed.bib')
+write.bibtex(bib, file = "derfinderUsersGuideRed.bib")
 
 ## Working on Windows?
-windowsFlag <- .Platform$OS.type == 'windows'
+windowsFlag <- .Platform$OS.type == "windows"
 ```
 
 If you haven't already, please read the [quick start to using derfinder](quickstart-derfinder.html) vignette. It explains the basics of using `r Biocpkg('derfinder')`, how to ask for help, and showcases an example analysis.
@@ -154,9 +164,9 @@ We first load the required packages.
 
 ```{r 'start', message=FALSE}
 ## Load libraries
-library('derfinder')
-library('derfinderData')
-library('GenomicRanges')
+library("derfinder")
+library("derfinderData")
+library("GenomicRanges")
 ```
 
 ## Phenotype data
@@ -164,15 +174,17 @@ library('GenomicRanges')
 For this example, we created a small table with the relevant phenotype data for 12 samples: 6 from fetal samples and 6 from adult samples. We chose at random a brain region, in this case the amygdaloid complex. For this example we will only look at data from chromosome 21. Other variables include the age in years and the gender. The data is shown below.
 
 ```{r 'phenoData', results = 'asis'}
-library('knitr')
+library("knitr")
 ## Get pheno table
-pheno <- subset(brainspanPheno, structure_acronym == 'AMY')
+pheno <- subset(brainspanPheno, structure_acronym == "AMY")
 
 ## Display the main information
-p <- pheno[, -which(colnames(pheno) %in% c('structure_acronym',
-    'structure_name', 'file'))]
+p <- pheno[, -which(colnames(pheno) %in% c(
+    "structure_acronym",
+    "structure_name", "file"
+))]
 rownames(p) <- NULL
-kable(p, format = 'html', row.names = TRUE)
+kable(p, format = "html", row.names = TRUE)
 ```
 
 ## Load the data
@@ -183,21 +195,25 @@ We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfin
 
 ```{r 'getData', eval = !windowsFlag}
 ## Determine the files to use and fix the names
-files <- rawFiles(system.file('extdata', 'AMY', package = 'derfinderData'),
-    samplepatt = 'bw', fileterm = NULL)
-names(files) <- gsub('.bw', '', names(files))
+files <- rawFiles(system.file("extdata", "AMY", package = "derfinderData"),
+    samplepatt = "bw", fileterm = NULL
+)
+names(files) <- gsub(".bw", "", names(files))
 
 ## Load the data from disk
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21',
-    totalMapped = rep(1, length(files)), targetSize = 1))
+system.time(fullCov <- fullCoverage(
+    files = files, chrs = "chr21",
+    totalMapped = rep(1, length(files)), targetSize = 1
+))
 ```
 
 ```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
 ## Load data in Windows case
-foo <- function() { 
-    load(system.file('extdata', 'fullCov', 'fullCovAMY.RData',
-        package = 'derfinderData'))
-    return(fullCovAMY) 
+foo <- function() {
+    load(system.file("extdata", "fullCov", "fullCovAMY.RData",
+        package = "derfinderData"
+    ))
+    return(fullCovAMY)
 }
 fullCov <- foo()
 ```
@@ -208,11 +224,13 @@ Alternatively, since the BigWig files are publicly available from _BrainSpan_ (s
 ```{r 'webData', eval = FALSE}
 ## Determine the files to use and fix the names
 files <- pheno$file
-names(files) <- gsub('.AMY', '', pheno$lab)
+names(files) <- gsub(".AMY", "", pheno$lab)
 
 ## Load the data from the web
-system.time(fullCov <- fullCoverage(files = files, chrs = 'chr21',
-    totalMapped = rep(1, length(files)), targetSize = 1))
+system.time(fullCov <- fullCoverage(
+    files = files, chrs = "chr21",
+    totalMapped = rep(1, length(files)), targetSize = 1
+))
 ```
 
 
@@ -253,8 +271,10 @@ In terms of memory, the filtered version requires less resources. Although this 
 
 ```{r 'compareCov'}
 ## Compare the size in Mb
-round(c(fullCov = object.size(fullCov),
-    filteredCov = object.size(filteredCov)) / 1024^2, 1)
+round(c(
+    fullCov = object.size(fullCov),
+    filteredCov = object.size(filteredCov)
+) / 1024^2, 1)
 ```
 
 Note that with your own data, filtering for bases where at least one sample has coverage greater than 2 might not make sense: maybe you need a higher or lower filter. The amount of bases remaining after filtering will impact how long the analysis will take to complete. We thus recommend exploring this before proceeding.
@@ -321,7 +341,7 @@ Here we'll use `r Biocpkg('DESeq2')` to identify the DERs. To use it we need to 
 
 ```{r 'identifyDERsDESeq2'}
 ## Required
-library('DESeq2')
+library("DESeq2")
 
 ## Round matrix
 counts <- round(regionMat$chr21$coverageMatrix)
@@ -330,7 +350,7 @@ counts <- round(regionMat$chr21$coverageMatrix)
 dse <- DESeqDataSetFromMatrix(counts, pheno, ~ group + gender)
 
 ## Perform DE analysis
-dse <- DESeq(dse, test = 'LRT', reduced = ~ gender, fitType = 'local')
+dse <- DESeq(dse, test = "LRT", reduced = ~gender, fitType = "local")
 
 ## Extract results
 deseq <- regionMat$chr21$regions
@@ -363,7 +383,7 @@ We can then fit the models and get the F-statistic p-values and control the FDR.
 
 ```{r 'identifyDERsLimma'}
 ## Example using limma
-library('limma')
+library("limma")
 
 ## Run limma
 fit <- lmFit(transformedCov, mod)
@@ -371,17 +391,17 @@ fit0 <- lmFit(transformedCov, mod0)
 
 ## Determine DE status for the regions
 ## Also in https://github.com/LieberInstitute/jaffelab with help and examples
-getF  <- function(fit, fit0, theData) {
-	rss1 = rowSums((fitted(fit)-theData)^2)
-	df1 = ncol(fit$coef)
-	rss0 = rowSums((fitted(fit0)-theData)^2)
-	df0 = ncol(fit0$coef)
-	fstat = ((rss0-rss1)/(df1-df0))/(rss1/(ncol(theData)-df1))
-	f_pval = pf(fstat, df1-df0, ncol(theData)-df1,lower.tail=FALSE)
-	fout = cbind(fstat,df1-1,ncol(theData)-df1,f_pval)
-	colnames(fout)[2:3] = c("df1","df0")
-	fout = data.frame(fout)
-	return(fout)
+getF <- function(fit, fit0, theData) {
+    rss1 <- rowSums((fitted(fit) - theData)^2)
+    df1 <- ncol(fit$coef)
+    rss0 <- rowSums((fitted(fit0) - theData)^2)
+    df0 <- ncol(fit0$coef)
+    fstat <- ((rss0 - rss1) / (df1 - df0)) / (rss1 / (ncol(theData) - df1))
+    f_pval <- pf(fstat, df1 - df0, ncol(theData) - df1, lower.tail = FALSE)
+    fout <- cbind(fstat, df1 - 1, ncol(theData) - df1, f_pval)
+    colnames(fout)[2:3] <- c("df1", "df0")
+    fout <- data.frame(fout)
+    return(fout)
 }
 
 ff <- getF(fit, fit0, transformedCov)
@@ -390,7 +410,7 @@ ff <- getF(fit, fit0, transformedCov)
 limma <- regionMat$chr21$regions
 limma$fstat <- ff$fstat
 limma$pvalue <- ff$f_pval
-limma$padj <- p.adjust(ff$f_pval, 'BH')
+limma$padj <- p.adjust(ff$f_pval, "BH")
 
 ## Explore the results
 limma
@@ -410,26 +430,30 @@ If you have [Rail](http://rail.bio) output, you can get the same results faster 
 
 ```{r 'createMeanBW', eval = !windowsFlag}
 ## Calculate the mean: this step takes a long time with many samples
-meanCov <- Reduce('+', fullCov$chr21) / ncol(fullCov$chr21)
+meanCov <- Reduce("+", fullCov$chr21) / ncol(fullCov$chr21)
 
 ## Save it on a bigwig file called meanChr21.bw
-createBw(list('chr21' = DataFrame('meanChr21' = meanCov)), keepGR = 
-    FALSE)
+createBw(list("chr21" = DataFrame("meanChr21" = meanCov)),
+    keepGR =
+        FALSE
+)
 ```
 
 Now that we have the files [Rail](http://rail.bio) creates for us, we can use `railMatrix()`.
 
 ```{r 'railMatrix', eval = !windowsFlag}
 ## Identify files to use
-summaryFile <- 'meanChr21.bw'
+summaryFile <- "meanChr21.bw"
 ## We had already found the sample BigWig files and saved it in the object 'files'
 ## Lets just rename it to sampleFiles for clarity.
 sampleFiles <- files
 
 ## Get the regions
-system.time( 
-    regionMat.rail <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile, 
-        sampleFiles = sampleFiles, L = 76, cutoff = 30, maxClusterGap = 3000L)
+system.time(
+    regionMat.rail <- railMatrix(
+        chrs = "chr21", summaryFiles = summaryFile,
+        sampleFiles = sampleFiles, L = 76, cutoff = 30, maxClusterGap = 3000L
+    )
 )
 ```
 
@@ -446,11 +470,15 @@ identical(regionMat, regionMat.rail)
 identical(ranges(regionMat$chr21$regions), ranges(regionMat.rail$chr21$regions))
 
 ## When you round, the small differences go away
-identical(round(regionMat$chr21$regions$value, 4),
-    round(regionMat.rail$chr21$regions$value, 4))
+identical(
+    round(regionMat$chr21$regions$value, 4),
+    round(regionMat.rail$chr21$regions$value, 4)
+)
 
-identical(round(regionMat$chr21$regions$area, 4),
-    round(regionMat.rail$chr21$regions$area, 4))
+identical(
+    round(regionMat$chr21$regions$area, 4),
+    round(regionMat.rail$chr21$regions$area, 4)
+)
 ```
 
 
@@ -476,8 +504,10 @@ We can then define the nested models we want to use using `makeModels()`. This i
 
 ```{r 'makeModels'}
 ## Define models
-models <- makeModels(sampleDepths, testvars = pheno$group,
-    adjustvars = pheno[, c('gender')]) 
+models <- makeModels(sampleDepths,
+    testvars = pheno$group,
+    adjustvars = pheno[, c("gender")]
+)
 
 ## Explore the models
 lapply(models, head)
@@ -500,14 +530,16 @@ In real scenario, you might consider saving the results from all the chromosomes
 
 ```{r 'analyze'}
 ## Create a analysis directory
-dir.create('analysisResults')
+dir.create("analysisResults")
 originalWd <- getwd()
-setwd(file.path(originalWd, 'analysisResults'))
+setwd(file.path(originalWd, "analysisResults"))
 
 ## Perform differential expression analysis
-system.time(results <- analyzeChr(chr = 'chr21', filteredCov$chr21, models,
+system.time(results <- analyzeChr(
+    chr = "chr21", filteredCov$chr21, models,
     groupInfo = pheno$group, writeOutput = TRUE, cutoffFstat = 5e-02,
-    nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE))
+    nPermute = 20, seeds = 20140923 + seq_len(20), returnOutput = TRUE
+))
 ```
 
 To speed up `analyzeChr()`, you might need to use several cores via the `mc.cores` argument. If memory is limiting, you might want to use a smaller `chunksize` (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.
@@ -615,8 +647,8 @@ sum(width(results$regions$regions) > 50)
 
 ## Width of candidate DERs
 sig <- as.logical(results$regions$regions$significant)
-summary(width(results$regions$regions[ sig ]))
-sum(width(results$regions$regions[ sig ]) > 50)
+summary(width(results$regions$regions[sig]))
+sum(width(results$regions$regions[sig]) > 50)
 ```
 
 
@@ -644,9 +676,11 @@ results$timeinfo
 ## Use this information to make a plot
 timed <- diff(results$timeinfo)
 timed.df <- data.frame(Seconds = as.numeric(timed), Step = factor(names(timed),
-    levels = rev(names(timed))))
-library('ggplot2')
-ggplot(timed.df, aes(y = Step, x = Seconds)) + geom_point()
+    levels = rev(names(timed))
+))
+library("ggplot2")
+ggplot(timed.df, aes(y = Step, x = Seconds)) +
+    geom_point()
 ```
 
 
@@ -659,12 +693,14 @@ Once you have analyzed each chromosome using `analyzeChr()`, you can use `mergeR
 setwd(originalWd)
 
 ## Merge results from several chromosomes. In this case we only have one.
-mergeResults(chrs='chr21', prefix="analysisResults",
-    genomicState = genomicState$fullGenome, 
-    optionsStats = results$optionsStats)
+mergeResults(
+    chrs = "chr21", prefix = "analysisResults",
+    genomicState = genomicState$fullGenome,
+    optionsStats = results$optionsStats
+)
 
 ## Files created by mergeResults()
-dir('analysisResults', pattern = '.Rdata')
+dir("analysisResults", pattern = ".Rdata")
 ```
 
 * _fullFstats.Rdata_ contains a list with one element per chromosome. Per chromosome it has the F-statistics.
@@ -677,7 +713,7 @@ For reproducibility purposes, the options used the merge the results are stored 
 
 ```{r 'optionsMerge'}
 ## Options used to merge
-load(file.path('analysisResults', 'optionsMerge.Rdata'))
+load(file.path("analysisResults", "optionsMerge.Rdata"))
 
 ## Contents
 names(optionsMerge)
@@ -693,7 +729,7 @@ The main result from `mergeResults()` is in `fullRegions`. This is a `GRanges` o
 
 ```{r 'exploreFullRegs'}
 ## Load all the regions
-load(file.path('analysisResults', 'fullRegions.Rdata'))
+load(file.path("analysisResults", "fullRegions.Rdata"))
 
 ## Metadata columns
 names(mcols(fullRegions))
@@ -707,7 +743,7 @@ In preparation for visually exploring the results, `mergeResults()` will run `an
 
 ```{r 'exploreFullAnnoRegs'}
 ## Load annotateRegions() output
-load(file.path('analysisResults', 'fullAnnotatedRegions.Rdata'))
+load(file.path("analysisResults", "fullAnnotatedRegions.Rdata"))
 
 ## Information stored
 names(fullAnnotatedRegions)
@@ -747,25 +783,31 @@ head(regionCov[[1]])
 With this, we are all set to visually explore the results.
 
 ```{r 'derfinderPlot', eval = FALSE}
-library('derfinderPlot')
+library("derfinderPlot")
 
 ## Overview of the candidate DERs in the genome
-plotOverview(regions = fullRegions, annotation = results$annotation,
-    type = 'fwer')
+plotOverview(
+    regions = fullRegions, annotation = results$annotation,
+    type = "fwer"
+)
 
-suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+suppressPackageStartupMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
 ## Base-levle coverage plots for the first 10 regions
-plotRegionCoverage(regions = fullRegions, regionCoverage = regionCov, 
-    groupInfo = pheno$group, nearestAnnotation = results$annotation, 
-    annotatedRegions = annoRegs, whichRegions=1:10, txdb = txdb, scalefac = 1, 
-    ask = FALSE)
+plotRegionCoverage(
+    regions = fullRegions, regionCoverage = regionCov,
+    groupInfo = pheno$group, nearestAnnotation = results$annotation,
+    annotatedRegions = annoRegs, whichRegions = 1:10, txdb = txdb, scalefac = 1,
+    ask = FALSE
+)
 
 ## Cluster plot for the first region
-plotCluster(idx = 1, regions = fullRegions, annotation = results$annotation,
+plotCluster(
+    idx = 1, regions = fullRegions, annotation = results$annotation,
     coverageInfo = fullCov$chr21, txdb = txdb, groupInfo = pheno$group,
-    titleUse = 'fwer')
+    titleUse = "fwer"
+)
 ```
 
 The [quick start to using derfinder](quickstart-derfinder.html) has example plots for the expressed regions-level approach. The vignette for `r Biocpkg('derfinderPlot')` has even more examples.
@@ -815,14 +857,16 @@ First we need to get the relevant annotation information.
 
 ```{r 'regionMatAnnotate'}
 ## Annotate regions as exonic, intronic or intergenic
-system.time(annoGenome <- annotateRegions(regionMat$chr21$regions,
-    genomicState$fullGenome))
+system.time(annoGenome <- annotateRegions(
+    regionMat$chr21$regions,
+    genomicState$fullGenome
+))
 ## Note that the genomicState object included in derfinder only has information
 ## for chr21 (hg19).
 
 ## Identify closest genes to regions
-suppressPackageStartupMessages(library('bumphunter'))
-suppressPackageStartupMessages(library('TxDb.Hsapiens.UCSC.hg19.knownGene'))
+suppressPackageStartupMessages(library("bumphunter"))
+suppressPackageStartupMessages(library("TxDb.Hsapiens.UCSC.hg19.knownGene"))
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 genes <- annotateTranscripts(txdb)
 system.time(annoNear <- matchGenes(regionMat$chr21$regions, genes))
@@ -835,12 +879,13 @@ Now we can proceed to use `r Biocpkg('derfinderPlot')` to make the region-level 
 top <- order(regionMat$chr21$regions$area, decreasing = TRUE)[1:100]
 
 ## Base-level plots for the top 100 regions with transcript information
-library('derfinderPlot')
+library("derfinderPlot")
 plotRegionCoverage(regionMat$chr21$regions,
     regionCoverage = regionMat$chr21$bpCoverage,
     groupInfo = pheno$group, nearestAnnotation = annoNear,
     annotatedRegions = annoGenome, whichRegions = top, scalefac = 1,
-    txdb = txdb, ask = FALSE)
+    txdb = txdb, ask = FALSE
+)
 ```
 
 
@@ -849,19 +894,23 @@ However, we can alternatively use `r Biocpkg('epivizr')` to view the candidate D
 
 ```{r 'epivizr', eval = FALSE}
 ## Load epivizr, it's available from Bioconductor
-library('epivizr')
+library("epivizr")
 
 ## Load data to your browser
 mgr <- startEpiviz()
 ders_dev <- mgr$addDevice(
-    fullRegions[as.logical(fullRegions$significantFWER) ], "Candidate DERs")
+    fullRegions[as.logical(fullRegions$significantFWER)], "Candidate DERs"
+)
 ders_potential_dev <- mgr$addDevice(
-    fullRegions[!as.logical(fullRegions$significantFWER) ], "Potential DERs")
+    fullRegions[!as.logical(fullRegions$significantFWER)], "Potential DERs"
+)
 regs_dev <- mgr$addDevice(regionMat$chr21$regions, "Region Matrix")
 
 ## Go to a place you like in the genome
-mgr$navigate("chr21", start(regionMat$chr21$regions[top[1]]) - 100,
-    end(regionMat$chr21$regions[top[1]]) + 100)
+mgr$navigate(
+    "chr21", start(regionMat$chr21$regions[top[1]]) - 100,
+    end(regionMat$chr21$regions[top[1]]) + 100
+)
 
 ## Stop the navigation
 mgr$stopServer()
@@ -873,15 +922,15 @@ mgr$stopServer()
 
 ```{r 'exportBigWig', eval = !windowsFlag}
 ## Subset only the first sample
-fullCovSmall <- lapply(fullCov, '[', 1)
+fullCovSmall <- lapply(fullCov, "[", 1)
 
 ## Export to BigWig
 bw <- createBw(fullCovSmall)
 
 ## See the file. Note that the sample name is used to name the file.
-dir(pattern = '.bw')
+dir(pattern = ".bw")
 
-## Internally createBw() coerces each sample to a GRanges object before 
+## Internally createBw() coerces each sample to a GRanges object before
 ## exporting to a BigWig file. If more than one sample was exported, the
 ## GRangesList would have more elements.
 bw
@@ -910,8 +959,8 @@ If you are working with data from an organism that is not _Homo sapiens_, then s
 
 ```{r 'exampleNameStyle', eval = FALSE}
 ## Set global species and chrsStyle options
-options(species = 'arabidopsis_thaliana')
-options(chrsStyle = 'NCBI')
+options(species = "arabidopsis_thaliana")
+options(chrsStyle = "NCBI")
 
 ## Then proceed to load and analyze the data
 ```
@@ -924,14 +973,14 @@ So, in the _Arabidopsis Thaliana_ example, your `analyzeChr()` call would look l
 
 ```{r 'analyzeNonHuman', eval = FALSE}
 ## Load transcript database information
-library('TxDb.Athaliana.BioMart.plantsmart28')
+library("TxDb.Athaliana.BioMart.plantsmart28")
 
 ## Set organism options
-options(species = 'arabidopsis_thaliana')
-options(chrsStyle = 'NCBI')
+options(species = "arabidopsis_thaliana")
+options(chrsStyle = "NCBI")
 
-## Run command
-analyzeChr(txdb = TxDb.Athaliana.BioMart.plantsmart28, --Other arguments--)
+## Run command with more arguments
+analyzeChr(txdb = TxDb.Athaliana.BioMart.plantsmart28)
 ```
 
 You might find the discussion [Using bumphunter with non-human genomes](https://support.bioconductor.org/p/62781/) useful.
@@ -976,16 +1025,18 @@ We can illustrate this issue with the example data from `r Biocpkg('derfinder')`
 
 ```{r 'runExample'}
 ## Find some regions to work with
-example('loadCoverage', 'derfinder')
-example('getRegionCoverage', 'derfinder')
+example("loadCoverage", "derfinder")
+example("getRegionCoverage", "derfinder")
 ```
 
 Next, we load the coverage again using `which` but without any padding. We can see how the coverage is not the same by looking at the maximum coverage for each sample.
 
 ```{r 'loadWhich'}
 ## Illustrate reading data from a set of regions
-test <- loadCoverage(files = files, chr = '21', cutoff = NULL, which = regions,
-    protectWhich = 0, fileStyle = 'NCBI')
+test <- loadCoverage(
+    files = files, chr = "21", cutoff = NULL, which = regions,
+    protectWhich = 0, fileStyle = "NCBI"
+)
 
 ## Some reads were ignored and thus the coverage is lower as can be seen below:
 sapply(test$coverage, max) - sapply(genomeDataRaw$coverage, max)
@@ -996,14 +1047,18 @@ When we re-load the data using some padding to the regions, we find that the cov
 ```{r 'loadWhich2'}
 ## Illustrate reading data from a set of regions
 
-test2 <- loadCoverage(files = files, chr = '21', cutoff = NULL, 
-    which = regions, protectWhich = 3e4, fileStyle = 'NCBI')
+test2 <- loadCoverage(
+    files = files, chr = "21", cutoff = NULL,
+    which = regions, protectWhich = 3e4, fileStyle = "NCBI"
+)
 
 ## Adding some padding to the regions helps get the same coverage
 identical(sapply(test2$coverage, max), sapply(genomeDataRaw$coverage, max))
 
 ## A more detailed test reveals that the coverage matches at every base
-all(mapply(function(x, y) { identical(x, y) }, test2$coverage, genomeDataRaw$coverage))
+all(mapply(function(x, y) {
+    identical(x, y)
+}, test2$coverage, genomeDataRaw$coverage))
 ```
 
 How much padding you need to use will depend on your specific data set, and you might be comfortable getting approximately the same coverage values for the sake of greatly reducing the memory resources needed.
@@ -1221,54 +1276,54 @@ library("derfinder")
 
 ## Specify parameters
 spec <- matrix(c(
-	'DFfile', 'd', 1, "character", "path to the .Rdata file with the results from loadCoverage()",
-	'chr', 'c', 1, "character", "Chromosome under analysis. Use X instead of chrX.",
-	'mcores', 'm', 1, "integer", "Number of cores",
-	'verbose' , 'v', 2, "logical", "Print status updates",
-	'help' , 'h', 0, "logical", "Display help"
-), byrow=TRUE, ncol=5)
+    "DFfile", "d", 1, "character", "path to the .Rdata file with the results from loadCoverage()",
+    "chr", "c", 1, "character", "Chromosome under analysis. Use X instead of chrX.",
+    "mcores", "m", 1, "integer", "Number of cores",
+    "verbose", "v", 2, "logical", "Print status updates",
+    "help", "h", 0, "logical", "Display help"
+), byrow = TRUE, ncol = 5)
 opt <- getopt(spec)
 
 ## Testing the script
 test <- FALSE
-if(test) {
-	## Speficy it using an interactive R session and testing
-	test <- TRUE
+if (test) {
+    ## Speficy it using an interactive R session and testing
+    test <- TRUE
 }
 
 ## Test values
-if(test){
-	opt <- NULL
-	opt$DFfile <- "/ProjectDir/derCoverageInfo/chr21Cov.Rdata"
-	opt$chr <- "21"
-	opt$mcores <- 1
-	opt$verbose <- NULL
+if (test) {
+    opt <- NULL
+    opt$DFfile <- "/ProjectDir/derCoverageInfo/chr21Cov.Rdata"
+    opt$chr <- "21"
+    opt$mcores <- 1
+    opt$verbose <- NULL
 }
 
 ## if help was asked for print a friendly message
 ## and exit with a non-zero error code
 if (!is.null(opt$help)) {
-	cat(getopt(spec, usage=TRUE))
-	q(status=1)
+    cat(getopt(spec, usage = TRUE))
+    q(status = 1)
 }
 
 ## Default value for verbose = TRUE
 if (is.null(opt$verbose)) opt$verbose <- TRUE
 
-if(opt$verbose) message("Loading Rdata file with the output from loadCoverage()")
+if (opt$verbose) message("Loading Rdata file with the output from loadCoverage()")
 load(opt$DFfile)
 
 ## Make it easy to use the name later. Here I'm assuming the names were generated using output='auto' in loadCoverage()
-eval(parse(text=paste0("data <- ", "chr", opt$chr, "CovInfo")))
-eval(parse(text=paste0("rm(chr", opt$chr, "CovInfo)")))
+eval(parse(text = paste0("data <- ", "chr", opt$chr, "CovInfo")))
+eval(parse(text = paste0("rm(chr", opt$chr, "CovInfo)")))
 
 ## Just for testing purposes
-if(test) {
-	tmp <- data
-	tmp$coverage <- tmp$coverage[1:1e6, ]
-	library("IRanges")
-	tmp$position[which(tmp$pos)[1e6 + 1]:length(tmp$pos)] <- FALSE
-	data <- tmp
+if (test) {
+    tmp <- data
+    tmp$coverage <- tmp$coverage[1:1e6, ]
+    library("IRanges")
+    tmp$position[which(tmp$pos)[1e6 + 1]:length(tmp$pos)] <- FALSE
+    data <- tmp
 }
 
 ## Load the models
@@ -1279,19 +1334,20 @@ load("groupInfo.Rdata")
 
 
 ## Run the analysis with lowMemDir
-analyzeChr(chr=opt$chr, coverageInfo = data, models = models,
+analyzeChr(
+    chr = opt$chr, coverageInfo = data, models = models,
     cutoffFstat = 1e-06, cutoffType = "theoretical", nPermute = 1000,
     seeds = seq_len(1000), maxClusterGap = 3000, groupInfo = groupInfo,
     subject = "hg19", mc.cores = opt$mcores,
-    lowMemDir = file.path(tempdir(), paste0("chr", opt$chr) , "chunksDir")),
-    verbose = opt$verbose, chunksize = 1e5)
+    lowMemDir = file.path(tempdir(), paste0("chr", opt$chr), "chunksDir"),
+    verbose = opt$verbose, chunksize = 1e5
+)
 
 ## Done
-if(opt$verbose) {
-	print(proc.time())
-	print(sessionInfo(), locale=FALSE)
+if (opt$verbose) {
+    print(proc.time())
+    print(sessionInfo(), locale = FALSE)
 }
-
 ```
 
 Remember to modify the the script to fit your project.
@@ -1401,7 +1457,6 @@ This package was made possible thanks to:
 * `r Biocpkg('Rsamtools')` `r citep(bib[['Rsamtools']])`
 * `r Biocpkg('rtracklayer')` `r citep(bib[['rtracklayer']])`
 * `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
-* `r Biocpkg('biovizBase')` `r citep(bib[['biovizBase']])`
 * `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
 * `r CRANpkg('sessioninfo')` `r citep(bib[['sessioninfo']])`
 * `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
@@ -1416,20 +1471,20 @@ Code for creating the vignette
 
 ```{r createVignette, eval=FALSE}
 ## Create the vignette
-library('rmarkdown')
-system.time(render('derfinder-users-guide.Rmd', 'BiocStyle::html_document'))
+library("rmarkdown")
+system.time(render("derfinder-users-guide.Rmd", "BiocStyle::html_document"))
 
 ## Extract the R code
-library('knitr')
-knit('derfinder-users-guide.Rmd', tangle = TRUE)
+library("knitr")
+knit("derfinder-users-guide.Rmd", tangle = TRUE)
 ```
 
 ```{r createVignette2}
 ## Clean up
-file.remove('derfinderUsersGuideRed.bib')
-unlink('analysisResults', recursive = TRUE)
-file.remove('HSB113.bw')
-file.remove('meanChr21.bw')
+file.remove("derfinderUsersGuideRed.bib")
+unlink("analysisResults", recursive = TRUE)
+file.remove("HSB113.bw")
+file.remove("meanChr21.bw")
 ```
 
 Date the vignette was generated.
@@ -1444,14 +1499,14 @@ Wallclock time spent generating the vignette.
 ```{r reproducibility2, echo=FALSE}
 ## Processing time in seconds
 totalTime <- diff(c(startTime, Sys.time()))
-round(totalTime, digits=3)
+round(totalTime, digits = 3)
 ```
 
 `R` session information.
 
 ```{r reproducibility3, echo=FALSE}
 ## Session info
-library('sessioninfo')
+library("sessioninfo")
 options(width = 120)
 session_info()
 ```

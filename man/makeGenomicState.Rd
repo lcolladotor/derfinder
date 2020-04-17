@@ -33,43 +33,55 @@ same type into regions.
 }
 \examples{
 ## Load the example data base from the GenomicFeatures vignette
-library('GenomicFeatures')
-samplefile <- system.file('extdata', 'hg19_knownGene_sample.sqlite', 
-    package='GenomicFeatures')
+library("GenomicFeatures")
+samplefile <- system.file("extdata", "hg19_knownGene_sample.sqlite",
+    package = "GenomicFeatures"
+)
 txdb <- loadDb(samplefile)
 
 ## Generate genomic state object, only for chr6
-sampleGenomicState <- makeGenomicState(txdb, chrs='chr6')
+sampleGenomicState <- makeGenomicState(txdb, chrs = "chr6")
+#
 \dontrun{
 ## Create the GenomicState object for Hsapiens.UCSC.hg19.knownGene
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene
 
-## Creating this GenomicState object takes around 8 min for all chrs and 
+## Creating this GenomicState object takes around 8 min for all chrs and
 ## around 30 secs for chr21
-GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- 
-    makeGenomicState(txdb=txdb, chrs='chr21')
+GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <-
+    makeGenomicState(txdb = txdb, chrs = "chr21")
 
 ## For convinience, this object is already included in derfinder
-library('testthat')
-expect_that(GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21, 
-   is_equivalent_to(genomicState))
+library("testthat")
+expect_that(
+    GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21,
+    is_equivalent_to(genomicState)
+)
 
 ## Hsapiens ENSEMBL GRCh37
-library('GenomicFeatures')
+library("GenomicFeatures")
 ## Can take several minutes and speed will depend on your internet speed
-xx <- makeTxDbPackageFromBiomart(version = '0.99', maintainer = 'Your Name', 
-    author='Your Name')
-txdb <- loadDb(file.path('TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11', 'inst', 
-    'extdata', 'TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11.sqlite'))
+xx <- makeTxDbPackageFromBiomart(
+    version = "0.99", maintainer = "Your Name",
+    author = "Your Name"
+)
+txdb <- loadDb(file.path(
+    "TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11", "inst",
+    "extdata", "TxDb.Hsapiens.BioMart.ensembl.GRCh37.p11.sqlite"
+))
 
 ## Creating this GenomicState object takes around 13 min
-GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(txdb=txdb, 
-    chrs=c(1:22, 'X', 'Y'))
+GenomicState.Hsapiens.ensembl.GRCh37.p11 <- makeGenomicState(
+    txdb = txdb,
+    chrs = c(1:22, "X", "Y")
+)
 
 ## Save for later use
-save(GenomicState.Hsapiens.ensembl.GRCh37.p11, 
-    file='GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata')
+save(GenomicState.Hsapiens.ensembl.GRCh37.p11,
+    file = "GenomicState.Hsapiens.ensembl.GRCh37.p11.Rdata"
+)
 }
+
 }
 \seealso{
 \link[GenomicFeatures:TxDb-class]{TxDb}

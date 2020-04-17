@@ -39,15 +39,18 @@ exports the coverage to a BigWig file using \link[rtracklayer:export]{export}.
 }
 \examples{
 ## Create a small fullCov object with data only for chr21
-fullCov <- list('chr21' = genomeDataRaw)
+fullCov <- list("chr21" = genomeDataRaw)
 
 ## Create a BigWig for the first sample in a test directory
-dir.create('createBwSample-example')
-bw <- createBwSample('ERR009101', 'createBwSample-example', 
-    fullCov = fullCov, seqlengths = c('chr21' = 48129895))
+dir.create("createBwSample-example")
+bw <- createBwSample("ERR009101", "createBwSample-example",
+    fullCov = fullCov, seqlengths = c("chr21" = 48129895)
+)
 
 ## Explore the output
 bw
+
+## Exports a single sample to a BigWig file
 }
 \seealso{
 \link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer:export]{export},

@@ -67,38 +67,44 @@
 #'
 #' @examples
 #' ## Obtain fullCov object
-#' fullCov <- list('21'=genomeDataRaw$coverage)
+#' fullCov <- list("21" = genomeDataRaw$coverage)
 #'
 #' ## Assign chr lengths using hg19 information, use only first two regions
-#' library('GenomicRanges')
-#' data(hg19Ideogram, package = 'biovizBase', envir = environment())
+#' library("GenomicRanges")
 #' regions <- genomeRegions$regions[1:2]
-#' seqlengths(regions) <- seqlengths(hg19Ideogram)[names(seqlengths(regions))]
+#' seqlengths(regions) <- seqlengths(getChromInfoFromUCSC("hg19",
+#'     as.Seqinfo = TRUE
+#' ))[
+#'     mapSeqlevels(names(seqlengths(regions)), "UCSC")
+#' ]
 #'
 #' ## Finally, get the region coverage
-#' regionCov <- getRegionCoverage(fullCov=fullCov, regions=regions)
-
+#' regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions)
 getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     targetSize = 80e6, files = NULL, ...) {
 
     ## Advanged arguments
-# @param verbose If \code{TRUE} basic status updates will be printed along the
-# way.
-    verbose <- .advanced_argument('verbose', TRUE, ...)
+    # @param verbose If \code{TRUE} basic status updates will be printed along the
+    # way.
+    verbose <- .advanced_argument("verbose", TRUE, ...)
 
 
-    names(regions) <- seq_len(length(regions))  # add names
+    names(regions) <- seq_len(length(regions)) # add names
 
     ## Use UCSC names for homo_sapiens by default
-    regions <- renameSeqlevels(regions,
-        extendedMapSeqlevels(seqlevels(regions), ...))
+    regions <- renameSeqlevels(
+        regions,
+        extendedMapSeqlevels(seqlevels(regions), ...)
+    )
 
     ## TODO check seqlengths are properly given in 'regions'
 
     ## Load data if 'fullCov' is not specified
-    if(is.null(fullCov)) {
-        fullCov <- .load_fullCov(files = files, regs = regions,
-            fun = 'getRegionCoverage', ...)
+    if (is.null(fullCov)) {
+        fullCov <- .load_fullCov(
+            files = files, regs = regions,
+            fun = "getRegionCoverage", ...
+        )
     }
     ## Fix naming style
     names(fullCov) <- extendedMapSeqlevels(names(fullCov), ...)
@@ -118,52 +124,61 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     counts <- bpmapply(function(chr, covInfo, g, totalMapped, verbose) {
 
         ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
-        if (verbose)
-            message(paste(Sys.time(), 'getRegionCoverage: processing', chr))
+        if (verbose) {
+              message(paste(Sys.time(), "getRegionCoverage: processing", chr))
+          }
 
 
-        ind <- rep(names(g), width(g))  # to split along
+        ind <- rep(names(g), width(g)) # to split along
 
         ## Check whether fullCov has been filtered, then subset
-        if(all(c('coverage', 'position') %in% names(covInfo))) {
-            if(!is.null(g$indexStart) & !is.null(g$indexEnd)) {
+        if (all(c("coverage", "position") %in% names(covInfo))) {
+            if (!is.null(g$indexStart) & !is.null(g$indexEnd)) {
                 ## Subset if appropriate
                 yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
-                ind <- rep(names(g), g$indexEnd - g$indexStart + 1)  # to split along
-            } else if (is.null(covInfo$position)){
+                ind <- rep(names(g), g$indexEnd - g$indexStart + 1) # to split along
+            } else if (is.null(covInfo$position)) {
                 yy <- covInfo$coverage[ranges(g), ]
             } else {
                 stop("It seems that you have filtered the coverage but your 'regions' object is missing the 'indexStart' and 'indexEnd' information produced by findRegions().")
             }
-
         } else {
-            yy <- covInfo[ranges(g), ]  # better subset
+            yy <- covInfo[ranges(g), ] # better subset
         }
 
         # depth-adjust, like for plotting
         if (!is.null(totalMapped) & targetSize != 0) {
-            yy <- DataFrame(mapply(function(x, d) x / d,
-                yy, totalMapped / targetSize), check.names = FALSE)
+            yy <- DataFrame(mapply(
+                function(x, d) x / d,
+                yy, totalMapped / targetSize
+            ), check.names = FALSE)
         }
 
-        ind <- factor(ind, levels = unique(ind))  # make factor in order
+        ind <- factor(ind, levels = unique(ind)) # make factor in order
         # split(yy,ind) # 'CompressedSplitDataFrameList', faster but
         # less clear how to unlist below, so leave out
         res <- split(as.data.frame(yy), ind)
 
-        if (verbose)
-            message(paste(Sys.time(), 'getRegionCoverage: done processing',
-                chr))
+        if (verbose) {
+              message(paste(
+                  Sys.time(), "getRegionCoverage: done processing",
+                  chr
+              ))
+          }
 
         ## Done
         return(res)
-    }, names(fullCov), fullCov, grl, MoreArgs = moreArgs, BPPARAM = BPPARAM,
-    SIMPLIFY = FALSE)
-    covList <- do.call('c', counts)  # collect list elements into one large list
+    }, names(fullCov), fullCov, grl,
+    MoreArgs = moreArgs, BPPARAM = BPPARAM,
+    SIMPLIFY = FALSE
+    )
+    covList <- do.call("c", counts) # collect list elements into one large list
 
     # put in original order
-    names(covList) <- sapply(strsplit(names(covList), '\\.'),
-        '[', 2)
+    names(covList) <- sapply(
+        strsplit(names(covList), "\\."),
+        "[", 2
+    )
     theData <- covList[order(as.numeric(names(covList)))]
 
     # if (sum(sapply(theData, nrow)) != sum(width(regions))) {
@@ -177,18 +192,21 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
 ## Helper function that runs fullCoverage
 .load_fullCov <- function(files, regs, fun, ...) {
     stopifnot(!is.null(files))
-    if(.advanced_argument('verbose', TRUE, ...))
-        message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
+    if (.advanced_argument("verbose", TRUE, ...)) {
+          message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
+      }
 
     ## If no protection was specified for calculating the coverage, then
     ## specify it. Details in loadCoverage()
-    protectWhich <- .advanced_argument('protectWhich', NULL, ...)
+    protectWhich <- .advanced_argument("protectWhich", NULL, ...)
     chrs <- seqlevelsInUse(regs)
 
 
-    if(is.null(protectWhich)) {
-        fullCov <- fullCoverage(files = files, chrs = chrs, protectWhich = 3e4,
-            which = regs, ...)
+    if (is.null(protectWhich)) {
+        fullCov <- fullCoverage(
+            files = files, chrs = chrs, protectWhich = 3e4,
+            which = regs, ...
+        )
     } else {
         fullCov <- fullCoverage(files = files, chrs = chrs, which = regs, ...)
     }

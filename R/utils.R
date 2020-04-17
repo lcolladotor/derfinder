@@ -6,7 +6,7 @@
 #' @noRd
 .advanced_argument <- function(name, value, ...) {
     args <- list(...)
-    if(!name %in% names(args)) {
+    if (!name %in% names(args)) {
         return(value)
     } else {
         return(args[[name]])
@@ -33,7 +33,7 @@
     ## Match any of the remaining formal arguments and drop any of the
     ## extra stuff in ... which doesn't match the formal arguments
     input <- args[names(args) %in% formal]
-    if(!is.null(hiddenArgs)) input <- c(input, hiddenArgs)
+    if (!is.null(hiddenArgs)) input <- c(input, hiddenArgs)
 
     ## Evaluate the function
     result <- do.call(fun, input)

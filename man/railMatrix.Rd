@@ -5,9 +5,19 @@
 \title{Identify regions data by a coverage filter and get a count matrix from
 BigWig files}
 \usage{
-railMatrix(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
-  maxClusterGap = 300L, totalMapped = NULL, targetSize = 4e+07,
-  file.cores = 1L, chrlens = NULL, ...)
+railMatrix(
+  chrs,
+  summaryFiles,
+  sampleFiles,
+  L,
+  cutoff = NULL,
+  maxClusterGap = 300L,
+  totalMapped = NULL,
+  targetSize = 4e+07,
+  file.cores = 1L,
+  chrlens = NULL,
+  ...
+)
 }
 \arguments{
 \item{chrs}{A character vector with the names of the chromosomes.}
@@ -96,29 +106,35 @@ You should use at most one core per chromosome.
 \examples{
 
 ## BigWig files are not supported in Windows
-if(.Platform$OS.type != 'windows') {
+if (.Platform$OS.type != "windows") {
     ## Get data
-    library('derfinderData')
+    library("derfinderData")
 
     ## Identify sample files
-    sampleFiles <- rawFiles(system.file('extdata', 'AMY', package =
-        'derfinderData'), samplepatt = 'bw', fileterm = NULL)
-    names(sampleFiles) <- gsub('.bw', '', names(sampleFiles))
+    sampleFiles <- rawFiles(system.file("extdata", "AMY",
+        package =
+            "derfinderData"
+    ), samplepatt = "bw", fileterm = NULL)
+    names(sampleFiles) <- gsub(".bw", "", names(sampleFiles))
 
     ## Create the mean bigwig file. This file is normally created by Rail
     ## but in this example we'll create it manually.
-    library('GenomicRanges')
-    fullCov <- fullCoverage(files = sampleFiles, chrs = 'chr21')
-    meanCov <- Reduce('+', fullCov$chr21) / ncol(fullCov$chr21)
-    createBw(list('chr21' = DataFrame('meanChr21' = meanCov)), keepGR =
-        FALSE)
+    library("GenomicRanges")
+    fullCov <- fullCoverage(files = sampleFiles, chrs = "chr21")
+    meanCov <- Reduce("+", fullCov$chr21) / ncol(fullCov$chr21)
+    createBw(list("chr21" = DataFrame("meanChr21" = meanCov)),
+        keepGR =
+            FALSE
+    )
 
-    summaryFile <- 'meanChr21.bw'
+    summaryFile <- "meanChr21.bw"
 
     ## Get the regions
-    regionMat <- railMatrix(chrs = 'chr21', summaryFiles = summaryFile,
+    regionMat <- railMatrix(
+        chrs = "chr21", summaryFiles = summaryFile,
         sampleFiles = sampleFiles, L = 76, cutoff = 5.1,
-        maxClusterGap = 3000L)
+        maxClusterGap = 3000L
+    )
 
     ## Explore results
     names(regionMat$chr21)

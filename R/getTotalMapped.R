@@ -25,39 +25,38 @@
 #' @examples
 #'
 #' ## Get the total number of mapped reads for an example BAM file:
-#' bam <- system.file('extdata', 'genomeData', 'ERR009102_accepted_hits.bam',
-#'     package='derfinder', mustWork=TRUE)
+#' bam <- system.file("extdata", "genomeData", "ERR009102_accepted_hits.bam",
+#'     package = "derfinder", mustWork = TRUE
+#' )
 #' getTotalMapped(bam)
-#'
-
 getTotalMapped <- function(rawFile, chrs = NULL) {
     stopifnot(length(rawFile) == 1)
-    
+
     ## Guess the input type
-    if(is(rawFile, 'BigWigFileList') | is(rawFile, 'BigWigFile') | grepl('bw$|bigwig$', tolower(rawFile))) {
-        inputType <- 'BigWig'
-    } else if (is(rawFile, 'BamFileList') | is(rawFile, 'BamFile') | grepl('bam$', tolower(rawFile))) {
-        inputType <- 'bam'
+    if (is(rawFile, "BigWigFileList") | is(rawFile, "BigWigFile") | grepl("bw$|bigwig$", tolower(rawFile))) {
+        inputType <- "BigWig"
+    } else if (is(rawFile, "BamFileList") | is(rawFile, "BamFile") | grepl("bam$", tolower(rawFile))) {
+        inputType <- "bam"
     }
-    stopifnot(inputType %in% c('bam', 'BigWig'))
-    
-    if(inputType == 'bam') {
+    stopifnot(inputType %in% c("bam", "BigWig"))
+
+    if (inputType == "bam") {
         info <- idxstatsBam(rawFile)
-        if(!is.null(chrs)) {
-            info <- subset(info, seqnames %in% chrs) 
+        if (!is.null(chrs)) {
+            info <- subset(info, seqnames %in% chrs)
         }
         res <- sum(info$mapped)
-    } else if (inputType == 'BigWig') {
-        if(.Platform$OS.type == 'windows') {
-            warning('As of rtracklayer 1.25.16, BigWig is not supported on Windows. Thus loading data from BigWig files will most likely fail!')
+    } else if (inputType == "BigWig") {
+        if (.Platform$OS.type == "windows") {
+            warning("As of rtracklayer 1.25.16, BigWig is not supported on Windows. Thus loading data from BigWig files will most likely fail!")
         }
         gr <- import.bw(rawFile)
-        
-        if(!is.null(chrs)) {
+
+        if (!is.null(chrs)) {
             gr <- gr[seqnames(gr) %in% chrs]
         }
-        
-        res <- sum(width(gr) * gr$score) 
+
+        res <- sum(width(gr) * gr$score)
     }
     return(res)
 }

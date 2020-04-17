@@ -1,0 +1,76 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# derfinder
+
+<!-- badges: start -->
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
+[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/derfinder)
+[![Codecov test coverage](https://codecov.io/gh/lcolladotor/derfinder/branch/master/graph/badge.svg)](https://codecov.io/gh/lcolladotor/derfinder?branch=master)
+[![R build status](https://github.com/lcolladotor/derfinder/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/lcolladotor/derfinder/actions)
+<!-- badges: end -->
+
+Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach. This package contains two different implementations of this approach. The first one is the single base-level F-statistics implementation and the second one is via identifying expressed regions. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).
+
+## Documentation
+
+For more information about `derfinder` check the vignettes [through Bioconductor](http://bioconductor.org/packages/derfinder) or at the [documentation website](http://lcolladotor.github.io/derfinder).
+
+## Further documentation
+
+You can generate HTML reports from the results using __regionReport__ 
+available [here](https://github.com/lcolladotor/regionReport).
+
+## Installation instructions
+
+Get the latest stable `R` release from [CRAN](http://cran.r-project.org/). Then install `derfinder` using from [Bioconductor](http://bioconductor.org/) the following code:
+
+```{r 'install', eval = FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("derfinder")
+```
+
+## Citation
+
+Below is the citation output from using `citation('derfinder')` in R. Please 
+run this yourself to check for any updates on how to cite __derfinder__.
+
+```{r 'citation', eval = requireNamespace('derfinder')}
+print(citation('derfinder'), bibtex = TRUE)
+```
+
+Please note that the `derfinder` was only made possible thanks to many other R and bioinformatics software authors, which are cited either in the vignettes and/or the paper(s) describing this package.
+
+## DER Finder versions
+
+* The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at [derfinder](https://github.com/leekgroup/derfinder).
+* The version implementing the single base-level approach via calculating F-stastics as described in the pre-print Collado-Torres et al, bioRxiv 2015 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder). The same package has the functions required for the expressed regions-level approach.
+
+## Code of Conduct
+  
+Please note that the derfinder project is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By contributing to this project, you agree to abide by its terms.
+
+## Development tools
+
+* Continuous code testing is possible thanks to [GitHub actions](https://www.tidyverse.org/blog/2020/04/usethis-1-6-0/)  through `r BiocStyle::CRANpkg('usethis')`, `r BiocStyle::CRANpkg('remotes')`, `r BiocStyle::Githubpkg('r-hub/sysreqs')` and `r BiocStyle::CRANpkg('rcmdcheck')` customized to use [Bioconductor's docker containers](https://www.bioconductor.org/help/docker/) and `r BiocStyle::Biocpkg('BiocCheck')`.
+* Code coverage assessment is possible thanks to [codecov](https://codecov.io/gh) and `r BiocStyle::CRANpkg('covr')`.
+* The [documentation website](http://lcolladotor.github.io/derfinder) is automatically updated thanks to `r BiocStyle::CRANpkg('pkgdown')`.
+* The code is styled automatically thanks to `r BiocStyle::CRANpkg('styler')`.
+* The documentation is formatted thanks to `r BiocStyle::CRANpkg('devtools')` and `r BiocStyle::CRANpkg('roxygen2')`.
+
+For more details, check the `dev` directory.
+

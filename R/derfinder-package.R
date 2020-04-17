@@ -1,44 +1,8 @@
-#' Annotation-agnostic differential expression analysis of RNA-seq data at
-#' base-pair resolution via the DER Finder approach.
-#'
-#' This package contains two different implementations of the DER Finder
-#' approach. The first one is the single base-level F-statistics implementation
-#' and the second one is via identifying expressed regions.
-#'
-#' The single base-level F-statistics analysis pipeline involves loading the
-#' sample BAM files using [rawFiles] and [loadCoverage],
-#' pre-processing the data by using [preprocessCoverage], calculating the
-#' F-statistics (while adjusting for some confounders) using [makeModels]
-#' and [calculateStats], calculating the p-values and finding the regions
-#' of interest using [calculatePvalues], and finally annotating them using
-#' [matchGenes][bumphunter::matchGenes] from the bumphunter package.
-#'
-#' The DER Finder at the expressed regions-level is done with
-#' the [regionMatrix] or [railMatrix] functions depending on the
-#' input data.
-#'
-#' Details about both approaches are further described in the vignettes.
-#'
-#' The DER Finder approach can also be used to identify differentially bounded
-#' ChIP-seq regions (peaks). In particular, [analyzeChr] has parameters
-#' that allow smoothing of the F-statistics which can be useful for anlayzing
-#' ChIP-seq data. This use case is further explained in the users guide
-#' vignette.
-#'
-#' @name derfinder-package
-#' @aliases derfinder-package
-#' @docType package
-#' @author Leonardo Collado-Torres <lcolladotor@@gmail.com>
-#' @references
-#' Collado-Torres L, Frazee AC, Love MI, Irizarry RA, Jaffe AE and Leek JT
-#' (2015). derfinder: Software for annotation-agnostic RNA-seq differential
-#' expression analysis. bioRxiv (2015). doi:10.1101/015370
-#'
-#' Frazee, A. C., Sabunciyan, S., Hansen, K. D., Irizarry, R. A. &
-#' Leek, J. T. Differential expression analysis of RNA-seq data at single-base
-#' resolution. Biostatistics (2014). doi:10.1093/biostatistics/kxt053
-#'
-#' Rafael A. Irizarry, Martin Aryee, Hector Corrada Bravo, Kasper D. Hansen and
-#' Harris A. Jaffee. bumphunter: Bump Hunter. R package version 1.1.10.
-#' @keywords package
+#' @keywords internal
+"_PACKAGE"
+
+# The following block is used by usethis to automatically manage
+# roxygen namespace tags. Modify with care!
+## usethis namespace: start
+## usethis namespace: end
 NULL

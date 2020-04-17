@@ -4,12 +4,14 @@
 \name{genomeDataRaw}
 \alias{genomeDataRaw}
 \title{Genome samples processed data}
-\format{A list with two components.
+\format{
+A list with two components.
 \describe{
 \item{coverage }{  is a DataFrame object where each column represents a
 sample.}
 \item{position }{ is \code{NULL} because no bases were filtered.}
-}}
+}
+}
 \description{
 10kb region from chr21 processed for 31 RNA-seq samples described in
 \link{genomeInfo}. The TopHat BAM files are included in the package and this

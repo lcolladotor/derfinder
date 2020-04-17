@@ -1,24 +1,24 @@
 #' Construct full paths to a group of raw input files
 #'
-#' For a group of samples this function creates the list of paths to the raw 
+#' For a group of samples this function creates the list of paths to the raw
 #' input files which can then be used in [loadCoverage]. The raw input
 #' files are either BAM files or BigWig files.
-#' 
-#' @param datadir The main directory where each of the `sampledirs` is a 
+#'
+#' @param datadir The main directory where each of the `sampledirs` is a
 #' sub-directory of `datadir`.
-#' @param sampledirs A character vector with the names of the sample 
-#' directories. If `datadir` is `NULL` it is then assumed that 
+#' @param sampledirs A character vector with the names of the sample
+#' directories. If `datadir` is `NULL` it is then assumed that
 #' `sampledirs` specifies the full path to each sample.
-#' @param samplepatt If specified and `sampledirs` is set to `NULL`, 
-#' then the directories matching this pattern in `datadir` (set to 
+#' @param samplepatt If specified and `sampledirs` is set to `NULL`,
+#' then the directories matching this pattern in `datadir` (set to
 #' `.` if it's set to `NULL`) are used as the sample directories.
-#' @param fileterm Name of the BAM or BigWig file used in each sample. By 
-#' default it is set to `accepted_hits.bam` since that is the automatic 
-#' name generated when aligning with TopHat. If `NULL` it is then ignored 
-#' when reading the rawfiles. This can be useful if all the raw files are 
+#' @param fileterm Name of the BAM or BigWig file used in each sample. By
+#' default it is set to `accepted_hits.bam` since that is the automatic
+#' name generated when aligning with TopHat. If `NULL` it is then ignored
+#' when reading the rawfiles. This can be useful if all the raw files are
 #' stored in a single directory.
 #'
-#' @return A vector with the full paths to the raw files and sample names 
+#' @return A vector with the full paths to the raw files and sample names
 #' stored as the vector names.
 #'
 #' @details This function can also be used to identify a set of BigWig files.
@@ -28,13 +28,14 @@
 #' @seealso [loadCoverage]
 #' @examples
 #' ## Get list of BAM files included in derfinder
-#' datadir <- system.file('extdata', 'genomeData', package='derfinder')
-#' files <- rawFiles(datadir=datadir, samplepatt='*accepted_hits.bam$', 
-#'     fileterm=NULL)
+#' datadir <- system.file("extdata", "genomeData", package = "derfinder")
+#' files <- rawFiles(
+#'     datadir = datadir, samplepatt = "*accepted_hits.bam$",
+#'     fileterm = NULL
+#' )
 #' files
-
-rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL, 
-    fileterm = 'accepted_hits.bam') {
+rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
+    fileterm = "accepted_hits.bam") {
     ## Determine the full paths to the sample directories
     if (!is.null(sampledirs)) {
         if (!is.null(datadir)) {
@@ -51,23 +52,25 @@ rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
     } else if (!is.null(samplepatt)) {
         if (is.null(datadir)) {
             ## This case assumes that the datadir is the current directory
-            datadir <- '.'
+            datadir <- "."
         }
         ## Identify the directories with this pattern
         files <- dir(path = datadir, pattern = samplepatt, full.names = TRUE)
-        names(files) <- dir(path = datadir, pattern = samplepatt, 
-            full.names = FALSE)
+        names(files) <- dir(
+            path = datadir, pattern = samplepatt,
+            full.names = FALSE
+        )
     } else {
         stop("Either 'samplepatt' or 'sampledirs' must be non-NULL.")
     }
-    
+
     ## Tell R which are the BAM files
     if (!is.null(fileterm)) {
         tmp <- file.path(files, fileterm)
         names(tmp) <- names(files)
         files <- tmp
     }
-    
+
     ## Done
     return(files)
 }

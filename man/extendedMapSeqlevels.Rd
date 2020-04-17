@@ -4,9 +4,13 @@
 \alias{extendedMapSeqlevels}
 \title{Change naming style for a set of sequence names}
 \usage{
-extendedMapSeqlevels(seqnames, style = getOption("chrsStyle", "UCSC"),
-  species = getOption("species", "homo_sapiens"), currentStyle = NULL,
-  ...)
+extendedMapSeqlevels(
+  seqnames,
+  style = getOption("chrsStyle", "UCSC"),
+  species = getOption("species", "homo_sapiens"),
+  currentStyle = NULL,
+  ...
+)
 }
 \arguments{
 \item{seqnames}{A character vector with the sequence names.}
@@ -63,35 +67,37 @@ with organisms that are absent from GenomeInfoDb as documented in
 
 
 ## Without guessing any information
-extendedMapSeqlevels('2', 'UCSC', 'Homo sapiens', 'NCBI')
+extendedMapSeqlevels("2", "UCSC", "Homo sapiens", "NCBI")
 
 ## Guessing the current naming style
-extendedMapSeqlevels('2', 'UCSC', 'Homo sapiens')
+extendedMapSeqlevels("2", "UCSC", "Homo sapiens")
 
 ## Guess species and current style
-extendedMapSeqlevels('2', 'NCBI')
+extendedMapSeqlevels("2", "NCBI")
 
 ## Guess species while supplying the current style.
 ## Probably an uncommon use-case
-extendedMapSeqlevels('2', 'NCBI', currentStyle = 'TAIR10')
+extendedMapSeqlevels("2", "NCBI", currentStyle = "TAIR10")
 
 ## Sequence names are unchanged when using an unsupported species
-extendedMapSeqlevels('seq2', 'NCBI', 'toyOrganism')
+extendedMapSeqlevels("seq2", "NCBI", "toyOrganism")
 
 ## Disable extendedMapSeqlevels. This can be useful when working with
 ## organisms that are not supported by GenomeInfoDb
-chrs <- c('I', 'II','III','IV', 'IX', 'V', 'VI', 'VII', 'VIII', 'X', 
-    'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII')
+chrs <- c(
+    "I", "II", "III", "IV", "IX", "V", "VI", "VII", "VIII", "X",
+    "XI", "XII", "XIII", "XIV", "XV", "XVI", "XVII"
+)
 extendedMapSeqlevels(chrs, chrsStyle = NULL)
-
 \dontrun{
 ## Set global species and style option
-options('chrsStyle' = 'UCSC')
-options('species' = 'homo_sapiens')
+options("chrsStyle" = "UCSC")
+options("species" = "homo_sapiens")
 
 ## Run using global options
-extendedMapSeqlevels('2')
+extendedMapSeqlevels("2")
 }
+
 }
 \author{
 L. Collado-Torres
