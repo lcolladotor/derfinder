@@ -4,7 +4,7 @@
 \alias{makeGenomicState}
 \title{Obtain the genomic state per region from annotation}
 \usage{
-makeGenomicState(txdb, chrs = c(1:22, "X", "Y"), ...)
+makeGenomicState(txdb, chrs = c(seq_len(22), "X", "Y"), ...)
 }
 \arguments{
 \item{txdb}{A \link[GenomicFeatures:TxDb-class]{TxDb} object with chromosome lengths

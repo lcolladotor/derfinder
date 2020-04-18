@@ -5,7 +5,7 @@
 \title{Merge results from different chromosomes}
 \usage{
 mergeResults(
-  chrs = c(1:22, "X", "Y"),
+  chrs = c(seq_len(22), "X", "Y"),
   prefix = ".",
   significantCut = c(0.05, 0.1),
   genomicState,

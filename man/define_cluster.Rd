@@ -20,6 +20,9 @@ be used. If greater than 1, then it specifies the number of workers for
 \item{BPPARAM.custom }{ If specified, that's the BPPARAM that will be used.}
 }}
 }
+\value{
+A BiocParallel *Param object
+}
 \description{
 Define a cluster to use.
 }
