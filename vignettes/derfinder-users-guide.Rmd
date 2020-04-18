@@ -45,7 +45,6 @@ bib <- c(
     knitcitations = citation("knitcitations"),
     derfinder = citation("derfinder")[1],
     BiocStyle = citation("BiocStyle"),
-    knitrBootstrap = citation("knitrBootstrap"),
     knitr = citation("knitr")[3],
     rmarkdown = citation("rmarkdown")[1],
     brainspan = RefManageR::BibEntry(
@@ -102,10 +101,7 @@ bib <- c(
     derfinderData = citation("derfinderData")
 )
 
-write.bibtex(bib, file = "derfinderUsersGuideRed.bib")
-
-## Working on Windows?
-windowsFlag <- .Platform$OS.type == "windows"
+write.bibtex(bib, file = "derfinderUsersGuideRef.bib")
 ```
 
 If you haven't already, please read the [quick start to using derfinder](quickstart-derfinder.html) vignette. It explains the basics of using `r Biocpkg('derfinder')`, how to ask for help, and showcases an example analysis.
@@ -193,7 +189,7 @@ kable(p, format = "html", row.names = TRUE)
 
 We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
 
-```{r 'getData', eval = !windowsFlag}
+```{r 'getData', eval = .Platform$OS.type != "windows"}
 ## Determine the files to use and fix the names
 files <- rawFiles(system.file("extdata", "AMY", package = "derfinderData"),
     samplepatt = "bw", fileterm = NULL
@@ -207,7 +203,7 @@ system.time(fullCov <- fullCoverage(
 ))
 ```
 
-```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
+```{r 'getDataWindows', eval = .Platform$OS.type == "windows", echo = FALSE}
 ## Load data in Windows case
 foo <- function() {
     load(system.file("extdata", "fullCov", "fullCovAMY.RData",
@@ -428,7 +424,7 @@ If you have [Rail](http://rail.bio) output, you can get the same results faster 
 
 
 
-```{r 'createMeanBW', eval = !windowsFlag}
+```{r 'createMeanBW', eval = .Platform$OS.type != "windows"}
 ## Calculate the mean: this step takes a long time with many samples
 meanCov <- Reduce("+", fullCov$chr21) / ncol(fullCov$chr21)
 
@@ -441,7 +437,7 @@ createBw(list("chr21" = DataFrame("meanChr21" = meanCov)),
 
 Now that we have the files [Rail](http://rail.bio) creates for us, we can use `railMatrix()`.
 
-```{r 'railMatrix', eval = !windowsFlag}
+```{r 'railMatrix', eval = .Platform$OS.type != "windows"}
 ## Identify files to use
 summaryFile <- "meanChr21.bw"
 ## We had already found the sample BigWig files and saved it in the object 'files'
@@ -462,7 +458,7 @@ When you take into account the time needed to load the data (`fullCoverage()`) a
 
 The objects are not identical due to small rounding errors, but it's nothing to worry about.
 
-```{r 'checkDifferences', eval = !windowsFlag}
+```{r 'checkDifferences', eval = .Platform$OS.type != "windows"}
 ## Overall not identical due to small rounding errors
 identical(regionMat, regionMat.rail)
 
@@ -817,7 +813,7 @@ The [quick start to using derfinder](quickstart-derfinder.html) has example plot
 
 We have also developed an addon package called `r Biocpkg('regionReport')` available via [Bioconductor](http://bioconductor.org/packages/regionReport).
 
-The function `derfinderReport()` in `r Biocpkg('regionReport')` basically takes advantage of the results from `mergeResults()` and plotting functions available in `r Biocpkg('derfinderPlot')` as well as other neat features from `r CRANpkg('knitrBootstrap')` `r citep(bib[['knitrBootstrap']])`. It then generates a customized report for single-base level F-statistics DER finding analyses.
+The function `derfinderReport()` in `r Biocpkg('regionReport')` basically takes advantage of the results from `mergeResults()` and plotting functions available in `r Biocpkg('derfinderPlot')` as well as other neat features from `r CRANpkg('knitrBootstrap')`. It then generates a customized report for single-base level F-statistics DER finding analyses.
 
 For results from `regionMatrix()` or `railMatrix()` use `renderReport()` from `r Biocpkg('regionReport')`. In both cases, the resulting HTML report promotes reproducibility of the analysis and allows you to explore in more detail the results through some diagnostic plots.
 
@@ -920,7 +916,7 @@ mgr$stopServer()
 
 `r Biocpkg('derfinder')` also includes `createBw()` with related functions `createBwSample()` and `coerceGR()` to export the output of `fullCoverage()` to BigWig files. These functions can be useful in the case where you start with BAM files and later on want to save the coverage data into BigWig files, which are generally smaller.
 
-```{r 'exportBigWig', eval = !windowsFlag}
+```{r 'exportBigWig', eval = .Platform$OS.type != "windows"}
 ## Subset only the first sample
 fullCovSmall <- lapply(fullCov, "[", 1)
 
@@ -1481,7 +1477,7 @@ knit("derfinder-users-guide.Rmd", tangle = TRUE)
 
 ```{r createVignette2}
 ## Clean up
-file.remove("derfinderUsersGuideRed.bib")
+file.remove("derfinderUsersGuideRef.bib")
 unlink("analysisResults", recursive = TRUE)
 file.remove("HSB113.bw")
 file.remove("meanChr21.bw")

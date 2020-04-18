@@ -98,7 +98,7 @@ print(citation('derfinder'), bibtex = TRUE)
 #> base-pair resolution via the DER Finder approach_. doi:
 #> 10.18129/B9.bioc.derfinder (URL:
 #> https://doi.org/10.18129/B9.bioc.derfinder),
-#> https://github.com/lcolladotor/derfinder - R package version 1.21.2,
+#> https://github.com/lcolladotor/derfinder - R package version 1.21.4,
 #> <URL: http://www.bioconductor.org/packages/derfinder>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -108,7 +108,7 @@ print(citation('derfinder'), bibtex = TRUE)
 #>     author = {Leonardo Collado-Torres and Andrew E. Jaffe and Jeffrey T. Leek},
 #>     year = {2017},
 #>     url = {http://www.bioconductor.org/packages/derfinder},
-#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.21.2},
+#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.21.4},
 #>     doi = {10.18129/B9.bioc.derfinder},
 #>   }
 ```
@@ -124,7 +124,7 @@ the vignettes and/or the paper(s) describing this package.
     [derfinder](https://github.com/leekgroup/derfinder).
   - The version implementing the single base-level approach via
     calculating F-stastics as described in the pre-print Collado-Torres
-    et al, bioRxiv 2015 is available via Bioconductor at
+    et al, Nucleic Acids Research 2017 is available via Bioconductor at
     [derfinder](http://bioconductor.org/packages/derfinder). The same
     package has the functions required for the expressed regions-level
     approach.

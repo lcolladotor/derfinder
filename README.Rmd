@@ -58,7 +58,7 @@ Please note that the `derfinder` was only made possible thanks to many other R a
 ## DER Finder versions
 
 * The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at [derfinder](https://github.com/leekgroup/derfinder).
-* The version implementing the single base-level approach via calculating F-stastics as described in the pre-print Collado-Torres et al, bioRxiv 2015 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder). The same package has the functions required for the expressed regions-level approach.
+* The version implementing the single base-level approach via calculating F-stastics as described in the pre-print Collado-Torres et al, Nucleic Acids Research 2017 is available via Bioconductor at [derfinder](http://bioconductor.org/packages/derfinder). The same package has the functions required for the expressed regions-level approach.
 
 ## Code of Conduct
   
