@@ -82,7 +82,7 @@ models." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.5</span>
       </span>
     </div>
 
@@ -209,9 +209,9 @@ doi:10.1038/nmeth.2658</p>
     <pre class="examples"><div class='input'><span class='co'>## Collapse the coverage information</span>
 <span class='no'>collapsedFull</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collapseFullCoverage.html'>collapseFullCoverage</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>genomeData</span>$<span class='no'>coverage</span>),
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:39 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:39 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:32 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:32 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
 <span class='co'>## Calculate library size adjustments</span>
-<span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'>sampleDepth</span>(<span class='no'>collapsedFull</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>, <span class='fl'>1</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:39 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:39 sampleDepth: Calculating sample adjustments</span></div><div class='input'><span class='no'>sampleDepths</span></div><div class='output co'>#&gt;      ERR009101 ERR009102 ERR009105 ERR009107 ERR009108 ERR009112 ERR009115
+<span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'>sampleDepth</span>(<span class='no'>collapsedFull</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>, <span class='fl'>1</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:32 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:32 sampleDepth: Calculating sample adjustments</span></div><div class='input'><span class='no'>sampleDepths</span></div><div class='output co'>#&gt;      ERR009101 ERR009102 ERR009105 ERR009107 ERR009108 ERR009112 ERR009115
 #&gt;  50%  8.366322  7.954196  9.379378  8.596190  8.523562  8.179909  6.129283
 #&gt; 100%  8.614710  7.977280 10.939579  9.194757  8.894818  8.321928  6.129283
 #&gt;      ERR009116 ERR009131 ERR009138 ERR009144 ERR009145 ERR009148 ERR009151

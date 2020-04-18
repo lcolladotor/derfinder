@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.5</span>
       </span>
     </div>
 
@@ -129,6 +129,19 @@
       <small>Source: <a href='https://github.com/lcolladotor/derfinder/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="derfinder-1-21-5" class="section level1">
+<h1 class="page-header" data-toc-text="1.21.5">
+<a href="#derfinder-1-21-5" class="anchor"></a>derfinder 1.21.5</h1>
+<p>SIGNIFICANT USER-VISIBLE CHANGES</p>
+<ul>
+<li>Now <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code> now restores the <code><a href="https://rdrr.io/pkg/GenomicFeatures/man/TxDb-class.html">GenomicFeatures::isActiveSeq()</a></code> on the <code>txdb</code> object before finishing to avoid issues, like running <code>regionReport::renderReport()</code> on two different sets of regions (different chrs). There’s a new unit test for this.</li>
+</ul>
+<p>BUG FIXES</p>
+<ul>
+<li>Removed knitrBootstrap citation code.</li>
+<li>Made a test less susceptible to numerical precision.</li>
+</ul>
+</div>
     <div id="derfinder-1-21-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.21.2">
 <a href="#derfinder-1-21-2" class="anchor"></a>derfinder 1.21.2</h1>

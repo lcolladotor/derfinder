@@ -75,7 +75,7 @@ helper function for loadCoverage and preprocessCoverage." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.5</span>
       </span>
     </div>
 
@@ -264,7 +264,7 @@ statistics.</p>
 <span class='no'>DF</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>)
 
 <span class='co'>## Filter the data</span>
-<span class='no'>filt1</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>DF</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:18 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span></div><div class='input'><span class='no'>filt1</span></div><div class='output co'>#&gt; $coverage
+<span class='no'>filt1</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>DF</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:12 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span></div><div class='input'><span class='no'>filt1</span></div><div class='output co'>#&gt; $coverage
 #&gt; DataFrame with 8300 rows and 3 columns
 #&gt;          x     y     z
 #&gt;      &lt;Rle&gt; &lt;Rle&gt; &lt;Rle&gt;
@@ -286,7 +286,7 @@ statistics.</p>
 #&gt;   Values :  TRUE FALSE  TRUE FALSE  TRUE ... FALSE  TRUE FALSE  TRUE FALSE
 #&gt; </div><div class='input'>
 <span class='co'>## Filter again but only using the first two samples</span>
-<span class='no'>filt2</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>filt1</span>$<span class='no'>coverage</span>[, <span class='fl'>1</span>:<span class='fl'>2</span>], <span class='fl'>5</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>filt1</span>$<span class='no'>position</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:18 filterData: originally there were 8300 rows, now there are 6924 rows. Meaning that 16.58 percent was filtered.</span></div><div class='input'><span class='no'>filt2</span></div><div class='output co'>#&gt; $coverage
+<span class='no'>filt2</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>filt1</span>$<span class='no'>coverage</span>[, <span class='fl'>1</span>:<span class='fl'>2</span>], <span class='fl'>5</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>filt1</span>$<span class='no'>position</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 06:56:12 filterData: originally there were 8300 rows, now there are 6924 rows. Meaning that 16.58 percent was filtered.</span></div><div class='input'><span class='no'>filt2</span></div><div class='output co'>#&gt; $coverage
 #&gt; DataFrame with 6924 rows and 2 columns
 #&gt;          x     y
 #&gt;      &lt;Rle&gt; &lt;Rle&gt;
