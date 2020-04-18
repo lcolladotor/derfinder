@@ -1,3 +1,17 @@
+# derfinder 1.21.5
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+* Now `makeGenomicState()` now restores the `GenomicFeatures::isActiveSeq()`
+on the `txdb` object before finishing to avoid issues, like running
+`regionReport::renderReport()` on two different sets of regions (different
+chrs). There's a new unit test for this.
+
+BUG FIXES
+
+* Removed knitrBootstrap citation code.
+* Made a test less susceptible to numerical precision.
+
 # derfinder 1.21.2
 
 SIGNIFICANT USER-VISIBLE CHANGES

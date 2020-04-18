@@ -4,12 +4,20 @@ context("Annotation-related functions")
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
 txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
 
+library("GenomicFeatures")
+active_seqs_original <- GenomicFeatures::isActiveSeq(txdb)
+
 GenomicState.Hsapiens.UCSC.hg19.knownGene.chr21 <- makeGenomicState(
     txdb = txdb,
     chrs = "chr21"
 )
+active_seqs_final <- GenomicFeatures::isActiveSeq(txdb)
 
-library("GenomicFeatures")
+test_that("active seqlevels are restored", {
+    expect_equal(active_seqs_original, active_seqs_final)
+})
+
+
 samplefile <- system.file("extdata", "hg19_knownGene_sample.sqlite",
     package = "GenomicFeatures"
 )

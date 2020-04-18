@@ -344,7 +344,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
         ## Calculate mean statistics
         if (!is.null(regs.perm)) {
-            for (j in 1:2) {
+            for (j in seq_len(2)) {
                 nullstats[[last + j]] <- regs.perm$stat
                 nullwidths[[last + j]] <- regs.perm$width
                 nullareas[[last + j]] <- regs.perm$area

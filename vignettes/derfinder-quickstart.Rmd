@@ -327,6 +327,9 @@ library("bumphunter")
 genes <- annotateTranscripts(txdb)
 annotation <- matchGenes(ers, subject = genes)
 
+## Restore seqlevels
+txdb <- restoreSeqlevels(txdb)
+
 ## View annotation results
 head(annotation)
 ## You can use derfinderPlot::plotOverview() to visualize this information

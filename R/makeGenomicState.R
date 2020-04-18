@@ -90,13 +90,14 @@
 #' )
 #' }
 #'
-makeGenomicState <- function(txdb, chrs = c(1:22, "X", "Y"), ...) {
+makeGenomicState <- function(txdb, chrs = c(seq_len(22), "X", "Y"), ...) {
     stopifnot(is(txdb, "TxDb"))
 
     ## Use UCSC names for homo_sapiens by default
     chrs <- extendedMapSeqlevels(chrs, ...)
 
     ## Select chrs to use
+    active_seq_original <- isActiveSeq(txdb)
     isActiveSeq(txdb) <- names(isActiveSeq(txdb)) %in% chrs
 
     ## Check that the chrs have lengths. This happens when the TxDb was created
@@ -507,6 +508,9 @@ makeGenomicState <- function(txdb, chrs = c(1:22, "X", "Y"), ...) {
         fullGenome = fullGenome,
         codingGenome = codingGenome
     )
+
+    ## restore the active seqlevels
+    isActiveSeq(txdb) <- active_seq_original
 
     ## Done
     return(GenomicState)

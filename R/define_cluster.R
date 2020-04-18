@@ -13,6 +13,7 @@
 #' }
 #'
 #' @importFrom BiocParallel SnowParam SerialParam
+#' @return A BiocParallel *Param object
 #' @export
 #'
 #' @author Leonardo Collado-Torres
