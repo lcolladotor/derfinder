@@ -65,8 +65,8 @@ rss1 <- (resid1 * resid1) %*% rep(1L, n)
 fstats.manual <- Rle(drop(((rss0 - rss1) / (df1 - df0)) / (rss1 / (n - df1))))
 
 test_that("calculateFstats", {
-    expect_that(fstats, equals(fstats.manual))
-    expect_that(fstats, is_equivalent_to(genomeFstats))
+    expect_equivalent(fstats, fstats.manual)
+    expect_equivalent(fstats, genomeFstats)
 })
 
 ## Check that the F-stat cutoff is properly constructed
