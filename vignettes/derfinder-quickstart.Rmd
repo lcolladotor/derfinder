@@ -79,7 +79,6 @@ bib <- c(
     knitcitations = citation("knitcitations"),
     derfinder = citation("derfinder")[1],
     BiocStyle = citation("BiocStyle"),
-    knitrBootstrap = citation("knitrBootstrap"),
     knitr = citation("knitr")[3],
     rmarkdown = citation("rmarkdown")[1],
     brainspan = RefManageR::BibEntry(
@@ -137,9 +136,6 @@ bib <- c(
 )
 
 write.bibtex(bib, file = "quickstartRef.bib")
-
-## Working on Windows?
-windowsFlag <- .Platform$OS.type == "windows"
 ```
 
 Here is a very quick example of a DER Finder analysis. This analysis is explained in more detail later on in this document.
@@ -218,7 +214,7 @@ names(files) <- gsub(".bw", "", names(files))
 Next, we can load the full coverage data into memory using the `fullCoverage()` function. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
 
 
-```{r 'getData', eval = !windowsFlag}
+```{r 'getData', eval = .Platform$OS.type != "windows"}
 ## Load the data from disk
 fullCov <- fullCoverage(
     files = files, chrs = "chr21", verbose = FALSE,
@@ -226,7 +222,7 @@ fullCov <- fullCoverage(
 )
 ```
 
-```{r 'getDataWindows', eval = windowsFlag, echo = FALSE}
+```{r 'getDataWindows', eval = .Platform$OS.type == "windows", echo = FALSE}
 ## Load data in Windows case
 foo <- function() {
     load(system.file("extdata", "fullCov", "fullCovAMY.RData",
