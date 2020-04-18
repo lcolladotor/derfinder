@@ -74,7 +74,7 @@ exports the coverage to a BigWig file using export." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
       </span>
     </div>
 
@@ -190,10 +190,9 @@ linkcoerceGR</p></div>
 <span class='no'>fullCov</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"chr21"</span> <span class='kw'>=</span> <span class='no'>genomeDataRaw</span>)
 
 <span class='co'>## Create a BigWig for the first sample in a test directory</span>
-<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.create</a></span>(<span class='st'>"createBwSample-example"</span>)
-<span class='no'>bw</span> <span class='kw'>&lt;-</span> <span class='fu'>createBwSample</span>(<span class='st'>"ERR009101"</span>, <span class='st'>"createBwSample-example"</span>,
+<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.create</a></span>(<span class='st'>"createBwSample-example"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'createBwSample-example' already exists</span></div><div class='input'><span class='no'>bw</span> <span class='kw'>&lt;-</span> <span class='fu'>createBwSample</span>(<span class='st'>"ERR009101"</span>, <span class='st'>"createBwSample-example"</span>,
     <span class='kw'>fullCov</span> <span class='kw'>=</span> <span class='no'>fullCov</span>, <span class='kw'>seqlengths</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"chr21"</span> <span class='kw'>=</span> <span class='fl'>48129895</span>)
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 coerceGR: coercing sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 createBwSample: exporting bw for sample ERR009101</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 coerceGR: coercing sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 createBwSample: exporting bw for sample ERR009101</span></div><div class='input'>
 <span class='co'>## Explore the output</span>
 <span class='no'>bw</span></div><div class='output co'>#&gt; GRanges object with 16 ranges and 1 metadata column:
 #&gt;         seqnames            ranges strand |     score
@@ -228,7 +227,7 @@ linkcoerceGR</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

@@ -73,7 +73,7 @@ samples to BigWig files using createBwSample." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
       </span>
     </div>
 
@@ -184,8 +184,7 @@ with the output for <a href='coerceGR.html'>coerceGR</a> for each of the samples
 <span class='no'>fullCov</span>$<span class='no'>chr21</span>$<span class='no'>coverage</span> <span class='kw'>&lt;-</span> <span class='no'>fullCov</span>$<span class='no'>chr21</span>$<span class='no'>coverage</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>31</span>)]
 
 <span class='co'>## Create the BigWig files for all samples in a test dir</span>
-<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.create</a></span>(<span class='st'>"createBw-example"</span>)
-<span class='no'>bws</span> <span class='kw'>&lt;-</span> <span class='fu'>createBw</span>(<span class='no'>fullCov</span>, <span class='st'>"createBw-example"</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 coerceGR: coercing sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 createBwSample: exporting bw for sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 coerceGR: coercing sample SRR031960</span></div><div class='output co'>#&gt; <span class='message'>2020-04-17 19:54:45 createBwSample: exporting bw for sample SRR031960</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are no bases with coverage &gt; 0 for sample SRR031960. Thus no bw file will be created for this sample.</span></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/files2.html'>dir.create</a></span>(<span class='st'>"createBw-example"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: 'createBw-example' already exists</span></div><div class='input'><span class='no'>bws</span> <span class='kw'>&lt;-</span> <span class='fu'>createBw</span>(<span class='no'>fullCov</span>, <span class='st'>"createBw-example"</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 coerceGR: coercing sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 createBwSample: exporting bw for sample ERR009101</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 coerceGR: coercing sample SRR031960</span></div><div class='output co'>#&gt; <span class='message'>2020-04-18 05:45:17 createBwSample: exporting bw for sample SRR031960</span></div><div class='output co'>#&gt; <span class='warning'>Warning: There are no bases with coverage &gt; 0 for sample SRR031960. Thus no bw file will be created for this sample.</span></div><div class='input'>
 <span class='co'>## Explore the output</span>
 <span class='no'>bws</span></div><div class='output co'>#&gt; GRangesList object of length 2:
 #&gt; $ERR009101
@@ -255,7 +254,7 @@ with the output for <a href='coerceGR.html'>coerceGR</a> for each of the samples
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

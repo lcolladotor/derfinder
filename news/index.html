@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.4</span>
       </span>
     </div>
 
@@ -129,25 +129,25 @@
       <small>Source: <a href='https://github.com/lcolladotor/derfinder/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="derfinder-1212" class="section level1">
+    <div id="derfinder-1-21-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.21.2">
-<a href="#derfinder-1212" class="anchor"></a>derfinder 1.21.2</h1>
+<a href="#derfinder-1-21-2" class="anchor"></a>derfinder 1.21.2</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Documentation website is now available at <a href="http://lcolladotor.github.io/derfinder/" class="uri">http://lcolladotor.github.io/derfinder/</a>. It gets updated with every commit on the master branch (bioc-devel) using GitHub Actions and pkgdown.</li>
 </ul>
 </div>
-    <div id="derfinder-1211" class="section level1">
+    <div id="derfinder-1-21-1" class="section level1">
 <h1 class="page-header" data-toc-text="1.21.1">
-<a href="#derfinder-1211" class="anchor"></a>derfinder 1.21.1</h1>
+<a href="#derfinder-1-21-1" class="anchor"></a>derfinder 1.21.1</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Use GenomeInfoDb::getChromInfoFromUCSC() when possible instead of data from biovizBase::hg19Ideogram for getting the hg19 chromosome lengths.</li>
 </ul>
 </div>
-    <div id="derfinder-1199" class="section level1">
+    <div id="derfinder-1-19-9" class="section level1">
 <h1 class="page-header" data-toc-text="1.19.9">
-<a href="#derfinder-1199" class="anchor"></a>derfinder 1.19.9</h1>
+<a href="#derfinder-1-19-9" class="anchor"></a>derfinder 1.19.9</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed an important bug in <code><a href="../reference/findRegions.html">findRegions()</a></code> that affected the end positions of the regions when <code>maxRegionGap</code> was supplied with a value greater than the default of <code>0</code> and the data was filtered (so <code>position</code> was not all <code>TRUE</code> in the <code><a href="../reference/findRegions.html">findRegions()</a></code> call). To check this scenario now there is a new unit test under <code>tests/testthat/test-maxRegionGap.R</code>.</li>
@@ -155,16 +155,16 @@
 <li>Changed some internal tests to check <code><a href="https://rdrr.io/pkg/bumphunter/man/loessByCluster.html">bumphunter::loessByCluster()</a></code> instead of <code><a href="https://rdrr.io/pkg/bumphunter/man/runmedByCluster.html">bumphunter::runmedByCluster()</a></code> given some issues with the second one.</li>
 </ul>
 </div>
-    <div id="derfinder-1198" class="section level1">
+    <div id="derfinder-1-19-8" class="section level1">
 <h1 class="page-header" data-toc-text="1.19.8">
-<a href="#derfinder-1198" class="anchor"></a>derfinder 1.19.8</h1>
+<a href="#derfinder-1-19-8" class="anchor"></a>derfinder 1.19.8</h1>
 <ul>
 <li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
 </ul>
 </div>
-    <div id="derfinder-1194" class="section level1">
+    <div id="derfinder-1-19-4" class="section level1">
 <h1 class="page-header" data-toc-text="1.19.4">
-<a href="#derfinder-1194" class="anchor"></a>derfinder 1.19.4</h1>
+<a href="#derfinder-1-19-4" class="anchor"></a>derfinder 1.19.4</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
@@ -176,103 +176,103 @@ names(regs) &lt;- c(1:2)
 result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</code></pre>
 <p>This error affected recount and other reverse dependencies that use derfinder for processing BigWig files.</p>
 </div>
-    <div id="derfinder-1192" class="section level1">
+    <div id="derfinder-1-19-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.19.2">
-<a href="#derfinder-1192" class="anchor"></a>derfinder 1.19.2</h1>
+<a href="#derfinder-1-19-2" class="anchor"></a>derfinder 1.19.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
 <code><a href="../reference/railMatrix.html">railMatrix()</a></code> and <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> helper functions now attempt to import a BigWig file 3 times before giving up. Based on <a href="http://bioconductor.org/developers/how-to/web-query/" class="uri">http://bioconductor.org/developers/how-to/web-query/</a> and <a href="https://github.com/leekgroup/recount/commit/8da982b309e2d19638166f263057d9f85bb64e3f" class="uri">https://github.com/leekgroup/recount/commit/8da982b309e2d19638166f263057d9f85bb64e3f</a> which will make these functions more robust to occasional web access issues.</li>
 </ul>
 </div>
-    <div id="derfinder-1173" class="section level1">
+    <div id="derfinder-1-17-3" class="section level1">
 <h1 class="page-header" data-toc-text="1.17.3">
-<a href="#derfinder-1173" class="anchor"></a>derfinder 1.17.3</h1>
+<a href="#derfinder-1-17-3" class="anchor"></a>derfinder 1.17.3</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Add ORCID’s following changes at <a href="http://bioconductor.org/developers/package-guidelines/#description" class="uri">http://bioconductor.org/developers/package-guidelines/#description</a>
 </li>
 </ul>
 </div>
-    <div id="derfinder-1172" class="section level1">
+    <div id="derfinder-1-17-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.17.2">
-<a href="#derfinder-1172" class="anchor"></a>derfinder 1.17.2</h1>
+<a href="#derfinder-1-17-2" class="anchor"></a>derfinder 1.17.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Use R’s random seeds from version 3.5.0 for the test thanks to <a href="https://twitter.com/StrictlyStat/status/1103303028751372289" class="uri">https://twitter.com/StrictlyStat/status/1103303028751372289</a>
 </li>
 </ul>
 </div>
-    <div id="derfinder-1154" class="section level1">
+    <div id="derfinder-1-15-4" class="section level1">
 <h1 class="page-header" data-toc-text="1.15.4">
-<a href="#derfinder-1154" class="anchor"></a>derfinder 1.15.4</h1>
+<a href="#derfinder-1-15-4" class="anchor"></a>derfinder 1.15.4</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Switched from <code>outfile</code> to <code>log</code> when invoking <code><a href="https://rdrr.io/pkg/BiocParallel/man/SnowParam-class.html">BiocParallel::SnowParam()</a></code>. Thus <code><a href="../reference/define_cluster.html">define_cluster()</a></code> now has a <code>mc.log</code> argument instead of <code>mc.outfile</code>.</li>
 </ul>
 </div>
-    <div id="derfinder-1152" class="section level1">
+    <div id="derfinder-1-15-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.15.2">
-<a href="#derfinder-1152" class="anchor"></a>derfinder 1.15.2</h1>
+<a href="#derfinder-1-15-2" class="anchor"></a>derfinder 1.15.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fix a message regarding the deprecated <code>IRanges</code> <code>subset</code> method.</li>
 </ul>
 </div>
-    <div id="derfinder-1151" class="section level1">
+    <div id="derfinder-1-15-1" class="section level1">
 <h1 class="page-header" data-toc-text="1.15.1">
-<a href="#derfinder-1151" class="anchor"></a>derfinder 1.15.1</h1>
+<a href="#derfinder-1-15-1" class="anchor"></a>derfinder 1.15.1</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Use <code>BiocManager</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-1138" class="section level1">
+    <div id="derfinder-1-13-8" class="section level1">
 <h1 class="page-header" data-toc-text="1.13.8">
-<a href="#derfinder-1138" class="anchor"></a>derfinder 1.13.8</h1>
+<a href="#derfinder-1-13-8" class="anchor"></a>derfinder 1.13.8</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed a unit test that was breaking version 1.13.7.</li>
 </ul>
 </div>
-    <div id="derfinder-1131" class="section level1">
+    <div id="derfinder-1-13-1" class="section level1">
 <h1 class="page-header" data-toc-text="1.13.1">
-<a href="#derfinder-1131" class="anchor"></a>derfinder 1.13.1</h1>
+<a href="#derfinder-1-13-1" class="anchor"></a>derfinder 1.13.1</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added an extra example to <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> in response to <a href="https://support.bioconductor.org/p/103591" class="uri">https://support.bioconductor.org/p/103591</a>
 </li>
 </ul>
 </div>
-    <div id="derfinder-1118" class="section level1">
+    <div id="derfinder-1-11-8" class="section level1">
 <h1 class="page-header" data-toc-text="1.11.8">
-<a href="#derfinder-1118" class="anchor"></a>derfinder 1.11.8</h1>
+<a href="#derfinder-1-11-8" class="anchor"></a>derfinder 1.11.8</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Improved the documentation regarding an error when coverageInfo$position is NULL when running <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> and indirectly running <code><a href="../reference/preprocessCoverage.html">preprocessCoverage()</a></code>. See <a href="https://support.bioconductor.org/p/99400/" class="uri">https://support.bioconductor.org/p/99400/</a> for details.</li>
 </ul>
 </div>
-    <div id="derfinder-1117" class="section level1">
+    <div id="derfinder-1-11-7" class="section level1">
 <h1 class="page-header" data-toc-text="1.11.7">
-<a href="#derfinder-1117" class="anchor"></a>derfinder 1.11.7</h1>
+<a href="#derfinder-1-11-7" class="anchor"></a>derfinder 1.11.7</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Vignette now uses the new <code><a href="https://rdrr.io/pkg/BiocStyle/man/html_document.html">BiocStyle::html_document</a></code> that was recently released.</li>
 </ul>
 </div>
-    <div id="derfinder-1114" class="section level1">
+    <div id="derfinder-1-11-4" class="section level1">
 <h1 class="page-header" data-toc-text="1.11.4">
-<a href="#derfinder-1114" class="anchor"></a>derfinder 1.11.4</h1>
+<a href="#derfinder-1-11-4" class="anchor"></a>derfinder 1.11.4</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
 <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> will now pass the hidden arguments <code>species</code> and <code>currentStyle</code> to <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> so they can be used by <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code>. Related to <a href="https://support.bioconductor.org/p/95721/" class="uri">https://support.bioconductor.org/p/95721/</a>.</li>
 </ul>
 </div>
-    <div id="derfinder-1112" class="section level1">
+    <div id="derfinder-1-11-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.11.2">
-<a href="#derfinder-1112" class="anchor"></a>derfinder 1.11.2</h1>
+<a href="#derfinder-1-11-2" class="anchor"></a>derfinder 1.11.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Improved documentation of <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code>. Related to <a href="https://support.bioconductor.org/p/95521/" class="uri">https://support.bioconductor.org/p/95521/</a>.</li>
@@ -280,108 +280,108 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-196" class="section level1">
+    <div id="derfinder-1-9-6" class="section level1">
 <h1 class="page-header" data-toc-text="1.9.6">
-<a href="#derfinder-196" class="anchor"></a>derfinder 1.9.6</h1>
+<a href="#derfinder-1-9-6" class="anchor"></a>derfinder 1.9.6</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed <code><a href="../reference/define_cluster.html">define_cluster()</a></code> to match recent changes in BiocParallel and fixed an if clause in <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> that could lead to warnings in some situations.</li>
 </ul>
 </div>
-    <div id="derfinder-193" class="section level1">
+    <div id="derfinder-1-9-3" class="section level1">
 <h1 class="page-header" data-toc-text="1.9.3">
-<a href="#derfinder-193" class="anchor"></a>derfinder 1.9.3</h1>
+<a href="#derfinder-1-9-3" class="anchor"></a>derfinder 1.9.3</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> now has explicit arguments <code>totalMapped</code> and <code>targetSize</code> so that users will almost always normalize by library size when using this function (if they see the help page) or in the steps prior to using <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code>.</li>
 </ul>
 </div>
-    <div id="derfinder-192" class="section level1">
+    <div id="derfinder-1-9-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.9.2">
-<a href="#derfinder-192" class="anchor"></a>derfinder 1.9.2</h1>
+<a href="#derfinder-1-9-2" class="anchor"></a>derfinder 1.9.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Clarified the documentation of <code>mc.cores</code> and <code>mc.cores.load</code> in <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> thanks to feedback from Emily E Burke <a href="https://github.com/emilyburke" class="uri">https://github.com/emilyburke</a>.</li>
 </ul>
 </div>
-    <div id="derfinder-1716" class="section level1">
+    <div id="derfinder-1-7-16" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.16">
-<a href="#derfinder-1716" class="anchor"></a>derfinder 1.7.16</h1>
+<a href="#derfinder-1-7-16" class="anchor"></a>derfinder 1.7.16</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Help pages now document advanced arguments.</li>
 <li>Deprecated <code><a href="../reference/derfinder-deprecated.html">advancedArg()</a></code>.</li>
 </ul>
 </div>
-    <div id="derfinder-1714" class="section level1">
+    <div id="derfinder-1-7-14" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.14">
-<a href="#derfinder-1714" class="anchor"></a>derfinder 1.7.14</h1>
+<a href="#derfinder-1-7-14" class="anchor"></a>derfinder 1.7.14</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added the function <code><a href="../reference/getTotalMapped.html">getTotalMapped()</a></code> for calculating the total number of mapped reads for a BAM file or the area under the curve (AUC) for a BigWig file. This information can then be used with fullCoverage(), <code><a href="../reference/filterData.html">filterData()</a></code> and other functions. Note that if you <code>totalMapped</code> in <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> you should not use <code>totalMapped</code> again in <code><a href="../reference/filterData.html">filterData()</a></code>.</li>
 </ul>
 </div>
-    <div id="derfinder-1712" class="section level1">
+    <div id="derfinder-1-7-12" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.12">
-<a href="#derfinder-1712" class="anchor"></a>derfinder 1.7.12</h1>
+<a href="#derfinder-1-7-12" class="anchor"></a>derfinder 1.7.12</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Updated links to BrainSpan. Issue reported by Steve Semick <a href="https://github.com/SteveSemick" class="uri">https://github.com/SteveSemick</a>.</li>
 </ul>
 </div>
-    <div id="derfinder-172" class="section level1">
+    <div id="derfinder-1-7-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.2">
-<a href="#derfinder-172" class="anchor"></a>derfinder 1.7.2</h1>
+<a href="#derfinder-1-7-2" class="anchor"></a>derfinder 1.7.2</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Now derfinder uses <code>DataFrame(check.names = FALSE)</code> to avoid naming issues.</li>
 </ul>
 </div>
-    <div id="derfinder-171" class="section level1">
+    <div id="derfinder-1-7-1" class="section level1">
 <h1 class="page-header" data-toc-text="1.7.1">
-<a href="#derfinder-171" class="anchor"></a>derfinder 1.7.1</h1>
+<a href="#derfinder-1-7-1" class="anchor"></a>derfinder 1.7.1</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Dropped defunct functions.</li>
 </ul>
 </div>
-    <div id="derfinder-1539" class="section level1">
+    <div id="derfinder-1-5-39" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.39">
-<a href="#derfinder-1539" class="anchor"></a>derfinder 1.5.39</h1>
+<a href="#derfinder-1-5-39" class="anchor"></a>derfinder 1.5.39</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
 <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code> now ignores strand by default.</li>
 </ul>
 </div>
-    <div id="derfinder-1537" class="section level1">
+    <div id="derfinder-1-5-37" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.37">
-<a href="#derfinder-1537" class="anchor"></a>derfinder 1.5.37</h1>
+<a href="#derfinder-1-5-37" class="anchor"></a>derfinder 1.5.37</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>The users guide vignette now has a short section explaining how to use derfinder for differential binding analysis with ChIP-seq data.</li>
 </ul>
 </div>
-    <div id="derfinder-1527" class="section level1">
+    <div id="derfinder-1-5-27" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.27">
-<a href="#derfinder-1527" class="anchor"></a>derfinder 1.5.27</h1>
+<a href="#derfinder-1-5-27" class="anchor"></a>derfinder 1.5.27</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added smoothing arguments for the single base-level approach based on functions from the bumphunter package. These arguments are useful for identifying differentially bounded ChIP-seq peaks.</li>
 </ul>
 </div>
-    <div id="derfinder-1513" class="section level1">
+    <div id="derfinder-1-5-13" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.13">
-<a href="#derfinder-1513" class="anchor"></a>derfinder 1.5.13</h1>
+<a href="#derfinder-1-5-13" class="anchor"></a>derfinder 1.5.13</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed <code><a href="../reference/railMatrix.html">railMatrix()</a></code>’s flexibility for defining the cluster used for loading the BigWig files. You can now use <code>BPPARAM.railChr</code> which will take priority over <code>file.cores</code>. Also, if <code>file.cores = 1L</code>, then the default will be to use <code>SerialParam()</code>, which was the implementation available prior to 1.5.11.</li>
 </ul>
 </div>
-    <div id="derfinder-1511" class="section level1">
+    <div id="derfinder-1-5-11" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.11">
-<a href="#derfinder-1511" class="anchor"></a>derfinder 1.5.11</h1>
+<a href="#derfinder-1-5-11" class="anchor"></a>derfinder 1.5.11</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Now <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code>, <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> and <code><a href="../reference/railMatrix.html">railMatrix()</a></code> can take an <code>L</code> argument of length equal to the number of samples in case not all samples have the same read length.</li>
@@ -389,74 +389,74 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/railMatrix.html">railMatrix()</a></code> has a new argument called <code>file.cores</code> for controlling how many cores are used for loading the BigWig files. In theory this allows using <code><a href="../reference/railMatrix.html">railMatrix()</a></code> with <code>BPPARAM.custom</code> equal to a <code><a href="https://rdrr.io/pkg/BiocParallel/man/BatchJobsParam-class.html">BiocParallel::BatchJobsParam()</a></code> to submit 1 job per chromosome, then <code>file.cores</code> determines the number of cores for reading the files. This is a highly experimental feature.</li>
 </ul>
 </div>
-    <div id="derfinder-159" class="section level1">
+    <div id="derfinder-1-5-9" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.9">
-<a href="#derfinder-159" class="anchor"></a>derfinder 1.5.9</h1>
+<a href="#derfinder-1-5-9" class="anchor"></a>derfinder 1.5.9</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Dropped the old introductory and advanced vignettes. We think that the new vignettes are clearer. In particular, they do a better job at highlighting the differences between the expressed regions-level and single base-level F-statistics implementations of the DER Finder approach to RNA-seq data.</li>
 </ul>
 </div>
-    <div id="derfinder-158" class="section level1">
+    <div id="derfinder-1-5-8" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.8">
-<a href="#derfinder-158" class="anchor"></a>derfinder 1.5.8</h1>
+<a href="#derfinder-1-5-8" class="anchor"></a>derfinder 1.5.8</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added a users guide vignette which explains nearly every detail you would want to know as a user.</li>
 </ul>
 </div>
-    <div id="derfinder-157" class="section level1">
+    <div id="derfinder-1-5-7" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.7">
-<a href="#derfinder-157" class="anchor"></a>derfinder 1.5.7</h1>
+<a href="#derfinder-1-5-7" class="anchor"></a>derfinder 1.5.7</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added a quick start vignette.</li>
 </ul>
 </div>
-    <div id="derfinder-156" class="section level1">
+    <div id="derfinder-1-5-6" class="section level1">
 <h1 class="page-header" data-toc-text="1.5.6">
-<a href="#derfinder-156" class="anchor"></a>derfinder 1.5.6</h1>
+<a href="#derfinder-1-5-6" class="anchor"></a>derfinder 1.5.6</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Introduced <code><a href="../reference/railMatrix.html">railMatrix()</a></code> which generates similar output to <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> but is much faster and less memory intensive. It achieves this by extracting the required information from BigWig files.</li>
 </ul>
 </div>
-    <div id="derfinder-133" class="section level1">
+    <div id="derfinder-1-3-3" class="section level1">
 <h1 class="page-header" data-toc-text="1.3.3">
-<a href="#derfinder-133" class="anchor"></a>derfinder 1.3.3</h1>
+<a href="#derfinder-1-3-3" class="anchor"></a>derfinder 1.3.3</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Brought back the <code>mc.outfile</code> argument for specifying the <code>outfile</code> argument in <code>SnowParam()</code>. See more details at <a href="https://stat.ethz.ch/pipermail/bioc-devel/2015-May/007531.html" class="uri">https://stat.ethz.ch/pipermail/bioc-devel/2015-May/007531.html</a>
 </li>
 </ul>
 </div>
-    <div id="derfinder-132" class="section level1">
+    <div id="derfinder-1-3-2" class="section level1">
 <h1 class="page-header" data-toc-text="1.3.2">
-<a href="#derfinder-132" class="anchor"></a>derfinder 1.3.2</h1>
+<a href="#derfinder-1-3-2" class="anchor"></a>derfinder 1.3.2</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Deprecated functions with underscores in their names in favor of camelCase functions. This was done to simplify the package.</li>
 </ul>
 </div>
-    <div id="derfinder-131" class="section level1">
+    <div id="derfinder-1-3-1" class="section level1">
 <h1 class="page-header" data-toc-text="1.3.1">
-<a href="#derfinder-131" class="anchor"></a>derfinder 1.3.1</h1>
+<a href="#derfinder-1-3-1" class="anchor"></a>derfinder 1.3.1</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Greatly increased the speed of the p-values calculation step. See <a href="https://github.com/lcolladotor/derfinder/issues/29" class="uri">https://github.com/lcolladotor/derfinder/issues/29</a> for details.</li>
 </ul>
 </div>
-    <div id="derfinder-1118-1" class="section level1">
+    <div id="derfinder-1-1-18" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.18">
-<a href="#derfinder-1118-1" class="anchor"></a>derfinder 1.1.18</h1>
+<a href="#derfinder-1-1-18" class="anchor"></a>derfinder 1.1.18</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Updated to work with qvalue 1.99.0.</li>
 </ul>
 </div>
-    <div id="derfinder-1117-1" class="section level1">
+    <div id="derfinder-1-1-17" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.17">
-<a href="#derfinder-1117-1" class="anchor"></a>derfinder 1.1.17</h1>
+<a href="#derfinder-1-1-17" class="anchor"></a>derfinder 1.1.17</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Changed citation information to reference the bioRxiv pre-print.</li>
@@ -467,35 +467,35 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Updated the default cluster option now that <code><a href="https://rdrr.io/pkg/BiocParallel/man/SnowParam-class.html">BiocParallel::SnowParam()</a></code> no longer has an <code>outfile</code> argument.</li>
 </ul>
 </div>
-    <div id="derfinder-1116" class="section level1">
+    <div id="derfinder-1-1-16" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.16">
-<a href="#derfinder-1116" class="anchor"></a>derfinder 1.1.16</h1>
+<a href="#derfinder-1-1-16" class="anchor"></a>derfinder 1.1.16</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> now uses <code>annotateTranscripts()</code> and <code>matchGenes()</code> from bumphunter version 1.7.3 (or greater). As announced at <a href="https://support.bioconductor.org/p/63568/" class="uri">https://support.bioconductor.org/p/63568/</a> these changes in bumphunter allow straight forward use of non-human annotation. In <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> using a different organism can be used by changing the <code>txdb</code> argument: finer control can be achieved through <code>...</code>. For example, by specifying the <code>annotationPackage</code> argument used in <code>annotateTranscripts()</code>.</li>
 </ul>
 </div>
-    <div id="derfinder-1115" class="section level1">
+    <div id="derfinder-1-1-15" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.15">
-<a href="#derfinder-1115" class="anchor"></a>derfinder 1.1.15</h1>
+<a href="#derfinder-1-1-15" class="anchor"></a>derfinder 1.1.15</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
 <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code> incorrectly labeled regions as intragenic. The correct name is intergenic.</li>
 </ul>
 </div>
-    <div id="derfinder-1114-1" class="section level1">
+    <div id="derfinder-1-1-14" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.14">
-<a href="#derfinder-1114-1" class="anchor"></a>derfinder 1.1.14</h1>
+<a href="#derfinder-1-1-14" class="anchor"></a>derfinder 1.1.14</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed an important bug on <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code>! Basically, internally <code>maxRegionGap</code> was set to 300 instead of 0 in one step by default. Thus the process of mapping regions to genomic coordinates was messed up. If you have results prior to this fix you can try using <a href="https://gist.github.com/bf85e2c7d5d1f8197707" class="uri">https://gist.github.com/bf85e2c7d5d1f8197707</a> to fix the results as much as possible. Basically, regions will be correct but the p-values will be approximated with the available information from the null regions. Truly fixing the p-values can only be done by re-running derfinder.</li>
 </ul>
 </div>
-    <div id="derfinder-115" class="section level1">
+    <div id="derfinder-1-1-5" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.5">
-<a href="#derfinder-115" class="anchor"></a>derfinder 1.1.5</h1>
+<a href="#derfinder-1-1-5" class="anchor"></a>derfinder 1.1.5</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Introduced function <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code> for using <code>GenomeInfoDb</code> when there is information regarding the species and naming style of interest. otherwise sequence names are left unchanged. If used with <code>verbose = TRUE</code>, a message is printed whenever <code>GenomeInfoDb</code> could not be used or if some information had to be guessed.</li>
@@ -505,9 +505,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixes <a href="https://support.bioconductor.org/p/62136" class="uri">https://support.bioconductor.org/p/62136</a>.</li>
 </ul>
 </div>
-    <div id="derfinder-113" class="section level1">
+    <div id="derfinder-1-1-3" class="section level1">
 <h1 class="page-header" data-toc-text="1.1.3">
-<a href="#derfinder-113" class="anchor"></a>derfinder 1.1.3</h1>
+<a href="#derfinder-1-1-3" class="anchor"></a>derfinder 1.1.3</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>
@@ -519,50 +519,50 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0990" class="section level1">
+    <div id="derfinder-0-99-0" class="section level1">
 <h1 class="page-header" data-toc-text="0.99.0">
-<a href="#derfinder-0990" class="anchor"></a>derfinder 0.99.0</h1>
+<a href="#derfinder-0-99-0" class="anchor"></a>derfinder 0.99.0</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Preparing to submit to Bioconductor.</li>
 </ul>
 </div>
-    <div id="derfinder-0081" class="section level1">
+    <div id="derfinder-0-0-81" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.81">
-<a href="#derfinder-0081" class="anchor"></a>derfinder 0.0.81</h1>
+<a href="#derfinder-0-0-81" class="anchor"></a>derfinder 0.0.81</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added an advanced vignette.</li>
 </ul>
 </div>
-    <div id="derfinder-0080" class="section level1">
+    <div id="derfinder-0-0-80" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.80">
-<a href="#derfinder-0080" class="anchor"></a>derfinder 0.0.80</h1>
+<a href="#derfinder-0-0-80" class="anchor"></a>derfinder 0.0.80</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Introductory vignette completed.</li>
 </ul>
 </div>
-    <div id="derfinder-0079" class="section level1">
+    <div id="derfinder-0-0-79" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.79">
-<a href="#derfinder-0079" class="anchor"></a>derfinder 0.0.79</h1>
+<a href="#derfinder-0-0-79" class="anchor"></a>derfinder 0.0.79</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/mergeResults.html">mergeResults()</a></code> can now calculate FWER adjusted p-values when provided with <code>optionsStats</code>. Updated <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> to supply the required information.</li>
 </ul>
 </div>
-    <div id="derfinder-0078" class="section level1">
+    <div id="derfinder-0-0-78" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.78">
-<a href="#derfinder-0078" class="anchor"></a>derfinder 0.0.78</h1>
+<a href="#derfinder-0-0-78" class="anchor"></a>derfinder 0.0.78</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added an introductory vignette.</li>
 </ul>
 </div>
-    <div id="derfinder-0077" class="section level1">
+    <div id="derfinder-0-0-77" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.77">
-<a href="#derfinder-0077" class="anchor"></a>derfinder 0.0.77</h1>
+<a href="#derfinder-0-0-77" class="anchor"></a>derfinder 0.0.77</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/derfinder-deprecated.html">advancedArg()</a></code> and its alias <code>advanced_arg()</code> which links to the docs for the advanced arguments by opening a browser window with the relevant information from GitHub.</li>
@@ -575,18 +575,18 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> has new advanced arguments that help when reading a specific region (or regions) of the genome.</li>
 </ul>
 </div>
-    <div id="derfinder-0076" class="section level1">
+    <div id="derfinder-0-0-76" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.76">
-<a href="#derfinder-0076" class="anchor"></a>derfinder 0.0.76</h1>
+<a href="#derfinder-0-0-76" class="anchor"></a>derfinder 0.0.76</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> and <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> argument <code>dirs</code> has been renamed to <code>files</code> for greater consistency with what it represents.</li>
 </ul>
 </div>
-    <div id="derfinder-0075" class="section level1">
+    <div id="derfinder-0-0-75" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.75">
-<a href="#derfinder-0075" class="anchor"></a>derfinder 0.0.75</h1>
+<a href="#derfinder-0-0-75" class="anchor"></a>derfinder 0.0.75</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -601,25 +601,25 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed <code><a href="../reference/regionMatrix.html">regionMatrix(totalMapped, targetSize)</a></code> case which would previously lead to an error in the <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> step.</li>
 </ul>
 </div>
-    <div id="derfinder-0074" class="section level1">
+    <div id="derfinder-0-0-74" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.74">
-<a href="#derfinder-0074" class="anchor"></a>derfinder 0.0.74</h1>
+<a href="#derfinder-0-0-74" class="anchor"></a>derfinder 0.0.74</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Most functions had their arguments changed to increase usability. Some have advanced arguments inside the code.</li>
 </ul>
 </div>
-    <div id="derfinder-0071" class="section level1">
+    <div id="derfinder-0-0-71" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.71">
-<a href="#derfinder-0071" class="anchor"></a>derfinder 0.0.71</h1>
+<a href="#derfinder-0-0-71" class="anchor"></a>derfinder 0.0.71</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Introduced <code><a href="../reference/coerceGR.html">coerceGR()</a></code>, <code><a href="../reference/createBwSample.html">createBwSample()</a></code> and <code><a href="../reference/createBw.html">createBw()</a></code> for exporting output from <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> into BigWig files.</li>
 </ul>
 </div>
-    <div id="derfinder-0070" class="section level1">
+    <div id="derfinder-0-0-70" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.70">
-<a href="#derfinder-0070" class="anchor"></a>derfinder 0.0.70</h1>
+<a href="#derfinder-0-0-70" class="anchor"></a>derfinder 0.0.70</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>All exported functions now have aliases with underscore names for those that prefer them over camel case names. For example, <code>analyze_chr()</code> is the new alias for <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>.</li>
@@ -627,27 +627,27 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code>makeBamList()</code> has been renamed to <code><a href="../reference/rawFiles.html">rawFiles()</a></code> since it can be used to identify a list of BigWig files instead of BAM files.</li>
 </ul>
 </div>
-    <div id="derfinder-0069" class="section level1">
+    <div id="derfinder-0-0-69" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.69">
-<a href="#derfinder-0069" class="anchor"></a>derfinder 0.0.69</h1>
+<a href="#derfinder-0-0-69" class="anchor"></a>derfinder 0.0.69</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> and <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> now have a <code>tilewidth</code> argument. When specified <code>GenomicFiles</code> is used to read the coverage in chunks. In theory, this can lead to lower memory usage at the expense of time.</li>
 </ul>
 </div>
-    <div id="derfinder-0067" class="section level1">
+    <div id="derfinder-0-0-67" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.67">
-<a href="#derfinder-0067" class="anchor"></a>derfinder 0.0.67</h1>
+<a href="#derfinder-0-0-67" class="anchor"></a>derfinder 0.0.67</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/preprocessCoverage.html">preprocessCoverage()</a></code> now has a <code>toMatrix</code> argument which is only used when <code>lowMemDir</code> is not <code>NULL</code>. It controls whether to save the chunks as <code>DataFrame</code> objects or <code>dgCMatrix</code> objects and the idea is that it can time by just transforming the data once instead of doing so at each permutation.</li>
 </ul>
 </div>
-    <div id="derfinder-0066" class="section level1">
+    <div id="derfinder-0-0-66" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.66">
-<a href="#derfinder-0066" class="anchor"></a>derfinder 0.0.66</h1>
+<a href="#derfinder-0-0-66" class="anchor"></a>derfinder 0.0.66</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -656,26 +656,26 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code>plotCluster()</code>, <code>plotOverview()</code> and <code>plotRegionCoverage()</code> were all moved to their new own package: <code>derfinderPlot</code>. This will make maintenance easier as the dependency <code>ggbio</code> is still under active development.</li>
 </ul>
 </div>
-    <div id="derfinder-0065" class="section level1">
+    <div id="derfinder-0-0-65" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.65">
-<a href="#derfinder-0065" class="anchor"></a>derfinder 0.0.65</h1>
+<a href="#derfinder-0-0-65" class="anchor"></a>derfinder 0.0.65</h1>
 <ul>
 <li>Re-organized code for <code>fstats.apply()</code>. Note that improving <code>.transformSparseMatrix()</code> would speed up the <code>Matrix</code> method.</li>
 <li>Note that all parallel functions have some overhead from loading derfinder on each worker. Check <code><a href="https://rdrr.io/r/base/system.time.html">system.time(library(derfinder))</a></code> to see how long the overhead is. It only pays off to use more cores if the calculations are taking longer than the overhead.</li>
 </ul>
 </div>
-    <div id="derfinder-0064" class="section level1">
+    <div id="derfinder-0-0-64" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.64">
-<a href="#derfinder-0064" class="anchor"></a>derfinder 0.0.64</h1>
+<a href="#derfinder-0-0-64" class="anchor"></a>derfinder 0.0.64</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> has several new arguments and now is a full parallel implementation of <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code>. These changes were introduced since <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> no longer blows up in memory since version 0.0.62 and thus the new recommended use case is to call <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> instead of running one job with <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> per chromosome or using a <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> loop.</li>
 </ul>
 </div>
-    <div id="derfinder-0063" class="section level1">
+    <div id="derfinder-0-0-63" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.63">
-<a href="#derfinder-0063" class="anchor"></a>derfinder 0.0.63</h1>
+<a href="#derfinder-0-0-63" class="anchor"></a>derfinder 0.0.63</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>
@@ -686,9 +686,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Functions <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>, <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code> and <code><a href="../reference/calculateStats.html">calculateStats()</a></code> now have arguments <code>method</code> and <code>scalefac</code> to match the changes in <code>fstats.apply()</code>.</li>
 </ul>
 </div>
-    <div id="derfinder-0062" class="section level1">
+    <div id="derfinder-0-0-62" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.62">
-<a href="#derfinder-0062" class="anchor"></a>derfinder 0.0.62</h1>
+<a href="#derfinder-0-0-62" class="anchor"></a>derfinder 0.0.62</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li><p>derfinder now uses <code>BiocParallel::blapply()</code> instead of <code><a href="https://rdrr.io/r/parallel/mclapply.html">parallel::mclapply()</a></code> When <code>mc.cores</code> is greater than 1, <code><a href="https://rdrr.io/pkg/BiocParallel/man/SnowParam-class.html">BiocParallel::SnowParam()</a></code> is used to construct the cluster. Otherwise, <code><a href="https://rdrr.io/pkg/BiocParallel/man/SerialParam-class.html">BiocParallel::SerialParam()</a></code> is used. This change reduces memory load when using the functions that have the <code>mc.cores</code> argument greater than 1.</p></li>
@@ -701,9 +701,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Examples might take longer to run with <code>mc.cores</code> greater than 1, but that is due to the small setup overhead of <code><a href="https://rdrr.io/pkg/BiocParallel/man/SnowParam-class.html">BiocParallel::SnowParam()</a></code> which is minimal compared to the overall speed gains with real data sets.</li>
 </ul>
 </div>
-    <div id="derfinder-0061" class="section level1">
+    <div id="derfinder-0-0-61" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.61">
-<a href="#derfinder-0061" class="anchor"></a>derfinder 0.0.61</h1>
+<a href="#derfinder-0-0-61" class="anchor"></a>derfinder 0.0.61</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -716,9 +716,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0060" class="section level1">
+    <div id="derfinder-0-0-60" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.60">
-<a href="#derfinder-0060" class="anchor"></a>derfinder 0.0.60</h1>
+<a href="#derfinder-0-0-60" class="anchor"></a>derfinder 0.0.60</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -733,35 +733,35 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0059" class="section level1">
+    <div id="derfinder-0-0-59" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.59">
-<a href="#derfinder-0059" class="anchor"></a>derfinder 0.0.59</h1>
+<a href="#derfinder-0-0-59" class="anchor"></a>derfinder 0.0.59</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Updated to work with BioC version 3.0</li>
 </ul>
 </div>
-    <div id="derfinder-0058" class="section level1">
+    <div id="derfinder-0-0-58" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.58">
-<a href="#derfinder-0058" class="anchor"></a>derfinder 0.0.58</h1>
+<a href="#derfinder-0-0-58" class="anchor"></a>derfinder 0.0.58</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>
 <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> and <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> can now import data from BigWig files.</li>
 </ul>
 </div>
-    <div id="derfinder-0057" class="section level1">
+    <div id="derfinder-0-0-57" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.57">
-<a href="#derfinder-0057" class="anchor"></a>derfinder 0.0.57</h1>
+<a href="#derfinder-0-0-57" class="anchor"></a>derfinder 0.0.57</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> now relies on <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> instead of <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code> making it faster and less memory intensive.</li>
 </ul>
 </div>
-    <div id="derfinder-0056" class="section level1">
+    <div id="derfinder-0-0-56" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.56">
-<a href="#derfinder-0056" class="anchor"></a>derfinder 0.0.56</h1>
+<a href="#derfinder-0-0-56" class="anchor"></a>derfinder 0.0.56</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> for filtering coverage data and using the resulting regions to construct a count matrix. Uses several derfinder functions.</li>
@@ -779,67 +779,67 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed warnings in <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code>.</li>
 </ul>
 </div>
-    <div id="derfinder-0055" class="section level1">
+    <div id="derfinder-0-0-55" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.55">
-<a href="#derfinder-0055" class="anchor"></a>derfinder 0.0.55</h1>
+<a href="#derfinder-0-0-55" class="anchor"></a>derfinder 0.0.55</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added a <code>NEWS</code> file with curated information from the git commit history.</li>
 </ul>
 </div>
-    <div id="derfinder-0054" class="section level1">
+    <div id="derfinder-0-0-54" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.54">
-<a href="#derfinder-0054" class="anchor"></a>derfinder 0.0.54</h1>
+<a href="#derfinder-0-0-54" class="anchor"></a>derfinder 0.0.54</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added example data for <code><a href="../reference/mergeResults.html">mergeResults()</a></code>. Now all functions have examples.</li>
 </ul>
 </div>
-    <div id="derfinder-0053" class="section level1">
+    <div id="derfinder-0-0-53" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.53">
-<a href="#derfinder-0053" class="anchor"></a>derfinder 0.0.53</h1>
+<a href="#derfinder-0-0-53" class="anchor"></a>derfinder 0.0.53</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Now derfinder includes the genomic state output for hg19 chr21. This allowed to implement examples for <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code>, <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code>, and <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code>.</li>
 </ul>
 </div>
-    <div id="derfinder-0052" class="section level1">
+    <div id="derfinder-0-0-52" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.52">
-<a href="#derfinder-0052" class="anchor"></a>derfinder 0.0.52</h1>
+<a href="#derfinder-0-0-52" class="anchor"></a>derfinder 0.0.52</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Several examples run much faster now</li>
 </ul>
 </div>
-    <div id="derfinder-0051" class="section level1">
+    <div id="derfinder-0-0-51" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.51">
-<a href="#derfinder-0051" class="anchor"></a>derfinder 0.0.51</h1>
+<a href="#derfinder-0-0-51" class="anchor"></a>derfinder 0.0.51</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
 <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code> now has an example</li>
 </ul>
 </div>
-    <div id="derfinder-0050" class="section level1">
+    <div id="derfinder-0-0-50" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.50">
-<a href="#derfinder-0050" class="anchor"></a>derfinder 0.0.50</h1>
+<a href="#derfinder-0-0-50" class="anchor"></a>derfinder 0.0.50</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed warnings in <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code> related to changes in <code>AnnotationDbi</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0049" class="section level1">
+    <div id="derfinder-0-0-49" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.49">
-<a href="#derfinder-0049" class="anchor"></a>derfinder 0.0.49</h1>
+<a href="#derfinder-0-0-49" class="anchor"></a>derfinder 0.0.49</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Updated the help for <code>plotRegionCoverage()</code> and fixed an issue.</li>
 </ul>
 </div>
-    <div id="derfinder-0048" class="section level1">
+    <div id="derfinder-0-0-48" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.48">
-<a href="#derfinder-0048" class="anchor"></a>derfinder 0.0.48</h1>
+<a href="#derfinder-0-0-48" class="anchor"></a>derfinder 0.0.48</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -847,9 +847,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0047" class="section level1">
+    <div id="derfinder-0-0-47" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.47">
-<a href="#derfinder-0047" class="anchor"></a>derfinder 0.0.47</h1>
+<a href="#derfinder-0-0-47" class="anchor"></a>derfinder 0.0.47</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -860,9 +860,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed several bugs as suggested by Andrew Jaffe</li>
 </ul>
 </div>
-    <div id="derfinder-0046" class="section level1">
+    <div id="derfinder-0-0-46" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.46">
-<a href="#derfinder-0046" class="anchor"></a>derfinder 0.0.46</h1>
+<a href="#derfinder-0-0-46" class="anchor"></a>derfinder 0.0.46</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Now requires R version 3.1</li>
@@ -880,9 +880,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code>plotRegionCoverage()</code> now matches latest <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> output</li>
 </ul>
 </div>
-    <div id="derfinder-0044" class="section level1">
+    <div id="derfinder-0-0-44" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.44">
-<a href="#derfinder-0044" class="anchor"></a>derfinder 0.0.44</h1>
+<a href="#derfinder-0-0-44" class="anchor"></a>derfinder 0.0.44</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Updated <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> with a new method for sub setting the coverage matrices, allowing for coverage estimates from overlapping regions. Now also uses <code>mclapply()</code>.</li>
@@ -892,9 +892,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed <code>NAMESPACE</code> to match current bioc-devel (2.14) as suggested by Tim Triche.</li>
 </ul>
 </div>
-    <div id="derfinder-0042" class="section level1">
+    <div id="derfinder-0-0-42" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.42">
-<a href="#derfinder-0042" class="anchor"></a>derfinder 0.0.42</h1>
+<a href="#derfinder-0-0-42" class="anchor"></a>derfinder 0.0.42</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>A series of performance enhancements were made to reduce the memory load (albeit a very minor time increase).</li>
@@ -904,17 +904,17 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Updated <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> to handle correctly the new <code>lowMemDir</code> argument.</li>
 </ul>
 </div>
-    <div id="derfinder-0041" class="section level1">
+    <div id="derfinder-0-0-41" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.41">
-<a href="#derfinder-0041" class="anchor"></a>derfinder 0.0.41</h1>
+<a href="#derfinder-0-0-41" class="anchor"></a>derfinder 0.0.41</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Introduced the <code>lowMemDir</code> argument to <code><a href="../reference/preprocessCoverage.html">preprocessCoverage()</a></code>, <code><a href="../reference/calculateStats.html">calculateStats()</a></code>, <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code>, <code>fstats.apply()</code>, and <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. Reduces peak memory usage at the expense of some input-output.</li>
 </ul>
 </div>
-    <div id="derfinder-0040" class="section level1">
+    <div id="derfinder-0-0-40" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.40">
-<a href="#derfinder-0040" class="anchor"></a>derfinder 0.0.40</h1>
+<a href="#derfinder-0-0-40" class="anchor"></a>derfinder 0.0.40</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -923,17 +923,17 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code> now uses <code>mclapply()</code> when possible</li>
 </ul>
 </div>
-    <div id="derfinder-0039" class="section level1">
+    <div id="derfinder-0-0-39" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.39">
-<a href="#derfinder-0039" class="anchor"></a>derfinder 0.0.39</h1>
+<a href="#derfinder-0-0-39" class="anchor"></a>derfinder 0.0.39</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Changed how the data is pre-processed and pre-splitted.</li>
 </ul>
 </div>
-    <div id="derfinder-0038" class="section level1">
+    <div id="derfinder-0-0-38" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.38">
-<a href="#derfinder-0038" class="anchor"></a>derfinder 0.0.38</h1>
+<a href="#derfinder-0-0-38" class="anchor"></a>derfinder 0.0.38</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -941,18 +941,18 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0037" class="section level1">
+    <div id="derfinder-0-0-37" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.37">
-<a href="#derfinder-0037" class="anchor"></a>derfinder 0.0.37</h1>
+<a href="#derfinder-0-0-37" class="anchor"></a>derfinder 0.0.37</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Updated the example in <code>plotCluster()</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0036" class="section level1">
+    <div id="derfinder-0-0-36" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.36">
-<a href="#derfinder-0036" class="anchor"></a>derfinder 0.0.36</h1>
+<a href="#derfinder-0-0-36" class="anchor"></a>derfinder 0.0.36</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/collapseFullCoverage.html">collapseFullCoverage()</a></code>
@@ -965,42 +965,42 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Updated several man pages.</li>
 </ul>
 </div>
-    <div id="derfinder-0035" class="section level1">
+    <div id="derfinder-0-0-35" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.35">
-<a href="#derfinder-0035" class="anchor"></a>derfinder 0.0.35</h1>
+<a href="#derfinder-0-0-35" class="anchor"></a>derfinder 0.0.35</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed an issue with the bumphunter dependency.</li>
 </ul>
 </div>
-    <div id="derfinder-0034" class="section level1">
+    <div id="derfinder-0-0-34" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.34">
-<a href="#derfinder-0034" class="anchor"></a>derfinder 0.0.34</h1>
+<a href="#derfinder-0-0-34" class="anchor"></a>derfinder 0.0.34</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Merged changes suggested by Michael Love</li>
 </ul>
 </div>
-    <div id="derfinder-0033" class="section level1">
+    <div id="derfinder-0-0-33" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.33">
-<a href="#derfinder-0033" class="anchor"></a>derfinder 0.0.33</h1>
+<a href="#derfinder-0-0-33" class="anchor"></a>derfinder 0.0.33</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Implemented fixes suggested by Michael Love</li>
 </ul>
 </div>
-    <div id="derfinder-0032" class="section level1">
+    <div id="derfinder-0-0-32" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.32">
-<a href="#derfinder-0032" class="anchor"></a>derfinder 0.0.32</h1>
+<a href="#derfinder-0-0-32" class="anchor"></a>derfinder 0.0.32</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed an important bug in the F-stats calculation</li>
 <li>Implemented fixes suggested by Michael Love</li>
 </ul>
 </div>
-    <div id="derfinder-0031" class="section level1">
+    <div id="derfinder-0-0-31" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.31">
-<a href="#derfinder-0031" class="anchor"></a>derfinder 0.0.31</h1>
+<a href="#derfinder-0-0-31" class="anchor"></a>derfinder 0.0.31</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>
@@ -1008,9 +1008,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0030" class="section level1">
+    <div id="derfinder-0-0-30" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.30">
-<a href="#derfinder-0030" class="anchor"></a>derfinder 0.0.30</h1>
+<a href="#derfinder-0-0-30" class="anchor"></a>derfinder 0.0.30</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added a <code>bai</code> argument to <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>
@@ -1019,9 +1019,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> can now work with a pre-defined BamFileList object.</li>
 </ul>
 </div>
-    <div id="derfinder-0029" class="section level1">
+    <div id="derfinder-0-0-29" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.29">
-<a href="#derfinder-0029" class="anchor"></a>derfinder 0.0.29</h1>
+<a href="#derfinder-0-0-29" class="anchor"></a>derfinder 0.0.29</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Now requires R version 3.0.2</li>
@@ -1035,9 +1035,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed <code>plotRegionCoverage()</code> and <code>plotCluster()</code> for unexpected cases.</li>
 </ul>
 </div>
-    <div id="derfinder-0028" class="section level1">
+    <div id="derfinder-0-0-28" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.28">
-<a href="#derfinder-0028" class="anchor"></a>derfinder 0.0.28</h1>
+<a href="#derfinder-0-0-28" class="anchor"></a>derfinder 0.0.28</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/sampleDepth.html">sampleDepth()</a></code>
@@ -1051,17 +1051,17 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Examples and <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> have been updated now that <code><a href="../reference/sampleDepth.html">sampleDepth()</a></code> was added</li>
 </ul>
 </div>
-    <div id="derfinder-0026" class="section level1">
+    <div id="derfinder-0-0-26" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.26">
-<a href="#derfinder-0026" class="anchor"></a>derfinder 0.0.26</h1>
+<a href="#derfinder-0-0-26" class="anchor"></a>derfinder 0.0.26</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Renamed package from <code>derfinder2</code> to <code>derfinder</code> to comply with Bioconductor guidelines.</li>
 </ul>
 </div>
-    <div id="derfinder-0025" class="section level1">
+    <div id="derfinder-0-0-25" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.25">
-<a href="#derfinder-0025" class="anchor"></a>derfinder 0.0.25</h1>
+<a href="#derfinder-0-0-25" class="anchor"></a>derfinder 0.0.25</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Changed how <code><a href="../reference/makeModels.html">makeModels()</a></code> deals with cases when mod and mod0 are not full rank.</li>
@@ -1074,17 +1074,17 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0024" class="section level1">
+    <div id="derfinder-0-0-24" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.24">
-<a href="#derfinder-0024" class="anchor"></a>derfinder 0.0.24</h1>
+<a href="#derfinder-0-0-24" class="anchor"></a>derfinder 0.0.24</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed <code>plotRegionCoverage()</code> for cases when in <code><a href="../reference/annotateRegions.html">annotateRegions(minoverlap=x)</a></code> lead to no overlaps being found between a region and annotation.</li>
 </ul>
 </div>
-    <div id="derfinder-0023" class="section level1">
+    <div id="derfinder-0-0-23" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.23">
-<a href="#derfinder-0023" class="anchor"></a>derfinder 0.0.23</h1>
+<a href="#derfinder-0-0-23" class="anchor"></a>derfinder 0.0.23</h1>
 <p>BUG FIXES</p>
 <ul>
 <li>Fixed some bugs in <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code> when no null regions or only some were found.</li>
@@ -1096,9 +1096,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed a bug on how the regions were being clustered.</li>
 </ul>
 </div>
-    <div id="derfinder-0022" class="section level1">
+    <div id="derfinder-0-0-22" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.22">
-<a href="#derfinder-0022" class="anchor"></a>derfinder 0.0.22</h1>
+<a href="#derfinder-0-0-22" class="anchor"></a>derfinder 0.0.22</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>MA-style plots in <code>generateReport()</code> now weight the mean by the number of samples in each group. Also removed the mean coverage vs area section. <code>generateReport()</code> now also has a <code>nBestClusters</code> argument.</li>
@@ -1111,9 +1111,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <li>Fixed some NAMESPACE issues</li>
 </ul>
 </div>
-    <div id="derfinder-0021" class="section level1">
+    <div id="derfinder-0-0-21" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.21">
-<a href="#derfinder-0021" class="anchor"></a>derfinder 0.0.21</h1>
+<a href="#derfinder-0-0-21" class="anchor"></a>derfinder 0.0.21</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code>, <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code>, <code>plotRegionCoverage()</code>
@@ -1129,36 +1129,36 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code>generateReport()</code> now uses <code>plotRegionCoverage()</code> and includes MA-style plots</li>
 </ul>
 </div>
-    <div id="derfinder-0020" class="section level1">
+    <div id="derfinder-0-0-20" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.20">
-<a href="#derfinder-0020" class="anchor"></a>derfinder 0.0.20</h1>
+<a href="#derfinder-0-0-20" class="anchor"></a>derfinder 0.0.20</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added a<code>nnotateRegions()</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0019" class="section level1">
+    <div id="derfinder-0-0-19" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.19">
-<a href="#derfinder-0019" class="anchor"></a>derfinder 0.0.19</h1>
+<a href="#derfinder-0-0-19" class="anchor"></a>derfinder 0.0.19</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0018" class="section level1">
+    <div id="derfinder-0-0-18" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.18">
-<a href="#derfinder-0018" class="anchor"></a>derfinder 0.0.18</h1>
+<a href="#derfinder-0-0-18" class="anchor"></a>derfinder 0.0.18</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0017" class="section level1">
+    <div id="derfinder-0-0-17" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.17">
-<a href="#derfinder-0017" class="anchor"></a>derfinder 0.0.17</h1>
+<a href="#derfinder-0-0-17" class="anchor"></a>derfinder 0.0.17</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -1169,9 +1169,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0016" class="section level1">
+    <div id="derfinder-0-0-16" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.16">
-<a href="#derfinder-0016" class="anchor"></a>derfinder 0.0.16</h1>
+<a href="#derfinder-0-0-16" class="anchor"></a>derfinder 0.0.16</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code>generateReport()</code>
@@ -1183,9 +1183,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0015" class="section level1">
+    <div id="derfinder-0-0-15" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.15">
-<a href="#derfinder-0015" class="anchor"></a>derfinder 0.0.15</h1>
+<a href="#derfinder-0-0-15" class="anchor"></a>derfinder 0.0.15</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -1197,9 +1197,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0014" class="section level1">
+    <div id="derfinder-0-0-14" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.14">
-<a href="#derfinder-0014" class="anchor"></a>derfinder 0.0.14</h1>
+<a href="#derfinder-0-0-14" class="anchor"></a>derfinder 0.0.14</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> and <code><a href="../reference/mergeResults.html">mergeResults()</a></code>
@@ -1217,18 +1217,18 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/preprocessCoverage.html">preprocessCoverage()</a></code> now calculates the mean coverage at each base</li>
 </ul>
 </div>
-    <div id="derfinder-0013" class="section level1">
+    <div id="derfinder-0-0-13" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.13">
-<a href="#derfinder-0013" class="anchor"></a>derfinder 0.0.13</h1>
+<a href="#derfinder-0-0-13" class="anchor"></a>derfinder 0.0.13</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Users can specify significance cutoffs for <code>plotOverview()</code> and <code>plotRegion()</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0012" class="section level1">
+    <div id="derfinder-0-0-12" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.12">
-<a href="#derfinder-0012" class="anchor"></a>derfinder 0.0.12</h1>
+<a href="#derfinder-0-0-12" class="anchor"></a>derfinder 0.0.12</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -1236,18 +1236,18 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-0011" class="section level1">
+    <div id="derfinder-0-0-11" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.11">
-<a href="#derfinder-0011" class="anchor"></a>derfinder 0.0.11</h1>
+<a href="#derfinder-0-0-11" class="anchor"></a>derfinder 0.0.11</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added <code>plotOverview()</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-0010" class="section level1">
+    <div id="derfinder-0-0-10" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.10">
-<a href="#derfinder-0010" class="anchor"></a>derfinder 0.0.10</h1>
+<a href="#derfinder-0-0-10" class="anchor"></a>derfinder 0.0.10</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Added <code>plotRegion()</code>
@@ -1259,9 +1259,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code><a href="../reference/makeModels.html">makeModels()</a></code> can now handle a vector for the <code>adjustvars</code> argument</li>
 </ul>
 </div>
-    <div id="derfinder-009" class="section level1">
+    <div id="derfinder-0-0-9" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.9">
-<a href="#derfinder-009" class="anchor"></a>derfinder 0.0.9</h1>
+<a href="#derfinder-0-0-9" class="anchor"></a>derfinder 0.0.9</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -1276,18 +1276,18 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 <code>getSegmentsRle()</code> will now work properly in the case that no segments are found</li>
 </ul>
 </div>
-    <div id="derfinder-008" class="section level1">
+    <div id="derfinder-0-0-8" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.8">
-<a href="#derfinder-008" class="anchor"></a>derfinder 0.0.8</h1>
+<a href="#derfinder-0-0-8" class="anchor"></a>derfinder 0.0.8</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>Attempted to reduce memory load in <code><a href="../reference/calculateStats.html">calculateStats()</a></code> and <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-007" class="section level1">
+    <div id="derfinder-0-0-7" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.7">
-<a href="#derfinder-007" class="anchor"></a>derfinder 0.0.7</h1>
+<a href="#derfinder-0-0-7" class="anchor"></a>derfinder 0.0.7</h1>
 <p>SIGNIFICANT USER-VISIBLE CHANGES</p>
 <ul>
 <li>
@@ -1295,9 +1295,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-006" class="section level1">
+    <div id="derfinder-0-0-6" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.6">
-<a href="#derfinder-006" class="anchor"></a>derfinder 0.0.6</h1>
+<a href="#derfinder-0-0-6" class="anchor"></a>derfinder 0.0.6</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>
@@ -1310,9 +1310,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-005" class="section level1">
+    <div id="derfinder-0-0-5" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.5">
-<a href="#derfinder-005" class="anchor"></a>derfinder 0.0.5</h1>
+<a href="#derfinder-0-0-5" class="anchor"></a>derfinder 0.0.5</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Introduced <code>method</code> argument for getSegmetnsRle()</li>
@@ -1323,9 +1323,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-004" class="section level1">
+    <div id="derfinder-0-0-4" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.4">
-<a href="#derfinder-004" class="anchor"></a>derfinder 0.0.4</h1>
+<a href="#derfinder-0-0-4" class="anchor"></a>derfinder 0.0.4</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code>makeBamList()</code>, <code><a href="../reference/makeModels.html">makeModels()</a></code>, and <code><a href="../reference/preprocessCoverage.html">preprocessCoverage()</a></code>
@@ -1334,27 +1334,27 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-003" class="section level1">
+    <div id="derfinder-0-0-3" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.3">
-<a href="#derfinder-003" class="anchor"></a>derfinder 0.0.3</h1>
+<a href="#derfinder-0-0-3" class="anchor"></a>derfinder 0.0.3</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/calculatePvalues.html">calculatePvalues()</a></code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-002" class="section level1">
+    <div id="derfinder-0-0-2" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.2">
-<a href="#derfinder-002" class="anchor"></a>derfinder 0.0.2</h1>
+<a href="#derfinder-0-0-2" class="anchor"></a>derfinder 0.0.2</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code>clusterMakerRle()</code>, <code><a href="../reference/findRegions.html">findRegions()</a></code>, and <code>getSegmentsRle()</code>
 </li>
 </ul>
 </div>
-    <div id="derfinder-001" class="section level1">
+    <div id="derfinder-0-0-1" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.1">
-<a href="#derfinder-001" class="anchor"></a>derfinder 0.0.1</h1>
+<a href="#derfinder-0-0-1" class="anchor"></a>derfinder 0.0.1</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Added <code><a href="../reference/calculateStats.html">calculateStats()</a></code>, <code><a href="../reference/filterData.html">filterData()</a></code>, <code>fstats()</code>, and <code>fstats.apply()</code>
@@ -1368,9 +1368,9 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </li>
 </ul>
 </div>
-    <div id="derfinder-000" class="section level1">
+    <div id="derfinder-0-0-0" class="section level1">
 <h1 class="page-header" data-toc-text="0.0.0">
-<a href="#derfinder-000" class="anchor"></a>derfinder 0.0.0</h1>
+<a href="#derfinder-0-0-0" class="anchor"></a>derfinder 0.0.0</h1>
 <p>NEW FEATURES</p>
 <ul>
 <li>Initialized the package (named <code>derfinder2</code>) from <code>derfinder</code> <a href="https://github.com/alyssafrazee/derfinder" class="uri">https://github.com/alyssafrazee/derfinder</a> version 1.0.2 This version is available at <a href="https://github.com/alyssafrazee/derfinder/tree/d49f7b28c26f075da36a50ab67c9d192ab2fd63d" class="uri">https://github.com/alyssafrazee/derfinder/tree/d49f7b28c26f075da36a50ab67c9d192ab2fd63d</a>
@@ -1394,7 +1394,7 @@ result &lt;- rtracklayer::import(sampleFile, selection = regs, as = 'RleList')</
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
