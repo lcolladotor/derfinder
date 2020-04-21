@@ -191,9 +191,9 @@ cutoff.</p>
     <pre class="examples"><div class='input'><span class='co'>## Collapse the coverage information</span>
 <span class='no'>collapsedFull</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collapseFullCoverage.html'>collapseFullCoverage</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>genomeData</span>$<span class='no'>coverage</span>),
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-19 21:57:04 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-19 21:57:04 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-21 03:14:49 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-21 03:14:49 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
 <span class='co'>## Calculate library size adjustments</span>
-<span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleDepth.html'>sampleDepth</a></span>(<span class='no'>collapsedFull</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-19 21:57:04 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-19 21:57:04 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
+<span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleDepth.html'>sampleDepth</a></span>(<span class='no'>collapsedFull</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>), <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-21 03:14:49 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-21 03:14:49 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
 <span class='co'>## Build the models</span>
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='no'>genomeInfo</span>$<span class='no'>pop</span>
 <span class='no'>adjustvars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='no'>genomeInfo</span>$<span class='no'>gender</span>)
@@ -206,9 +206,9 @@ cutoff.</p>
 )
 
 <span class='co'>## Run the function</span>
-<span class='no'>fstats</span> <span class='kw'>&lt;-</span> <span class='fu'>calculateStats</span>(<span class='no'>prep</span>, <span class='no'>models</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"regular"</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-19 21:57:04 calculateStats: calculating the F-statistics</span></div><div class='input'><span class='no'>fstats</span></div><div class='output co'>#&gt; numeric-Rle of length 1434 with 360 runs
+<span class='no'>fstats</span> <span class='kw'>&lt;-</span> <span class='fu'>calculateStats</span>(<span class='no'>prep</span>, <span class='no'>models</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"regular"</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-21 03:14:50 calculateStats: calculating the F-statistics</span></div><div class='input'><span class='no'>fstats</span></div><div class='output co'>#&gt; numeric-Rle of length 1434 with 360 runs
 #&gt;   Lengths:                    1                    5 ...                    1
-#&gt;   Values :     5.10948442536765      3.8522894995358 ...     3.99765511646193</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+#&gt;   Values :      5.1094844253696     3.85228949953593 ...     3.99765511646061</div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'>## Compare vs pre-packaged F-statistics</span>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='st'>"testthat"</span>)
 <span class='fu'><a href='https://testthat.r-lib.org/reference/expect_that.html'>expect_that</a></span>(<span class='no'>fstats</span>, <span class='fu'><a href='https://testthat.r-lib.org/reference/oldskool.html'>is_equivalent_to</a></span>(<span class='no'>genomeFstats</span>))
@@ -228,7 +228,7 @@ cutoff.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
