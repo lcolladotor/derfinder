@@ -98,7 +98,7 @@ print(citation('derfinder'), bibtex = TRUE)
 #> base-pair resolution via the DER Finder approach_. doi:
 #> 10.18129/B9.bioc.derfinder (URL:
 #> https://doi.org/10.18129/B9.bioc.derfinder),
-#> https://github.com/lcolladotor/derfinder - R package version 1.21.6,
+#> https://github.com/lcolladotor/derfinder - R package version 1.21.7,
 #> <URL: http://www.bioconductor.org/packages/derfinder>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -108,7 +108,7 @@ print(citation('derfinder'), bibtex = TRUE)
 #>     author = {Leonardo Collado-Torres and Andrew E. Jaffe and Jeffrey T. Leek},
 #>     year = {2017},
 #>     url = {http://www.bioconductor.org/packages/derfinder},
-#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.21.6},
+#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.21.7},
 #>     doi = {10.18129/B9.bioc.derfinder},
 #>   }
 ```
