@@ -1,3 +1,11 @@
+# derfinder 1.21.7
+
+BUG FIXES
+
+* Noticed an issue with `GenomicState::gencode_genomic_state()` that ultimately
+was due to `makeGenomicState()` and the transition in R to have as default
+`data.frame(stringsAsFactors = FALSE)` instead of `TRUE`.
+
 # derfinder 1.21.5
 
 SIGNIFICANT USER-VISIBLE CHANGES

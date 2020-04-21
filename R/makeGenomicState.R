@@ -119,10 +119,10 @@ makeGenomicState <- function(txdb, chrs = c(seq_len(22), "X", "Y"), ...) {
     ## Group introns by gene
     tx_names <- CharacterList(split(map$TXNAME, map$GENEID))
     tx_id <- CharacterList(split(map$TXID, map$GENEID))
-    tx2gene <- data.frame(tx = unlist(unname(tx_id)), gene = rep(
+    tx2gene <- data.frame(tx = unlist(unname(tx_id)), gene = factor(rep(
         names(tx_id),
         elementNROWS(tx_id)
-    ))
+    )))
     txidRep <- rep(as.numeric(names(introns)), elementNROWS(introns))
     txnameRep <- rep(
         names(intronsByTranscript(txdb, use.names = TRUE)),
