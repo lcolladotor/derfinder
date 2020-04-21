@@ -27,6 +27,11 @@ on:
 
 name: R-CMD-check-bioc
 
+env:
+  has_testthat: 'true'
+  run_covr: 'true'
+  run_pkgdown: 'true'
+
 jobs:
   define-docker-info:
     runs-on: ubuntu-latest
@@ -83,6 +88,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Cache R packages
+        if: "!contains(github.event.head_commit.message, '/nocache')"
         uses: actions/cache@v1
         with:
           path: /home/runner/work/_temp/Library
@@ -129,6 +135,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Reveal testthat details
+        if:  env.has_testthat == 'true'
         run: find . -name testthat.Rout -exec cat '{}' ';'
 
       - name: BiocCheck
@@ -136,21 +143,30 @@ jobs:
           R CMD BiocCheck --no-check-R-ver --no-check-bioc-help check/*.tar.gz
         ## For more options check http://bioconductor.org/packages/release/bioc/vignettes/BiocCheck/inst/doc/BiocCheck.html
 
-      - name: Install covr and pkgdown
-        if: github.ref == 'refs/heads/master'
+      - name: Install covr
+        if: github.ref == 'refs/heads/master' && env.run_covr == 'true'
         run: |
-          if (!requireNamespace("covr", quietly = TRUE))
-              remotes::install_cran("covr")
-          if (!requireNamespace("pkgdown", quietly = TRUE))
-              remotes::install_dev("pkgdown")
+          remotes::install_cran("covr")
+        shell: Rscript {0}
+
+      - name: Test coverage
+        if: github.ref == 'refs/heads/master' && env.run_covr == 'true'
+        run: |
+          covr::codecov()
+        shell: Rscript {0}
+
+      - name: Install pkgdown
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
+        run: |
+          remotes::install_cran("pkgdown")
         shell: Rscript {0}
 
       - name: Install package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: R CMD INSTALL .
 
       - name: Deploy package
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
@@ -160,12 +176,6 @@ jobs:
         ## at least one locally before this will work. This creates the gh-pages
         ## branch (erasing anything you haven't version controlled!) and
         ## makes the git history recognizable by pkgdown.
-
-      - name: Test coverage
-        if: github.ref == 'refs/heads/master'
-        run: |
-          covr::codecov()
-        shell: Rscript {0}
 
       - id: findrversion
         run: |
@@ -231,24 +241,17 @@ jobs:
         with:
           r-version: ${{ needs.R-CMD-check-bioc.outputs.rversion }}
 
-
       - name: Setup pandoc from r-lib
         uses: r-lib/actions/setup-pandoc@master
 
-
-      - name: Install Windows system dependencies
-        if: runner.os == 'Windows'
-        run: |
-            install.packages('RCurl', type = 'binary')
-        shell: Rscript {0}
-
       - name: Query dependencies
         run: |
-          install.packages('remotes')
+          if (!requireNamespace('remotes', quietly = TRUE)) install.packages('remotes')
           saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
         shell: Rscript {0}
 
       - name: Cache R packages
+        if: "!contains(github.event.head_commit.message, '/nocache')"
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
@@ -267,12 +270,20 @@ jobs:
       - name: Install macOS system dependencies
         if: matrix.config.os == 'macOS-latest' && needs.R-CMD-check-bioc.outputs.rversion == 'devel'
         run: |
-          ## Enable installing XML & xml2 from source if needed
+          ## Enable installing XML from source if needed
           brew install libxml2
           echo "::set-env name=XML_CONFIG::/usr/local/opt/libxml2/bin/xml2-config"
 
           brew install imagemagick@6
+          ## Won't be needed once the current xml2 dev is available on CRAN
           Rscript -e "remotes::install_github('r-lib/xml2')"
+
+      - name: Install Windows system dependencies
+        if: runner.os == 'Windows'
+        run: |
+          if (!requireNamespace('RCurl', quietly = TRUE)) install.packages('RCurl', type = 'binary')
+        shell: Rscript {0}
+
       - name: Install BiocManager
         run: |
           remotes::install_cran("BiocManager")
@@ -283,11 +294,37 @@ jobs:
           BiocManager::install(version = Sys.getenv('BIOCVERSIONNUM'))
         shell: Rscript {0}
 
+      - name: Install dependencies - Windows R-devel hack
+        if: runner.os == 'Windows' && ${{ needs.R-CMD-check-bioc.outputs.rversion }} == 'devel'
+        run: |
+          ## Need GenomeInfoDbData first
+          BiocManager::install('GenomeInfoDbData')
+
+          ## Hack my way through Windows for R-devel (4.1) ...
+          ## I only need this now to avoid the compilation issues on Windows
+          ## such as with Rhtslib and other packages.
+          ## At the end of April, once R 4.0 is actually released, then this
+          ## won't be an issue =)
+          ## Note that officially Bioconductor as of today 2020-04-20 does
+          ## not support R-devel! Hence the lack of binaries on R 4.1
+          contrib <- BiocManager::repositories()
+          is_cran <- names(contrib) == 'CRAN'
+          is_ann <- names(contrib) %in% c('BioCann', 'BioCexp', 'BioCworkflows')
+          contrib[!is_cran & !is_ann] <- paste0(contrib[!is_cran], '/bin/windows/contrib/4.0/')
+          contrib[is_ann] <- paste0(contrib[is_ann], '/src/contrib/')
+          contrib[is_cran] <- paste0(contrib[is_cran], '/bin/windows/contrib/4.1/')
+          contrib
+
+          remotes::install_deps(dependencies = TRUE, contriburl = contrib)
+          remotes::install_cran("rcmdcheck", contriburl = contrib)
+          if (!requireNamespace("BiocCheck", quietly = TRUE)) BiocManager::install("BiocCheck", contriburl = contrib)
+        shell: Rscript {0}
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
-          BiocManager::install("BiocCheck")
+          if (!requireNamespace("BiocCheck", quietly = TRUE)) BiocManager::install("BiocCheck")
         shell: Rscript {0}
 
       - name: Check
@@ -303,6 +340,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Reveal testthat details
+        if:  env.has_testthat == 'true'
         run: find . -name testthat.Rout -exec cat '{}' ';'
 
       - name: BiocCheck
