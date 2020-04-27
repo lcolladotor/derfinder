@@ -165,7 +165,7 @@ states are computed.</p></td>
     <tr>
       <th>...</th>
       <td><p>Arguments passed to other methods and/or advanced arguments.
-Advanced arguments:</p><dl'>
+Advanced arguments:</p><dl>
 <dt>verbose </dt><dd><p>If <code>TRUE</code> basic status updates will be printed along
 the way.</p></dd>
 <dt>ignore.strand </dt><dd><p>Passed on to
@@ -180,7 +180,7 @@ and <a href='https://rdrr.io/pkg/GenomicRanges/man/findOverlaps-methods.html'>fi
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A list with elements <code>countTable</code> and <code>annotationList</code>
-(only if <code>annotate=TRUE</code>).</p><dl'>
+(only if <code>annotate=TRUE</code>).</p><dl>
 <dt>countTable </dt><dd><p>This is a data.frame with the number of overlaps from the
 regions vs the genomic states with one type per column. For example, if
 <code>fullOrCoding='full'</code> then the columns are <code>exon</code>,
@@ -206,7 +206,7 @@ for further details.</p>
 <span class='no'>annotatedRegions</span> <span class='kw'>&lt;-</span> <span class='fu'>annotateRegions</span>(
     <span class='kw'>regions</span> <span class='kw'>=</span> <span class='no'>genomeRegions</span>$<span class='no'>regions</span>[<span class='fl'>1</span>:<span class='fl'>2</span>],
     <span class='kw'>genomicState</span> <span class='kw'>=</span> <span class='no'>genomicState</span>$<span class='no'>fullGenome</span>, <span class='kw'>minoverlap</span> <span class='kw'>=</span> <span class='fl'>1</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 annotateRegions: counting</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 annotateRegions: annotating</span></div><div class='input'><span class='no'>annotatedRegions</span></div><div class='output co'>#&gt; $countTable
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:06 annotateRegions: counting</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:06 annotateRegions: annotating</span></div><div class='input'><span class='no'>annotatedRegions</span></div><div class='output co'>#&gt; $countTable
 #&gt;   exon intergenic intron
 #&gt; 1    1          0      0
 #&gt; 2    1          0      0
@@ -251,7 +251,7 @@ for further details.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

@@ -199,7 +199,7 @@ and that they have the .bai extension. Ignored if <code>files</code> is a
     <tr>
       <th>...</th>
       <td><p>Arguments passed to other methods and/or advanced arguments.
-Advanced arguments:</p><dl'>
+Advanced arguments:</p><dl>
 <dt>verbose </dt><dd><p>If <code>TRUE</code> basic status updates will be printed along
 the way.</p></dd>
 <dt>inputType </dt><dd><p>Has to be either <code>bam</code> or <code>BigWig</code>. It specifies
@@ -236,7 +236,7 @@ library size. See <a href='getTotalMapped.html'>getTotalMapped</a> for calculati
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A list with two components.</p><dl'>
+    <p>A list with two components.</p><dl>
 <dt>coverage </dt><dd><p>is a DataFrame object where each column represents a
 sample. The number of rows depends on the number of base pairs that passed
 the cutoff and the information stored is the coverage at that given base.</p></dd>
@@ -273,7 +273,7 @@ example:
 <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>files</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/grep.html'>gsub</a></span>(<span class='st'>"_accepted_hits.bam"</span>, <span class='st'>""</span>, <span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>files</span>))
 
 <span class='co'>## Read and filter the data, only for 2 files</span>
-<span class='no'>dataSmall</span> <span class='kw'>&lt;-</span> <span class='fu'>loadCoverage</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='no'>files</span>[<span class='fl'>1</span>:<span class='fl'>2</span>], <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>"21"</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:41 loadCoverage: finding chromosome lengths</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:41 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:41 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:41 loadCoverage: applying the cutoff to the merged data</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:41 filterData: originally there were 48129895 rows, now there are 454 rows. Meaning that 100 percent was filtered.</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='no'>dataSmall</span> <span class='kw'>&lt;-</span> <span class='fu'>loadCoverage</span>(<span class='kw'>files</span> <span class='kw'>=</span> <span class='no'>files</span>[<span class='fl'>1</span>:<span class='fl'>2</span>], <span class='kw'>chr</span> <span class='kw'>=</span> <span class='st'>"21"</span>, <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:17 loadCoverage: finding chromosome lengths</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:17 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:17 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:17 loadCoverage: applying the cutoff to the merged data</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:17 filterData: originally there were 48129895 rows, now there are 454 rows. Meaning that 100 percent was filtered.</span></div><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='co'>## Export to BigWig files</span>
 <span class='fu'><a href='createBw.html'>createBw</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='st'>"chr21"</span> <span class='kw'>=</span> <span class='no'>dataSmall</span>))
 
@@ -306,7 +306,7 @@ example:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>

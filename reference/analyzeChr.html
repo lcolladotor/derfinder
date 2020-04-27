@@ -276,7 +276,7 @@ original values will be used.</p></td>
     <tr>
       <th>...</th>
       <td><p>Arguments passed to other methods and/or advanced arguments.
-Advanced arguments:</p><dl'>
+Advanced arguments:</p><dl>
 <dt>verbose </dt><dd><p>If <code>TRUE</code> basic status updates will be printed along
 the way. Default <code>TRUE</code>.</p></dd>
 <dt>scalefac </dt><dd><p>This argument is passed to <a href='preprocessCoverage.html'>preprocessCoverage</a>.</p></dd>
@@ -294,7 +294,7 @@ and <a href='define_cluster.html'>define_cluster</a>.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>returnOutput=TRUE</code>, a list with six components:</p><dl'>
+    <p>If <code>returnOutput=TRUE</code>, a list with six components:</p><dl>
 <dt>timeinfo </dt><dd><p>The wallclock timing information for each step.</p></dd>
 <dt>optionsStats </dt><dd><p>The main options used when running this function.</p></dd>
 <dt>coveragePrep </dt><dd><p>The output from <a href='preprocessCoverage.html'>preprocessCoverage</a>.</p></dd>
@@ -321,12 +321,12 @@ example:
     <pre class="examples"><div class='input'><span class='co'>## Collapse the coverage information</span>
 <span class='no'>collapsedFull</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collapseFullCoverage.html'>collapseFullCoverage</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>genomeData</span>$<span class='no'>coverage</span>),
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:04 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:04 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
 <span class='co'>## Calculate library size adjustments</span>
 <span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleDepth.html'>sampleDepth</a></span>(<span class='no'>collapsedFull</span>,
     <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>), <span class='kw'>nonzero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:04 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:04 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
 <span class='co'>## Build the models</span>
 <span class='no'>groupInfo</span> <span class='kw'>&lt;-</span> <span class='no'>genomeInfo</span>$<span class='no'>pop</span>
 <span class='no'>adjustvars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='no'>genomeInfo</span>$<span class='no'>gender</span>)
@@ -338,7 +338,7 @@ example:
     <span class='kw'>cutoffFstat</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>cutoffType</span> <span class='kw'>=</span> <span class='st'>"manual"</span>, <span class='kw'>groupInfo</span> <span class='kw'>=</span> <span class='no'>groupInfo</span>, <span class='kw'>mc.cores</span> <span class='kw'>=</span> <span class='fl'>1</span>,
     <span class='kw'>writeOutput</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>returnOutput</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"regular"</span>,
     <span class='kw'>runAnnotation</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</div><div class='output co'>#&gt; <span class='message'>extendedMapSeqlevels: sequence names mapped from NCBI to UCSC for species homo_sapiens</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 analyzeChr: Pre-processing the coverage data</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 analyzeChr: Calculating statistics</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 calculateStats: calculating the F-statistics</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 analyzeChr: Calculating pvalues</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 analyzeChr: Using the following manual cutoff for the F-statistics 1</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 calculatePvalues: identifying data segments</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 findRegions: segmenting information</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:29 findRegions: identifying candidate regions</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 findRegions: identifying region clusters</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 calculatePvalues: calculating F-statistics for permutation 1 and seed 20200427</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 findRegions: segmenting information</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 findRegions: identifying candidate regions</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 calculatePvalues: calculating the p-values</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 calculatePvalues: skipping q-value calculation.</span></div><div class='output co'>#&gt; <span class='message'>2020-04-26 00:45:30 analyzeChr: Annotating regions</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>results</span>)</div><div class='output co'>#&gt; [1] "timeinfo"     "optionsStats" "coveragePrep" "fstats"       "regions"     
+)</div><div class='output co'>#&gt; <span class='message'>extendedMapSeqlevels: sequence names mapped from NCBI to UCSC for species homo_sapiens</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:04 analyzeChr: Pre-processing the coverage data</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 analyzeChr: Calculating statistics</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 calculateStats: calculating the F-statistics</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 analyzeChr: Calculating pvalues</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 analyzeChr: Using the following manual cutoff for the F-statistics 1</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 calculatePvalues: identifying data segments</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 findRegions: segmenting information</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 findRegions: identifying candidate regions</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 findRegions: identifying region clusters</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 calculatePvalues: calculating F-statistics for permutation 1 and seed 20200428</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 findRegions: segmenting information</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 findRegions: identifying candidate regions</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 calculatePvalues: calculating the p-values</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 calculatePvalues: skipping q-value calculation.</span></div><div class='output co'>#&gt; <span class='message'>2020-04-27 04:20:05 analyzeChr: Annotating regions</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>results</span>)</div><div class='output co'>#&gt; [1] "timeinfo"     "optionsStats" "coveragePrep" "fstats"       "regions"     
 #&gt; [6] "annotation"  </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
@@ -355,7 +355,7 @@ example:
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
 </div>
 
       </footer>
