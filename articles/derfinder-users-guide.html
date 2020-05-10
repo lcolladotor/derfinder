@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.1</span>
       </span>
     </div>
 
@@ -91,7 +91,7 @@
       Lieber Institute for Brain Development, Johns Hopkins Medical Campus<br><a class="author_email" href="mailto:#"></a><a href="mailto:lcolladotor@gmail.com" class="email">lcolladotor@gmail.com</a>
       </address>
                   
-            <h4 class="date">27 April 2020</h4>
+            <h4 class="date">10 May 2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/lcolladotor/derfinder/blob/master/vignettes/derfinder-users-guide.Rmd"><code>vignettes/derfinder-users-guide.Rmd</code></a></small>
       <div class="hidden name"><code>derfinder-users-guide.Rmd</code></div>
@@ -107,14 +107,14 @@
 </div>
 <div id="derfinder-users-guide" class="section level1">
 <h1 class="hasAnchor">
-<a href="#derfinder-users-guide" class="anchor"></a><em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> users guide</h1>
-<p>If you haven’t already, please read the <a href="quickstart-derfinder.html">quick start to using derfinder</a> vignette. It explains the basics of using <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>, how to ask for help, and showcases an example analysis.</p>
-<p>The <em>derfinder users guide</em> goes into more depth about what you can do with <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>. It covers the two implementations of the DER Finder approach <a id="cite-Frazee_2014"></a>(<a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long">Frazee, Sabunciyan, Hansen, Irizarry, et al., 2014</a>). That is, the (A) expressed regions-level and (B) single base-level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.</p>
+<a href="#derfinder-users-guide" class="anchor"></a><em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> users guide</h1>
+<p>If you haven’t already, please read the <a href="quickstart-derfinder.html">quick start to using derfinder</a> vignette. It explains the basics of using <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>, how to ask for help, and showcases an example analysis.</p>
+<p>The <em>derfinder users guide</em> goes into more depth about what you can do with <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>. It covers the two implementations of the DER Finder approach <a id="cite-Frazee_2014"></a>(<a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long">Frazee, Sabunciyan, Hansen, Irizarry, et al., 2014</a>). That is, the (A) expressed regions-level and (B) single base-level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.</p>
 </div>
 <div id="expressed-regions-level" class="section level1">
 <h1 class="hasAnchor">
 <a href="#expressed-regions-level" class="anchor"></a>Expressed regions-level</h1>
-<p>The expressed regions-level implementation is based on summarizing the coverage information for all your samples and applying a cutoff to that summary. For example, by calculating the mean coverage at every base and then checking if it’s greater than some cutoff value of interest. Contiguous bases passing the cutoff become a candidate Expressed Region (ER). We can then construct a matrix summarizing the base-level coverage for each sample for the set of ERs. This matrix can then be using with packages developed for feature counting (<em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em>, <em><a href="https://bioconductor.org/packages/3.11/edgeR">edgeR</a></em>, etc) to determine which ERs have differential expression signal. That is, to identify the Differentially Expressed Regions (DERs).</p>
+<p>The expressed regions-level implementation is based on summarizing the coverage information for all your samples and applying a cutoff to that summary. For example, by calculating the mean coverage at every base and then checking if it’s greater than some cutoff value of interest. Contiguous bases passing the cutoff become a candidate Expressed Region (ER). We can then construct a matrix summarizing the base-level coverage for each sample for the set of ERs. This matrix can then be using with packages developed for feature counting (<em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em>, <em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em>, etc) to determine which ERs have differential expression signal. That is, to identify the Differentially Expressed Regions (DERs).</p>
 <div id="regionmatrix" class="section level2">
 <h2 class="hasAnchor">
 <a href="#regionmatrix" class="anchor"></a><code>regionMatrix()</code>
@@ -134,7 +134,7 @@
 <li>Per sample, a coverage BigWig file with the un-adjusted coverage.</li>
 </ol>
 <p><a href="http://rail.bio">Rail</a> does a great job in creating these files for us, saving time and reducing the memory load needed for this type of analysis with <code>R</code>.</p>
-<p>If you have this type of data or can generate it from BAM files with other tools, you will be interested in using the <code><a href="../reference/railMatrix.html">railMatrix()</a></code> function. The output is identical to the one from <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code>. It’s just much faster and memory efficient. The only drawback is that BigWig files are not fully supported in Windows as of <em><a href="https://bioconductor.org/packages/3.11/rtracklayer">rtracklayer</a></em> version 1.25.16.</p>
+<p>If you have this type of data or can generate it from BAM files with other tools, you will be interested in using the <code><a href="../reference/railMatrix.html">railMatrix()</a></code> function. The output is identical to the one from <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code>. It’s just much faster and memory efficient. The only drawback is that BigWig files are not fully supported in Windows as of <em><a href="https://bioconductor.org/packages/3.12/rtracklayer">rtracklayer</a></em> version 1.25.16.</p>
 <p>We highly recommend this approach. <a href="http://rail.bio">Rail</a> has also other significant features such as: scalability, reduced redundancy, integrative analysis, mode agnosticism, and inexpensive cloud implementation. For more information, visit <a href="http://rail.bio">rail.bio</a>.</p>
 </div>
 </div>
@@ -145,7 +145,7 @@
 <p>This type of analysis first loads the data and preprocess it in a format that saves time and reduces memory later. It then fits two nested models (an alternative and a null model) with the coverage information for every single base-pair of the genome. Using the two fitted models, it calculates an F-statistic. Basically, it generates a vector along the genome with F-statistics.</p>
 <p>A cutoff is then applied to the F-statistics and contiguous base-pairs of the genome passing the cutoff are considered a candidate Differentially Expressed Region (DER).</p>
 <p>Calculating F-statistics along the genome is computationally intensive, but doable. The major resource drain comes from assigning p-values to the DERs. To do so, we permute the model matrices and re-calculate the F-statistics generating a set of null DERs. Once we have enough null DERs, we compare the observed DERs against the null DERs to calculate p-values for the observed DERs.</p>
-<p>This type of analysis at the chromosome level is done by the <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> function, which is a high level function using many other pieces of <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>. Once all chromosomes have been processed, <code><a href="../reference/mergeResults.html">mergeResults()</a></code> combines them.</p>
+<p>This type of analysis at the chromosome level is done by the <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> function, which is a high level function using many other pieces of <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>. Once all chromosomes have been processed, <code><a href="../reference/mergeResults.html">mergeResults()</a></code> combines them.</p>
 <p>Which implementation of the DER Finder approach you will want to use depends on your specific use case and computational resources available. But in general, we recommend starting with the expressed regions-level implementation.</p>
 </div>
 <div id="example-data" class="section level1">
@@ -400,8 +400,8 @@ adult
 <div id="load-the-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#load-the-data" class="anchor"></a>Load the data</h2>
-<p><em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> offers three functions related to loading raw data. The first one, <code><a href="../reference/rawFiles.html">rawFiles()</a></code>, is a helper function for identifying the full paths to the input files. Next, <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> loads the base-level coverage data from either BAM or BigWig files for a specific chromosome. Finally, <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> will load the coverage for a set of chromosomes using <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code>.</p>
-<p>We can load the data from <em><a href="https://bioconductor.org/packages/3.11/derfinderData">derfinderData</a></em> <a id="cite-Collado-Torres_2020"></a>(<a href="https://github.com/leekgroup/derfinderData">Collado-Torres, Jaffe, and Leek, 2020</a>) by first identifying the paths to the BigWig files with <code><a href="../reference/rawFiles.html">rawFiles()</a></code> and then loading the data with <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>. Note that the <em>BrainSpan</em> data is already normalized by the total number of mapped reads in each sample. However, that won’t be the case with most data sets in which case you might want to use the <code>totalMapped</code> and <code>targetSize</code> arguments. The function <code><a href="../reference/getTotalMapped.html">getTotalMapped()</a></code> will be helpful to get this information.</p>
+<p><em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> offers three functions related to loading raw data. The first one, <code><a href="../reference/rawFiles.html">rawFiles()</a></code>, is a helper function for identifying the full paths to the input files. Next, <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> loads the base-level coverage data from either BAM or BigWig files for a specific chromosome. Finally, <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> will load the coverage for a set of chromosomes using <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code>.</p>
+<p>We can load the data from <em><a href="https://bioconductor.org/packages/3.12/derfinderData">derfinderData</a></em> <a id="cite-Collado-Torres_2020"></a>(<a href="https://github.com/leekgroup/derfinderData">Collado-Torres, Jaffe, and Leek, 2020</a>) by first identifying the paths to the BigWig files with <code><a href="../reference/rawFiles.html">rawFiles()</a></code> and then loading the data with <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>. Note that the <em>BrainSpan</em> data is already normalized by the total number of mapped reads in each sample. However, that won’t be the case with most data sets in which case you might want to use the <code>totalMapped</code> and <code>targetSize</code> arguments. The function <code><a href="../reference/getTotalMapped.html">getTotalMapped()</a></code> will be helpful to get this information.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="co">## Determine the files to use and fix the names</span>
 <span class="no">files</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/rawFiles.html">rawFiles</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"AMY"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"derfinderData"</span>),
     <span class="kw">samplepatt</span> <span class="kw">=</span> <span class="st">"bw"</span>, <span class="kw">fileterm</span> <span class="kw">=</span> <span class="kw">NULL</span>
@@ -413,27 +413,27 @@ adult
     <span class="kw">files</span> <span class="kw">=</span> <span class="no">files</span>, <span class="kw">chrs</span> <span class="kw">=</span> <span class="st">"chr21"</span>,
     <span class="kw">totalMapped</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">files</span>)), <span class="kw">targetSize</span> <span class="kw">=</span> <span class="fl">1</span>
 ))</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:09 fullCoverage: processing chromosome chr21</code></pre>
-<pre><code>## 2020-04-27 15:02:09 loadCoverage: finding chromosome lengths</code></pre>
-<pre><code>## 2020-04-27 15:02:09 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB113.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:09 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB123.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB126.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB130.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB135.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB136.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB145.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB153.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB159.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB178.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:10 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB92.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:11 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB97.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:11 loadCoverage: applying the cutoff to the merged data</code></pre>
-<pre><code>## 2020-04-27 15:02:11 filterData: normalizing coverage</code></pre>
-<pre><code>## 2020-04-27 15:02:12 filterData: done normalizing coverage</code></pre>
-<pre><code>## 2020-04-27 15:02:12 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:50:23 fullCoverage: processing chromosome chr21</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: finding chromosome lengths</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB113.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB123.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB126.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB130.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:23 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB135.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB136.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB145.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB153.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB159.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB178.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB92.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:24 loadCoverage: loading BigWig file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB97.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:25 loadCoverage: applying the cutoff to the merged data</code></pre>
+<pre><code>## 2020-05-10 16:50:25 filterData: normalizing coverage</code></pre>
+<pre><code>## 2020-05-10 16:50:26 filterData: done normalizing coverage</code></pre>
+<pre><code>## 2020-05-10 16:50:26 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.813   0.056   2.870</code></pre>
-<p>Alternatively, since the BigWig files are publicly available from <em>BrainSpan</em> (see <a href="http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/">here</a>), we can extract the relevant coverage data using <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>. Note that as of <em><a href="https://bioconductor.org/packages/3.11/rtracklayer">rtracklayer</a></em> 1.25.16 BigWig files are not supported on Windows: you can find the <code>fullCov</code> object inside <em><a href="https://bioconductor.org/packages/3.11/derfinderData">derfinderData</a></em> to follow the examples.</p>
+##   2.959   0.053   3.014</code></pre>
+<p>Alternatively, since the BigWig files are publicly available from <em>BrainSpan</em> (see <a href="http://download.alleninstitute.org/brainspan/MRF_BigWig_Gencode_v10/bigwig/">here</a>), we can extract the relevant coverage data using <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>. Note that as of <em><a href="https://bioconductor.org/packages/3.12/rtracklayer">rtracklayer</a></em> 1.25.16 BigWig files are not supported on Windows: you can find the <code>fullCov</code> object inside <em><a href="https://bioconductor.org/packages/3.12/derfinderData">derfinderData</a></em> to follow the examples.</p>
 <div class="sourceCode" id="cb23"><html><body><pre class="r"><span class="co">## Determine the files to use and fix the names</span>
 <span class="no">files</span> <span class="kw">&lt;-</span> <span class="no">pheno</span>$<span class="no">file</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">files</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">".AMY"</span>, <span class="st">""</span>, <span class="no">pheno</span>$<span class="no">lab</span>)
@@ -485,39 +485,52 @@ adult
 <p>In this example, we prefer to keep both an unfiltered and filtered version. For the filtered version, we will retain the bases where at least one sample has coverage greater than 2.</p>
 <div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="co">## Filter coverage</span>
 <span class="no">filteredCov</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">fullCov</span>, <span class="no">filterData</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:12 filterData: originally there were 48129895 rows, now there are 130356 rows. Meaning that 99.73 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:50:26 filterData: originally there were 48129895 rows, now there are 130356 rows. Meaning that 99.73 percent was filtered.</code></pre>
 <p>The result is similar to <code>fullCov</code> but with the genomic position index as shown below.</p>
 <div class="sourceCode" id="cb28"><html><body><pre class="r"><span class="co">## Similar to fullCov but with $position</span>
 <span class="no">filteredCov</span></pre></body></html></div>
 <pre><code>## $chr21
 ## $chr21$coverage
 ## DataFrame with 130356 rows and 12 columns
-##        HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178
-##         &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;  &lt;Rle&gt;
-## 1        2.01      0   0.00   0.04   0.23   0.13      0   0.59   0.15   0.05
-## 2        2.17      0   0.00   0.04   0.23   0.13      0   0.63   0.15   0.05
-## 3        2.21      0   0.00   0.04   0.23   0.13      0   0.67   0.15   0.05
-## 4        2.37      0   0.00   0.04   0.23   0.13      0   0.71   0.15   0.05
-## 5        2.37      0   0.06   0.04   0.23   0.13      0   0.75   0.25   0.10
-## ...       ...    ...    ...    ...    ...    ...    ...    ...    ...    ...
-## 130352   1.25   1.28   2.05   0.79   1.63   1.37   1.03   2.21   2.46   2.07
-## 130353   1.21   1.24   2.05   0.79   1.63   1.37   1.03   2.21   2.46   2.07
-## 130354   1.21   1.20   1.93   0.79   1.63   1.28   0.73   2.01   2.21   2.11
-## 130355   1.17   1.20   1.93   0.79   1.63   1.28   0.60   2.01   2.11   2.11
-## 130356   1.17   1.09   1.87   0.79   1.55   1.02   0.56   1.93   1.96   1.78
-##        HSB92 HSB97
-##        &lt;Rle&gt; &lt;Rle&gt;
-## 1       0.07  1.58
-## 2       0.07  1.58
-## 3       0.10  1.61
-## 4       0.13  1.65
-## 5       0.13  1.68
-## ...      ...   ...
-## 130352  2.23  1.51
-## 130353  2.23  1.51
-## 130354  2.13  1.47
-## 130355  2.13  1.47
-## 130356  2.06  1.47
+##                  HSB113           HSB123             HSB126             HSB130
+##                   &lt;Rle&gt;            &lt;Rle&gt;              &lt;Rle&gt;              &lt;Rle&gt;
+## 1      2.00999999046326                0                  0 0.0399999991059303
+## 2      2.17000007629395                0                  0 0.0399999991059303
+## 3      2.21000003814697                0                  0 0.0399999991059303
+## 4      2.36999988555908                0                  0 0.0399999991059303
+## 5      2.36999988555908                0 0.0599999986588955 0.0399999991059303
+## ...                 ...              ...                ...                ...
+## 130352             1.25 1.27999997138977   2.04999995231628  0.790000021457672
+## 130353 1.21000003814697 1.24000000953674   2.04999995231628  0.790000021457672
+## 130354 1.21000003814697 1.20000004768372   1.92999994754791  0.790000021457672
+## 130355 1.16999995708466 1.20000004768372   1.92999994754791  0.790000021457672
+## 130356 1.16999995708466  1.0900000333786   1.87000000476837  0.790000021457672
+##                   HSB135            HSB136            HSB145            HSB153
+##                    &lt;Rle&gt;             &lt;Rle&gt;             &lt;Rle&gt;             &lt;Rle&gt;
+## 1      0.230000004172325 0.129999995231628                 0 0.589999973773956
+## 2      0.230000004172325 0.129999995231628                 0 0.629999995231628
+## 3      0.230000004172325 0.129999995231628                 0 0.670000016689301
+## 4      0.230000004172325 0.129999995231628                 0 0.709999978542328
+## 5      0.230000004172325 0.129999995231628                 0              0.75
+## ...                  ...               ...               ...               ...
+## 130352  1.62999999523163  1.37000000476837  1.02999997138977  2.21000003814697
+## 130353  1.62999999523163  1.37000000476837  1.02999997138977  2.21000003814697
+## 130354  1.62999999523163  1.27999997138977 0.730000019073486  2.00999999046326
+## 130355  1.62999999523163  1.27999997138977 0.600000023841858  2.00999999046326
+## 130356  1.54999995231628  1.01999998092651 0.560000002384186  1.92999994754791
+##                   HSB159             HSB178              HSB92            HSB97
+##                    &lt;Rle&gt;              &lt;Rle&gt;              &lt;Rle&gt;            &lt;Rle&gt;
+## 1      0.150000005960464 0.0500000007450581 0.0700000002980232 1.58000004291534
+## 2      0.150000005960464 0.0500000007450581 0.0700000002980232 1.58000004291534
+## 3      0.150000005960464 0.0500000007450581  0.100000001490116 1.61000001430511
+## 4      0.150000005960464 0.0500000007450581  0.129999995231628 1.64999997615814
+## 5                   0.25  0.100000001490116  0.129999995231628 1.67999994754791
+## ...                  ...                ...                ...              ...
+## 130352  2.46000003814697    2.0699999332428   2.23000001907349 1.50999999046326
+## 130353  2.46000003814697    2.0699999332428   2.23000001907349 1.50999999046326
+## 130354  2.21000003814697   2.10999989509583   2.13000011444092 1.47000002861023
+## 130355  2.10999989509583   2.10999989509583   2.13000011444092 1.47000002861023
+## 130356  1.96000003814697   1.77999997138977   2.05999994277954 1.47000002861023
 ## 
 ## $chr21$position
 ## logical-Rle of length 48129895 with 3235 runs
@@ -546,20 +559,20 @@ adult
 <div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="co">## Use regionMatrix()</span>
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">regionMat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/regionMatrix.html">regionMatrix</a></span>(<span class="no">fullCov</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">30</span>, <span class="kw">L</span> <span class="kw">=</span> <span class="fl">76</span>))</pre></body></html></div>
 <pre><code>## By using totalMapped equal to targetSize, regionMatrix() assumes that you have normalized the data already in fullCoverage(), loadCoverage() or filterData().</code></pre>
-<pre><code>## 2020-04-27 15:02:13 regionMatrix: processing chr21</code></pre>
-<pre><code>## 2020-04-27 15:02:13 filterData: normalizing coverage</code></pre>
-<pre><code>## 2020-04-27 15:02:13 filterData: done normalizing coverage</code></pre>
-<pre><code>## 2020-04-27 15:02:15 filterData: originally there were 48129895 rows, now there are 2256 rows. Meaning that 100 percent was filtered.</code></pre>
-<pre><code>## 2020-04-27 15:02:15 findRegions: identifying potential segments</code></pre>
-<pre><code>## 2020-04-27 15:02:15 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:15 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:15 findRegions: identifying region clusters</code></pre>
-<pre><code>## 2020-04-27 15:02:16 getRegionCoverage: processing chr21</code></pre>
-<pre><code>## 2020-04-27 15:02:16 getRegionCoverage: done processing chr21</code></pre>
-<pre><code>## 2020-04-27 15:02:16 regionMatrix: calculating coverageMatrix</code></pre>
-<pre><code>## 2020-04-27 15:02:16 regionMatrix: adjusting coverageMatrix for 'L'</code></pre>
+<pre><code>## 2020-05-10 16:50:27 regionMatrix: processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:50:27 filterData: normalizing coverage</code></pre>
+<pre><code>## 2020-05-10 16:50:27 filterData: done normalizing coverage</code></pre>
+<pre><code>## 2020-05-10 16:50:29 filterData: originally there were 48129895 rows, now there are 2256 rows. Meaning that 100 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:50:29 findRegions: identifying potential segments</code></pre>
+<pre><code>## 2020-05-10 16:50:29 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:29 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:29 findRegions: identifying region clusters</code></pre>
+<pre><code>## 2020-05-10 16:50:29 getRegionCoverage: processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:50:29 getRegionCoverage: done processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:50:29 regionMatrix: calculating coverageMatrix</code></pre>
+<pre><code>## 2020-05-10 16:50:29 regionMatrix: adjusting coverageMatrix for 'L'</code></pre>
 <pre><code>##    user  system elapsed 
-##   2.483   0.096   2.580</code></pre>
+##   2.644   0.037   2.681</code></pre>
 <div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="co">## Explore results</span>
 <span class="fu"><a href="https://rdrr.io/r/base/class.html">class</a></span>(<span class="no">regionMat</span>)</pre></body></html></div>
 <pre><code>## [1] "list"</code></pre>
@@ -570,9 +583,9 @@ adult
 <li>
 <em>regions</em> is the result from filtering with <code><a href="../reference/filterData.html">filterData()</a></code> and then defining the regions with <code><a href="../reference/findRegions.html">findRegions()</a></code>. Note that the metadata variable <code>value</code> represents the mean coverage for the given region while <code>area</code> is the sum of the base-level coverage (before adjusting for read length) from all samples.</li>
 <li>
-<em>bpCoverage</em> is a list with the base-level coverage from all the regions. This information can then be used with <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html">plotRegionCoverage()</a></code> from <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em>.</li>
+<em>bpCoverage</em> is a list with the base-level coverage from all the regions. This information can then be used with <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html">plotRegionCoverage()</a></code> from <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em>.</li>
 <li>
-<em>coverageMatrix</em> is the matrix with one row per region and one column per sample. The different matrices for each of the chromosomes can then be merged prior to using <em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em> or other packages. Note that the counts are generally not integers, but can easily be rounded if necessary.</li>
+<em>coverageMatrix</em> is the matrix with one row per region and one column per sample. The different matrices for each of the chromosomes can then be merged prior to using <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em> or other packages. Note that the counts are generally not integers, but can easily be rounded if necessary.</li>
 </ul>
 <div class="sourceCode" id="cb51"><html><body><pre class="r"><span class="co">## regions output</span>
 <span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span></pre></body></html></div>
@@ -655,12 +668,12 @@ adult
 ## 4   33.802632   51.6146040  31.244343   33.576974   29.546183   28.2011836
 ## 5   90.950526   36.3046051  78.069605   97.151316  100.085790   35.5428946
 ## 6    1.171316    0.4221053   1.000132    1.139079    1.136447    0.3956579</code></pre>
-<p>We can then use the coverage matrix and packages such as <em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em> or <em><a href="https://bioconductor.org/packages/3.11/edgeR">edgeR</a></em> to identify which ERs are differentially expressed.</p>
+<p>We can then use the coverage matrix and packages such as <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em> or <em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em> to identify which ERs are differentially expressed.</p>
 <div id="find-ders-with-deseq2" class="section level3">
 <h3 class="hasAnchor">
-<a href="#find-ders-with-deseq2" class="anchor"></a>Find DERs with <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em>
+<a href="#find-ders-with-deseq2" class="anchor"></a>Find DERs with <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em>
 </h3>
-<p>Here we’ll use <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em> to identify the DERs. To use it we need to round the coverage data.</p>
+<p>Here we’ll use <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em> to identify the DERs. To use it we need to round the coverage data.</p>
 <div class="sourceCode" id="cb63"><html><body><pre class="r"><span class="co">## Required</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"DESeq2"</span>)</pre></body></html></div>
 <pre><code>## Loading required package: SummarizedExperiment</code></pre>
@@ -747,13 +760,13 @@ adult
 ##   45 0.0161213  0.725460
 ##   -------
 ##   seqinfo: 1 sequence from an unspecified genome</code></pre>
-<p>You can get similar results using <em><a href="https://bioconductor.org/packages/3.11/edgeR">edgeR</a></em> using these functions: <code>DGEList()</code>, <code>calcNormFactors()</code>, <code>estimateGLMRobustDisp()</code>, <code>glmFit()</code>, and <code>glmLRT()</code>.</p>
+<p>You can get similar results using <em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em> using these functions: <code>DGEList()</code>, <code>calcNormFactors()</code>, <code>estimateGLMRobustDisp()</code>, <code>glmFit()</code>, and <code>glmLRT()</code>.</p>
 </div>
 <div id="find-ders-with-limma" class="section level3">
 <h3 class="hasAnchor">
-<a href="#find-ders-with-limma" class="anchor"></a>Find DERs with <em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>
+<a href="#find-ders-with-limma" class="anchor"></a>Find DERs with <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>
 </h3>
-<p>Alternatively, we can find DERs using <em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>. Here we’ll exemplify a type of test closer to what we’ll do later with the F-statistics approach. First of all, we need to define our models.</p>
+<p>Alternatively, we can find DERs using <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>. Here we’ll exemplify a type of test closer to what we’ll do later with the F-statistics approach. First of all, we need to define our models.</p>
 <div class="sourceCode" id="cb85"><html><body><pre class="r"><span class="co">## Build models</span>
 <span class="no">mod</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(~ <span class="no">pheno</span>$<span class="no">group</span> + <span class="no">pheno</span>$<span class="no">gender</span>)
 <span class="no">mod0</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(~ <span class="no">pheno</span>$<span class="no">gender</span>)</pre></body></html></div>
@@ -849,8 +862,8 @@ adult
     <span class="kw">keepGR</span> <span class="kw">=</span>
         <span class="fl">FALSE</span>
 )</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:21 coerceGR: coercing sample meanChr21</code></pre>
-<pre><code>## 2020-04-27 15:02:21 createBwSample: exporting bw for sample meanChr21</code></pre>
+<pre><code>## 2020-05-10 16:50:35 coerceGR: coercing sample meanChr21</code></pre>
+<pre><code>## 2020-05-10 16:50:35 createBwSample: exporting bw for sample meanChr21</code></pre>
 <p>Now that we have the files <a href="http://rail.bio">Rail</a> creates for us, we can use <code><a href="../reference/railMatrix.html">railMatrix()</a></code>.</p>
 <div class="sourceCode" id="cb98"><html><body><pre class="r"><span class="co">## Identify files to use</span>
 <span class="no">summaryFile</span> <span class="kw">&lt;-</span> <span class="st">"meanChr21.bw"</span>
@@ -865,31 +878,31 @@ adult
         <span class="kw">sampleFiles</span> <span class="kw">=</span> <span class="no">sampleFiles</span>, <span class="kw">L</span> <span class="kw">=</span> <span class="fl">76</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">30</span>, <span class="kw">maxClusterGap</span> <span class="kw">=</span> <span class="fl">3000L</span>
     )
 )</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:22 loadCoverage: finding chromosome lengths</code></pre>
-<pre><code>## 2020-04-27 15:02:22 loadCoverage: loading BigWig file meanChr21.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:23 loadCoverage: applying the cutoff to the merged data</code></pre>
-<pre><code>## 2020-04-27 15:02:25 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
-<pre><code>## 2020-04-27 15:02:25 filterData: originally there were 48129895 rows, now there are 2256 rows. Meaning that 100 percent was filtered.</code></pre>
-<pre><code>## 2020-04-27 15:02:25 findRegions: identifying potential segments</code></pre>
-<pre><code>## 2020-04-27 15:02:25 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:25 .getSegmentsRle: segmenting with cutoff(s) 30</code></pre>
-<pre><code>## 2020-04-27 15:02:25 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:25 findRegions: identifying region clusters</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing regions 1 to 45</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB113.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB123.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB126.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB130.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB135.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:25 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB136.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB145.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB153.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB159.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB178.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB92.bw</code></pre>
-<pre><code>## 2020-04-27 15:02:26 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB97.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:37 loadCoverage: finding chromosome lengths</code></pre>
+<pre><code>## 2020-05-10 16:50:37 loadCoverage: loading BigWig file meanChr21.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:37 loadCoverage: applying the cutoff to the merged data</code></pre>
+<pre><code>## 2020-05-10 16:50:40 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:50:41 filterData: originally there were 48129895 rows, now there are 2256 rows. Meaning that 100 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:50:41 findRegions: identifying potential segments</code></pre>
+<pre><code>## 2020-05-10 16:50:41 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:41 .getSegmentsRle: segmenting with cutoff(s) 30</code></pre>
+<pre><code>## 2020-05-10 16:50:41 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:41 findRegions: identifying region clusters</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing regions 1 to 45</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB113.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB123.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB126.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB130.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB135.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB136.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB145.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB153.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:41 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB159.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:42 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB178.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:42 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB92.bw</code></pre>
+<pre><code>## 2020-05-10 16:50:42 railMatrix: processing file /usr/local/lib/R/host-site-library/derfinderData/extdata/AMY/HSB97.bw</code></pre>
 <pre><code>##    user  system elapsed 
-##   3.640   0.007   3.647</code></pre>
+##   5.000   0.020   5.022</code></pre>
 <p>When you take into account the time needed to load the data (<code><a href="../reference/fullCoverage.html">fullCoverage()</a></code>) and then creating the matrix (<code><a href="../reference/regionMatrix.html">regionMatrix()</a></code>), <code><a href="../reference/railMatrix.html">railMatrix()</a></code> is faster and less memory intensive.</p>
 <p>The objects are not identical due to small rounding errors, but it’s nothing to worry about.</p>
 <div class="sourceCode" id="cb123"><html><body><pre class="r"><span class="co">## Overall not identical due to small rounding errors</span>
@@ -914,7 +927,7 @@ adult
 <div id="single-base-level-f-statistics-analysis" class="section level1">
 <h1 class="hasAnchor">
 <a href="#single-base-level-f-statistics-analysis" class="anchor"></a>Single base-level F-statistics analysis</h1>
-<p>One form of base-level differential expression analysis implemented in <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> is to calculate F-statistics for every base and use them to define candidate differentially expressed regions. This type of analysis is further explained in this section.</p>
+<p>One form of base-level differential expression analysis implemented in <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> is to calculate F-statistics for every base and use them to define candidate differentially expressed regions. This type of analysis is further explained in this section.</p>
 <div id="models" class="section level2">
 <h2 class="hasAnchor">
 <a href="#models" class="anchor"></a>Models</h2>
@@ -922,8 +935,8 @@ adult
 <p>We can use <code><a href="../reference/sampleDepth.html">sampleDepth()</a></code> and it’s helper function <code><a href="../reference/collapseFullCoverage.html">collapseFullCoverage()</a></code> to get a proxy of the library size. Note that you would normally use the unfiltered data from all the chromosomes in this step and not just one.</p>
 <div class="sourceCode" id="cb131"><html><body><pre class="r"><span class="co">## Get some idea of the library sizes</span>
 <span class="no">sampleDepths</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/sampleDepth.html">sampleDepth</a></span>(<span class="fu"><a href="../reference/collapseFullCoverage.html">collapseFullCoverage</a></span>(<span class="no">fullCov</span>), <span class="fl">1</span>)</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:26 sampleDepth: Calculating sample quantiles</code></pre>
-<pre><code>## 2020-04-27 15:02:26 sampleDepth: Calculating sample adjustments</code></pre>
+<pre><code>## 2020-05-10 16:50:42 sampleDepth: Calculating sample quantiles</code></pre>
+<pre><code>## 2020-05-10 16:50:42 sampleDepth: Calculating sample adjustments</code></pre>
 <div class="sourceCode" id="cb134"><html><body><pre class="r"><span class="no">sampleDepths</span></pre></body></html></div>
 <pre><code>## HSB113.100% HSB123.100% HSB126.100% HSB130.100% HSB135.100% HSB136.100% 
 ##    19.82106    19.40505    19.53045    19.52017    20.33392    19.97758 
@@ -956,14 +969,14 @@ adult
 ## 4           1     19.52017           1
 ## 5           1     20.33392           0
 ## 6           1     19.97758           0</code></pre>
-<p>Note how the null model (<code>mod0</code>) is nested in the alternative model (<code>mod</code>). Use the same models for all your chromosomes unless you have a specific reason to use chromosome-specific models. Note that <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> is very flexible and works with any type of nested model.</p>
+<p>Note how the null model (<code>mod0</code>) is nested in the alternative model (<code>mod</code>). Use the same models for all your chromosomes unless you have a specific reason to use chromosome-specific models. Note that <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> is very flexible and works with any type of nested model.</p>
 </div>
 <div id="find-candidate-ders" class="section level2">
 <h2 class="hasAnchor">
 <a href="#find-candidate-ders" class="anchor"></a>Find candidate DERs</h2>
 <p>Next, we can find candidate differentially expressed regions (DERs) using as input the segments of the genome where at least one sample has coverage greater than 2. That is, the filtered coverage version we created previously.</p>
-<p>The <strong>main</strong> function in <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> for this type of analysis is <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. It works at a chromosome level and runs behinds the scenes several other <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> functions. To use it, you have to provide the models, the grouping information, how to calculate the F-statistic cutoff and most importantly, the number of permutations.</p>
-<p>By default <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.05. To assign p-values to the candidate DERs, <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.</p>
+<p>The <strong>main</strong> function in <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> for this type of analysis is <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. It works at a chromosome level and runs behinds the scenes several other <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> functions. To use it, you have to provide the models, the grouping information, how to calculate the F-statistic cutoff and most importantly, the number of permutations.</p>
+<p>By default <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> will use a theoretical cutoff. In this example, we use the cutoff that would correspond to a p-value of 0.05. To assign p-values to the candidate DERs, <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> permutes the rows of the model matrices, re-calculates the F-statistics and identifies null regions. Then it compares the area of the observed regions versus the areas from the null regions to assign an empirical p-value.</p>
 <p>In this example we will use twenty permutations, although in a real case scenario you might consider a larger number of permutations.</p>
 <p>In real scenario, you might consider saving the results from all the chromosomes in a given directory. Here we will use <em>analysisResults</em>. For each chromosome you analyze, a new directory with the chromosome-specific data will be created. So in this case, we will have <em>analysisResults/chr21</em>.</p>
 <div class="sourceCode" id="cb138"><html><body><pre class="r"><span class="co">## Create a analysis directory</span>
@@ -977,77 +990,77 @@ adult
     <span class="kw">groupInfo</span> <span class="kw">=</span> <span class="no">pheno</span>$<span class="no">group</span>, <span class="kw">writeOutput</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">cutoffFstat</span> <span class="kw">=</span> <span class="fl">5e-02</span>,
     <span class="kw">nPermute</span> <span class="kw">=</span> <span class="fl">20</span>, <span class="kw">seeds</span> <span class="kw">=</span> <span class="fl">20140923</span> + <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fl">20</span>), <span class="kw">returnOutput</span> <span class="kw">=</span> <span class="fl">TRUE</span>
 ))</pre></body></html></div>
-<pre><code>## 2020-04-27 15:02:27 analyzeChr: Pre-processing the coverage data</code></pre>
-<pre><code>## 2020-04-27 15:02:30 analyzeChr: Calculating statistics</code></pre>
-<pre><code>## 2020-04-27 15:02:30 calculateStats: calculating the F-statistics</code></pre>
-<pre><code>## 2020-04-27 15:02:30 analyzeChr: Calculating pvalues</code></pre>
-<pre><code>## 2020-04-27 15:02:30 analyzeChr: Using the following theoretical cutoff for the F-statistics 5.31765507157871</code></pre>
-<pre><code>## 2020-04-27 15:02:30 calculatePvalues: identifying data segments</code></pre>
-<pre><code>## 2020-04-27 15:02:30 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: identifying region clusters</code></pre>
-<pre><code>## 2020-04-27 15:02:31 calculatePvalues: calculating F-statistics for permutation 1 and seed 20140924</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:31 calculatePvalues: calculating F-statistics for permutation 2 and seed 20140925</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:31 calculatePvalues: calculating F-statistics for permutation 3 and seed 20140926</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:31 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:31 calculatePvalues: calculating F-statistics for permutation 4 and seed 20140927</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:32 calculatePvalues: calculating F-statistics for permutation 5 and seed 20140928</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:32 calculatePvalues: calculating F-statistics for permutation 6 and seed 20140929</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:32 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:32 calculatePvalues: calculating F-statistics for permutation 7 and seed 20140930</code></pre>
-<pre><code>## 2020-04-27 15:02:33 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:33 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:33 calculatePvalues: calculating F-statistics for permutation 8 and seed 20140931</code></pre>
-<pre><code>## 2020-04-27 15:02:33 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:33 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:33 calculatePvalues: calculating F-statistics for permutation 9 and seed 20140932</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:34 calculatePvalues: calculating F-statistics for permutation 10 and seed 20140933</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:34 calculatePvalues: calculating F-statistics for permutation 11 and seed 20140934</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:34 calculatePvalues: calculating F-statistics for permutation 12 and seed 20140935</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:34 calculatePvalues: calculating F-statistics for permutation 13 and seed 20140936</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:34 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:35 calculatePvalues: calculating F-statistics for permutation 14 and seed 20140937</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:35 calculatePvalues: calculating F-statistics for permutation 15 and seed 20140938</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:35 calculatePvalues: calculating F-statistics for permutation 16 and seed 20140939</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:35 calculatePvalues: calculating F-statistics for permutation 17 and seed 20140940</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:35 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:35 calculatePvalues: calculating F-statistics for permutation 18 and seed 20140941</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:36 calculatePvalues: calculating F-statistics for permutation 19 and seed 20140942</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:36 calculatePvalues: calculating F-statistics for permutation 20 and seed 20140943</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: segmenting information</code></pre>
-<pre><code>## 2020-04-27 15:02:36 findRegions: identifying candidate regions</code></pre>
-<pre><code>## 2020-04-27 15:02:36 calculatePvalues: calculating the p-values</code></pre>
-<pre><code>## 2020-04-27 15:02:36 analyzeChr: Annotating regions</code></pre>
+<pre><code>## 2020-05-10 16:50:43 analyzeChr: Pre-processing the coverage data</code></pre>
+<pre><code>## 2020-05-10 16:50:45 analyzeChr: Calculating statistics</code></pre>
+<pre><code>## 2020-05-10 16:50:45 calculateStats: calculating the F-statistics</code></pre>
+<pre><code>## 2020-05-10 16:50:46 analyzeChr: Calculating pvalues</code></pre>
+<pre><code>## 2020-05-10 16:50:46 analyzeChr: Using the following theoretical cutoff for the F-statistics 5.31765507157871</code></pre>
+<pre><code>## 2020-05-10 16:50:46 calculatePvalues: identifying data segments</code></pre>
+<pre><code>## 2020-05-10 16:50:46 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: identifying region clusters</code></pre>
+<pre><code>## 2020-05-10 16:50:47 calculatePvalues: calculating F-statistics for permutation 1 and seed 20140924</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:47 calculatePvalues: calculating F-statistics for permutation 2 and seed 20140925</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:47 calculatePvalues: calculating F-statistics for permutation 3 and seed 20140926</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:47 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:48 calculatePvalues: calculating F-statistics for permutation 4 and seed 20140927</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:48 calculatePvalues: calculating F-statistics for permutation 5 and seed 20140928</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:48 calculatePvalues: calculating F-statistics for permutation 6 and seed 20140929</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:48 calculatePvalues: calculating F-statistics for permutation 7 and seed 20140930</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:48 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:48 calculatePvalues: calculating F-statistics for permutation 8 and seed 20140931</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:49 calculatePvalues: calculating F-statistics for permutation 9 and seed 20140932</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:49 calculatePvalues: calculating F-statistics for permutation 10 and seed 20140933</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:49 calculatePvalues: calculating F-statistics for permutation 11 and seed 20140934</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:49 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:49 calculatePvalues: calculating F-statistics for permutation 12 and seed 20140935</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:50 calculatePvalues: calculating F-statistics for permutation 13 and seed 20140936</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:50 calculatePvalues: calculating F-statistics for permutation 14 and seed 20140937</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:50 calculatePvalues: calculating F-statistics for permutation 15 and seed 20140938</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:50 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:50 calculatePvalues: calculating F-statistics for permutation 16 and seed 20140939</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:51 calculatePvalues: calculating F-statistics for permutation 17 and seed 20140940</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:51 calculatePvalues: calculating F-statistics for permutation 18 and seed 20140941</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:51 calculatePvalues: calculating F-statistics for permutation 19 and seed 20140942</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:51 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:51 calculatePvalues: calculating F-statistics for permutation 20 and seed 20140943</code></pre>
+<pre><code>## 2020-05-10 16:50:52 findRegions: segmenting information</code></pre>
+<pre><code>## 2020-05-10 16:50:52 findRegions: identifying candidate regions</code></pre>
+<pre><code>## 2020-05-10 16:50:52 calculatePvalues: calculating the p-values</code></pre>
+<pre><code>## 2020-05-10 16:50:52 analyzeChr: Annotating regions</code></pre>
 <pre><code>## No annotationPackage supplied. Trying org.Hs.eg.db.</code></pre>
 <pre><code>## Loading required package: org.Hs.eg.db</code></pre>
 <pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
@@ -1058,10 +1071,10 @@ adult
 <pre><code>## Getting exons.</code></pre>
 <pre><code>## .....</code></pre>
 <pre><code>##    user  system elapsed 
-##  48.230   2.089  46.860</code></pre>
+##  48.373   2.169  47.907</code></pre>
 <p>To speed up <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>, you might need to use several cores via the <code>mc.cores</code> argument. If memory is limiting, you might want to use a smaller <code>chunksize</code> (default is 5 million). Note that if you use too many cores, you might hit the input/output ceiling of your data network and/or hard drives speed.</p>
 <p>Before running with a large number of permutations we recommend exploring how long each permutation cycle takes using a single permutation.</p>
-<p>Note that analyzing each chromosome with a large number of permutations and a rich data set can take several hours, so we recommend running one job running <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> per chromosome, and then merging the results via <code><a href="../reference/mergeResults.html">mergeResults()</a></code>. This process is further described in the advanced <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> vignette.</p>
+<p>Note that analyzing each chromosome with a large number of permutations and a rich data set can take several hours, so we recommend running one job running <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> per chromosome, and then merging the results via <code><a href="../reference/mergeResults.html">mergeResults()</a></code>. This process is further described in the advanced <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> vignette.</p>
 </div>
 <div id="explore-results" class="section level2">
 <h2 class="hasAnchor">
@@ -1116,7 +1129,7 @@ adult
 <span class="no">results</span>$<span class="no">fstats</span></pre></body></html></div>
 <pre><code>## numeric-Rle of length 130356 with 126807 runs
 ##   Lengths:                   1                   1 ...                   1
-##   Values :  0.0192260952849047  0.0299693665742318 ...    2.32463844414498</code></pre>
+##   Values :  0.0192260952849047  0.0299693665742318 ...    2.32463844414497</code></pre>
 <div class="sourceCode" id="cb231"><html><body><pre class="r"><span class="co">## Note that the length matches the number of bases used</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">results</span>$<span class="no">fstats</span>), <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(<span class="no">results</span>$<span class="no">coveragePrep</span>$<span class="no">position</span>))</pre></body></html></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -1252,7 +1265,7 @@ adult
 <div id="nearest-annotation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#nearest-annotation" class="anchor"></a>Nearest annotation</h3>
-<p><code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> will find the nearest annotation feature using <code><a href="https://rdrr.io/pkg/bumphunter/man/matchGenes.html">matchGenes()</a></code> from <em><a href="https://bioconductor.org/packages/3.11/bumphunter">bumphunter</a></em> (version &gt;= 1.7.3). This information is useful considering that the candidate DERs were identified without relying on annotation. Yet at the end, we are interested to check if they are inside a known exon, upstream a gene, etc.</p>
+<p><code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> will find the nearest annotation feature using <code><a href="https://rdrr.io/pkg/bumphunter/man/matchGenes.html">matchGenes()</a></code> from <em><a href="https://bioconductor.org/packages/3.12/bumphunter">bumphunter</a></em> (version &gt;= 1.7.3). This information is useful considering that the candidate DERs were identified without relying on annotation. Yet at the end, we are interested to check if they are inside a known exon, upstream a gene, etc.</p>
 <div class="sourceCode" id="cb247"><html><body><pre class="r"><span class="co">## Nearest annotation</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">results</span>$<span class="no">annotation</span>)</pre></body></html></div>
 <pre><code>##   name annotation description     region distance   subregion insideDistance
@@ -1276,7 +1289,7 @@ adult
 ## 4       32699
 ## 5       37133
 ## 6       32699</code></pre>
-<p>For more details on the output please check the <em><a href="https://bioconductor.org/packages/3.11/bumphunter">bumphunter</a></em> package.</p>
+<p>For more details on the output please check the <em><a href="https://bioconductor.org/packages/3.12/bumphunter">bumphunter</a></em> package.</p>
 <p>Check the section about non-human data (specifically, using annotation different from <strong>hg19</strong>) on the advanced vignette.</p>
 </div>
 <div id="time-spent" class="section level3">
@@ -1286,13 +1299,13 @@ adult
 <div class="sourceCode" id="cb249"><html><body><pre class="r"><span class="co">## Time spent</span>
 <span class="no">results</span>$<span class="no">timeinfo</span></pre></body></html></div>
 <pre><code>##                      init                     setup                  prepData 
-## "2020-04-27 15:02:27 UTC" "2020-04-27 15:02:27 UTC" "2020-04-27 15:02:30 UTC" 
+## "2020-05-10 16:50:43 UTC" "2020-05-10 16:50:43 UTC" "2020-05-10 16:50:45 UTC" 
 ##                  savePrep            calculateStats                 saveStats 
-## "2020-04-27 15:02:30 UTC" "2020-04-27 15:02:30 UTC" "2020-04-27 15:02:30 UTC" 
+## "2020-05-10 16:50:45 UTC" "2020-05-10 16:50:46 UTC" "2020-05-10 16:50:46 UTC" 
 ##             saveStatsOpts          calculatePvalues                  saveRegs 
-## "2020-04-27 15:02:30 UTC" "2020-04-27 15:02:36 UTC" "2020-04-27 15:02:36 UTC" 
+## "2020-05-10 16:50:46 UTC" "2020-05-10 16:50:52 UTC" "2020-05-10 16:50:52 UTC" 
 ##                  annotate                  saveAnno 
-## "2020-04-27 15:03:14 UTC" "2020-04-27 15:03:14 UTC"</code></pre>
+## "2020-05-10 16:51:31 UTC" "2020-05-10 16:51:31 UTC"</code></pre>
 <div class="sourceCode" id="cb251"><html><body><pre class="r"><span class="co">## Use this information to make a plot</span>
 <span class="no">timed</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diff.html">diff</a></span>(<span class="no">results</span>$<span class="no">timeinfo</span>)
 <span class="no">timed.df</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="kw">Seconds</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">timed</span>), <span class="kw">Step</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">timed</span>),
@@ -1321,18 +1334,18 @@ Seconds used to run each step in analyzeChr().
     <span class="kw">genomicState</span> <span class="kw">=</span> <span class="no">genomicState</span>$<span class="no">fullGenome</span>,
     <span class="kw">optionsStats</span> <span class="kw">=</span> <span class="no">results</span>$<span class="no">optionsStats</span>
 )</pre></body></html></div>
-<pre><code>## 2020-04-27 15:03:14 mergeResults: Saving options used</code></pre>
-<pre><code>## 2020-04-27 15:03:14 Loading chromosome chr21</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: calculating FWER</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Saving fullNullSummary</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Re-calculating the p-values</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Saving fullRegions</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: assigning genomic states</code></pre>
-<pre><code>## 2020-04-27 15:03:15 annotateRegions: counting</code></pre>
-<pre><code>## 2020-04-27 15:03:15 annotateRegions: annotating</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Saving fullAnnotatedRegions</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Saving fullFstats</code></pre>
-<pre><code>## 2020-04-27 15:03:15 mergeResults: Saving fullTime</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: Saving options used</code></pre>
+<pre><code>## 2020-05-10 16:51:31 Loading chromosome chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: calculating FWER</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: Saving fullNullSummary</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: Re-calculating the p-values</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: Saving fullRegions</code></pre>
+<pre><code>## 2020-05-10 16:51:31 mergeResults: assigning genomic states</code></pre>
+<pre><code>## 2020-05-10 16:51:31 annotateRegions: counting</code></pre>
+<pre><code>## 2020-05-10 16:51:32 annotateRegions: annotating</code></pre>
+<pre><code>## 2020-05-10 16:51:32 mergeResults: Saving fullAnnotatedRegions</code></pre>
+<pre><code>## 2020-05-10 16:51:32 mergeResults: Saving fullFstats</code></pre>
+<pre><code>## 2020-05-10 16:51:32 mergeResults: Saving fullTime</code></pre>
 <div class="sourceCode" id="cb265"><html><body><pre class="r"><span class="co">## Files created by mergeResults()</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="st">"analysisResults"</span>, <span class="kw">pattern</span> <span class="kw">=</span> <span class="st">".Rdata"</span>)</pre></body></html></div>
 <pre><code>## [1] "fullAnnotatedRegions.Rdata" "fullFstats.Rdata"          
@@ -1392,7 +1405,7 @@ Seconds used to run each step in analyzeChr().
 <div id="fullannotatedregions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fullannotatedregions" class="anchor"></a>fullAnnotatedRegions</h3>
-<p>In preparation for visually exploring the results, <code><a href="../reference/mergeResults.html">mergeResults()</a></code> will run <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code> which counts how many known exons, introns and intergenic segments each candidate DER overlaps (by default with a minimum overlap of 20bp). <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code> uses a summarized version of the genome annotation created with <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code>. For this example, we can use the data included in <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> which is the summarized annotation of hg19 for chromosome 21.</p>
+<p>In preparation for visually exploring the results, <code><a href="../reference/mergeResults.html">mergeResults()</a></code> will run <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code> which counts how many known exons, introns and intergenic segments each candidate DER overlaps (by default with a minimum overlap of 20bp). <code><a href="../reference/annotateRegions.html">annotateRegions()</a></code> uses a summarized version of the genome annotation created with <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code>. For this example, we can use the data included in <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> which is the summarized annotation of hg19 for chromosome 21.</p>
 <div class="sourceCode" id="cb273"><html><body><pre class="r"><span class="co">## Load annotateRegions() output</span>
 <span class="fu"><a href="https://rdrr.io/r/base/load.html">load</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="st">"analysisResults"</span>, <span class="st">"fullAnnotatedRegions.Rdata"</span>))
 
@@ -1453,25 +1466,25 @@ Seconds used to run each step in analyzeChr().
 <div id="chip-seq-differential-binding" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chip-seq-differential-binding" class="anchor"></a>ChIP-seq differential binding</h1>
-<p>As of version 1.5.27 <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> has parameters that allow smoothing of the single base-level F-statistics before determining DERs. This allows finding differentially bounded regions (peaks) using ChIP-seq data. In general, ChIP-seq studies are smaller than RNA-seq studies which means that the single base-level F-statistics approach is well suited for differential binding analysis.</p>
+<p>As of version 1.5.27 <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> has parameters that allow smoothing of the single base-level F-statistics before determining DERs. This allows finding differentially bounded regions (peaks) using ChIP-seq data. In general, ChIP-seq studies are smaller than RNA-seq studies which means that the single base-level F-statistics approach is well suited for differential binding analysis.</p>
 <p>To smooth the F-statistics use <code>smooth = TRUE</code> in <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. The default smoothing function is <code><a href="https://rdrr.io/pkg/bumphunter/man/locfitByCluster.html">bumphunter::locfitByCluster()</a></code> and all its parameters can be passed specified in the call to <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. In particular, the <code>minNum</code> and <code>bpSpan</code> arguments are important. We recommend setting <code>minNum</code> to the minimum read length and <code>bpSpan</code> to the average peak length expected in the ChIP-seq data being analyzed. Smoothing the F-statistics will take longer but not use significantly more memory than the default behavior. So take this into account when choosing the number of permutations to run.</p>
 </div>
 <div id="visually-explore-results" class="section level1">
 <h1 class="hasAnchor">
 <a href="#visually-explore-results" class="anchor"></a>Visually explore results</h1>
-<p>Optionally, we can use the addon package <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em> to visually explore the results.</p>
+<p>Optionally, we can use the addon package <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> to visually explore the results.</p>
 <p>To make the region level plots, we will need to extract the region level coverage data. We can do so using <code><a href="../reference/getRegionCoverage.html">getRegionCoverage()</a></code> as shown below.</p>
 <div class="sourceCode" id="cb277"><html><body><pre class="r"><span class="co">## Find overlaps between regions and summarized genomic annotation</span>
 <span class="no">annoRegs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/annotateRegions.html">annotateRegions</a></span>(<span class="no">fullRegions</span>, <span class="no">genomicState</span>$<span class="no">fullGenome</span>)</pre></body></html></div>
-<pre><code>## 2020-04-27 15:03:15 annotateRegions: counting</code></pre>
-<pre><code>## 2020-04-27 15:03:15 annotateRegions: annotating</code></pre>
+<pre><code>## 2020-05-10 16:51:32 annotateRegions: counting</code></pre>
+<pre><code>## 2020-05-10 16:51:32 annotateRegions: annotating</code></pre>
 <div class="sourceCode" id="cb280"><html><body><pre class="r"><span class="co">## Indeed, the result is the same because we only used chr21</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="no">annoRegs</span>, <span class="no">fullAnnotatedRegions</span>)</pre></body></html></div>
 <pre><code>## [1] FALSE</code></pre>
 <div class="sourceCode" id="cb282"><html><body><pre class="r"><span class="co">## Get the region coverage</span>
 <span class="no">regionCov</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/getRegionCoverage.html">getRegionCoverage</a></span>(<span class="no">fullCov</span>, <span class="no">fullRegions</span>)</pre></body></html></div>
-<pre><code>## 2020-04-27 15:03:15 getRegionCoverage: processing chr21</code></pre>
-<pre><code>## 2020-04-27 15:03:15 getRegionCoverage: done processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:32 getRegionCoverage: processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:32 getRegionCoverage: done processing chr21</code></pre>
 <div class="sourceCode" id="cb285"><html><body><pre class="r"><span class="co">## Explore the result</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">regionCov</span><span class="kw">[[</span><span class="fl">1</span>]])</pre></body></html></div>
 <pre><code>##   HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178 HSB92
@@ -1514,26 +1527,26 @@ Seconds used to run each step in analyzeChr().
     <span class="kw">coverageInfo</span> <span class="kw">=</span> <span class="no">fullCov</span>$<span class="no">chr21</span>, <span class="kw">txdb</span> <span class="kw">=</span> <span class="no">txdb</span>, <span class="kw">groupInfo</span> <span class="kw">=</span> <span class="no">pheno</span>$<span class="no">group</span>,
     <span class="kw">titleUse</span> <span class="kw">=</span> <span class="st">"fwer"</span>
 )</pre></body></html></div>
-<p>The <a href="quickstart-derfinder.html">quick start to using derfinder</a> has example plots for the expressed regions-level approach. The vignette for <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em> has even more examples.</p>
+<p>The <a href="quickstart-derfinder.html">quick start to using derfinder</a> has example plots for the expressed regions-level approach. The vignette for <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> has even more examples.</p>
 </div>
 <div id="interactive-html-reports" class="section level1">
 <h1 class="hasAnchor">
 <a href="#interactive-html-reports" class="anchor"></a>Interactive HTML reports</h1>
-<p>We have also developed an addon package called <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em> available via <a href="http://bioconductor.org/packages/regionReport">Bioconductor</a>.</p>
-<p>The function <code>derfinderReport()</code> in <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em> basically takes advantage of the results from <code><a href="../reference/mergeResults.html">mergeResults()</a></code> and plotting functions available in <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em> as well as other neat features from <em><a href="https://CRAN.R-project.org/package=knitrBootstrap">knitrBootstrap</a></em>. It then generates a customized report for single-base level F-statistics DER finding analyses.</p>
-<p>For results from <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> or <code><a href="../reference/railMatrix.html">railMatrix()</a></code> use <code>renderReport()</code> from <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em>. In both cases, the resulting HTML report promotes reproducibility of the analysis and allows you to explore in more detail the results through some diagnostic plots.</p>
+<p>We have also developed an addon package called <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> available via <a href="http://bioconductor.org/packages/regionReport">Bioconductor</a>.</p>
+<p>The function <code>derfinderReport()</code> in <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> basically takes advantage of the results from <code><a href="../reference/mergeResults.html">mergeResults()</a></code> and plotting functions available in <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> as well as other neat features from <em><a href="https://CRAN.R-project.org/package=knitrBootstrap">knitrBootstrap</a></em>. It then generates a customized report for single-base level F-statistics DER finding analyses.</p>
+<p>For results from <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> or <code><a href="../reference/railMatrix.html">railMatrix()</a></code> use <code>renderReport()</code> from <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em>. In both cases, the resulting HTML report promotes reproducibility of the analysis and allows you to explore in more detail the results through some diagnostic plots.</p>
 <p>We think that these reports are very important when you are exploring the resulting DERs after changing a key parameter in <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>, <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> or <code><a href="../reference/railMatrix.html">railMatrix()</a></code>.</p>
-<p>Check out the vignette for <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em> for example reports generated with it.</p>
+<p>Check out the vignette for <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> for example reports generated with it.</p>
 </div>
 <div id="miscellaneous-features" class="section level1">
 <h1 class="hasAnchor">
 <a href="#miscellaneous-features" class="anchor"></a>Miscellaneous features</h1>
-<p>In this section we go over some other features of <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> which can be useful for performing feature-counts based analyses, exploring the results, or exporting data.</p>
+<p>In this section we go over some other features of <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> which can be useful for performing feature-counts based analyses, exploring the results, or exporting data.</p>
 <div id="feature-level-analysis" class="section level2">
 <h2 class="hasAnchor">
 <a href="#feature-level-analysis" class="anchor"></a>Feature level analysis</h2>
 <p>Similar to the expressed region-level analysis, you might be interested in performing a feature-level analysis. More specifically, this means getting a count matrix at the exon-level (or gene-level). <code><a href="../reference/coverageToExon.html">coverageToExon()</a></code> allows you to get such a matrix by taking advantage of the summarized annotation produced by <code><a href="../reference/makeGenomicState.html">makeGenomicState()</a></code>.</p>
-<p>In this example, we use the genomic state included in the package which has the information for chr21 <em><a href="https://bioconductor.org/packages/3.11/TxDb.Hsapiens.UCSC.hg19.knownGene">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em> annotation.</p>
+<p>In this example, we use the genomic state included in the package which has the information for chr21 <em><a href="https://bioconductor.org/packages/3.12/TxDb.Hsapiens.UCSC.hg19.knownGene">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em> annotation.</p>
 <div class="sourceCode" id="cb288"><html><body><pre class="r"><span class="co">## Get the exon-level matrix</span>
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">exonCov</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/coverageToExon.html">coverageToExon</a></span>(<span class="no">fullCov</span>, <span class="no">genomicState</span>$<span class="no">fullGenome</span>, <span class="kw">L</span> <span class="kw">=</span> <span class="fl">76</span>))</pre></body></html></div>
 <pre><code>## class: SerialParam
@@ -1550,7 +1563,7 @@ Seconds used to run each step in analyzeChr().
 ##   bpexportglobals: TRUE
 ##   bplogdir: NA
 ##   bpresultdir: NA</code></pre>
-<pre><code>## 2020-04-27 15:03:20 coverageToExon: processing chromosome chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:38 coverageToExon: processing chromosome chr21</code></pre>
 <pre><code>## class: SerialParam
 ##   bpisup: FALSE; bpnworkers: 1; bptasks: 0; bpjobname: BPJOB
 ##   bplog: FALSE; bpthreshold: INFO; bpstopOnError: TRUE
@@ -1558,9 +1571,9 @@ Seconds used to run each step in analyzeChr().
 ##   bpexportglobals: TRUE
 ##   bplogdir: NA
 ##   bpresultdir: NA</code></pre>
-<pre><code>## 2020-04-27 15:03:23 coverageToExon: processing chromosome chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:40 coverageToExon: processing chromosome chr21</code></pre>
 <pre><code>##    user  system elapsed 
-##   6.072   0.673   6.747</code></pre>
+##   6.793   0.784   7.578</code></pre>
 <div class="sourceCode" id="cb294"><html><body><pre class="r"><span class="co">## Dimensions of the matrix</span>
 <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">exonCov</span>)</pre></body></html></div>
 <pre><code>## [1] 2658   12</code></pre>
@@ -1580,22 +1593,22 @@ Seconds used to run each step in analyzeChr().
 ## 4988 6.156579e-01  0.0000000  0.00000000 0.0000000  0.05644737  0.00000000
 ## 4990 5.978842e+01  1.2284210  2.67486840 0.9542105  3.98013159  1.96131579
 ## 4992 5.325658e+00  0.2402632  0.73039474 0.2601316  0.66907895  0.07473684</code></pre>
-<p>With this matrix, rounded if necessary, you can proceed to use packages such as <em><a href="https://bioconductor.org/packages/3.11/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.11/DESeq2">DESeq2</a></em>, <em><a href="https://bioconductor.org/packages/3.11/edgeR">edgeR</a></em> among others.</p>
+<p>With this matrix, rounded if necessary, you can proceed to use packages such as <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em>, <em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em> among others.</p>
 </div>
 <div id="compare-results-visually" class="section level2">
 <h2 class="hasAnchor">
 <a href="#compare-results-visually" class="anchor"></a>Compare results visually</h2>
-<p>We can certainly make region-level plots using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html">plotRegionCoverage()</a></code> or cluster plots using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotCluster.html">plotCluster()</a></code> or overview plots using <code>plotOveview()</code>, all from <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em>.</p>
+<p>We can certainly make region-level plots using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html">plotRegionCoverage()</a></code> or cluster plots using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/plotCluster.html">plotCluster()</a></code> or overview plots using <code>plotOveview()</code>, all from <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em>.</p>
 <p>First we need to get the relevant annotation information.</p>
 <div class="sourceCode" id="cb298"><html><body><pre class="r"><span class="co">## Annotate regions as exonic, intronic or intergenic</span>
 <span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">annoGenome</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/annotateRegions.html">annotateRegions</a></span>(
     <span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>,
     <span class="no">genomicState</span>$<span class="no">fullGenome</span>
 ))</pre></body></html></div>
-<pre><code>## 2020-04-27 15:03:24 annotateRegions: counting</code></pre>
-<pre><code>## 2020-04-27 15:03:24 annotateRegions: annotating</code></pre>
+<pre><code>## 2020-05-10 16:51:42 annotateRegions: counting</code></pre>
+<pre><code>## 2020-05-10 16:51:42 annotateRegions: annotating</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.182   0.000   0.183</code></pre>
+##   0.193   0.000   0.194</code></pre>
 <div class="sourceCode" id="cb302"><html><body><pre class="r"><span class="co">## Note that the genomicState object included in derfinder only has information</span>
 <span class="co">## for chr21 (hg19).</span>
 
@@ -1614,8 +1627,8 @@ Seconds used to run each step in analyzeChr().
 <pre><code>## Getting exons.</code></pre>
 <div class="sourceCode" id="cb310"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="no">annoNear</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bumphunter/man/matchGenes.html">matchGenes</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>, <span class="no">genes</span>))</pre></body></html></div>
 <pre><code>##    user  system elapsed 
-##   2.471   0.000   2.472</code></pre>
-<p>Now we can proceed to use <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em> to make the region-level plots for the top 100 regions.</p>
+##   2.515   0.000   2.515</code></pre>
+<p>Now we can proceed to use <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> to make the region-level plots for the top 100 regions.</p>
 <div class="sourceCode" id="cb312"><html><body><pre class="r"><span class="co">## Identify the top regions by highest total coverage</span>
 <span class="no">top</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/order.html">order</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>$<span class="no">area</span>, <span class="kw">decreasing</span> <span class="kw">=</span> <span class="fl">TRUE</span>)[<span class="fl">1</span>:<span class="fl">100</span>]
 
@@ -1627,7 +1640,7 @@ Seconds used to run each step in analyzeChr().
     <span class="kw">annotatedRegions</span> <span class="kw">=</span> <span class="no">annoGenome</span>, <span class="kw">whichRegions</span> <span class="kw">=</span> <span class="no">top</span>, <span class="kw">scalefac</span> <span class="kw">=</span> <span class="fl">1</span>,
     <span class="kw">txdb</span> <span class="kw">=</span> <span class="no">txdb</span>, <span class="kw">ask</span> <span class="kw">=</span> <span class="fl">FALSE</span>
 )</pre></body></html></div>
-<p>However, we can alternatively use <em><a href="https://bioconductor.org/packages/3.11/epivizr">epivizr</a></em> to view the candidate DERs and the region matrix results in a genome browser.</p>
+<p>However, we can alternatively use <em><a href="https://bioconductor.org/packages/3.12/epivizr">epivizr</a></em> to view the candidate DERs and the region matrix results in a genome browser.</p>
 <div class="sourceCode" id="cb313"><html><body><pre class="r"><span class="co">## Load epivizr, it's available from Bioconductor</span>
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"epivizr"</span>)
 
@@ -1653,14 +1666,14 @@ Seconds used to run each step in analyzeChr().
 <div id="export-coverage-to-bigwig-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#export-coverage-to-bigwig-files" class="anchor"></a>Export coverage to BigWig files</h2>
-<p><em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> also includes <code><a href="../reference/createBw.html">createBw()</a></code> with related functions <code><a href="../reference/createBwSample.html">createBwSample()</a></code> and <code><a href="../reference/coerceGR.html">coerceGR()</a></code> to export the output of <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> to BigWig files. These functions can be useful in the case where you start with BAM files and later on want to save the coverage data into BigWig files, which are generally smaller.</p>
+<p><em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> also includes <code><a href="../reference/createBw.html">createBw()</a></code> with related functions <code><a href="../reference/createBwSample.html">createBwSample()</a></code> and <code><a href="../reference/coerceGR.html">coerceGR()</a></code> to export the output of <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> to BigWig files. These functions can be useful in the case where you start with BAM files and later on want to save the coverage data into BigWig files, which are generally smaller.</p>
 <div class="sourceCode" id="cb314"><html><body><pre class="r"><span class="co">## Subset only the first sample</span>
 <span class="no">fullCovSmall</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">fullCov</span>, <span class="st">"["</span>, <span class="fl">1</span>)
 
 <span class="co">## Export to BigWig</span>
 <span class="no">bw</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/createBw.html">createBw</a></span>(<span class="no">fullCovSmall</span>)</pre></body></html></div>
-<pre><code>## 2020-04-27 15:03:33 coerceGR: coercing sample HSB113</code></pre>
-<pre><code>## 2020-04-27 15:03:33 createBwSample: exporting bw for sample HSB113</code></pre>
+<pre><code>## 2020-05-10 16:51:51 coerceGR: coercing sample HSB113</code></pre>
+<pre><code>## 2020-05-10 16:51:51 createBwSample: exporting bw for sample HSB113</code></pre>
 <div class="sourceCode" id="cb317"><html><body><pre class="r"><span class="co">## See the file. Note that the sample name is used to name the file.</span>
 <span class="fu"><a href="https://rdrr.io/r/base/list.files.html">dir</a></span>(<span class="kw">pattern</span> <span class="kw">=</span> <span class="st">".bw"</span>)</pre></body></html></div>
 <pre><code>## [1] "HSB113.bw"    "meanChr21.bw"</code></pre>
@@ -1691,14 +1704,14 @@ Seconds used to run each step in analyzeChr().
 <div id="advanced-arguments" class="section level1">
 <h1 class="hasAnchor">
 <a href="#advanced-arguments" class="anchor"></a>Advanced arguments</h1>
-<p>If you are interested in using advanced arguments in <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>, they are described in the manual pages of each function. Some of the most common advanced arguments are:</p>
+<p>If you are interested in using advanced arguments in <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>, they are described in the manual pages of each function. Some of the most common advanced arguments are:</p>
 <ul>
 <li>
 <code>chrsStyle</code> (default is <code>UCSC</code>)</li>
 <li>
 <code>verbose</code> (by default <code>TRUE</code>).</li>
 </ul>
-<p><code>verbose</code> controls whether to print status updates for nearly all the functions. <code>chrsStyle</code> is used to determine the chromosome naming style and is powered by <em><a href="https://bioconductor.org/packages/3.11/GenomeInfoDb">GenomeInfoDb</a></em>. Note that <code>chrsStyle</code> is used in any of the functions that call <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code>. If you are working with a different organism than <em>Homo sapiens</em> set the global <code>species</code> option using <code><a href="https://rdrr.io/r/base/options.html">options(species = 'your species')</a></code> with the syntax used in <code><a href="https://rdrr.io/r/base/names.html">names(GenomeInfoDb::genomeStyles())</a></code>. If you want to disable <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code> set <code>chrsStyle</code> to <code>NULL</code>, which can be useful if your organism is not part of <em><a href="https://bioconductor.org/packages/3.11/GenomeInfoDb">GenomeInfoDb</a></em>.</p>
+<p><code>verbose</code> controls whether to print status updates for nearly all the functions. <code>chrsStyle</code> is used to determine the chromosome naming style and is powered by <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em>. Note that <code>chrsStyle</code> is used in any of the functions that call <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code>. If you are working with a different organism than <em>Homo sapiens</em> set the global <code>species</code> option using <code><a href="https://rdrr.io/r/base/options.html">options(species = 'your species')</a></code> with the syntax used in <code><a href="https://rdrr.io/r/base/names.html">names(GenomeInfoDb::genomeStyles())</a></code>. If you want to disable <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code> set <code>chrsStyle</code> to <code>NULL</code>, which can be useful if your organism is not part of <em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em>.</p>
 <p>The third commonly used advanced argument is <code>mc.cores</code>. It controls the number of cores to use for the functions that can run with more than one core to speed up. In nearly all the cases, the maximum number of cores depends on the number of chromosomes. One notable exception is <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> where the maximum number of cores depends on the <code>chunksize</code> used and the dimensions of the data for the chromosome under study.</p>
 <p>Note that using the <code>...</code> argument allows you to specify some of the documented arguments. For example, you might want to control the <code>maxClusterGap</code> from <code><a href="../reference/findRegions.html">findRegions()</a></code> in the <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> call.</p>
 </div>
@@ -1711,7 +1724,7 @@ Seconds used to run each step in analyzeChr().
 <span class="fu"><a href="https://rdrr.io/r/base/options.html">options</a></span>(<span class="kw">chrsStyle</span> <span class="kw">=</span> <span class="st">"NCBI"</span>)
 
 <span class="co">## Then proceed to load and analyze the data</span></pre></body></html></div>
-<p>Internally <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> uses <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code> to use the appropriate chromosome naming style given a species in all functions involving chromosome names.</p>
+<p>Internally <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> uses <code><a href="../reference/extendedMapSeqlevels.html">extendedMapSeqlevels()</a></code> to use the appropriate chromosome naming style given a species in all functions involving chromosome names.</p>
 <p>Further note that the argument <code>txdb</code> from <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> is passed to <code><a href="https://rdrr.io/pkg/bumphunter/man/annotateTranscripts.html">bumphunter::annotateTranscripts(txdb)</a></code>. So if you are using a genome different from <strong>hg19</strong> remember to provide the appropriate annotation data or simply use <code><a href="../reference/analyzeChr.html">analyzeChr(runAnnotation = FALSE)</a></code>.</p>
 <p>So, in the <em>Arabidopsis Thaliana</em> example, your <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code> call would look like this:</p>
 <div class="sourceCode" id="cb322"><html><body><pre class="r"><span class="co">## Load transcript database information</span>
@@ -1749,9 +1762,9 @@ Seconds used to run each step in analyzeChr().
 <li>
 <code><a href="../reference/railMatrix.html">railMatrix()</a></code>: 1 core per chromosome.</li>
 </ul>
-<p>All parallel operations use <code>SnowParam()</code> from <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> when more than 1 core is being used. Otherwise, <code>SerialParam()</code> is used. Note that if you prefer to specify other types of parallelization you can do so by specifying the <code>BPPARAM.custom</code> advanced argument.</p>
-<p>Because <code>SnowParam()</code> requires <code>R</code> to load the necessary packages on each worker, the key function <code>fstats.apply()</code> was isolated in the <em><a href="https://bioconductor.org/packages/3.11/derfinderHelper">derfinderHelper</a></em> package. This package has much faster loading speeds than <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> which greatly impacts performance on cases where the actual step of calculating the F-statistics is fast.</p>
-<p>You may prefer to use <code>MulticoreParam()</code> described in the <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> vignette. In that case, when using these functions use <code>BPPARAM.custom = MulticoreParam(workers = x)</code> where <code>x</code> is the number of cores you want to use. Note that in some systems, as is the case of the cluster used by <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>’s developers, the system tools for assessing memory usage can be misleading, thus resulting in much higher memory loads when using <code>MulticoreParam()</code> instead of the default <code>SnowParam()</code>.</p>
+<p>All parallel operations use <code>SnowParam()</code> from <em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> when more than 1 core is being used. Otherwise, <code>SerialParam()</code> is used. Note that if you prefer to specify other types of parallelization you can do so by specifying the <code>BPPARAM.custom</code> advanced argument.</p>
+<p>Because <code>SnowParam()</code> requires <code>R</code> to load the necessary packages on each worker, the key function <code>fstats.apply()</code> was isolated in the <em><a href="https://bioconductor.org/packages/3.12/derfinderHelper">derfinderHelper</a></em> package. This package has much faster loading speeds than <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> which greatly impacts performance on cases where the actual step of calculating the F-statistics is fast.</p>
+<p>You may prefer to use <code>MulticoreParam()</code> described in the <em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> vignette. In that case, when using these functions use <code>BPPARAM.custom = MulticoreParam(workers = x)</code> where <code>x</code> is the number of cores you want to use. Note that in some systems, as is the case of the cluster used by <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>’s developers, the system tools for assessing memory usage can be misleading, thus resulting in much higher memory loads when using <code>MulticoreParam()</code> instead of the default <code>SnowParam()</code>.</p>
 </div>
 <div id="loading-data-details" class="section level1">
 <h1 class="hasAnchor">
@@ -1759,7 +1772,7 @@ Seconds used to run each step in analyzeChr().
 <div id="controlling-loading-from-bam-files" class="section level2">
 <h2 class="hasAnchor">
 <a href="#controlling-loading-from-bam-files" class="anchor"></a>Controlling loading from BAM files</h2>
-<p>If you are loading data from BAM files, you might want to specify some criteria to decide which reads to include or not. For example, your data might have been generated by a strand-specific protocol. You can do so by specifying the arguments of <code>scanBamFlag()</code> from <em><a href="https://bioconductor.org/packages/3.11/Rsamtools">Rsamtools</a></em>.</p>
+<p>If you are loading data from BAM files, you might want to specify some criteria to decide which reads to include or not. For example, your data might have been generated by a strand-specific protocol. You can do so by specifying the arguments of <code>scanBamFlag()</code> from <em><a href="https://bioconductor.org/packages/3.12/Rsamtools">Rsamtools</a></em>.</p>
 <p>You can also control whether to include or exclude bases with <code>CIGAR</code> string <code>D</code> (deletion from the reference) by setting the advanced argument <code>drop.D = TRUE</code> in your <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> or <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> call.</p>
 </div>
 <div id="unfiltered-base-level-coverage" class="section level2">
@@ -1767,7 +1780,7 @@ Seconds used to run each step in analyzeChr().
 <a href="#unfiltered-base-level-coverage" class="anchor"></a>Unfiltered base-level coverage</h2>
 <p>Note that in most scenarios, the <code>fullCov</code> object illustrated in the introductory vignette can be large in memory. When making plots or calculating the region-level coverage, we don’t need the full information. In such situations, it might pay off to create a smaller version by loading only the required data. This can be achieved using the advanced argument <code>which</code> to <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> or <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code>.</p>
 <p>However, it is important to consider that when reading the data from BAM files, a read might align partially inside the region of interest. By default such a read would be discarded and thus the base-level coverage would be lower than what it is in reality. The advanced argument <code>protectWhich</code> extends regions by 30 kbp (15 kbp each side) to help mitigate this issue.</p>
-<p>We can illustrate this issue with the example data from <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>. First, we load in the data and generate some regions of interest.</p>
+<p>We can illustrate this issue with the example data from <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>. First, we load in the data and generate some regions of interest.</p>
 <div class="sourceCode" id="cb323"><html><body><pre class="r"><span class="co">## Find some regions to work with</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/example.html">example</a></span>(<span class="st">"loadCoverage"</span>, <span class="st">"derfinder"</span>)</pre></body></html></div>
 <pre><code>## 
@@ -1783,11 +1796,11 @@ Seconds used to run each step in analyzeChr().
 ## 
 ## ldCvrg&gt; ## Read and filter the data, only for 2 files
 ## ldCvrg&gt; dataSmall &lt;- loadCoverage(files = files[1:2], chr = "21", cutoff = 0)</code></pre>
-<pre><code>## 2020-04-27 15:03:33 loadCoverage: finding chromosome lengths</code></pre>
-<pre><code>## 2020-04-27 15:03:33 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:33 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:33 loadCoverage: applying the cutoff to the merged data</code></pre>
-<pre><code>## 2020-04-27 15:03:33 filterData: originally there were 48129895 rows, now there are 454 rows. Meaning that 100 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: finding chromosome lengths</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: applying the cutoff to the merged data</code></pre>
+<pre><code>## 2020-05-10 16:51:52 filterData: originally there were 48129895 rows, now there are 454 rows. Meaning that 100 percent was filtered.</code></pre>
 <pre><code>## 
 ## ldCvrg&gt; ## Not run: 
 ## ldCvrg&gt; ##D ## Export to BigWig files
@@ -1830,8 +1843,8 @@ Seconds used to run each step in analyzeChr().
 ## gtRgnC&gt; ## Finally, get the region coverage
 ## gtRgnC&gt; regionCov &lt;- getRegionCoverage(fullCov = fullCov, regions = regions)</code></pre>
 <pre><code>## extendedMapSeqlevels: sequence names mapped from NCBI to UCSC for species homo_sapiens</code></pre>
-<pre><code>## 2020-04-27 15:03:34 getRegionCoverage: processing chr21</code></pre>
-<pre><code>## 2020-04-27 15:03:34 getRegionCoverage: done processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:52 getRegionCoverage: processing chr21</code></pre>
+<pre><code>## 2020-05-10 16:51:52 getRegionCoverage: done processing chr21</code></pre>
 <p>Next, we load the coverage again using <code>which</code> but without any padding. We can see how the coverage is not the same by looking at the maximum coverage for each sample.</p>
 <div class="sourceCode" id="cb336"><html><body><pre class="r"><span class="co">## Illustrate reading data from a set of regions</span>
 <span class="no">test</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/loadCoverage.html">loadCoverage</a></span>(
@@ -1839,40 +1852,40 @@ Seconds used to run each step in analyzeChr().
     <span class="kw">protectWhich</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">fileStyle</span> <span class="kw">=</span> <span class="st">"NCBI"</span>
 )</pre></body></html></div>
 <pre><code>## extendedMapSeqlevels: sequence names mapped from UCSC to NCBI for species homo_sapiens</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: finding chromosome lengths</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009105_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009107_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009108_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009112_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009115_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009116_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009131_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:34 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009138_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009144_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009145_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009148_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009151_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009152_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009153_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009159_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009161_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009163_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009164_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009167_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031812_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031835_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031867_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031868_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031900_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031904_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031914_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031936_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:35 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031958_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031960_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: applying the cutoff to the merged data</code></pre>
-<pre><code>## 2020-04-27 15:03:36 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: finding chromosome lengths</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:52 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009105_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009107_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009108_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009112_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009115_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009116_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009131_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009138_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009144_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009145_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009148_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009151_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009152_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009153_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009159_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009161_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009163_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009164_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009167_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:53 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031812_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031835_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031867_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031868_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031900_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031904_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031914_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031936_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031958_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031960_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: applying the cutoff to the merged data</code></pre>
+<pre><code>## 2020-05-10 16:51:54 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
 <div class="sourceCode" id="cb372"><html><body><pre class="r"><span class="co">## Some reads were ignored and thus the coverage is lower as can be seen below:</span>
 <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">test</span>$<span class="no">coverage</span>, <span class="no">max</span>) - <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">genomeDataRaw</span>$<span class="no">coverage</span>, <span class="no">max</span>)</pre></body></html></div>
 <pre><code>## ERR009101 ERR009102 ERR009105 ERR009107 ERR009108 ERR009112 ERR009115 ERR009116 
@@ -1891,40 +1904,40 @@ Seconds used to run each step in analyzeChr().
     <span class="kw">which</span> <span class="kw">=</span> <span class="no">regions</span>, <span class="kw">protectWhich</span> <span class="kw">=</span> <span class="fl">3e4</span>, <span class="kw">fileStyle</span> <span class="kw">=</span> <span class="st">"NCBI"</span>
 )</pre></body></html></div>
 <pre><code>## extendedMapSeqlevels: sequence names mapped from UCSC to NCBI for species homo_sapiens</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: finding chromosome lengths</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009105_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009107_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009108_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009112_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009115_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009116_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009131_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009138_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009144_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009145_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009148_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:36 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009151_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009152_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009153_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009159_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009161_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009163_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009164_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009167_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031812_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031835_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031867_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031868_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031900_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031904_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031914_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031936_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031958_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031960_accepted_hits.bam</code></pre>
-<pre><code>## 2020-04-27 15:03:37 loadCoverage: applying the cutoff to the merged data</code></pre>
-<pre><code>## 2020-04-27 15:03:37 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: finding chromosome lengths</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009101_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009102_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009105_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009107_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009108_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009112_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:54 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009115_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009116_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009131_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009138_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009144_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009145_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009148_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009151_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009152_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009153_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009159_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009161_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009163_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009164_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/ERR009167_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031812_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031835_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031867_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031868_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031900_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:55 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031904_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:56 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031914_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:56 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031936_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:56 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031958_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:56 loadCoverage: loading BAM file /usr/local/lib/R/host-site-library/derfinder/extdata/genomeData/SRR031960_accepted_hits.bam</code></pre>
+<pre><code>## 2020-05-10 16:51:56 loadCoverage: applying the cutoff to the merged data</code></pre>
+<pre><code>## 2020-05-10 16:51:56 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</code></pre>
 <div class="sourceCode" id="cb410"><html><body><pre class="r"><span class="co">## Adding some padding to the regions helps get the same coverage</span>
 <span class="fu"><a href="https://rdrr.io/r/base/identical.html">identical</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">test2</span>$<span class="no">coverage</span>, <span class="no">max</span>), <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span>(<span class="no">genomeDataRaw</span>$<span class="no">coverage</span>, <span class="no">max</span>))</pre></body></html></div>
 <pre><code>## [1] TRUE</code></pre>
@@ -1944,7 +1957,7 @@ Seconds used to run each step in analyzeChr().
 <div id="loading-data-in-chunks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#loading-data-in-chunks" class="anchor"></a>Loading data in chunks</h2>
-<p>If you prefer to do so, <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> and <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> can load the data of a chromosome in chunks using <em><a href="https://bioconductor.org/packages/3.11/GenomicFiles">GenomicFiles</a></em>. This is controlled by whether you specify the <code>tilewidth</code> argument.</p>
+<p>If you prefer to do so, <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> and <code><a href="../reference/loadCoverage.html">loadCoverage()</a></code> can load the data of a chromosome in chunks using <em><a href="https://bioconductor.org/packages/3.12/GenomicFiles">GenomicFiles</a></em>. This is controlled by whether you specify the <code>tilewidth</code> argument.</p>
 <p>Notice that you might run into slight coverage errors near the borders of the tiles for the same reason that was illustrated previously when loading specific regions.</p>
 <p>This approach is not necessarily more efficient and can be significantly time consuming if you use a small <code>tilewidth</code>.</p>
 </div>
@@ -1962,13 +1975,13 @@ Seconds used to run each step in analyzeChr().
 <div id="der-analysis-flow-chart" class="section level2">
 <h2 class="hasAnchor">
 <a href="#der-analysis-flow-chart" class="anchor"></a>DER analysis flow chart</h2>
-<p>Figure @ref(fig:Figure1) illustrates how most of <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em>’s functions interact when performing a base-level differential expression analysis by calculating base-level F-statistics.</p>
+<p>Figure @ref(fig:Figure1) illustrates how most of <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>’s functions interact when performing a base-level differential expression analysis by calculating base-level F-statistics.</p>
 <div class="figure" style="text-align: center">
 <img src="http://lcolladotor.github.io/derfinder/fig/DERpathway.png" alt="derfinder F-statistics flow chart." width="100%"><p class="caption">
 derfinder F-statistics flow chart.
 </p>
 </div>
-<p>Flow chart of the different processing steps (black boxes) that can be carried out using <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> and the functions that perform these actions (in red). Input and output is shown in green boxes. Functions in blue are those applied to the results from multiple chromosomes (<code><a href="../reference/mergeResults.html">mergeResults()</a></code> and <code>derfinderReport</code>). <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em> functions are shown in orange while <em><a href="https://bioconductor.org/packages/3.11/derfinderPlot">derfinderPlot</a></em> functions are shown in dark purple. Purple dotted arrow marks functions that require unfiltered base-level coverage.</p>
+<p>Flow chart of the different processing steps (black boxes) that can be carried out using <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> and the functions that perform these actions (in red). Input and output is shown in green boxes. Functions in blue are those applied to the results from multiple chromosomes (<code><a href="../reference/mergeResults.html">mergeResults()</a></code> and <code>derfinderReport</code>). <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> functions are shown in orange while <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> functions are shown in dark purple. Purple dotted arrow marks functions that require unfiltered base-level coverage.</p>
 </div>
 <div id="analyzechr-flow-chart" class="section level2">
 <h2 class="hasAnchor">
@@ -2074,12 +2087,12 @@ regionMatrix() flow chart.
 ...
 |-----chrY/
 |---analysis02</code></pre>
-<p>Finally, you might want to use <code>derfinderReport()</code> from <em><a href="https://bioconductor.org/packages/3.11/regionReport">regionReport</a></em> to create a HTML report of the results.</p>
+<p>Finally, you might want to use <code>derfinderReport()</code> from <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> to create a HTML report of the results.</p>
 </div>
 <div id="bash-scripts" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bash-scripts" class="anchor"></a>bash scripts</h2>
-<p>If you are following our recommended file organization for a base-level F-statistics DER finding analysis, you might be interested in the following <code>bash</code> scripts templates. Note that there are plenty of other solutions, such as writing a master <code>R</code> script and using <em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> to submit jobs and administer them for you. Check out the <code>BatchJobsParam()</code> for more information. If you want to use <code>bash</code> scripts, take a look below.</p>
+<p>If you are following our recommended file organization for a base-level F-statistics DER finding analysis, you might be interested in the following <code>bash</code> scripts templates. Note that there are plenty of other solutions, such as writing a master <code>R</code> script and using <em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> to submit jobs and administer them for you. Check out the <code>BatchJobsParam()</code> for more information. If you want to use <code>bash</code> scripts, take a look below.</p>
 <p>For interacting between <code>bash</code> and <code>R</code> we have found quite useful the <em><a href="https://CRAN.R-project.org/package=getopt">getopt</a></em> package. Here we include an example <code>R</code> script that is controlled by a <code>bash</code> script which submits a job for each chromosome to analyze for a given analysis.</p>
 <p>The two files, <em>derfinderAnalysis.R</em> and <em>derAnalysis.sh</em> should live under the <em>derAnalysis</em> directory.</p>
 <pre><code>ProjectDir
@@ -2263,7 +2276,7 @@ regionMatrix() flow chart.
 <div id="summary" class="section level1">
 <h1 class="hasAnchor">
 <a href="#summary" class="anchor"></a>Summary</h1>
-<p>We have illustrated how to identify candidate differentially expressed regions without using annotation by using <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. Furthermore, we covered how to perform the expressed region-level matrix analysis with <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> or <code><a href="../reference/railMatrix.html">railMatrix()</a></code>. We also highlighted other uses of the <em><a href="https://bioconductor.org/packages/3.11/derfinder">derfinder</a></em> package.</p>
+<p>We have illustrated how to identify candidate differentially expressed regions without using annotation by using <code><a href="../reference/analyzeChr.html">analyzeChr()</a></code>. Furthermore, we covered how to perform the expressed region-level matrix analysis with <code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> or <code><a href="../reference/railMatrix.html">railMatrix()</a></code>. We also highlighted other uses of the <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> package.</p>
 <p>Latter sections of this vignette covered the most commonly used advanced arguments, details on how to load data, flow charts explaining the relationships between the functions, the recommended output organization, and example shell scripts for running the analysis.</p>
 </div>
 <div id="reproducibility" class="section level1">
@@ -2273,36 +2286,36 @@ regionMatrix() flow chart.
 <ul>
 <li>R <a id="cite-R_Core_Team_2020"></a>(<a href="https://www.R-project.org/">R Core Team, 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/AnnotationDbi">AnnotationDbi</a></em> <a id="cite-AnnotationDbi"></a>(<a href="https://doi.org/10.18129/B9.bioc.AnnotationDbi">Pagès, Carlson, Falcon, and Li, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/AnnotationDbi">AnnotationDbi</a></em> <a id="cite-AnnotationDbi"></a>(<a href="https://doi.org/10.18129/B9.bioc.AnnotationDbi">Pagès, Carlson, Falcon, and Li, 2017</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/BiocParallel">BiocParallel</a></em> <a id="cite-Morgan_2020"></a>(<a href="https://github.com/Bioconductor/BiocParallel">Morgan, Obenchain, Lang, Thompson, et al., 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> <a id="cite-Morgan_2020"></a>(<a href="https://github.com/Bioconductor/BiocParallel">Morgan, Obenchain, Lang, Thompson, et al., 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/bumphunter">bumphunter</a></em> <a id="cite-bumphunter"></a>(<a href="https://doi.org/10.1093/ije/dyr238">Jaffe, Murakami, Lee, Leek, et al., 2012</a>) and <a id="cite-bumphunterPaper"></a>(<a href="#bib-bumphunterPaper">Jaffe, Murakami, Lee, Leek, et al., 2012</a>)</li>
-<li><em><a href="https://bioconductor.org/packages/3.11/derfinderHelper">derfinderHelper</a></em></li>
+<em><a href="https://bioconductor.org/packages/3.12/bumphunter">bumphunter</a></em> <a id="cite-bumphunter"></a>(<a href="https://doi.org/10.1093/ije/dyr238">Jaffe, Murakami, Lee, Leek, et al., 2012</a>) and <a id="cite-bumphunterPaper"></a>(<a href="#bib-bumphunterPaper">Jaffe, Murakami, Lee, Leek, et al., 2012</a>)</li>
+<li><em><a href="https://bioconductor.org/packages/3.12/derfinderHelper">derfinderHelper</a></em></li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/GenomeInfoDb">GenomeInfoDb</a></em> <a id="cite-GenomeInfoDb"></a>(<a href="https://doi.org/10.18129/B9.bioc.GenomeInfoDb">Arora, Morgan, Carlson, and Pagès, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> <a id="cite-GenomeInfoDb"></a>(<a href="https://doi.org/10.18129/B9.bioc.GenomeInfoDb">Arora, Morgan, Carlson, and Pagès, 2017</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/GenomicAlignments">GenomicAlignments</a></em> <a id="cite-Lawrence_2013"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/GenomicAlignments">GenomicAlignments</a></em> <a id="cite-Lawrence_2013"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/GenomicFeatures">GenomicFeatures</a></em> <a id="cite-Lawrence_2013a"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/GenomicFeatures">GenomicFeatures</a></em> <a id="cite-Lawrence_2013a"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/GenomicFiles">GenomicFiles</a></em> <a id="cite-Bioconductor_Package_Maintainer_2020"></a>(<a href="#bib-Bioconductor_Package_Maintainer_2020">Bioconductor Package Maintainer, Obenchain, Love, Shepherd, et al., 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/GenomicFiles">GenomicFiles</a></em> <a id="cite-Bioconductor_Package_Maintainer_2020"></a>(<a href="#bib-Bioconductor_Package_Maintainer_2020">Bioconductor Package Maintainer, Obenchain, Love, Shepherd, et al., 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/GenomicRanges">GenomicRanges</a></em> <a id="cite-Lawrence_2013ab"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/GenomicRanges">GenomicRanges</a></em> <a id="cite-Lawrence_2013ab"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
 <li>
 <em><a href="https://CRAN.R-project.org/package=Hmisc">Hmisc</a></em> <a id="cite-Harrell_Jr_2020"></a>(<a href="https://CRAN.R-project.org/package=Hmisc">Harrell Jr, Dupont, and others., 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/IRanges">IRanges</a></em> <a id="cite-Lawrence_2013abc"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/IRanges">IRanges</a></em> <a id="cite-Lawrence_2013abc"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/qvalue">qvalue</a></em> <a id="cite-Storey_2019"></a>(<a href="http://github.com/jdstorey/qvalue">Storey, Bass, Dabney, and Robinson, 2019</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/qvalue">qvalue</a></em> <a id="cite-Storey_2020"></a>(<a href="http://github.com/jdstorey/qvalue">Storey, Bass, Dabney, and Robinson, 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/Rsamtools">Rsamtools</a></em> <a id="cite-Morgan_2020a"></a>(<a href="http://bioconductor.org/packages/Rsamtools">Morgan, Pagès, Obenchain, and Hayden, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/Rsamtools">Rsamtools</a></em> <a id="cite-Morgan_2020a"></a>(<a href="http://bioconductor.org/packages/Rsamtools">Morgan, Pagès, Obenchain, and Hayden, 2020</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/rtracklayer">rtracklayer</a></em> <a id="cite-Lawrence_2009"></a>(<a href="http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract">Lawrence, Gentleman, and Carey, 2009</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/rtracklayer">rtracklayer</a></em> <a id="cite-Lawrence_2009"></a>(<a href="http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract">Lawrence, Gentleman, and Carey, 2009</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/S4Vectors">S4Vectors</a></em> <a id="cite-S4Vectors"></a>(<a href="https://doi.org/10.18129/B9.bioc.S4Vectors">Pagès, Lawrence, and Aboyoun, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/S4Vectors">S4Vectors</a></em> <a id="cite-S4Vectors"></a>(<a href="https://doi.org/10.18129/B9.bioc.S4Vectors">Pagès, Lawrence, and Aboyoun, 2017</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/derfinderData">derfinderData</a></em> (<a href="https://github.com/leekgroup/derfinderData">Collado-Torres, Jaffe, and Leek, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/derfinderData">derfinderData</a></em> (<a href="https://github.com/leekgroup/derfinderData">Collado-Torres, Jaffe, and Leek, 2020</a>)</li>
 <li>
 <em><a href="https://CRAN.R-project.org/package=sessioninfo">sessioninfo</a></em> <a id="cite-Csardi_2018"></a>(<a href="https://CRAN.R-project.org/package=sessioninfo">Csárdi, core, Wickham, Chang, et al., 2018</a>)</li>
 <li>
@@ -2312,13 +2325,13 @@ regionMatrix() flow chart.
 <li>
 <em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> <a id="cite-Xie_2014"></a>(<a href="http://www.crcpress.com/product/isbn/9781466561595">Xie, 2014</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/BiocStyle">BiocStyle</a></em> <a id="cite-Oles_2020"></a>(<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> <a id="cite-Oles_2020"></a>(<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>)</li>
 <li>
 <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> <a id="cite-Allaire_2020"></a>(<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>)</li>
 <li>
 <em><a href="https://CRAN.R-project.org/package=testthat">testthat</a></em> <a id="cite-Wickham_2011"></a>(<a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf">Wickham, 2011</a>)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.11/TxDb.Hsapiens.UCSC.hg19.knownGene">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em> <a id="cite-Carlson_2015"></a>(<a href="#bib-Carlson_2015">Carlson and Maintainer, 2015</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.12/TxDb.Hsapiens.UCSC.hg19.knownGene">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em> <a id="cite-Carlson_2015"></a>(<a href="#bib-Carlson_2015">Carlson and Maintainer, 2015</a>)</li>
 </ul>
 <p>Code for creating the vignette</p>
 <div class="sourceCode" id="cb422"><html><body><pre class="r"><span class="co">## Create the vignette</span>
@@ -2337,160 +2350,160 @@ regionMatrix() flow chart.
 <div class="sourceCode" id="cb427"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span>(<span class="st">"meanChr21.bw"</span>)</pre></body></html></div>
 <pre><code>## [1] TRUE</code></pre>
 <p>Date the vignette was generated.</p>
-<pre><code>## [1] "2020-04-27 15:03:38 UTC"</code></pre>
+<pre><code>## [1] "2020-05-10 16:51:56 UTC"</code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code>## Time difference of 1.7 mins</code></pre>
+<pre><code>## Time difference of 1.778 mins</code></pre>
 <p><code>R</code> session information.</p>
 <pre><code>## ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
-##  setting  value                                             
-##  version  R Under development (unstable) (2020-04-24 r78289)
-##  os       Debian GNU/Linux 10 (buster)                      
-##  system   x86_64, linux-gnu                                 
-##  ui       X11                                               
-##  language (EN)                                              
-##  collate  en_US.UTF-8                                       
-##  ctype    en_US.UTF-8                                       
-##  tz       UTC                                               
-##  date     2020-04-27                                        
+##  setting  value                                      
+##  version  R version 4.0.0 Patched (2020-05-07 r78385)
+##  os       Ubuntu 18.04.4 LTS                         
+##  system   x86_64, linux-gnu                          
+##  ui       X11                                        
+##  language (EN)                                       
+##  collate  en_US.UTF-8                                
+##  ctype    en_US.UTF-8                                
+##  tz       UTC                                        
+##  date     2020-05-10                                 
 ## 
 ## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
 ##  package                           * version    date       lib source                        
-##  acepack                             1.4.1      2016-10-29 [1] CRAN (R 4.1.0)                
-##  annotate                            1.65.1     2020-01-27 [1] Bioconductor                  
-##  AnnotationDbi                     * 1.49.1     2020-01-25 [1] Bioconductor                  
-##  askpass                             1.1        2019-01-13 [2] CRAN (R 4.1.0)                
-##  assertthat                          0.2.1      2019-03-21 [2] CRAN (R 4.1.0)                
-##  backports                           1.1.6      2020-04-05 [2] CRAN (R 4.1.0)                
-##  base64enc                           0.1-3      2015-07-28 [1] CRAN (R 4.1.0)                
-##  bibtex                              0.4.2.2    2020-01-02 [1] CRAN (R 4.1.0)                
-##  Biobase                           * 2.47.3     2020-03-16 [1] Bioconductor                  
-##  BiocFileCache                       1.11.6     2020-04-16 [1] Bioconductor                  
-##  BiocGenerics                      * 0.33.3     2020-03-23 [1] Bioconductor                  
-##  BiocManager                         1.30.10    2019-11-16 [2] CRAN (R 4.1.0)                
-##  BiocParallel                        1.21.3     2020-04-21 [1] Bioconductor                  
-##  BiocStyle                         * 2.15.8     2020-04-19 [1] Bioconductor                  
-##  biomaRt                             2.43.6     2020-04-21 [1] Bioconductor                  
-##  Biostrings                          2.55.7     2020-03-24 [1] Bioconductor                  
-##  bit                                 1.1-15.2   2020-02-10 [1] CRAN (R 4.1.0)                
-##  bit64                               0.9-7      2017-05-08 [1] CRAN (R 4.1.0)                
-##  bitops                              1.0-6      2013-08-17 [1] CRAN (R 4.1.0)                
-##  blob                                1.2.1      2020-01-20 [1] CRAN (R 4.1.0)                
-##  bookdown                            0.18       2020-03-05 [1] CRAN (R 4.1.0)                
-##  BSgenome                            1.55.4     2020-03-19 [1] Bioconductor                  
-##  bumphunter                        * 1.29.0     2019-10-29 [1] Bioconductor                  
-##  checkmate                           2.0.0      2020-02-06 [1] CRAN (R 4.1.0)                
-##  cli                                 2.0.2      2020-02-28 [2] CRAN (R 4.1.0)                
-##  cluster                             2.1.0      2019-06-19 [3] CRAN (R 4.1.0)                
-##  codetools                           0.2-16     2018-12-24 [3] CRAN (R 4.1.0)                
-##  colorspace                          1.4-1      2019-03-18 [1] CRAN (R 4.1.0)                
-##  crayon                              1.3.4      2017-09-16 [2] CRAN (R 4.1.0)                
-##  curl                                4.3        2019-12-02 [2] CRAN (R 4.1.0)                
-##  data.table                          1.12.8     2019-12-09 [1] CRAN (R 4.1.0)                
-##  DBI                                 1.1.0      2019-12-15 [1] CRAN (R 4.1.0)                
-##  dbplyr                              1.4.3      2020-04-19 [1] CRAN (R 4.1.0)                
-##  DelayedArray                      * 0.13.12    2020-04-10 [1] Bioconductor                  
-##  derfinder                         * 1.21.7     2020-04-27 [1] Bioconductor                  
-##  derfinderData                     * 2.5.3      2020-04-23 [1] Bioconductor                  
-##  derfinderHelper                     1.21.2     2020-04-18 [1] Bioconductor                  
-##  desc                                1.2.0      2018-05-01 [2] CRAN (R 4.1.0)                
-##  DESeq2                            * 1.27.32    2020-04-23 [1] Bioconductor                  
-##  digest                              0.6.25     2020-02-23 [2] CRAN (R 4.1.0)                
-##  doRNG                               1.8.2      2020-01-27 [1] CRAN (R 4.1.0)                
-##  dplyr                               0.8.5      2020-03-07 [1] CRAN (R 4.1.0)                
-##  ellipsis                            0.3.0      2019-09-20 [2] CRAN (R 4.1.0)                
-##  evaluate                            0.14       2019-05-28 [2] CRAN (R 4.1.0)                
-##  fansi                               0.4.1      2020-01-08 [2] CRAN (R 4.1.0)                
-##  farver                              2.0.3      2020-01-16 [1] CRAN (R 4.1.0)                
-##  foreach                           * 1.5.0      2020-03-30 [1] CRAN (R 4.1.0)                
-##  foreign                             0.8-78     2020-04-13 [3] CRAN (R 4.1.0)                
-##  Formula                             1.2-3      2018-05-03 [1] CRAN (R 4.1.0)                
-##  fs                                  1.4.1      2020-04-04 [2] CRAN (R 4.1.0)                
-##  genefilter                          1.69.0     2019-10-29 [1] Bioconductor                  
-##  geneplotter                         1.65.0     2019-10-29 [1] Bioconductor                  
-##  generics                            0.0.2      2018-11-29 [1] CRAN (R 4.1.0)                
-##  GenomeInfoDb                      * 1.23.17    2020-04-13 [1] Bioconductor                  
-##  GenomeInfoDbData                    1.2.3      2020-04-27 [1] Bioconductor                  
-##  GenomicAlignments                   1.23.2     2020-03-24 [1] Bioconductor                  
-##  GenomicFeatures                   * 1.39.7     2020-03-19 [1] Bioconductor                  
-##  GenomicFiles                        1.23.2     2020-03-23 [1] Bioconductor                  
-##  GenomicRanges                     * 1.39.3     2020-03-24 [1] Bioconductor                  
-##  ggplot2                           * 3.3.0      2020-03-05 [1] CRAN (R 4.1.0)                
-##  glue                                1.4.0      2020-04-03 [2] CRAN (R 4.1.0)                
-##  gridExtra                           2.3        2017-09-09 [1] CRAN (R 4.1.0)                
-##  gtable                              0.3.0      2019-03-25 [1] CRAN (R 4.1.0)                
-##  highr                               0.8        2019-03-20 [2] CRAN (R 4.1.0)                
-##  Hmisc                               4.4-0      2020-03-23 [1] CRAN (R 4.1.0)                
-##  hms                                 0.5.3      2020-01-08 [1] CRAN (R 4.1.0)                
-##  htmlTable                           1.13.3     2019-12-04 [1] CRAN (R 4.1.0)                
-##  htmltools                           0.4.0      2019-10-04 [2] CRAN (R 4.1.0)                
-##  htmlwidgets                         1.5.1      2019-10-08 [2] CRAN (R 4.1.0)                
-##  httr                                1.4.1      2019-08-05 [2] CRAN (R 4.1.0)                
-##  IRanges                           * 2.21.8     2020-03-25 [1] Bioconductor                  
-##  iterators                         * 1.0.12     2019-07-26 [1] CRAN (R 4.1.0)                
-##  jpeg                                0.1-8.1    2019-10-24 [1] CRAN (R 4.1.0)                
-##  jsonlite                            1.6.1      2020-02-02 [2] CRAN (R 4.1.0)                
-##  knitcitations                     * 1.0.10     2019-09-15 [1] CRAN (R 4.1.0)                
-##  knitr                             * 1.28       2020-02-06 [2] CRAN (R 4.1.0)                
-##  labeling                            0.3        2014-08-23 [1] CRAN (R 4.1.0)                
-##  lattice                             0.20-41    2020-04-02 [3] CRAN (R 4.1.0)                
-##  latticeExtra                        0.6-29     2019-12-19 [1] CRAN (R 4.1.0)                
-##  lifecycle                           0.2.0      2020-03-06 [2] CRAN (R 4.1.0)                
-##  limma                             * 3.43.8     2020-04-14 [1] Bioconductor                  
-##  locfit                            * 1.5-9.4    2020-03-25 [1] CRAN (R 4.1.0)                
-##  lubridate                           1.7.8      2020-04-06 [1] CRAN (R 4.1.0)                
-##  magrittr                            1.5        2014-11-22 [2] CRAN (R 4.1.0)                
-##  MASS                                7.3-51.5   2019-12-20 [3] CRAN (R 4.1.0)                
-##  Matrix                              1.2-18     2019-11-27 [3] CRAN (R 4.1.0)                
-##  matrixStats                       * 0.56.0     2020-03-13 [1] CRAN (R 4.1.0)                
-##  memoise                             1.1.0      2017-04-21 [2] CRAN (R 4.1.0)                
-##  munsell                             0.5.0      2018-06-12 [1] CRAN (R 4.1.0)                
-##  nnet                                7.3-13     2020-02-25 [3] CRAN (R 4.1.0)                
-##  openssl                             1.4.1      2019-07-18 [2] CRAN (R 4.1.0)                
-##  pillar                              1.4.3      2019-12-20 [2] CRAN (R 4.1.0)                
-##  pkgconfig                           2.0.3      2019-09-22 [2] CRAN (R 4.1.0)                
-##  pkgdown                             1.5.1.9000 2020-04-27 [1] Github (r-lib/pkgdown@c181e5c)
-##  plyr                                1.8.6      2020-03-03 [1] CRAN (R 4.1.0)                
-##  png                                 0.1-7      2013-12-03 [1] CRAN (R 4.1.0)                
-##  prettyunits                         1.1.1      2020-01-24 [2] CRAN (R 4.1.0)                
-##  progress                            1.2.2      2019-05-16 [1] CRAN (R 4.1.0)                
-##  purrr                               0.3.4      2020-04-17 [2] CRAN (R 4.1.0)                
-##  qvalue                              2.19.0     2019-10-29 [1] Bioconductor                  
-##  R6                                  2.4.1      2019-11-12 [2] CRAN (R 4.1.0)                
-##  rappdirs                            0.3.1      2016-03-28 [1] CRAN (R 4.1.0)                
-##  RColorBrewer                        1.1-2      2014-12-07 [1] CRAN (R 4.1.0)                
-##  Rcpp                                1.0.4.6    2020-04-09 [2] CRAN (R 4.1.0)                
-##  RCurl                               1.98-1.2   2020-04-18 [1] CRAN (R 4.1.0)                
-##  RefManageR                          1.2.12     2019-04-03 [1] CRAN (R 4.1.0)                
-##  reshape2                            1.4.4      2020-04-09 [1] CRAN (R 4.1.0)                
-##  rlang                               0.4.5      2020-03-01 [2] CRAN (R 4.1.0)                
-##  rmarkdown                           2.1        2020-01-20 [1] CRAN (R 4.1.0)                
-##  rngtools                            1.5        2020-01-23 [1] CRAN (R 4.1.0)                
-##  rpart                               4.1-15     2019-04-12 [3] CRAN (R 4.1.0)                
-##  rprojroot                           1.3-2      2018-01-03 [2] CRAN (R 4.1.0)                
-##  Rsamtools                           2.3.7      2020-03-18 [1] Bioconductor                  
-##  RSQLite                             2.2.0      2020-01-07 [1] CRAN (R 4.1.0)                
-##  rstudioapi                          0.11       2020-02-07 [2] CRAN (R 4.1.0)                
-##  rtracklayer                         1.47.0     2019-10-29 [1] Bioconductor                  
-##  S4Vectors                         * 0.25.15    2020-04-04 [1] Bioconductor                  
-##  scales                              1.1.0      2019-11-18 [1] CRAN (R 4.1.0)                
-##  sessioninfo                       * 1.1.1      2018-11-05 [2] CRAN (R 4.1.0)                
-##  stringi                             1.4.6      2020-02-17 [2] CRAN (R 4.1.0)                
-##  stringr                             1.4.0      2019-02-10 [2] CRAN (R 4.1.0)                
-##  SummarizedExperiment              * 1.17.5     2020-03-27 [1] Bioconductor                  
-##  survival                            3.1-12     2020-04-10 [3] CRAN (R 4.1.0)                
-##  tibble                              3.0.1      2020-04-20 [2] CRAN (R 4.1.0)                
-##  tidyselect                          1.0.0      2020-01-27 [1] CRAN (R 4.1.0)                
-##  TxDb.Hsapiens.UCSC.hg19.knownGene * 3.2.2      2020-04-27 [1] Bioconductor                  
-##  VariantAnnotation                   1.33.5     2020-04-23 [1] Bioconductor                  
-##  vctrs                               0.2.4      2020-03-10 [2] CRAN (R 4.1.0)                
-##  withr                               2.2.0      2020-04-20 [2] CRAN (R 4.1.0)                
-##  xfun                                0.13       2020-04-13 [2] CRAN (R 4.1.0)                
-##  XML                                 3.99-0.3   2020-01-20 [1] CRAN (R 4.1.0)                
-##  xml2                                1.3.2      2020-04-23 [2] CRAN (R 4.1.0)                
-##  xtable                              1.8-4      2019-04-21 [1] CRAN (R 4.1.0)                
-##  XVector                             0.27.2     2020-03-24 [1] Bioconductor                  
-##  yaml                                2.2.1      2020-02-01 [2] CRAN (R 4.1.0)                
-##  zlibbioc                            1.33.1     2020-01-24 [1] Bioconductor                  
+##  acepack                             1.4.1      2016-10-29 [1] CRAN (R 4.0.0)                
+##  annotate                            1.67.0     2020-04-27 [1] Bioconductor                  
+##  AnnotationDbi                     * 1.51.0     2020-04-27 [1] Bioconductor                  
+##  askpass                             1.1        2019-01-13 [2] CRAN (R 4.0.0)                
+##  assertthat                          0.2.1      2019-03-21 [2] CRAN (R 4.0.0)                
+##  backports                           1.1.6      2020-04-05 [2] CRAN (R 4.0.0)                
+##  base64enc                           0.1-3      2015-07-28 [1] CRAN (R 4.0.0)                
+##  bibtex                              0.4.2.2    2020-01-02 [1] CRAN (R 4.0.0)                
+##  Biobase                           * 2.49.0     2020-04-27 [1] Bioconductor                  
+##  BiocFileCache                       1.13.0     2020-04-27 [1] Bioconductor                  
+##  BiocGenerics                      * 0.35.2     2020-05-06 [1] Bioconductor                  
+##  BiocManager                         1.30.10    2019-11-16 [2] CRAN (R 4.0.0)                
+##  BiocParallel                        1.23.0     2020-04-27 [1] Bioconductor                  
+##  BiocStyle                         * 2.17.0     2020-04-27 [1] Bioconductor                  
+##  biomaRt                             2.45.0     2020-04-27 [1] Bioconductor                  
+##  Biostrings                          2.57.0     2020-04-27 [1] Bioconductor                  
+##  bit                                 1.1-15.2   2020-02-10 [1] CRAN (R 4.0.0)                
+##  bit64                               0.9-7      2017-05-08 [1] CRAN (R 4.0.0)                
+##  bitops                              1.0-6      2013-08-17 [1] CRAN (R 4.0.0)                
+##  blob                                1.2.1      2020-01-20 [1] CRAN (R 4.0.0)                
+##  bookdown                            0.18       2020-03-05 [1] CRAN (R 4.0.0)                
+##  BSgenome                            1.57.0     2020-04-27 [1] Bioconductor                  
+##  bumphunter                        * 1.31.0     2020-04-28 [1] Bioconductor                  
+##  checkmate                           2.0.0      2020-02-06 [1] CRAN (R 4.0.0)                
+##  cli                                 2.0.2      2020-02-28 [2] CRAN (R 4.0.0)                
+##  cluster                             2.1.0      2019-06-19 [3] CRAN (R 4.0.0)                
+##  codetools                           0.2-16     2018-12-24 [3] CRAN (R 4.0.0)                
+##  colorspace                          1.4-1      2019-03-18 [1] CRAN (R 4.0.0)                
+##  crayon                              1.3.4      2017-09-16 [2] CRAN (R 4.0.0)                
+##  curl                                4.3        2019-12-02 [2] CRAN (R 4.0.0)                
+##  data.table                          1.12.8     2019-12-09 [1] CRAN (R 4.0.0)                
+##  DBI                                 1.1.0      2019-12-15 [1] CRAN (R 4.0.0)                
+##  dbplyr                              1.4.3      2020-04-19 [1] CRAN (R 4.0.0)                
+##  DelayedArray                      * 0.15.1     2020-05-01 [1] Bioconductor                  
+##  derfinder                         * 1.23.1     2020-05-10 [1] Bioconductor                  
+##  derfinderData                     * 2.7.0      2020-04-30 [1] Bioconductor                  
+##  derfinderHelper                     1.23.0     2020-04-27 [1] Bioconductor                  
+##  desc                                1.2.0      2018-05-01 [2] CRAN (R 4.0.0)                
+##  DESeq2                            * 1.29.0     2020-04-27 [1] Bioconductor                  
+##  digest                              0.6.25     2020-02-23 [2] CRAN (R 4.0.0)                
+##  doRNG                               1.8.2      2020-01-27 [1] CRAN (R 4.0.0)                
+##  dplyr                               0.8.5      2020-03-07 [1] CRAN (R 4.0.0)                
+##  ellipsis                            0.3.0      2019-09-20 [2] CRAN (R 4.0.0)                
+##  evaluate                            0.14       2019-05-28 [2] CRAN (R 4.0.0)                
+##  fansi                               0.4.1      2020-01-08 [2] CRAN (R 4.0.0)                
+##  farver                              2.0.3      2020-01-16 [1] CRAN (R 4.0.0)                
+##  foreach                           * 1.5.0      2020-03-30 [1] CRAN (R 4.0.0)                
+##  foreign                             0.8-79     2020-04-26 [3] CRAN (R 4.0.0)                
+##  Formula                             1.2-3      2018-05-03 [1] CRAN (R 4.0.0)                
+##  fs                                  1.4.1      2020-04-04 [2] CRAN (R 4.0.0)                
+##  genefilter                          1.71.0     2020-04-27 [1] Bioconductor                  
+##  geneplotter                         1.67.0     2020-04-27 [1] Bioconductor                  
+##  generics                            0.0.2      2018-11-29 [1] CRAN (R 4.0.0)                
+##  GenomeInfoDb                      * 1.25.0     2020-04-27 [1] Bioconductor                  
+##  GenomeInfoDbData                    1.2.3      2020-05-10 [1] Bioconductor                  
+##  GenomicAlignments                   1.25.0     2020-04-27 [1] Bioconductor                  
+##  GenomicFeatures                   * 1.41.0     2020-04-27 [1] Bioconductor                  
+##  GenomicFiles                        1.25.0     2020-04-27 [1] Bioconductor                  
+##  GenomicRanges                     * 1.41.1     2020-05-02 [1] Bioconductor                  
+##  ggplot2                           * 3.3.0      2020-03-05 [1] CRAN (R 4.0.0)                
+##  glue                                1.4.0      2020-04-03 [2] CRAN (R 4.0.0)                
+##  gridExtra                           2.3        2017-09-09 [1] CRAN (R 4.0.0)                
+##  gtable                              0.3.0      2019-03-25 [1] CRAN (R 4.0.0)                
+##  highr                               0.8        2019-03-20 [2] CRAN (R 4.0.0)                
+##  Hmisc                               4.4-0      2020-03-23 [1] CRAN (R 4.0.0)                
+##  hms                                 0.5.3      2020-01-08 [1] CRAN (R 4.0.0)                
+##  htmlTable                           1.13.3     2019-12-04 [1] CRAN (R 4.0.0)                
+##  htmltools                           0.4.0      2019-10-04 [2] CRAN (R 4.0.0)                
+##  htmlwidgets                         1.5.1      2019-10-08 [2] CRAN (R 4.0.0)                
+##  httr                                1.4.1      2019-08-05 [2] CRAN (R 4.0.0)                
+##  IRanges                           * 2.23.4     2020-05-03 [1] Bioconductor                  
+##  iterators                         * 1.0.12     2019-07-26 [1] CRAN (R 4.0.0)                
+##  jpeg                                0.1-8.1    2019-10-24 [1] CRAN (R 4.0.0)                
+##  jsonlite                            1.6.1      2020-02-02 [2] CRAN (R 4.0.0)                
+##  knitcitations                     * 1.0.10     2019-09-15 [1] CRAN (R 4.0.0)                
+##  knitr                             * 1.28       2020-02-06 [2] CRAN (R 4.0.0)                
+##  labeling                            0.3        2014-08-23 [1] CRAN (R 4.0.0)                
+##  lattice                             0.20-41    2020-04-02 [3] CRAN (R 4.0.0)                
+##  latticeExtra                        0.6-29     2019-12-19 [1] CRAN (R 4.0.0)                
+##  lifecycle                           0.2.0      2020-03-06 [2] CRAN (R 4.0.0)                
+##  limma                             * 3.45.0     2020-04-27 [1] Bioconductor                  
+##  locfit                            * 1.5-9.4    2020-03-25 [1] CRAN (R 4.0.0)                
+##  lubridate                           1.7.8      2020-04-06 [1] CRAN (R 4.0.0)                
+##  magrittr                            1.5        2014-11-22 [2] CRAN (R 4.0.0)                
+##  MASS                                7.3-51.6   2020-04-26 [3] CRAN (R 4.0.0)                
+##  Matrix                              1.2-18     2019-11-27 [3] CRAN (R 4.0.0)                
+##  matrixStats                       * 0.56.0     2020-03-13 [1] CRAN (R 4.0.0)                
+##  memoise                             1.1.0      2017-04-21 [2] CRAN (R 4.0.0)                
+##  munsell                             0.5.0      2018-06-12 [1] CRAN (R 4.0.0)                
+##  nnet                                7.3-14     2020-04-26 [3] CRAN (R 4.0.0)                
+##  openssl                             1.4.1      2019-07-18 [2] CRAN (R 4.0.0)                
+##  pillar                              1.4.4      2020-05-05 [2] CRAN (R 4.0.0)                
+##  pkgconfig                           2.0.3      2019-09-22 [2] CRAN (R 4.0.0)                
+##  pkgdown                             1.5.1.9000 2020-05-10 [1] Github (r-lib/pkgdown@c181e5c)
+##  plyr                                1.8.6      2020-03-03 [1] CRAN (R 4.0.0)                
+##  png                                 0.1-7      2013-12-03 [1] CRAN (R 4.0.0)                
+##  prettyunits                         1.1.1      2020-01-24 [2] CRAN (R 4.0.0)                
+##  progress                            1.2.2      2019-05-16 [1] CRAN (R 4.0.0)                
+##  purrr                               0.3.4      2020-04-17 [2] CRAN (R 4.0.0)                
+##  qvalue                              2.21.0     2020-04-27 [1] Bioconductor                  
+##  R6                                  2.4.1      2019-11-12 [2] CRAN (R 4.0.0)                
+##  rappdirs                            0.3.1      2016-03-28 [1] CRAN (R 4.0.0)                
+##  RColorBrewer                        1.1-2      2014-12-07 [1] CRAN (R 4.0.0)                
+##  Rcpp                                1.0.4.6    2020-04-09 [2] CRAN (R 4.0.0)                
+##  RCurl                               1.98-1.2   2020-04-18 [1] CRAN (R 4.0.0)                
+##  RefManageR                          1.2.12     2019-04-03 [1] CRAN (R 4.0.0)                
+##  reshape2                            1.4.4      2020-04-09 [1] CRAN (R 4.0.0)                
+##  rlang                               0.4.6      2020-05-02 [2] CRAN (R 4.0.0)                
+##  rmarkdown                           2.1        2020-01-20 [1] CRAN (R 4.0.0)                
+##  rngtools                            1.5        2020-01-23 [1] CRAN (R 4.0.0)                
+##  rpart                               4.1-15     2019-04-12 [3] CRAN (R 4.0.0)                
+##  rprojroot                           1.3-2      2018-01-03 [2] CRAN (R 4.0.0)                
+##  Rsamtools                           2.5.0      2020-04-27 [1] Bioconductor                  
+##  RSQLite                             2.2.0      2020-01-07 [1] CRAN (R 4.0.0)                
+##  rstudioapi                          0.11       2020-02-07 [2] CRAN (R 4.0.0)                
+##  rtracklayer                         1.49.1     2020-05-02 [1] Bioconductor                  
+##  S4Vectors                         * 0.27.5     2020-05-06 [1] Bioconductor                  
+##  scales                              1.1.0      2019-11-18 [1] CRAN (R 4.0.0)                
+##  sessioninfo                       * 1.1.1      2018-11-05 [2] CRAN (R 4.0.0)                
+##  stringi                             1.4.6      2020-02-17 [2] CRAN (R 4.0.0)                
+##  stringr                             1.4.0      2019-02-10 [2] CRAN (R 4.0.0)                
+##  SummarizedExperiment              * 1.19.2     2020-05-01 [1] Bioconductor                  
+##  survival                            3.1-12     2020-04-10 [3] CRAN (R 4.0.0)                
+##  tibble                              3.0.1      2020-04-20 [2] CRAN (R 4.0.0)                
+##  tidyselect                          1.0.0      2020-01-27 [1] CRAN (R 4.0.0)                
+##  TxDb.Hsapiens.UCSC.hg19.knownGene * 3.2.2      2020-05-10 [1] Bioconductor                  
+##  VariantAnnotation                   1.35.0     2020-04-27 [1] Bioconductor                  
+##  vctrs                               0.2.4      2020-03-10 [2] CRAN (R 4.0.0)                
+##  withr                               2.2.0      2020-04-20 [2] CRAN (R 4.0.0)                
+##  xfun                                0.13       2020-04-13 [2] CRAN (R 4.0.0)                
+##  XML                                 3.99-0.3   2020-01-20 [1] CRAN (R 4.0.0)                
+##  xml2                                1.3.2      2020-04-23 [2] CRAN (R 4.0.0)                
+##  xtable                              1.8-4      2019-04-21 [1] CRAN (R 4.0.0)                
+##  XVector                             0.29.0     2020-04-27 [1] Bioconductor                  
+##  yaml                                2.2.1      2020-02-01 [2] CRAN (R 4.0.0)                
+##  zlibbioc                            1.35.0     2020-04-27 [1] Bioconductor                  
 ## 
 ## [1] /usr/local/lib/R/host-site-library
 ## [2] /usr/local/lib/R/site-library
@@ -2499,15 +2512,15 @@ regionMatrix() flow chart.
 <div id="bibliography" class="section level1">
 <h1 class="hasAnchor">
 <a href="#bibliography" class="anchor"></a>Bibliography</h1>
-<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.11/BiocStyle">BiocStyle</a></em> (<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>) with <em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> (<a href="http://www.crcpress.com/product/isbn/9781466561595">Xie, 2014</a>) and <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> (<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>) running behind the scenes.</p>
+<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> (<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>) with <em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> (<a href="http://www.crcpress.com/product/isbn/9781466561595">Xie, 2014</a>) and <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> (<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>) running behind the scenes.</p>
 <p>Citations made with <em><a href="https://CRAN.R-project.org/package=knitcitations">knitcitations</a></em> (<a href="https://CRAN.R-project.org/package=knitcitations">Boettiger, 2019</a>).</p>
 <p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.1. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
 <p>[2] S. Arora, M. Morgan, M. Carlson, and H. Pagès. <em>GenomeInfoDb: Utilities for manipulating chromosome and other ‘seqname’ identifiers</em>. 2017. DOI: 10.18129/B9.bioc.GenomeInfoDb.</p>
-<p>[3] Bioconductor Package Maintainer, V. Obenchain, M. Love, L. Shepherd, et al. <em>GenomicFiles: Distributed computing by file or by range</em>. R package version 1.23.2. 2020.</p>
+<p>[3] Bioconductor Package Maintainer, V. Obenchain, M. Love, L. Shepherd, et al. <em>GenomicFiles: Distributed computing by file or by range</em>. R package version 1.25.0. 2020.</p>
 <p>[4] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL: <a href="https://CRAN.R-project.org/package=knitcitations" class="uri">https://CRAN.R-project.org/package=knitcitations</a>&gt;.</p>
 <p>[5] BrainSpan. “Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.” 2011. &lt;URL: <a href="http://www.brainspan.org/" class="uri">http://www.brainspan.org/</a>&gt;.</p>
 <p>[6] M. Carlson and B. P. Maintainer. <em>TxDb.Hsapiens.UCSC.hg19.knownGene: Annotation package for TxDb object(s)</em>. R package version 3.2.2. 2015.</p>
-<p>[7] L. Collado-Torres, A. Jaffe, and J. Leek. <em>derfinderData: Processed BigWigs from BrainSpan for examples</em>. R package version 2.5.3. 2020. &lt;URL: <a href="https://github.com/leekgroup/derfinderData" class="uri">https://github.com/leekgroup/derfinderData</a>&gt;.</p>
+<p>[7] L. Collado-Torres, A. Jaffe, and J. Leek. <em>derfinderData: Processed BigWigs from BrainSpan for examples</em>. R package version 2.7.0. 2020. &lt;URL: <a href="https://github.com/leekgroup/derfinderData" class="uri">https://github.com/leekgroup/derfinderData</a>&gt;.</p>
 <p>[8] G. Csárdi, R. core, H. Wickham, W. Chang, et al. <em>sessioninfo: R Session Information</em>. R package version 1.1.1. 2018. &lt;URL: <a href="https://CRAN.R-project.org/package=sessioninfo" class="uri">https://CRAN.R-project.org/package=sessioninfo</a>&gt;.</p>
 <p>[9] A. C. Frazee, S. Sabunciyan, K. D. Hansen, R. A. Irizarry, et al. “Differential expression analysis of RNA-seq data at single-base resolution”. In: <em>Biostatistics</em> 15 (3) (2014), pp. 413-426. DOI: 10.1093/biostatistics/kxt053. &lt;URL: <a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long" class="uri">http://biostatistics.oxfordjournals.org/content/15/3/413.long</a>&gt;.</p>
 <p>[10] F. E. Harrell Jr, w. c. f. C. Dupont, and m. others. <em>Hmisc: Harrell Miscellaneous</em>. R package version 4.4-0. 2020. &lt;URL: <a href="https://CRAN.R-project.org/package=Hmisc" class="uri">https://CRAN.R-project.org/package=Hmisc</a>&gt;.</p>
@@ -2518,13 +2531,13 @@ regionMatrix() flow chart.
 <p>[15] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
 <p>[16] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
 <p>[17] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
-<p>[18] M. Morgan, V. Obenchain, M. Lang, R. Thompson, et al. <em>BiocParallel: Bioconductor facilities for parallel evaluation</em>. R package version 1.21.3. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocParallel" class="uri">https://github.com/Bioconductor/BiocParallel</a>&gt;.</p>
-<p>[19] M. Morgan, H. Pagès, V. Obenchain, and N. Hayden. <em>Rsamtools: Binary alignment (BAM), FASTA, variant call (BCF), and tabix file import</em>. R package version 2.3.7. 2020. &lt;URL: <a href="http://bioconductor.org/packages/Rsamtools" class="uri">http://bioconductor.org/packages/Rsamtools</a>&gt;.</p>
-<p>[20] A. Oleś, M. Morgan, and W. Huber. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.15.8. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocStyle" class="uri">https://github.com/Bioconductor/BiocStyle</a>&gt;.</p>
+<p>[18] M. Morgan, V. Obenchain, M. Lang, R. Thompson, et al. <em>BiocParallel: Bioconductor facilities for parallel evaluation</em>. R package version 1.23.0. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocParallel" class="uri">https://github.com/Bioconductor/BiocParallel</a>&gt;.</p>
+<p>[19] M. Morgan, H. Pagès, V. Obenchain, and N. Hayden. <em>Rsamtools: Binary alignment (BAM), FASTA, variant call (BCF), and tabix file import</em>. R package version 2.5.0. 2020. &lt;URL: <a href="http://bioconductor.org/packages/Rsamtools" class="uri">http://bioconductor.org/packages/Rsamtools</a>&gt;.</p>
+<p>[20] A. Oleś, M. Morgan, and W. Huber. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.17.0. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocStyle" class="uri">https://github.com/Bioconductor/BiocStyle</a>&gt;.</p>
 <p>[21] H. Pagès, M. Carlson, S. Falcon, and N. Li. <em>AnnotationDbi: Annotation Database Interface</em>. 2017. DOI: 10.18129/B9.bioc.AnnotationDbi.</p>
 <p>[22] H. Pagès, M. Lawrence, and P. Aboyoun. <em>S4Vectors: S4 implementation of vector-like and list-like objects</em>. 2017. DOI: 10.18129/B9.bioc.S4Vectors.</p>
 <p>[23] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
-<p>[24] J. D. Storey, A. J. Bass, A. Dabney, and D. Robinson. <em>qvalue: Q-value estimation for false discovery rate control</em>. R package version 2.19.0. 2019. &lt;URL: <a href="http://github.com/jdstorey/qvalue" class="uri">http://github.com/jdstorey/qvalue</a>&gt;.</p>
+<p>[24] J. D. Storey, A. J. Bass, A. Dabney, and D. Robinson. <em>qvalue: Q-value estimation for false discovery rate control</em>. R package version 2.21.0. 2020. &lt;URL: <a href="http://github.com/jdstorey/qvalue" class="uri">http://github.com/jdstorey/qvalue</a>&gt;.</p>
 <p>[25] H. Wickham. <em>ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York, 2016. ISBN: 978-3-319-24277-4. &lt;URL: <a href="https://ggplot2.tidyverse.org" class="uri">https://ggplot2.tidyverse.org</a>&gt;.</p>
 <p>[26] H. Wickham. “testthat: Get Started with Testing”. In: <em>The R Journal</em> 3 (2011), pp. 5-10. &lt;URL: <a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf" class="uri">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>&gt;.</p>
 <p>[27] Y. Xie. “knitr: A Comprehensive Tool for Reproducible Research in R”. In: <em>Implementing Reproducible Computational Research</em>. Ed. by V. Stodden, F. Leisch and R. D. Peng. ISBN 978-1466561595. Chapman and Hall/CRC, 2014. &lt;URL: <a href="http://www.crcpress.com/product/isbn/9781466561595" class="uri">http://www.crcpress.com/product/isbn/9781466561595</a>&gt;.</p>

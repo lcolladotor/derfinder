@@ -74,7 +74,7 @@ for using calculateStats." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.21.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.1</span>
       </span>
     </div>
 
@@ -254,49 +254,62 @@ at <a href='http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-whe
 <span class='no'>dataReady</span> <span class='kw'>&lt;-</span> <span class='fu'>preprocessCoverage</span>(<span class='no'>genomeData</span>,
     <span class='kw'>cutoff</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>scalefac</span> <span class='kw'>=</span> <span class='fl'>32</span>,
     <span class='kw'>chunksize</span> <span class='kw'>=</span> <span class='fl'>1e3</span>, <span class='kw'>colsubset</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-04-27 15:01:04 preprocessCoverage: splitting the data</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>dataReady</span>)</div><div class='output co'>#&gt; [1] "coverageProcessed" "mclapplyIndex"     "position"         
+)</div><div class='output co'>#&gt; <span class='message'>2020-05-10 16:49:13 preprocessCoverage: splitting the data</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/names.html'>names</a></span>(<span class='no'>dataReady</span>)</div><div class='output co'>#&gt; [1] "coverageProcessed" "mclapplyIndex"     "position"         
 #&gt; [4] "meanCoverage"      "groupMeans"       </div><div class='input'><span class='no'>dataReady</span></div><div class='output co'>#&gt; $coverageProcessed
 #&gt; DataFrame with 1434 rows and 31 columns
-#&gt;      ERR009101 ERR009102 ERR009105 ERR009107 ERR009108 ERR009112 ERR009115
-#&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
-#&gt; 1            5         5  5.044394         5         5         5         5
-#&gt; 2            5         5  5.044394         5         5         5         5
-#&gt; 3            5         5  5.044394         5         5         5         5
-#&gt; 4            5         5  5.044394         5         5         5         5
-#&gt; 5            5         5  5.044394         5         5         5         5
-#&gt; ...        ...       ...       ...       ...       ...       ...       ...
-#&gt; 1430  5.044394         5         5         5         5         5         5
-#&gt; 1431  5.044394         5         5         5         5         5         5
-#&gt; 1432  5.044394         5         5         5         5         5         5
-#&gt; 1433  5.044394         5         5         5         5         5         5
-#&gt; 1434  5.000000         5         5         5         5         5         5
-#&gt;      ERR009116 ERR009131 ERR009138 ERR009144 ERR009145 ERR009148 ERR009151
-#&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
-#&gt; 1            5         5         5         5         5         5         5
-#&gt; 2            5         5         5         5         5         5         5
-#&gt; 3            5         5         5         5         5         5         5
-#&gt; 4            5         5         5         5         5         5         5
-#&gt; 5            5         5         5         5         5         5         5
-#&gt; ...        ...       ...       ...       ...       ...       ...       ...
-#&gt; 1430         5         5         5         5         5  5.044394         5
-#&gt; 1431         5         5         5         5         5  5.044394         5
-#&gt; 1432         5         5         5         5         5  5.044394         5
-#&gt; 1433         5         5         5         5         5  5.044394         5
-#&gt; 1434         5         5         5         5         5  5.000000         5
-#&gt;      ERR009152 ERR009153 ERR009159 ERR009161 ERR009163 ERR009164 ERR009167
-#&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
-#&gt; 1            5         5  5.000000         5         5         5         5
-#&gt; 2            5         5  5.044394         5         5         5         5
-#&gt; 3            5         5  5.044394         5         5         5         5
-#&gt; 4            5         5  5.044394         5         5         5         5
-#&gt; 5            5         5  5.044394         5         5         5         5
-#&gt; ...        ...       ...       ...       ...       ...       ...       ...
-#&gt; 1430         5         5         5         5         5         5  5.044394
-#&gt; 1431         5         5         5         5         5         5  5.044394
-#&gt; 1432         5         5         5         5         5         5  5.044394
-#&gt; 1433         5         5         5         5         5         5  5.044394
-#&gt; 1434         5         5         5         5         5         5  5.044394
-#&gt;      SRR031812 SRR031835 SRR031867 SRR031868 SRR031900 SRR031904 SRR031914
+#&gt;             ERR009101 ERR009102        ERR009105 ERR009107 ERR009108 ERR009112
+#&gt;                 &lt;Rle&gt;     &lt;Rle&gt;            &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
+#&gt; 1                   5         5 5.04439411935845         5         5         5
+#&gt; 2                   5         5 5.04439411935845         5         5         5
+#&gt; 3                   5         5 5.04439411935845         5         5         5
+#&gt; 4                   5         5 5.04439411935845         5         5         5
+#&gt; 5                   5         5 5.04439411935845         5         5         5
+#&gt; ...               ...       ...              ...       ...       ...       ...
+#&gt; 1430 5.04439411935845         5                5         5         5         5
+#&gt; 1431 5.04439411935845         5                5         5         5         5
+#&gt; 1432 5.04439411935845         5                5         5         5         5
+#&gt; 1433 5.04439411935845         5                5         5         5         5
+#&gt; 1434                5         5                5         5         5         5
+#&gt;      ERR009115 ERR009116 ERR009131 ERR009138 ERR009144 ERR009145
+#&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
+#&gt; 1            5         5         5         5         5         5
+#&gt; 2            5         5         5         5         5         5
+#&gt; 3            5         5         5         5         5         5
+#&gt; 4            5         5         5         5         5         5
+#&gt; 5            5         5         5         5         5         5
+#&gt; ...        ...       ...       ...       ...       ...       ...
+#&gt; 1430         5         5         5         5         5         5
+#&gt; 1431         5         5         5         5         5         5
+#&gt; 1432         5         5         5         5         5         5
+#&gt; 1433         5         5         5         5         5         5
+#&gt; 1434         5         5         5         5         5         5
+#&gt;             ERR009148 ERR009151 ERR009152 ERR009153        ERR009159 ERR009161
+#&gt;                 &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;            &lt;Rle&gt;     &lt;Rle&gt;
+#&gt; 1                   5         5         5         5                5         5
+#&gt; 2                   5         5         5         5 5.04439411935845         5
+#&gt; 3                   5         5         5         5 5.04439411935845         5
+#&gt; 4                   5         5         5         5 5.04439411935845         5
+#&gt; 5                   5         5         5         5 5.04439411935845         5
+#&gt; ...               ...       ...       ...       ...              ...       ...
+#&gt; 1430 5.04439411935845         5         5         5                5         5
+#&gt; 1431 5.04439411935845         5         5         5                5         5
+#&gt; 1432 5.04439411935845         5         5         5                5         5
+#&gt; 1433 5.04439411935845         5         5         5                5         5
+#&gt; 1434                5         5         5         5                5         5
+#&gt;      ERR009163 ERR009164        ERR009167 SRR031812 SRR031835 SRR031867
+#&gt;          &lt;Rle&gt;     &lt;Rle&gt;            &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
+#&gt; 1            5         5                5         5         5         5
+#&gt; 2            5         5                5         5         5         5
+#&gt; 3            5         5                5         5         5         5
+#&gt; 4            5         5                5         5         5         5
+#&gt; 5            5         5                5         5         5         5
+#&gt; ...        ...       ...              ...       ...       ...       ...
+#&gt; 1430         5         5 5.04439411935845         5         5         5
+#&gt; 1431         5         5 5.04439411935845         5         5         5
+#&gt; 1432         5         5 5.04439411935845         5         5         5
+#&gt; 1433         5         5 5.04439411935845         5         5         5
+#&gt; 1434         5         5 5.04439411935845         5         5         5
+#&gt;      SRR031868 SRR031900 SRR031904 SRR031914 SRR031936 SRR031958 SRR031960
 #&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
 #&gt; 1            5         5         5         5         5         5         5
 #&gt; 2            5         5         5         5         5         5         5
@@ -309,19 +322,6 @@ at <a href='http://lcolladotor.github.io/2013/11/14/Reducing-memory-overhead-whe
 #&gt; 1432         5         5         5         5         5         5         5
 #&gt; 1433         5         5         5         5         5         5         5
 #&gt; 1434         5         5         5         5         5         5         5
-#&gt;      SRR031936 SRR031958 SRR031960
-#&gt;          &lt;Rle&gt;     &lt;Rle&gt;     &lt;Rle&gt;
-#&gt; 1            5         5         5
-#&gt; 2            5         5         5
-#&gt; 3            5         5         5
-#&gt; 4            5         5         5
-#&gt; 5            5         5         5
-#&gt; ...        ...       ...       ...
-#&gt; 1430         5         5         5
-#&gt; 1431         5         5         5
-#&gt; 1432         5         5         5
-#&gt; 1433         5         5         5
-#&gt; 1434         5         5         5
 #&gt; 
 #&gt; $mclapplyIndex
 #&gt; $mclapplyIndex[[1]]
