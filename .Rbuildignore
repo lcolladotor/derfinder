@@ -9,3 +9,4 @@ dev
 ^pkgdown$
 ^README\.Rmd$
 ^codecov\.yml$
+^dev$
