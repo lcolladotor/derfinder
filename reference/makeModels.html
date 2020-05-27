@@ -190,12 +190,12 @@ no intercept.</p></td>
     <pre class="examples"><div class='input'><span class='co'>## Collapse the coverage information</span>
 <span class='no'>collapsedFull</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='collapseFullCoverage.html'>collapseFullCoverage</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>genomeData</span>$<span class='no'>coverage</span>),
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:24 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:24 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:55:54 collapseFullCoverage: Sorting fullCov</span></div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:55:54 collapseFullCoverage: Collapsing chromosomes information by sample</span></div><div class='input'>
 <span class='co'>## Calculate library size adjustments</span>
 <span class='no'>sampleDepths</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sampleDepth.html'>sampleDepth</a></span>(<span class='no'>collapsedFull</span>,
     <span class='kw'>probs</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.5</span>), <span class='kw'>nonzero</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
     <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:24 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:24 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
+)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:55:54 sampleDepth: Calculating sample quantiles</span></div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:55:54 sampleDepth: Calculating sample adjustments</span></div><div class='input'>
 <span class='co'>## Build the models</span>
 <span class='no'>group</span> <span class='kw'>&lt;-</span> <span class='no'>genomeInfo</span>$<span class='no'>pop</span>
 <span class='no'>adjustvars</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='no'>genomeInfo</span>$<span class='no'>gender</span>)
