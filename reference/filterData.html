@@ -264,48 +264,48 @@ statistics.</p>
 <span class='no'>DF</span> <span class='kw'>&lt;-</span> <span class='fu'>DataFrame</span>(<span class='no'>x</span>, <span class='no'>y</span>, <span class='no'>z</span>)
 
 <span class='co'>## Filter the data</span>
-<span class='no'>filt1</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>DF</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'>2020-05-14 15:54:51 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span></div><div class='input'><span class='no'>filt1</span></div><div class='output co'>#&gt; $coverage
+<span class='no'>filt1</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>DF</span>, <span class='fl'>5</span>)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:16 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span></div><div class='input'><span class='no'>filt1</span></div><div class='output co'>#&gt; $coverage
 #&gt; DataFrame with 8300 rows and 3 columns
 #&gt;          x     y     z
 #&gt;      &lt;Rle&gt; &lt;Rle&gt; &lt;Rle&gt;
-#&gt; 1        1     3     7
-#&gt; 2        7     3    10
-#&gt; 3        4    10     8
-#&gt; 4        8     6     3
-#&gt; 5        6     1     1
+#&gt; 1        6     1     1
+#&gt; 2        8     9     1
+#&gt; 3        6     9     3
+#&gt; 4        5     9     2
+#&gt; 5        8     7     7
 #&gt; ...    ...   ...   ...
-#&gt; 8296     9     4     2
-#&gt; 8297     4     8    10
-#&gt; 8298     9     2     6
-#&gt; 8299     8     0     9
-#&gt; 8300     6     1     9
+#&gt; 8296     6     1     9
+#&gt; 8297     3     7     3
+#&gt; 8298     3    10     7
+#&gt; 8299    10     8     1
+#&gt; 8300     6     3     0
 #&gt; 
 #&gt; $position
-#&gt; logical-Rle of length 10000 with 2850 runs
-#&gt;   Lengths:    13     1     1     1     1 ...     1     1     1     1     1
-#&gt;   Values :  TRUE FALSE  TRUE FALSE  TRUE ... FALSE  TRUE FALSE  TRUE FALSE
+#&gt; logical-Rle of length 10000 with 2851 runs
+#&gt;   Lengths:     9     1     1     1     1 ...     1     1     1     1     4
+#&gt;   Values :  TRUE FALSE  TRUE FALSE  TRUE ...  TRUE FALSE  TRUE FALSE  TRUE
 #&gt; </div><div class='input'>
 <span class='co'>## Filter again but only using the first two samples</span>
-<span class='no'>filt2</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>filt1</span>$<span class='no'>coverage</span>[, <span class='fl'>1</span>:<span class='fl'>2</span>], <span class='fl'>5</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>filt1</span>$<span class='no'>position</span>)</div><div class='output co'>#&gt; <span class='message'>2020-05-14 15:54:51 filterData: originally there were 8300 rows, now there are 6924 rows. Meaning that 16.58 percent was filtered.</span></div><div class='input'><span class='no'>filt2</span></div><div class='output co'>#&gt; $coverage
-#&gt; DataFrame with 6924 rows and 2 columns
+<span class='no'>filt2</span> <span class='kw'>&lt;-</span> <span class='fu'>filterData</span>(<span class='no'>filt1</span>$<span class='no'>coverage</span>[, <span class='fl'>1</span>:<span class='fl'>2</span>], <span class='fl'>5</span>, <span class='kw'>index</span> <span class='kw'>=</span> <span class='no'>filt1</span>$<span class='no'>position</span>)</div><div class='output co'>#&gt; <span class='message'>2020-05-27 05:47:16 filterData: originally there were 8300 rows, now there are 6925 rows. Meaning that 16.57 percent was filtered.</span></div><div class='input'><span class='no'>filt2</span></div><div class='output co'>#&gt; $coverage
+#&gt; DataFrame with 6925 rows and 2 columns
 #&gt;          x     y
 #&gt;      &lt;Rle&gt; &lt;Rle&gt;
-#&gt; 1        7     3
-#&gt; 2        4    10
-#&gt; 3        8     6
-#&gt; 4        6     1
-#&gt; 5        8     9
+#&gt; 1        6     1
+#&gt; 2        8     9
+#&gt; 3        6     9
+#&gt; 4        5     9
+#&gt; 5        8     7
 #&gt; ...    ...   ...
-#&gt; 6920     9     4
-#&gt; 6921     4     8
-#&gt; 6922     9     2
-#&gt; 6923     8     0
-#&gt; 6924     6     1
+#&gt; 6921     6     1
+#&gt; 6922     3     7
+#&gt; 6923     3    10
+#&gt; 6924    10     8
+#&gt; 6925     6     3
 #&gt; 
 #&gt; $position
 #&gt; logical-Rle of length 10000 with 4265 runs
-#&gt;   Lengths:     1    12     1     1     1 ...     1     1     1     1     1
-#&gt;   Values : FALSE  TRUE FALSE  TRUE FALSE ... FALSE  TRUE FALSE  TRUE FALSE
+#&gt;   Lengths:     9     1     1     1     1 ...     1     1     1     1     4
+#&gt;   Values :  TRUE FALSE  TRUE FALSE  TRUE ...  TRUE FALSE  TRUE FALSE  TRUE
 #&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
