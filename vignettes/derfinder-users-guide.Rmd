@@ -98,7 +98,7 @@ bib <- c(
 
 If you haven't already, please read the [quick start to using derfinder](quickstart-derfinder.html) vignette. It explains the basics of using `r Biocpkg('derfinder')`, how to ask for help, and showcases an example analysis.
 
-The _derfinder users guide_ goes into more depth about what you can do with `r Biocpkg('derfinder')`. It covers the two implementations of the DER Finder approach `r citep(bib[['originalder']])`. That is, the (A) expressed regions-level and (B) single base-level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.
+The _derfinder users guide_ goes into more depth about what you can do with `r Biocpkg('derfinder')`. It covers the two implementations of the DER Finder approach `r Citep(bib[['originalder']])`. That is, the (A) expressed regions-level and (B) single base-level F-statistics implementations. The vignette also includes advanced material for fine tuning some options, working with non-human data, and example scripts for a high-performance computing cluster.
 
 # Expressed regions-level
 
@@ -131,7 +131,7 @@ We highly recommend this approach. [Rail](http://rail.bio) has also other signif
 
 # Single base-level F-statistics
 
-The DER Finder approach was originally implemented by calculating t-statistics between two groups and using a hidden markov model to determine the expression states: not expressed, expressed, differentially expressed `r citep(bib[['originalder']])`. The original software works but had areas where we worked to improve it, which lead to the single base-level F-statistics implementation. Also note that the original software is no longer maintained.  
+The DER Finder approach was originally implemented by calculating t-statistics between two groups and using a hidden markov model to determine the expression states: not expressed, expressed, differentially expressed `r Citep(bib[['originalder']])`. The original software works but had areas where we worked to improve it, which lead to the single base-level F-statistics implementation. Also note that the original software is no longer maintained.  
 
 This type of analysis first loads the data and preprocess it in a format that saves time and reduces memory later. It then fits two nested models (an alternative and a null model) with the coverage information for every single base-pair of the genome. Using the two fitted models, it calculates an F-statistic. Basically, it generates a vector along the genome with F-statistics.
 
@@ -146,7 +146,7 @@ Which implementation of the DER Finder approach you will want to use depends on 
 
 # Example data
 
-In this vignette we we will analyze a small subset of the samples from the _BrainSpan Atlas of the Human Brain_ `r citep(bib[['brainspan']])` publicly available data. 
+In this vignette we we will analyze a small subset of the samples from the _BrainSpan Atlas of the Human Brain_ `r Citep(bib[['brainspan']])` publicly available data. 
 
 We first load the required packages.
 
@@ -179,7 +179,7 @@ kable(p, format = "html", row.names = TRUE)
 
 `r Biocpkg('derfinder')` offers three functions related to loading raw data. The first one, `rawFiles()`, is a helper function for identifying the full paths to the input files. Next, `loadCoverage()` loads the base-level coverage data from either BAM or BigWig files for a specific chromosome. Finally, `fullCoverage()` will load the coverage for a set of chromosomes using `loadCoverage()`.
 
-We can load the data from `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
+We can load the data from `r Biocexptpkg('derfinderData')` `r Citep(bib[['derfinderData']])` by first identifying the paths to the BigWig files with `rawFiles()` and then loading the data with `fullCoverage()`. Note that the _BrainSpan_ data is already normalized by the total number of mapped reads in each sample. However, that won't be the case with most data sets in which case you might want to use the `totalMapped` and `targetSize` arguments. The function `getTotalMapped()` will be helpful to get this information.
 
 ```{r 'getData', eval = .Platform$OS.type != "windows"}
 ## Determine the files to use and fix the names
@@ -1429,31 +1429,31 @@ Latter sections of this vignette covered the most commonly used advanced argumen
 
 This package was made possible thanks to:
 
-* R `r citep(bib[['R']])`
-* `r Biocpkg('AnnotationDbi')` `r citep(bib[['AnnotationDbi']])`
-* `r Biocpkg('BiocParallel')` `r citep(bib[['BiocParallel']])`
-* `r Biocpkg('bumphunter')` `r citep(bib[['bumphunter']])` and `r citep(bib[['bumphunterPaper']])`
-* `r Biocpkg('derfinderHelper')` `r citep(bib[['derfinderHelper']])`
-* `r Biocpkg('GenomeInfoDb')` `r citep(bib[['GenomeInfoDb']])`
-* `r Biocpkg('GenomicAlignments')` `r citep(bib[['GenomicAlignments']])`
-* `r Biocpkg('GenomicFeatures')` `r citep(bib[['GenomicFeatures']])`
-* `r Biocpkg('GenomicFiles')` `r citep(bib[['GenomicFiles']])`
-* `r Biocpkg('GenomicRanges')` `r citep(bib[['GenomicRanges']])`
-* `r CRANpkg('Hmisc')` `r citep(bib[['Hmisc']])`
-* `r Biocpkg('IRanges')` `r citep(bib[['IRanges']])`
-* `r Biocpkg('qvalue')` `r citep(bib[['qvalue']])`
-* `r Biocpkg('Rsamtools')` `r citep(bib[['Rsamtools']])`
-* `r Biocpkg('rtracklayer')` `r citep(bib[['rtracklayer']])`
-* `r Biocpkg('S4Vectors')` `r citep(bib[['S4Vectors']])`
-* `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
-* `r CRANpkg('sessioninfo')` `r citep(bib[['sessioninfo']])`
-* `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
-* `r CRANpkg('knitr')` `r citep(bib[['knitr']])`
-* `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+* R `r Citep(bib[['R']])`
+* `r Biocpkg('AnnotationDbi')` `r Citep(bib[['AnnotationDbi']])`
+* `r Biocpkg('BiocParallel')` `r Citep(bib[['BiocParallel']])`
+* `r Biocpkg('bumphunter')` `r Citep(bib[['bumphunter']])` and `r Citep(bib[['bumphunterPaper']])`
+* `r Biocpkg('derfinderHelper')` `r Citep(bib[['derfinderHelper']])`
+* `r Biocpkg('GenomeInfoDb')` `r Citep(bib[['GenomeInfoDb']])`
+* `r Biocpkg('GenomicAlignments')` `r Citep(bib[['GenomicAlignments']])`
+* `r Biocpkg('GenomicFeatures')` `r Citep(bib[['GenomicFeatures']])`
+* `r Biocpkg('GenomicFiles')` `r Citep(bib[['GenomicFiles']])`
+* `r Biocpkg('GenomicRanges')` `r Citep(bib[['GenomicRanges']])`
+* `r CRANpkg('Hmisc')` `r Citep(bib[['Hmisc']])`
+* `r Biocpkg('IRanges')` `r Citep(bib[['IRanges']])`
+* `r Biocpkg('qvalue')` `r Citep(bib[['qvalue']])`
+* `r Biocpkg('Rsamtools')` `r Citep(bib[['Rsamtools']])`
+* `r Biocpkg('rtracklayer')` `r Citep(bib[['rtracklayer']])`
+* `r Biocpkg('S4Vectors')` `r Citep(bib[['S4Vectors']])`
+* `r Biocexptpkg('derfinderData')` `r Citep(bib[['derfinderData']])`
+* `r CRANpkg('sessioninfo')` `r Citep(bib[['sessioninfo']])`
+* `r CRANpkg('ggplot2')` `r Citep(bib[['ggplot2']])`
+* `r CRANpkg('knitr')` `r Citep(bib[['knitr']])`
+* `r Biocpkg('BiocStyle')` `r Citep(bib[['BiocStyle']])`
 * `r CRANpkg("RefManageR")` `r Citep(bib[["RefManageR"]])`
-* `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
-* `r CRANpkg('testthat')` `r citep(bib[['testthat']])`
-* `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
+* `r CRANpkg('rmarkdown')` `r Citep(bib[['rmarkdown']])`
+* `r CRANpkg('testthat')` `r Citep(bib[['testthat']])`
+* `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` `r Citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
 
 Code for creating the vignette
 
@@ -1502,10 +1502,10 @@ session_info()
 
 # Bibliography
 
-This vignette was generated using `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
-with `r CRANpkg('knitr')` `r citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])` running behind the scenes.
+This vignette was generated using `r Biocpkg('BiocStyle')` `r Citep(bib[['BiocStyle']])`
+with `r CRANpkg('knitr')` `r Citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')` `r Citep(bib[['rmarkdown']])` running behind the scenes.
 
-Citations made with `r CRANpkg('RefManageR')` `r citep(bib[['RefManageR']])`.
+Citations made with `r CRANpkg('RefManageR')` `r Citep(bib[['RefManageR']])`.
 
 ```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE, message = FALSE}
 ## Print bibliography
