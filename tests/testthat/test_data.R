@@ -1,5 +1,3 @@
-context("Loading and exporting data")
-
 windowsFlag <- .Platform$OS.type != "windows"
 
 # Setup
