@@ -1509,5 +1509,5 @@ Citations made with `r CRANpkg('RefManageR')` `r Citep(bib[['RefManageR']])`.
 
 ```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE, message = FALSE}
 ## Print bibliography
-bibliography()
+PrintBibliography(bib, .opts = list(hyperlink = "to.doc", style = "html"))
 ```
