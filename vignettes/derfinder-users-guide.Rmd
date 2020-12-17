@@ -32,17 +32,10 @@ Please read the [basics of using `derfinder`](http://bioconductor.org/packages/r
 startTime <- Sys.time()
 
 ## Bib setup
-library("knitcitations")
-
-## Load knitcitations with a clean bibliography
-cleanbib()
-cite_options(hyperlink = "to.doc", citation_format = "text", style = "html")
-# Note links won't show for now due to the following issue
-# https://github.com/cboettig/knitcitations/issues/63
+library("RefManageR")
 
 ## Write bibliography information
 bib <- c(
-    knitcitations = citation("knitcitations"),
     derfinder = citation("derfinder")[1],
     BiocStyle = citation("BiocStyle"),
     knitr = citation("knitr")[3],
@@ -98,10 +91,9 @@ bib <- c(
         author = "Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A",
         year = 2012, journal = "International Journal of Epidemiology"
     ),
-    derfinderData = citation("derfinderData")
+    derfinderData = citation("derfinderData"),
+    RefManageR = citation("RefManageR")[1]
 )
-
-write.bibtex(bib, file = "derfinderUsersGuideRef.bib")
 ```
 
 If you haven't already, please read the [quick start to using derfinder](quickstart-derfinder.html) vignette. It explains the basics of using `r Biocpkg('derfinder')`, how to ask for help, and showcases an example analysis.
@@ -1456,9 +1448,9 @@ This package was made possible thanks to:
 * `r Biocexptpkg('derfinderData')` `r citep(bib[['derfinderData']])`
 * `r CRANpkg('sessioninfo')` `r citep(bib[['sessioninfo']])`
 * `r CRANpkg('ggplot2')` `r citep(bib[['ggplot2']])`
-* `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`
 * `r CRANpkg('knitr')` `r citep(bib[['knitr']])`
 * `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
+* `r CRANpkg("RefManageR")` `r Citep(bib[["RefManageR"]])`
 * `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])`
 * `r CRANpkg('testthat')` `r citep(bib[['testthat']])`
 * `r Biocannopkg('TxDb.Hsapiens.UCSC.hg19.knownGene')` `r citep(bib[['TxDb.Hsapiens.UCSC.hg19.knownGene']])`
@@ -1513,7 +1505,7 @@ session_info()
 This vignette was generated using `r Biocpkg('BiocStyle')` `r citep(bib[['BiocStyle']])`
 with `r CRANpkg('knitr')` `r citep(bib[['knitr']])` and `r CRANpkg('rmarkdown')` `r citep(bib[['rmarkdown']])` running behind the scenes.
 
-Citations made with `r CRANpkg('knitcitations')` `r citep(bib[['knitcitations']])`.
+Citations made with `r CRANpkg('RefManageR')` `r citep(bib[['RefManageR']])`.
 
 ```{r vignetteBiblio, results = 'asis', echo = FALSE, warning = FALSE, message = FALSE}
 ## Print bibliography

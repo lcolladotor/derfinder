@@ -8,7 +8,7 @@ collapseFullCoverage(fullCov, colsubset = NULL, save = FALSE, ...)
 }
 \arguments{
 \item{fullCov}{A list where each element is the result from
-\link[derfinder:loadCoverage]{loadCoverage} used with \code{cutoff=NULL}. Can be
+\link[=loadCoverage]{loadCoverage} used with \code{cutoff=NULL}. Can be
 generated using \link{fullCoverage}.}
 
 \item{colsubset}{Which columns of \code{coverageInfo$coverage} to use.}

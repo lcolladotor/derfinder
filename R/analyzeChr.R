@@ -27,7 +27,7 @@
 #' `derfinderPlot` package.
 #' @param txdb This argument is passed to
 #' [annotateTranscripts][bumphunter::annotateTranscripts]. If `NULL`,
-#' [TxDb.Hsapiens.UCSC.hg19.knownGene][TxDb.Hsapiens.UCSC.hg19.knownGene::package]
+#' [TxDb.Hsapiens.UCSC.hg19.knownGene][TxDb.Hsapiens.UCSC.hg19.knownGene::TxDb.Hsapiens.UCSC.hg19.knownGene]
 #' is used.
 #' @param writeOutput If `TRUE`, output Rdata files are created at each
 #' step inside a directory with the chromosome name (example: 'chr21' if
