@@ -6,10 +6,10 @@ output: github_document
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
+    collapse = TRUE,
+    comment = "#>",
+    fig.path = "man/figures/README-",
+    out.width = "100%"
 )
 ```
 
@@ -41,8 +41,9 @@ available [here](https://github.com/lcolladotor/regionReport).
 Get the latest stable `R` release from [CRAN](http://cran.r-project.org/). Then install `derfinder` using from [Bioconductor](http://bioconductor.org/) the following code:
 
 ```{r 'install', eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+      install.packages("BiocManager")
+  }
 
 BiocManager::install("derfinder")
 ```
@@ -53,7 +54,7 @@ Below is the citation output from using `citation('derfinder')` in R. Please
 run this yourself to check for any updates on how to cite __derfinder__.
 
 ```{r 'citation', eval = requireNamespace('derfinder')}
-print(citation('derfinder'), bibtex = TRUE)
+print(citation("derfinder"), bibtex = TRUE)
 ```
 
 Please note that the `derfinder` was only made possible thanks to many other R and bioinformatics software authors, which are cited either in the vignettes and/or the paper(s) describing this package.
@@ -77,3 +78,4 @@ Please note that the derfinder project is released with a [Contributor Code of C
 
 For more details, check the `dev` directory.
 
+This package was developed using `r BiocStyle::Biocpkg('biocthis')`.

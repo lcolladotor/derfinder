@@ -73,7 +73,7 @@
 #' [qvalue][qvalue::qvalue]
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol mean lapply unlist cbind
-#' @importFrom IRanges Views RleList values 'values<-' nrow
+#' @importFrom IRanges Views RleList nrow values 'values<-'
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply
 #' @importFrom qvalue qvalue
@@ -211,11 +211,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
     ## Identify the data segments
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "calculatePvalues: identifying data segments"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "calculatePvalues: identifying data segments"
+        ))
+    }
 
     ## Extract data
     position <- coveragePrep$position
@@ -225,8 +225,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
     coverageProcessed <- coveragePrep$coverageProcessed
 
     if (is.null(lowMemDir) & is.null(coverageProcessed)) {
-          stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
-      }
+        stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
+    }
     rm(coveragePrep)
 
     ## Avoid re-calculating possible candidate DERs for every
@@ -305,12 +305,12 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
     for (i in seq_along(seeds)) {
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "calculatePvalues: calculating F-statistics for permutation",
-                  i, "and seed", seeds[i]
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "calculatePvalues: calculating F-statistics for permutation",
+                i, "and seed", seeds[i]
+            ))
+        }
 
         if (!is.na(seeds[i])) {
             set.seed(seeds[i])
@@ -331,8 +331,8 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
         if (smooth) {
             if (verbose) {
-                  message(paste(Sys.time(), "calculatePvalues: smoothing F-statistics for permutation", i))
-              }
+                message(paste(Sys.time(), "calculatePvalues: smoothing F-statistics for permutation", i))
+            }
             fstats.output <- .smootherFstats(fstats = fstats.output, position = position, weights = weights, smoothFunction = smoothFunction, ...)
         }
 
@@ -372,11 +372,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
         ## Calculate pvalues
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "calculatePvalues: calculating the p-values"
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "calculatePvalues: calculating the p-values"
+            ))
+        }
         regs$pvalues <- .calcPval(regs$area, nullareas)
         regs$significant <- factor(regs$pvalues < significantCut[1],
             levels = c(TRUE, FALSE)
@@ -407,11 +407,11 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
         regs$significantQval <- sigQval
     } else {
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "calculatePvalues: no null regions found. Skipping p-value calculation."
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "calculatePvalues: no null regions found. Skipping p-value calculation."
+            ))
+        }
         regs$pvalues <- rep(NA, length(regs))
         regs$significant <- rep(NA, length(regs))
         regs$qvalues <- rep(NA, length(regs))

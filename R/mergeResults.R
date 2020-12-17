@@ -64,7 +64,7 @@
 #' @importMethodsFrom GenomicRanges '$' '$<-' '['
 #' @importFrom IRanges RleList
 #' @import S4Vectors
-#' @importMethodsFrom IRanges cbind values 'values<-' '[' length
+#' @importMethodsFrom IRanges cbind '[' length
 #' order unlist nrow
 #' @importFrom qvalue qvalue
 #'
@@ -146,8 +146,8 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
         cutoffFstatUsed = cutoffFstatUsed, ...
     )
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving options used"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving options used"))
+    }
     save(optionsMerge, file = file.path(prefix, "optionsMerge.Rdata"))
 
     ## Initialize
@@ -163,8 +163,8 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
     ## Actual processing
     for (chr in chrs) {
         if (verbose) {
-              message(paste(Sys.time(), "Loading chromosome", chr))
-          }
+            message(paste(Sys.time(), "Loading chromosome", chr))
+        }
 
         ## Process the F-statistics
         load(file.path(prefix, chr, "fstats.Rdata"))
@@ -244,11 +244,11 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
         if (!is.null(optionsStats)) {
             stopifnot(all(c("cutoffType", "cutoffFstat", "models") %in% names(optionsStats)))
             if (verbose) {
-                  message(paste(
-                      Sys.time(),
-                      "mergeResults: calculating F-stat cutoff"
-                  ))
-              }
+                message(paste(
+                    Sys.time(),
+                    "mergeResults: calculating F-stat cutoff"
+                ))
+            }
             cutoffFstatUsed <- .calcFstatCutoff(
                 cutoffType = optionsStats$cutoffType,
                 cutoffFstat = optionsStats$cutoffFstat,
@@ -257,18 +257,18 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
             )
         } else {
             if (verbose) {
-                  message("Neither 'cutoffFstatUsed' nor 'optionsStats' were supplied, so the FWER calculation step will be skipped.")
-              }
+                message("Neither 'cutoffFstatUsed' nor 'optionsStats' were supplied, so the FWER calculation step will be skipped.")
+            }
         }
     }
     if (!is.null(cutoffFstatUsed)) {
         if (nrow(fullNullSummary) > 0) {
             if (verbose) {
-                  message(paste(
-                      Sys.time(),
-                      "mergeResults: calculating FWER"
-                  ))
-              }
+                message(paste(
+                    Sys.time(),
+                    "mergeResults: calculating FWER"
+                ))
+            }
             stopifnot(!is.null(optionsStats))
             stopifnot("nPermute" %in% names(optionsStats))
             fullRegions$fwer <- .calculateFWER(
@@ -283,20 +283,20 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
             )
         } else {
             if (verbose) {
-                  warning("No null regions were found, so the FWER calculation step will be skipped.")
-              }
+                warning("No null regions were found, so the FWER calculation step will be skipped.")
+            }
         }
     }
 
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving fullNullSummary"))
+    }
     save(fullNullSummary, file = file.path(prefix, "fullNullSummary.Rdata"))
 
     ## Re-calculate p-values and q-values
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
-      }
+        message(paste(Sys.time(), "mergeResults: Re-calculating the p-values"))
+    }
 
     ## Sort by decreasing area
     fullRegions <- fullRegions[order(fullRegions$area, decreasing = TRUE)]
@@ -331,14 +331,14 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
 
     ## save GRanges version
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving fullRegions"))
+    }
     save(fullRegions, file = file.path(prefix, "fullRegions.Rdata"))
 
     ## Assign genomic states
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: assigning genomic states"))
-      }
+        message(paste(Sys.time(), "mergeResults: assigning genomic states"))
+    }
     fullAnnotatedRegions <- annotateRegions(
         regions = fullRegions,
         genomicState = genomicState, minoverlap = minoverlap,
@@ -346,8 +346,8 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
     )
 
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving fullAnnotatedRegions"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving fullAnnotatedRegions"))
+    }
     save(fullAnnotatedRegions, file = file.path(
         prefix,
         "fullAnnotatedRegions.Rdata"
@@ -355,19 +355,19 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
 
     ## Save Fstats, Nullstats, and time info
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving fullFstats"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving fullFstats"))
+    }
     save(fullFstats, file = file.path(prefix, "fullFstats.Rdata"))
 
     if (verbose) {
-          message(paste(Sys.time(), "mergeResults: Saving fullTime"))
-      }
+        message(paste(Sys.time(), "mergeResults: Saving fullTime"))
+    }
     save(fullTime, file = file.path(prefix, "fullTime.Rdata"))
 
     if (mergePrep) {
         if (verbose) {
-              message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
-          }
+            message(paste(Sys.time(), "mergeResults: Saving fullCoveragePrep"))
+        }
         save(fullCoveragePrep, file = file.path(
             prefix,
             "fullCoveragePrep.Rdata"
