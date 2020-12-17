@@ -1,5 +1,3 @@
-context("F statistics")
-
 library("GenomicRanges")
 
 ## Check that the sample depths are correctly calculated

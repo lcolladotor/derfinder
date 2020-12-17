@@ -1,5 +1,3 @@
-context("Miscellaneous tests")
-
 test_that("Mapping levels", {
     expect_that(extendedMapSeqlevels("seq2", "UCSC", verbose = FALSE), equals("seq2"))
     expect_that(extendedMapSeqlevels("seq2", "UCSC", NULL, verbose = TRUE), shows_message("extendedMapSeqlevels: the 'seqnames' you supplied are currently not supported in GenomeInfoDb. Consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
