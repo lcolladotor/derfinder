@@ -67,8 +67,8 @@ coerceGR <- function(sample, fullCov, ...) {
 
 
     if (verbose) {
-          message(paste(Sys.time(), "coerceGR: coercing sample", sample))
-      }
+        message(paste(Sys.time(), "coerceGR: coercing sample", sample))
+    }
 
     ## Define cluster
     BPPARAM <- define_cluster(...)

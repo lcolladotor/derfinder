@@ -98,8 +98,8 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
     adjustF <- .advanced_argument("adjustF", 0, ...)
 
     if (is.null(lowMemDir) & is.null(coveragePrep$coverageProcessed)) {
-          stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
-      }
+        stop("preprocessCoverage() was used with a non-null 'lowMemDir', so please specify 'lowMemDir'.")
+    }
 
     ## Define cluster
     BPPARAM <- define_cluster(...)
@@ -118,8 +118,8 @@ calculateStats <- function(coveragePrep, models, lowMemDir = NULL, ...) {
 
     ## Fit a model to each row (chunk) of database:
     if (verbose) {
-          message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
-      }
+        message(paste(Sys.time(), "calculateStats: calculating the F-statistics"))
+    }
     fstats.output <- bplapply(coveragePrep$mclapplyIndex, fstats.apply,
         data = coveragePrep$coverageProcessed, mod = models$mod,
         mod0 = models$mod0, lowMemDir = lowMemDir, scalefac = scalefac,

@@ -142,8 +142,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
         }
         if (smooth) {
             if (verbose) {
-                  message(paste(Sys.time(), "findRegions: smoothing"))
-              }
+                message(paste(Sys.time(), "findRegions: smoothing"))
+            }
             fstats <- .smootherFstats(fstats = fstats, position = position, weights = weights, smoothFunction = smoothFunction, ...)
         }
     } else {
@@ -154,11 +154,11 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Identify the segments
     if (is.null(segmentIR)) {
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "findRegions: identifying potential segments"
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "findRegions: identifying potential segments"
+            ))
+        }
         if (!any(position)) {
             warning("Found no regions")
             return(NULL)
@@ -171,11 +171,11 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
     ## Create the F-stats segments
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "findRegions: segmenting information"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "findRegions: segmenting information"
+        ))
+    }
     segments <- .getSegmentsRle(x = fstats, cutoff = cutoff, ...)
 
     ## Work only with those that have some information
@@ -184,11 +184,11 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
     ## Stop if there are no segments
     if (!any(hasInfo)) {
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "findRegions: found no segments to work with!!"
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "findRegions: found no segments to work with!!"
+            ))
+        }
         return(NULL)
     }
 
@@ -197,11 +197,11 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
     ## Find the actual DERs
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "findRegions: identifying candidate regions"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "findRegions: identifying candidate regions"
+        ))
+    }
     ders <- lapply(segments, function(fcut) {
         ## Merge with segment ranges
         all <- c(fcut, segmentIR)
@@ -246,11 +246,11 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 
             ## Identify clusters
             if (verbose) {
-                  message(paste(
-                      Sys.time(),
-                      "findRegions: identifying region clusters"
-                  ))
-              }
+                message(paste(
+                    Sys.time(),
+                    "findRegions: identifying region clusters"
+                ))
+            }
             regionPos <- coverage(res[[i]])[[chr]]
             runValue(regionPos) <- as.logical(runValue(regionPos))
             cluster <- .clusterMakerRle(regionPos, maxClusterGap)
@@ -497,8 +497,8 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
             breaks = cores
         ))
         iChunks <- rep(seq_len(cores), sapply(IndexesChunks, function(i) {
-              sum(cluster %in% i)
-          }))
+            sum(cluster %in% i)
+        }))
     } else {
         iChunks <- rep(1, length(cluster))
     }

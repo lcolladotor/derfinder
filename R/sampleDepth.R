@@ -73,19 +73,19 @@ sampleDepth <- function(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...) {
 
 
     if (verbose) {
-          message(paste(Sys.time(), "sampleDepth: Calculating sample quantiles"))
-      }
+        message(paste(Sys.time(), "sampleDepth: Calculating sample quantiles"))
+    }
     sampleQuant <- lapply(collapsedFull, .calcQuantile,
         nonzero = nonzero,
         probs = probs
     )
 
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "sampleDepth: Calculating sample adjustments"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "sampleDepth: Calculating sample adjustments"
+        ))
+    }
     sampleDepths <- mapply(.sampleCorradaAdj, collapsedFull,
         sampleQuant,
         MoreArgs = list(scalefac = scalefac, center = center)

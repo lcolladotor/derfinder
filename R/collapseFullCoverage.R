@@ -69,19 +69,19 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
 
     ## Sort to reduce run lengths
     if (verbose) {
-          message(paste(Sys.time(), "collapseFullCoverage: Sorting fullCov"))
-      }
+        message(paste(Sys.time(), "collapseFullCoverage: Sorting fullCov"))
+    }
     sortedFull <- lapply(fullCov, function(x) {
         sapply(x, sort)
     })
 
     ## Collapse chrs by sample
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "collapseFullCoverage: Collapsing chromosomes information by sample"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "collapseFullCoverage: Collapsing chromosomes information by sample"
+        ))
+    }
     samples <- names(sortedFull[[1]])
     collapsedFull <- vector("list", length(samples))
     names(collapsedFull) <- samples
@@ -102,8 +102,8 @@ collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
     ## Save for future use if you want to use another quantile
     if (save) {
         if (verbose) {
-              message(paste(Sys.time(), "collapseFullCoverage: Saving collapsedFull"))
-          }
+            message(paste(Sys.time(), "collapseFullCoverage: Saving collapsedFull"))
+        }
         save(collapsedFull, file = "collapsedFull.Rdata")
     }
 

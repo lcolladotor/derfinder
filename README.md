@@ -50,8 +50,8 @@ Get the latest stable `R` release from
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
-      install.packages("BiocManager")
-  }
+    install.packages("BiocManager")
+}
 
 BiocManager::install("derfinder")
 ```
@@ -107,7 +107,7 @@ print(citation("derfinder"), bibtex = TRUE)
 #> base-pair resolution via the DER Finder approach_. doi:
 #> 10.18129/B9.bioc.derfinder (URL:
 #> https://doi.org/10.18129/B9.bioc.derfinder),
-#> https://github.com/lcolladotor/derfinder - R package version 1.25.1,
+#> https://github.com/lcolladotor/derfinder - R package version 1.25.3,
 #> <URL: http://www.bioconductor.org/packages/derfinder>.
 #> 
 #> A BibTeX entry for LaTeX users is
@@ -117,7 +117,7 @@ print(citation("derfinder"), bibtex = TRUE)
 #>     author = {Leonardo Collado-Torres and Andrew E. Jaffe and Jeffrey T. Leek},
 #>     year = {2017},
 #>     url = {http://www.bioconductor.org/packages/derfinder},
-#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.25.1},
+#>     note = {https://github.com/lcolladotor/derfinder - R package version 1.25.3},
 #>     doi = {10.18129/B9.bioc.derfinder},
 #>   }
 ```
@@ -155,7 +155,7 @@ By contributing to this project, you agree to abide by its terms.
     *[rcmdcheck](https://CRAN.R-project.org/package=rcmdcheck)*
     customized to use [Bioconductor’s docker
     containers](https://www.bioconductor.org/help/docker/) and
-    *[BiocCheck](https://bioconductor.org/packages/3.12/BiocCheck)*.
+    *[BiocCheck](https://bioconductor.org/packages/3.13/BiocCheck)*.
 -   Code coverage assessment is possible thanks to
     [codecov](https://codecov.io/gh) and
     *[covr](https://CRAN.R-project.org/package=covr)*.
@@ -171,4 +171,4 @@ By contributing to this project, you agree to abide by its terms.
 For more details, check the `dev` directory.
 
 This package was developed using
-*[biocthis](https://bioconductor.org/packages/3.12/biocthis)*.
+*[biocthis](https://bioconductor.org/packages/3.13/biocthis)*.

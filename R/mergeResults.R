@@ -151,14 +151,11 @@ mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
     save(optionsMerge, file = file.path(prefix, "optionsMerge.Rdata"))
 
     ## Initialize
-    fullCoveragePrep <- fullTime <- fullNullPermutation <- fullNullWidths <-
-        fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector(
-            "list",
-            length(chrs)
-        )
-    names(fullCoveragePrep) <- names(fullTime) <- names(fullNullPermutation) <-
-        names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <-
-        names(fullAnno) <- names(fullRegs) <- chrs
+    fullCoveragePrep <- fullTime <- fullNullPermutation <- fullNullWidths <- fullNullStats <- fullFstats <- fullAnno <- fullRegs <- vector(
+        "list",
+        length(chrs)
+    )
+    names(fullCoveragePrep) <- names(fullTime) <- names(fullNullPermutation) <- names(fullNullWidths) <- names(fullNullStats) <- names(fullFstats) <- names(fullAnno) <- names(fullRegs) <- chrs
 
     ## Actual processing
     for (chr in chrs) {

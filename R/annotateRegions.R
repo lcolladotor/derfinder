@@ -88,8 +88,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
     genomicState.list <- split(genomicState, genomicState$theRegion)
 
     if (verbose) {
-          message(paste(Sys.time(), "annotateRegions: counting"))
-      }
+        message(paste(Sys.time(), "annotateRegions: counting"))
+    }
 
     countTable <- sapply(genomicState.list, function(x, ...) {
         .runFunFormal(countOverlaps,
@@ -102,8 +102,8 @@ annotateRegions <- function(regions, genomicState, annotate = TRUE, ...) {
 
     if (annotate) {
         if (verbose) {
-              message(paste(Sys.time(), "annotateRegions: annotating"))
-          }
+            message(paste(Sys.time(), "annotateRegions: annotating"))
+        }
 
         oo <- .runFunFormal(findOverlaps,
             query = regions,

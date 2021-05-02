@@ -116,11 +116,11 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     loadChr <- function(idx, files, chrs, bai, chrlens, outputs, cutoff,
     mc.load, ...) {
         if (verbose) {
-              message(paste(
-                  Sys.time(), "fullCoverage: processing chromosome",
-                  chrs[idx]
-              ))
-          }
+            message(paste(
+                Sys.time(), "fullCoverage: processing chromosome",
+                chrs[idx]
+            ))
+        }
         if (is.null(cutoff)) {
             res <- loadCoverage(
                 files = files, chr = chrs[idx], cutoff = NULL,

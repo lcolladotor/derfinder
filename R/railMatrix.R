@@ -250,8 +250,8 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
 
     ## Name approopriately if possible
     if (!any(is.na(match(colnames(covMat), sampleFiles)))) {
-          colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
-      }
+        colnames(covMat) <- names(sampleFiles)[match(colnames(covMat), sampleFiles)]
+    }
 
     ## Finish
     res <- list(coverageMatrix = covMat)
@@ -271,8 +271,8 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
             error = identity
         )
         if (!inherits(regCov, "error")) {
-              break
-          }
+            break
+        }
         Sys.sleep(runif(n = 1, min = 2, max = 5))
         N.TRIES <- N.TRIES - 1L
     }

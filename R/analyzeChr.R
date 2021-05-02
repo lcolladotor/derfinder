@@ -159,11 +159,11 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
     ## pre-process the coverage data with automatic chunks
     ## depending on the number of cores
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "analyzeChr: Pre-processing the coverage data"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "analyzeChr: Pre-processing the coverage data"
+        ))
+    }
     prep <- preprocessCoverage(
         coverageInfo = coverageInfo,
         groupInfo = groupInfo, cutoff = cutoffPre, lowMemDir = lowMemDir, ...
@@ -182,8 +182,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 
     ## Run calculateStats
     if (verbose) {
-          message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
-      }
+        message(paste(Sys.time(), "analyzeChr: Calculating statistics"))
+    }
     fstats <- calculateStats(
         coveragePrep = prep, models = models,
         lowMemDir = lowMemDir, ...
@@ -224,15 +224,15 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 
     ## Calculate p-values and find regions
     if (verbose) {
-          message(paste(Sys.time(), "analyzeChr: Calculating pvalues"))
-      }
+        message(paste(Sys.time(), "analyzeChr: Calculating pvalues"))
+    }
 
     if (verbose) {
-          message(paste(
-              Sys.time(), "analyzeChr: Using the following",
-              cutoffType, "cutoff for the F-statistics", cutoff
-          ))
-      }
+        message(paste(
+            Sys.time(), "analyzeChr: Using the following",
+            cutoffType, "cutoff for the F-statistics", cutoff
+        ))
+    }
 
     regions <- calculatePvalues(
         coveragePrep = prep, models = models,
@@ -257,8 +257,8 @@ analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
 
     ## Annotate
     if (verbose) {
-          message(paste(Sys.time(), "analyzeChr: Annotating regions"))
-      }
+        message(paste(Sys.time(), "analyzeChr: Annotating regions"))
+    }
 
     if (!is.null(regions$regions) & runAnnotation) {
         if (is.null(txdb)) {

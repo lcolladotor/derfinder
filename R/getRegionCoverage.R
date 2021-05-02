@@ -125,8 +125,8 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
 
         ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
         if (verbose) {
-              message(paste(Sys.time(), "getRegionCoverage: processing", chr))
-          }
+            message(paste(Sys.time(), "getRegionCoverage: processing", chr))
+        }
 
 
         ind <- rep(names(g), width(g)) # to split along
@@ -160,11 +160,11 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
         res <- split(as.data.frame(yy), ind)
 
         if (verbose) {
-              message(paste(
-                  Sys.time(), "getRegionCoverage: done processing",
-                  chr
-              ))
-          }
+            message(paste(
+                Sys.time(), "getRegionCoverage: done processing",
+                chr
+            ))
+        }
 
         ## Done
         return(res)
@@ -193,8 +193,8 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
 .load_fullCov <- function(files, regs, fun, ...) {
     stopifnot(!is.null(files))
     if (.advanced_argument("verbose", TRUE, ...)) {
-          message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
-      }
+        message(paste(Sys.time(), fun, ": attempting to load coverage data from 'files'."))
+    }
 
     ## If no protection was specified for calculating the coverage, then
     ## specify it. Details in loadCoverage()

@@ -18,7 +18,8 @@
 #' @details Use at most one core per chromosome.
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso [GRangesList][GenomicRanges::GRangesList-class], [export][rtracklayer::export],
+#' @seealso [GRangesList][GenomicRanges::GRangesList-class],
+#' [export.bw][rtracklayer::BigWigFile-class],
 #' [createBwSample], [coerceGR]
 #' @export
 #'

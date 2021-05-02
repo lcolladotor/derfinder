@@ -146,8 +146,8 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
         if (!all(sapply(fullCov, function(x) {
             all(c("coverage", "position", "meanCoverage") %in% names(x))
         }))) {
-              stop("When 'runFilter' = FALSE, all the elements of 'fullCov' are expected to be the output from filterData(..., returnMean=TRUE) with some non-NULL 'cutoff'.")
-          }
+            stop("When 'runFilter' = FALSE, all the elements of 'fullCov' are expected to be the output from filterData(..., returnMean=TRUE) with some non-NULL 'cutoff'.")
+        }
     }
 
     ## Define args
@@ -183,8 +183,8 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
 
 
     if (verbose) {
-          message(paste(Sys.time(), "regionMatrix: processing", chr))
-      }
+        message(paste(Sys.time(), "regionMatrix: processing", chr))
+    }
 
     ## Filter by 'one' or 'mean' and get mean coverage
     if (runFilter) {

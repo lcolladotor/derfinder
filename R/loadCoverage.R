@@ -236,11 +236,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
         ## This assumes that all the BAM files are from the same
         ## organism.
         if (verbose) {
-              message(paste(
-                  Sys.time(),
-                  "loadCoverage: finding chromosome lengths"
-              ))
-          }
+            message(paste(
+                Sys.time(),
+                "loadCoverage: finding chromosome lengths"
+            ))
+        }
         if (inputType == "bam") {
             clengths <- scanBamHeader(bList[[1]])$targets
         } else if (inputType == "BigWig") {
@@ -307,11 +307,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
 
     ## Identify which bases pass the cutoff
     if (verbose) {
-          message(paste(
-              Sys.time(),
-              "loadCoverage: applying the cutoff to the merged data"
-          ))
-      }
+        message(paste(
+            Sys.time(),
+            "loadCoverage: applying the cutoff to the merged data"
+        ))
+    }
 
     ## Rename the object to a name that will make more sense later
     varname <- paste0(mapSeqlevels(chr, "UCSC"), "CovInfo")
@@ -334,11 +334,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
 
         ## Print output name
         if (verbose) {
-              message(paste(
-                  Sys.time(), "loadCoverage: saving the output file",
-                  output
-              ))
-          }
+            message(paste(
+                Sys.time(), "loadCoverage: saving the output file",
+                output
+            ))
+        }
 
         ## Save the DataFrame
         save(list = varname, file = output, compress = "gzip")
@@ -365,11 +365,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
 
 .loadCoverageBAM <- function(file, param, chr, verbose, drop.D.ranges) {
     if (verbose) {
-          message(paste(
-              Sys.time(), "loadCoverage: loading BAM file",
-              path(file)
-          ))
-      }
+        message(paste(
+            Sys.time(), "loadCoverage: loading BAM file",
+            path(file)
+        ))
+    }
 
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
@@ -383,11 +383,11 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
 
 .loadCoverageBigWig <- function(range, file, chr, verbose) {
     if (verbose) {
-          message(paste(
-              Sys.time(), "loadCoverage: loading BigWig file",
-              path(file)
-          ))
-      }
+        message(paste(
+            Sys.time(), "loadCoverage: loading BigWig file",
+            path(file)
+        ))
+    }
 
     ## Read the BAM file and get the coverage. Extract only the
     ## one for the chr in question.
@@ -401,8 +401,8 @@ loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
             error = identity
         )
         if (!inherits(output, "error")) {
-              break
-          }
+            break
+        }
         Sys.sleep(runif(n = 1, min = 2, max = 5))
         N.TRIES <- N.TRIES - 1L
     }

@@ -103,8 +103,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
 
     ## Check inputs
     if (!is.character(seqnames)) {
-          seqnames <- as.character(seqnames)
-      }
+        seqnames <- as.character(seqnames)
+    }
     stopifnot(is.character(style) & length(style) == 1)
     if (!is.null(species)) stopifnot(is.character(species) & length(species) == 1)
     if (!is.null(currentStyle)) stopifnot(is.character(currentStyle) & length(currentStyle) == 1)
@@ -117,8 +117,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
         guesses <- GenomeInfoDb:::.guessSpeciesStyle(seqnames)
         if (any(is.na(guesses))) {
             if (verbose) {
-                  message("extendedMapSeqlevels: the 'seqnames' you supplied are currently not supported in GenomeInfoDb. Consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf")
-              }
+                message("extendedMapSeqlevels: the 'seqnames' you supplied are currently not supported in GenomeInfoDb. Consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf")
+            }
             return(seqnames)
         }
     }
@@ -153,8 +153,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
         ## Was able to guess the current species?
         if (is.na(species)) {
             if (verbose) {
-                  message("extendedMapSeqlevels: the species could not be guessed. Consider supplying 'species'.")
-              }
+                message("extendedMapSeqlevels: the species could not be guessed. Consider supplying 'species'.")
+            }
             return(seqnames)
         }
     } else {
@@ -164,8 +164,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
         ## Check species is supported
         if (length(which(names(supported) == species)) != 1) {
             if (verbose) {
-                  message(paste("extendedMapSeqlevels: the 'species'", species, "is currently not supported in GenomeInfoDb. Check valid 'species' by running names(GenomeInfoDb::genomeStyles()). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
-              }
+                message(paste("extendedMapSeqlevels: the 'species'", species, "is currently not supported in GenomeInfoDb. Check valid 'species' by running names(GenomeInfoDb::genomeStyles()). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
+            }
             return(seqnames)
         }
 
@@ -186,8 +186,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
     ## Was able to guesss the current style?
     if (is.na(currentStyle) & guessedCurrent) {
         if (verbose) {
-              message("extendedMapSeqlevels: the current naming style could not be guessed. Consider supplying 'currentStyle'.")
-          }
+            message("extendedMapSeqlevels: the current naming style could not be guessed. Consider supplying 'currentStyle'.")
+        }
         return(seqnames)
     }
 
@@ -198,8 +198,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
     j <- grep(tolower(style), tolower(colnames(mapping)))
     if (length(j) != 1) {
         if (verbose) {
-              message(paste("extendedMapSeqlevels: the 'style'", style, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
-          }
+            message(paste("extendedMapSeqlevels: the 'style'", style, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
+        }
         return(seqnames)
     }
 
@@ -215,8 +215,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
     if (!guessedCurrent) {
         if (length(k) != 1) {
             if (verbose) {
-                  message(paste("extendedMapSeqlevels: the 'currentStyle'", currentStyle, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
-              }
+                message(paste("extendedMapSeqlevels: the 'currentStyle'", currentStyle, "is currently not supported for the 'species'", species, "in GenomeInfoDb. Check valid naming styles by running GenomeInfoDb::genomeStyles(species). If it's not present, consider adding your genome by following the information at http://www.bioconductor.org/packages/release/bioc/vignettes/GenomeInfoDb/inst/doc/Accept-organism-for-GenomeInfoDb.pdf"))
+            }
             return(seqnames)
         }
     }
@@ -224,8 +224,8 @@ extendedMapSeqlevels <- function(seqnames, style = getOption(
     ## Make the map
     seqnames <- mapping[match(seqnames, mapping[, k]), j]
     if (verbose & guessed) {
-          message(paste("extendedMapSeqlevels: sequence names mapped from", currentStyle, "to", style, "for species", species))
-      }
+        message(paste("extendedMapSeqlevels: sequence names mapped from", currentStyle, "to", style, "for species", species))
+    }
     return(seqnames)
 }
 

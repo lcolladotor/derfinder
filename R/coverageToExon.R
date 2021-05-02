@@ -83,8 +83,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     stopifnot("theRegion" %in% names(mcols(genomicState)))
 
     if (is.null(L)) {
-          stop("'L' has to be specified")
-      }
+        stop("'L' has to be specified")
+    }
 
     ## Advanged argumentsa
     # @param verbose If \code{TRUE} basic status updates will be printed along the
@@ -155,8 +155,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     if (returnType == "rpkm") {
         Mchr <- t(sapply(fullCov, function(z) {
             sapply(z, function(xx) {
-                  sum(as.numeric(runValue(xx)))
-              })
+                sum(as.numeric(runValue(xx)))
+            })
         }))
         M <- colSums(Mchr) / L / 1e+06
         theExons <- theExons / (width(etab) / 1000) / M
@@ -202,8 +202,8 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     ## Define ChrStep function
     .coverageToExonChrStep <- function(z.DF, chr, e, L, verbose) {
         if (verbose) {
-              message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
-          }
+            message(paste(Sys.time(), "coverageToExon: processing chromosome", chr))
+        }
 
         ## Transform to regular data.frame
         z <- as.data.frame(z.DF)

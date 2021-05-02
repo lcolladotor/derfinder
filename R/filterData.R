@@ -121,12 +121,12 @@ filterData <- function(data, cutoff = NULL, index = NULL, filter = "one",
 
         ## Normalize to a given library size
         if (verbose) {
-              message(paste(Sys.time(), "filterData: normalizing coverage"))
-          }
+            message(paste(Sys.time(), "filterData: normalizing coverage"))
+        }
         data <- mapply(function(x, d) x / d, data, mappedPerXM)
         if (verbose) {
-              message(paste(Sys.time(), "filterData: done normalizing coverage"))
-          }
+            message(paste(Sys.time(), "filterData: done normalizing coverage"))
+        }
     }
 
     ## If there is no cutoff to apply, just build the DataFrame

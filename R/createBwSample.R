@@ -2,7 +2,8 @@
 #'
 #' Given the output of [fullCoverage], this function coerces the coverage
 #' to a [GRanges][GenomicRanges::GRanges-class] object using [coerceGR] and then
-#' exports the coverage to a BigWig file using [export][rtracklayer::export].
+#' exports the coverage to a BigWig file using
+#' [export.bw][rtracklayer::BigWigFile-class].
 #'
 #' @param sample The name or integer index of the sample of interest to coerce
 #' to a `GRanges` object.
@@ -25,7 +26,8 @@
 #' the output from [coerceGR].
 #'
 #' @author Leonardo Collado-Torres
-#' @seealso [GRanges][GenomicRanges::GRanges-class], [export][rtracklayer::export],
+#' @seealso [GRanges][GenomicRanges::GRanges-class],
+#' [export.bw][rtracklayer::BigWigFile-class],
 #' link{coerceGR}
 #' @export
 #'
@@ -58,11 +60,11 @@ createBwSample <- function(sample, path = ".", fullCov, keepGR = TRUE, ...) {
 
     ## Export bw file
     if (verbose) {
-          message(paste(
-              Sys.time(), "createBwSample: exporting bw for sample",
-              sample
-          ))
-      }
+        message(paste(
+            Sys.time(), "createBwSample: exporting bw for sample",
+            sample
+        ))
+    }
 
     ## Check that there is something to write
     if (length(gr.sample) > 0) {

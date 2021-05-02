@@ -35,7 +35,8 @@ the output from \link{coerceGR}.
 \description{
 Given the output of \link{fullCoverage}, this function coerces the coverage
 to a \link[GenomicRanges:GRanges-class]{GRanges} object using \link{coerceGR} and then
-exports the coverage to a BigWig file using \link[rtracklayer:export]{export}.
+exports the coverage to a BigWig file using
+\link[rtracklayer:BigWigFile]{export.bw}.
 }
 \examples{
 ## Create a small fullCov object with data only for chr21
@@ -53,7 +54,8 @@ bw
 ## Exports a single sample to a BigWig file
 }
 \seealso{
-\link[GenomicRanges:GRanges-class]{GRanges}, \link[rtracklayer:export]{export},
+\link[GenomicRanges:GRanges-class]{GRanges},
+\link[rtracklayer:BigWigFile]{export.bw},
 link{coerceGR}
 }
 \author{

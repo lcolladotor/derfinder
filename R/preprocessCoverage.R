@@ -144,8 +144,8 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
     if (!is.null(colsubset)) {
         ## Re-filter
         if (verbose) {
-              message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
-          }
+            message(paste(Sys.time(), "preprocessCoverage: filtering the data"))
+        }
         coverageInfo <- filterData(
             data = coverageInfo$coverage[
                 ,
@@ -170,11 +170,11 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
     if (is.null(chunksize)) {
         chunksize <- ceiling(numrow / mc.cores)
         if (verbose) {
-              message(paste(
-                  Sys.time(), "preprocessCoverage: using chunksize",
-                  chunksize
-              ))
-          }
+            message(paste(
+                Sys.time(), "preprocessCoverage: using chunksize",
+                chunksize
+            ))
+        }
     }
 
     ## Determine number of loops
@@ -212,8 +212,8 @@ preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
 
     ## Split the data into appropriate chunks
     if (verbose) {
-          message(paste(Sys.time(), "preprocessCoverage: splitting the data"))
-      }
+        message(paste(Sys.time(), "preprocessCoverage: splitting the data"))
+    }
     if (lastloop == 0) {
         split.len <- numrow
     } else {

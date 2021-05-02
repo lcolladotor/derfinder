@@ -55,7 +55,8 @@ bws[[2]]
 ## Exports fullCoverage() output to BigWig files
 }
 \seealso{
-\link[GenomicRanges:GRangesList-class]{GRangesList}, \link[rtracklayer:export]{export},
+\link[GenomicRanges:GRangesList-class]{GRangesList},
+\link[rtracklayer:BigWigFile]{export.bw},
 \link{createBwSample}, \link{coerceGR}
 }
 \author{
