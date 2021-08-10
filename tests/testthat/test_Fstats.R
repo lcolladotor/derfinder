@@ -171,4 +171,3 @@ test_that("analyzeChr", {
 unlink("generateReport-example", recursive = TRUE)
 unlink("generateReport-example-rerun", recursive = TRUE)
 unlink("chr21", recursive = TRUE)
-
