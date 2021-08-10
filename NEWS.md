@@ -56,7 +56,6 @@ be re-computed with the fixed version.
 
 * Added a `NEWS.md` file to track changes to the package.
 
-
 # derfinder 1.19.4
 
 BUG FIXES
@@ -76,7 +75,6 @@ derfinder for processing BigWig files.
 
 # derfinder 1.19.2
 
-
 BUG FIXES
 
 * `railMatrix()` and `loadCoverage()` helper functions now attempt to import a
@@ -88,7 +86,6 @@ issues.
 
 # derfinder 1.17.3
 
-
 NEW FEATURES
 
 * Add ORCID's following changes at
@@ -96,14 +93,12 @@ http://bioconductor.org/developers/package-guidelines/#description
 
 # derfinder 1.17.2
 
-
 BUG FIXES
 
 * Use R's random seeds from version 3.5.0 for the test
 thanks to https://twitter.com/StrictlyStat/status/1103303028751372289
 
 # derfinder 1.15.4
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -114,7 +109,6 @@ now has a `mc.log` argument instead of `mc.outfile`.
 
 # derfinder 1.15.2
 
-
 BUG FIXES
 
 * Fix a message regarding the deprecated `IRanges` `subset` method.
@@ -122,21 +116,17 @@ BUG FIXES
 
 # derfinder 1.15.1
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Use `BiocManager`
 
-
 # derfinder 1.13.8
-
 
 BUG FIXES
 
 * Fixed a unit test that was breaking version 1.13.7.
 
 # derfinder 1.13.1
-
 
 NEW FEATURES
 
@@ -145,7 +135,6 @@ https://support.bioconductor.org/p/103591
 
 # derfinder 1.11.8
 
-
 BUG FIXES
 
 * Improved the documentation regarding an error when coverageInfo$position
@@ -153,9 +142,7 @@ is NULL when running `analyzeChr()` and indirectly running
 `preprocessCoverage()`. See https://support.bioconductor.org/p/99400/
 for details.
 
-
 # derfinder 1.11.7
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -163,7 +150,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 released.
 
 # derfinder 1.11.4
-
 
 BUG FIXES
 
@@ -173,7 +159,6 @@ BUG FIXES
 https://support.bioconductor.org/p/95721/.
 
 # derfinder 1.11.2
-
 
 BUG FIXES
 
@@ -185,7 +170,6 @@ https://github.com/lcolladotor/derfinder/issues/38
 
 # derfinder 1.9.6
 
-
 BUG FIXES
 
 * Fixed `define_cluster()` to match recent changes in BiocParallel and
@@ -193,7 +177,6 @@ fixed an if clause in `regionMatrix()` that could lead to warnings in
 some situations.
 
 # derfinder 1.9.3
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -204,7 +187,6 @@ prior to using `regionMatrix()`.
 
 # derfinder 1.9.2
 
-
 BUG FIXES
 
 * Clarified the documentation of `mc.cores` and `mc.cores.load` in
@@ -214,7 +196,6 @@ https://github.com/emilyburke.
 
 # derfinder 1.7.16
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Help pages now document advanced arguments.
@@ -222,7 +203,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 
 # derfinder 1.7.14
-
 
 NEW FEATURES
 
@@ -236,7 +216,6 @@ in `fullCoverage()` you should not use `totalMapped` again in
 
 # derfinder 1.7.12
 
-
 BUG FIXES
 
 * Updated links to BrainSpan. Issue reported by Steve Semick
@@ -245,7 +224,6 @@ https://github.com/SteveSemick.
 
 # derfinder 1.7.2
 
-
 BUG FIXES
 
 * Now derfinder uses `DataFrame(check.names = FALSE)` to avoid naming issues.
@@ -253,21 +231,17 @@ BUG FIXES
 
 # derfinder 1.7.1
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Dropped defunct functions.
 
-
 # derfinder 1.5.39
-
 
 BUG FIXES
 
 * `annotateRegions()` now ignores strand by default.
 
 # derfinder 1.5.37
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -277,7 +251,6 @@ derfinder for differential binding analysis with ChIP-seq data.
 
 # derfinder 1.5.27
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Added smoothing arguments for the single base-level approach based on
@@ -286,7 +259,6 @@ identifying differentially bounded ChIP-seq peaks.
 
 
 # derfinder 1.5.13
-
 
 BUG FIXES
 
@@ -298,7 +270,6 @@ prior to 1.5.11.
 
 
 # derfinder 1.5.11
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -314,7 +285,6 @@ This is a highly experimental feature.
 
 # derfinder 1.5.9
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Dropped the old introductory and advanced vignettes. We think that the
@@ -325,7 +295,6 @@ approach to RNA-seq data.
 
 # derfinder 1.5.8
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Added a users guide vignette which explains nearly every detail you would
@@ -334,14 +303,12 @@ want to know as a user.
 
 # derfinder 1.5.7
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Added a quick start vignette.
 
 
 # derfinder 1.5.6
-
 
 NEW FEATURES
 
@@ -351,7 +318,6 @@ extracting the required information from BigWig files.
 
 # derfinder 1.3.3
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Brought back the `mc.outfile` argument for specifying the `outfile`
@@ -360,14 +326,12 @@ https://stat.ethz.ch/pipermail/bioc-devel/2015-May/007531.html
 
 # derfinder 1.3.2
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Deprecated functions with underscores in their names in favor of
 camelCase functions. This was done to simplify the package.
 
 # derfinder 1.3.1
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -377,14 +341,12 @@ https://github.com/lcolladotor/derfinder/issues/29 for details.
 
 # derfinder 1.1.18
 
-
 BUG FIXES
 
 * Updated to work with qvalue 1.99.0.
 
 
 # derfinder 1.1.17
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -398,7 +360,6 @@ no longer has an `outfile` argument.
 
 # derfinder 1.1.16
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `analyzeChr()` now uses `annotateTranscripts()` and `matchGenes()` from
@@ -411,7 +372,6 @@ the `annotationPackage` argument used in `annotateTranscripts()`.
 
 # derfinder 1.1.15
 
-
 BUG FIXES
 
 * `makeGenomicState()` incorrectly labeled regions as intragenic. The correct
@@ -419,7 +379,6 @@ name is intergenic.
 
 
 # derfinder 1.1.14
-
 
 BUG FIXES
 
@@ -436,7 +395,6 @@ derfinder.
 
 # derfinder 1.1.5
 
-
 NEW FEATURES
 
 * Introduced function `extendedMapSeqlevels()` for using `GenomeInfoDb` when
@@ -450,7 +408,6 @@ BUG FIXES
 * Fixes https://support.bioconductor.org/p/62136.
 
 # derfinder 1.1.3
-
 
 NEW FEATURES
 
@@ -466,13 +423,11 @@ https://support.bioconductor.org/p/62073
 
 # derfinder 0.99.0
 
-
 NEW FEATURES
 
 * Preparing to submit to Bioconductor.
 
 # derfinder 0.0.81
-
 
 NEW FEATURES
 
@@ -480,13 +435,11 @@ NEW FEATURES
 
 # derfinder 0.0.80
 
-
 NEW FEATURES
 
 * Introductory vignette completed.
 
 # derfinder 0.0.79
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -496,13 +449,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.78
 
-
 NEW FEATURES
 
 * Added an introductory vignette.
 
 # derfinder 0.0.77
-
 
 NEW FEATURES
 
@@ -524,14 +475,12 @@ specific region (or regions) of the genome.
 
 # derfinder 0.0.76
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `loadCoverage()` and `fullCoverage()` argument `dirs` has been renamed to
 `files` for greater consistency with what it represents.
 
 # derfinder 0.0.75
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -551,15 +500,12 @@ lead to an error in the `getRegionCoverage()` step.
 
 # derfinder 0.0.74
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Most functions had their arguments changed to increase usability. Some
 have advanced arguments inside the code.
 
-
 # derfinder 0.0.71
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -568,7 +514,6 @@ output from `fullCoverage()` into BigWig files.
 
 
 # derfinder 0.0.70
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -580,7 +525,6 @@ identify a list of BigWig files instead of BAM files.
 
 
 # derfinder 0.0.69
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -601,7 +545,6 @@ permutation.
 
 # derfinder 0.0.66
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `fstats.apply()` has been moved to it's own package: `derfinderHelper`. This
@@ -612,9 +555,9 @@ their new own package: `derfinderPlot`. This will make maintenance easier
 as the dependency `ggbio` is still under active development.
 
 
-
 # derfinder 0.0.65
 
+SIGNIFICANT USER-VISIBLE CHANGES
 
 * Re-organized code for `fstats.apply()`. Note that improving
 `.transformSparseMatrix()` would speed up the `Matrix` method.
@@ -626,7 +569,6 @@ are taking longer than the overhead.
 
 # derfinder 0.0.64
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `fullCoverage()` has several new arguments and now is a full parallel
@@ -637,7 +579,6 @@ running one job with `loadCoverage()` per chromosome or using a `lapply()`
 loop.
 
 # derfinder 0.0.63
-
 
 NEW FEATURES
 
@@ -656,7 +597,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 arguments `method` and `scalefac` to match the changes in `fstats.apply()`.
 
 # derfinder 0.0.62
-
 
 NEW FEATURES
 
@@ -684,7 +624,6 @@ is minimal compared to the overall speed gains with real data sets.
 
 # derfinder 0.0.61
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `filterData()` and `loadCoverage()` now have arguments `totalMapped` and
@@ -695,7 +634,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 previous output from `loadCoverage()`/`filterData()` with `returnMean=TRUE`
 
 # derfinder 0.0.60
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -711,13 +649,11 @@ replaced by `chrsStyle` to use `GenomeInfoDb` to set the naming style.
 
 # derfinder 0.0.59
 
-
 NEW FEATURES
 
 * Updated to work with BioC version 3.0
 
 # derfinder 0.0.58
-
 
 NEW FEATURES
 
@@ -725,14 +661,12 @@ NEW FEATURES
 
 # derfinder 0.0.57
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `regionMatrix()` now relies on `getRegionCoverage()` instead of
 `coverageToExon()` making it faster and less memory intensive.
 
 # derfinder 0.0.56
-
 
 NEW FEATURES
 
@@ -751,9 +685,7 @@ BUG FIXES
 
 * Fixed warnings in `coverageToExon()`.
 
-
 # derfinder 0.0.55
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -761,13 +693,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.54
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Added example data for `mergeResults()`. Now all functions have examples.
 
 # derfinder 0.0.53
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -778,13 +708,11 @@ allowed to implement examples for `annotateRegions()`,
 
 # derfinder 0.0.52
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Several examples run much faster now
 
 # derfinder 0.0.51
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -793,7 +721,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.50
 
-
 BUG FIXES
 
 * Fixed warnings in `makeGenomicState()` related to changes in `AnnotationDbi`
@@ -801,13 +728,11 @@ BUG FIXES
 
 # derfinder 0.0.49
 
-
 BUG FIXES
 
 * Updated the help for `plotRegionCoverage()` and fixed an issue.
 
 # derfinder 0.0.48
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -815,7 +740,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 at https://github.com/lcolladotor/derfinder/issues/16
 
 # derfinder 0.0.47
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -827,7 +751,6 @@ BUG FIXES
 
 
 # derfinder 0.0.46
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -846,7 +769,6 @@ BUG FIXES
 
 # derfinder 0.0.44
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Updated `getRegionCoverage()` with a new method for sub setting the coverage
@@ -860,7 +782,6 @@ Triche.
 
 # derfinder 0.0.42
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * A series of performance enhancements were made to reduce the memory load
@@ -872,7 +793,6 @@ BUG FIXES
 
 # derfinder 0.0.41
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Introduced the `lowMemDir` argument to `preprocessCoverage()`,
@@ -881,7 +801,6 @@ Reduces peak memory usage at the expense of some input-output.
 
 # derfinder 0.0.40
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `mergeResults()` will not merge pre-processed data by default
@@ -889,13 +808,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.39
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Changed how the data is pre-processed and pre-splitted.
 
 # derfinder 0.0.38
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -903,13 +820,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.37
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Updated the example in `plotCluster()`
 
 # derfinder 0.0.36
-
 
 NEW FEATURES
 
@@ -923,13 +838,11 @@ Corrada`s ideas implemented in metagenomeSeq.
 
 # derfinder 0.0.35
 
-
 BUG FIXES
 
 * Fixed an issue with the bumphunter dependency.
 
 # derfinder 0.0.34
-
 
 BUG FIXES
 
@@ -938,13 +851,11 @@ BUG FIXES
 
 # derfinder 0.0.33
 
-
 BUG FIXES
 
 * Implemented fixes suggested by Michael Love
 
 # derfinder 0.0.32
-
 
 BUG FIXES
 
@@ -953,13 +864,11 @@ BUG FIXES
 
 # derfinder 0.0.31
 
-
 BUG FIXES
 
 * `loadCoverage()` now uses `readGAlignmentsFromBam()`
 
 # derfinder 0.0.30
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -967,7 +876,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 * `loadCoverage()` can now work with a pre-defined BamFileList object.
 
 # derfinder 0.0.29
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -985,7 +893,6 @@ BUG FIXES
 
 # derfinder 0.0.28
 
-
 NEW FEATURES
 
 * Added `sampleDepth()`
@@ -998,9 +905,7 @@ https://github.com/lcolladotor/derfinderReport
 * Examples and `analyzeChr()` have been updated now that `sampleDepth()` was
 added
 
-
 # derfinder 0.0.26
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1009,7 +914,6 @@ guidelines.
 
 
 # derfinder 0.0.25
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1025,14 +929,12 @@ in `generateReport()`
 
 # derfinder 0.0.24
 
-
 BUG FIXES
 
 * Fixed `plotRegionCoverage()` for cases when in `annotateRegions(minoverlap=x)`
 lead to no overlaps being found between a region and annotation.
 
 # derfinder 0.0.23
-
 
 BUG FIXES
 
@@ -1047,7 +949,6 @@ found.
 * Fixed a bug on how the regions were being clustered.
 
 # derfinder 0.0.22
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1065,7 +966,6 @@ bug.
 
 # derfinder 0.0.21
 
-
 NEW FEATURES
 
 * Added `getRegionCoverage()`, `coverageToExon()`, `plotRegionCoverage()`
@@ -1079,13 +979,11 @@ track as it is redundant information
 
 # derfinder 0.0.20
 
-
 NEW FEATURES
 
 * Added a`nnotateRegions()`
 
 # derfinder 0.0.19
-
 
 NEW FEATURES
 
@@ -1093,13 +991,11 @@ NEW FEATURES
 
 # derfinder 0.0.18
 
-
 NEW FEATURES
 
 * Added `fullCoverage()`
 
 # derfinder 0.0.17
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1110,7 +1006,6 @@ adjusting for library size)
 
 # derfinder 0.0.16
 
-
 NEW FEATURES
 
 * Added `generateReport()`
@@ -1119,9 +1014,7 @@ BUG FIXES
 
 * Fixed bugs in `mergeResults()`
 
-
 # derfinder 0.0.15
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1131,9 +1024,7 @@ BUG FIXES
 
 * Fixed `analyzeChr()`, completed `mergeResults()`
 
-
 # derfinder 0.0.14
-
 
 NEW FEATURES
 
@@ -1150,13 +1041,11 @@ the p-values.
 
 # derfinder 0.0.13
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Users can specify significance cutoffs for `plotOverview()` and `plotRegion()`
 
 # derfinder 0.0.12
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1164,13 +1053,11 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.11
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Added `plotOverview()`
 
 # derfinder 0.0.10
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1181,7 +1068,6 @@ BUG FIXES
 * `makeModels()` can now handle a vector for the `adjustvars` argument
 
 # derfinder 0.0.9
-
 
 SIGNIFICANT USER-VISIBLE CHANGES
 
@@ -1195,20 +1081,17 @@ found
 
 # derfinder 0.0.8
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * Attempted to reduce memory load in `calculateStats()` and `calculatePvalues()`
 
 # derfinder 0.0.7
 
-
 SIGNIFICANT USER-VISIBLE CHANGES
 
 * `fstats.apply()` now uses `Rcpp` and `RcppArmadillo`
 
 # derfinder 0.0.6
-
 
 NEW FEATURES
 
@@ -1220,7 +1103,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 
 # derfinder 0.0.5
 
-
 NEW FEATURES
 
 * Introduced `method` argument for getSegmetnsRle()
@@ -1231,7 +1113,6 @@ BUG FIXES
 
 # derfinder 0.0.4
 
-
 NEW FEATURES
 
 * Added `makeBamList()`, `makeModels()`, and `preprocessCoverage()`
@@ -1240,20 +1121,17 @@ NEW FEATURES
 
 # derfinder 0.0.3
 
-
 NEW FEATURES
 
 * Added `calculatePvalues()`
 
 # derfinder 0.0.2
 
-
 NEW FEATURES
 
 * Added `clusterMakerRle()`, `findRegions()`, and `getSegmentsRle()`
 
 # derfinder 0.0.1
-
 
 NEW FEATURES
 
@@ -1265,7 +1143,6 @@ SIGNIFICANT USER-VISIBLE CHANGES
 * Improved `NAMESPACE`
 
 # derfinder 0.0.0
-
 
 NEW FEATURES
 
