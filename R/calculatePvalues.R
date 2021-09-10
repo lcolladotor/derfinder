@@ -73,7 +73,8 @@
 #' [qvalue][qvalue::qvalue]
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol mean lapply unlist cbind
-#' @importFrom IRanges Views RleList nrow values 'values<-'
+#' values 'values<-'
+#' @importFrom IRanges Views RleList nrow
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply
 #' @importFrom qvalue qvalue
