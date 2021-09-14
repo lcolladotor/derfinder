@@ -73,7 +73,6 @@
 #' [qvalue][qvalue::qvalue]
 #' @export
 #' @importMethodsFrom IRanges quantile nrow ncol mean lapply unlist cbind
-#' values 'values<-'
 #' @importFrom IRanges Views RleList nrow
 #' @import S4Vectors
 #' @importFrom BiocParallel bplapply
@@ -274,7 +273,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
 
         ## Finish up
         names(regionGroupMean) <- paste0("mean", names(regionGroupMean))
-        values(regs) <- cbind(values(regs), DataFrame(regionGroupMean,
+        mcols(regs) <- cbind(mcols(regs), DataFrame(regionGroupMean,
             check.names = FALSE
         ))
         if (length(regionGroupMean) > 1) {
@@ -282,7 +281,7 @@ calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
                 "log2FoldChange",
                 names(log2FoldChange), "vs", names(groupMeans)[1]
             )
-            values(regs) <- cbind(values(regs), DataFrame(log2FoldChange,
+            mcols(regs) <- cbind(mcols(regs), DataFrame(log2FoldChange,
                 check.names = FALSE
             ))
             rm(log2FoldChange)
