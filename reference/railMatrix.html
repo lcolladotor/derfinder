@@ -251,47 +251,47 @@ functions. Inspect the code if interested.</p>
 <span class="r-in"><span>    <span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">coverageMatrix</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:56.642015 fullCoverage: processing chromosome chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:56.650924 loadCoverage: finding chromosome lengths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:56.665381 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB113.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:56.868814 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB123.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.11015 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB126.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.267831 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB130.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.450475 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB135.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.600415 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB136.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.775686 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB145.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:57.949964 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB153.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.124916 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB159.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.293643 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB178.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.478051 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB92.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.66066 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB97.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.84548 loadCoverage: applying the cutoff to the merged data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:58.880033 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:00.064118 coerceGR: coercing sample meanChr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:00.235656 createBwSample: exporting bw for sample meanChr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:01.343672 loadCoverage: finding chromosome lengths</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:01.353836 loadCoverage: loading BigWig file meanChr21.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:01.81222 loadCoverage: applying the cutoff to the merged data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.319568 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.602871 filterData: originally there were 48129895 rows, now there are 15927 rows. Meaning that 99.97 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.606696 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.611159 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.6115 .getSegmentsRle: segmenting with cutoff(s) 5.1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.619164 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.673162 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.79243 railMatrix: processing regions 1 to 204</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.79948 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB113.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:04.916338 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB123.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.032465 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB126.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.150012 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB130.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.268936 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB135.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.385388 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB136.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.504562 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB145.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.629226 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB153.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.759273 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB159.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.877654 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB178.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:05.996835 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB92.bw</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:06.118104 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB97.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.380766 fullCoverage: processing chromosome chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.386188 loadCoverage: finding chromosome lengths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.396699 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB113.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.561579 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB123.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.751334 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB126.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:28.867704 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB130.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.022374 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB135.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.127725 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB136.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.248534 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB145.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.370049 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB153.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.512037 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB159.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.642779 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB178.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.777023 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB92.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:29.94113 loadCoverage: loading BigWig file /__w/_temp/Library/derfinderData/extdata/AMY/HSB97.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:30.111075 loadCoverage: applying the cutoff to the merged data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:30.137966 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:31.162333 coerceGR: coercing sample meanChr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:31.265424 createBwSample: exporting bw for sample meanChr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:32.210556 loadCoverage: finding chromosome lengths</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:32.217945 loadCoverage: loading BigWig file meanChr21.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:32.641408 loadCoverage: applying the cutoff to the merged data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.626802 filterData: originally there were 48129895 rows, now there are 48129895 rows. Meaning that 0 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.836375 filterData: originally there were 48129895 rows, now there are 15927 rows. Meaning that 99.97 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.839652 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.842824 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.843155 .getSegmentsRle: segmenting with cutoff(s) 5.1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.849387 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.888655 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.977567 railMatrix: processing regions 1 to 204</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:34.982901 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB113.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.069295 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB123.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.155306 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB126.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.23842 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB130.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.32326 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB135.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.406814 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB136.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.491823 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB145.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.578539 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB153.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.666823 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB159.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.753545 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB178.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.839366 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB92.bw</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:35.92916 railMatrix: processing file /__w/_temp/Library/derfinderData/extdata/AMY/HSB97.bw</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 204  12</span>
 </code></pre></div>
     </div>

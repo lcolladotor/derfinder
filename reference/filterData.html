@@ -228,7 +228,7 @@ statistics.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Filter the data</span></span></span>
 <span class="r-in"><span><span class="va">filt1</span> <span class="op">&lt;-</span> <span class="fu">filterData</span><span class="op">(</span><span class="va">DF</span>, <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:42.293142 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:17.92625 filterData: originally there were 10000 rows, now there are 8300 rows. Meaning that 17 percent was filtered.</span>
 <span class="r-in"><span><span class="va">filt1</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 8300 rows and 3 columns</span>
@@ -254,7 +254,7 @@ statistics.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Filter again but only using the first two samples</span></span></span>
 <span class="r-in"><span><span class="va">filt2</span> <span class="op">&lt;-</span> <span class="fu">filterData</span><span class="op">(</span><span class="va">filt1</span><span class="op">$</span><span class="va">coverage</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="fl">5</span>, index <span class="op">=</span> <span class="va">filt1</span><span class="op">$</span><span class="va">position</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:42.352259 filterData: originally there were 8300 rows, now there are 6924 rows. Meaning that 16.58 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:17.976002 filterData: originally there were 8300 rows, now there are 6924 rows. Meaning that 16.58 percent was filtered.</span>
 <span class="r-in"><span><span class="va">filt2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $coverage</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DataFrame with 6924 rows and 2 columns</span>

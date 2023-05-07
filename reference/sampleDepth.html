@@ -153,13 +153,13 @@ doi:10.1038/nmeth.2658</p>
 <span class="r-in"><span><span class="va">collapsedFull</span> <span class="op">&lt;-</span> <span class="fu"><a href="collapseFullCoverage.html">collapseFullCoverage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">genomeData</span><span class="op">$</span><span class="va">coverage</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.986117 collapseFullCoverage: Sorting fullCov</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.990148 collapseFullCoverage: Collapsing chromosomes information by sample</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.901308 collapseFullCoverage: Sorting fullCov</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.903856 collapseFullCoverage: Collapsing chromosomes information by sample</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Calculate library size adjustments</span></span></span>
 <span class="r-in"><span><span class="va">sampleDepths</span> <span class="op">&lt;-</span> <span class="fu">sampleDepth</span><span class="op">(</span><span class="va">collapsedFull</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.993469 sampleDepth: Calculating sample quantiles</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:09.002596 sampleDepth: Calculating sample adjustments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.905912 sampleDepth: Calculating sample quantiles</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.91241 sampleDepth: Calculating sample adjustments</span>
 <span class="r-in"><span><span class="va">sampleDepths</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      ERR009101 ERR009102 ERR009105 ERR009107 ERR009108 ERR009112 ERR009115</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  50%  8.366322  7.954196  9.379378  8.596190  8.523562  8.179909  6.129283</span>

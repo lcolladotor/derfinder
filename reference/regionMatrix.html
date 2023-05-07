@@ -207,18 +207,18 @@ functions. Inspect the code if interested.</p>
 <span class="r-in"><span>    fullCov <span class="op">=</span> <span class="va">fullCov</span>, maxRegionGap <span class="op">=</span> <span class="fl">10L</span>,</span></span>
 <span class="r-in"><span>    maxClusterGap <span class="op">=</span> <span class="fl">300L</span>, L <span class="op">=</span> <span class="fl">36</span>, totalMapped <span class="op">=</span> <span class="va">libSize</span>, targetSize <span class="op">=</span> <span class="fl">4e4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.187795 regionMatrix: processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.188286 filterData: normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.20208 filterData: done normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.226476 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.227093 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.231672 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.236213 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.286468 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.452715 getRegionCoverage: processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.473793 getRegionCoverage: done processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.476633 regionMatrix: calculating coverageMatrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.484224 regionMatrix: adjusting coverageMatrix for 'L'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.643121 regionMatrix: processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.643496 filterData: normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.652899 filterData: done normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.671291 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.671735 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.67483 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.678292 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.714867 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.833843 getRegionCoverage: processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.848972 getRegionCoverage: done processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.851103 regionMatrix: calculating coverageMatrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.856036 regionMatrix: adjusting coverageMatrix for 'L'</span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span><span class="co">## You can alternatively use filterData() on fullCov to reduce the required</span></span></span>
 <span class="r-in"><span><span class="co">## memory before using regionMatrix(). This can be useful when mc.cores &gt; 1</span></span></span>
@@ -238,30 +238,30 @@ functions. Inspect the code if interested.</p>
 <span class="r-in"><span>    fullCov <span class="op">=</span> <span class="va">fullCov2</span>, maxRegionGap <span class="op">=</span> <span class="fl">10L</span>,</span></span>
 <span class="r-in"><span>    maxClusterGap <span class="op">=</span> <span class="fl">300L</span>, L <span class="op">=</span> <span class="fl">36</span>, totalMapped <span class="op">=</span> <span class="va">libSize</span>, targetSize <span class="op">=</span> <span class="fl">4e4</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.509666 regionMatrix: processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.510184 filterData: normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.520516 filterData: done normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.544906 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.545598 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.549694 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.554087 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.605735 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.779494 getRegionCoverage: processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.802351 getRegionCoverage: done processing chr21</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.805689 regionMatrix: calculating coverageMatrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.813336 regionMatrix: adjusting coverageMatrix for 'L'</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.813888 regionMatrix: processing chr22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.814263 filterData: normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.824177 filterData: done normalizing coverage</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.847831 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.848488 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.852881 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.857527 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:07.909525 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.086899 getRegionCoverage: processing chr22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.110262 getRegionCoverage: done processing chr22</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.11378 regionMatrix: calculating coverageMatrix</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:16:08.121456 regionMatrix: adjusting coverageMatrix for 'L'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.874128 regionMatrix: processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.874442 filterData: normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.882179 filterData: done normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.89977 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.900167 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.903203 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.906601 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:36.943188 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.066563 getRegionCoverage: processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.082607 getRegionCoverage: done processing chr21</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.084877 regionMatrix: calculating coverageMatrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.089931 regionMatrix: adjusting coverageMatrix for 'L'</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.090376 regionMatrix: processing chr22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.090671 filterData: normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.098693 filterData: done normalizing coverage</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.116878 filterData: originally there were 10000 rows, now there are 2586 rows. Meaning that 74.14 percent was filtered.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.117311 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.120398 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.123876 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.162027 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.284087 getRegionCoverage: processing chr22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.29966 getRegionCoverage: done processing chr22</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.301877 regionMatrix: calculating coverageMatrix</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:37.306824 regionMatrix: adjusting coverageMatrix for 'L'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Combine results from multiple chromosomes</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">"GenomicRanges"</a></span><span class="op">)</span></span></span>

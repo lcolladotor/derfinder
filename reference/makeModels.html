@@ -130,16 +130,16 @@ no intercept.</p></dd>
 <span class="r-in"><span><span class="va">collapsedFull</span> <span class="op">&lt;-</span> <span class="fu"><a href="collapseFullCoverage.html">collapseFullCoverage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">genomeData</span><span class="op">$</span><span class="va">coverage</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:54.269889 collapseFullCoverage: Sorting fullCov</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:54.273699 collapseFullCoverage: Collapsing chromosomes information by sample</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:26.599598 collapseFullCoverage: Sorting fullCov</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:26.602183 collapseFullCoverage: Collapsing chromosomes information by sample</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Calculate library size adjustments</span></span></span>
 <span class="r-in"><span><span class="va">sampleDepths</span> <span class="op">&lt;-</span> <span class="fu"><a href="sampleDepth.html">sampleDepth</a></span><span class="op">(</span><span class="va">collapsedFull</span>,</span></span>
 <span class="r-in"><span>    probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, nonzero <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:54.276319 sampleDepth: Calculating sample quantiles</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:54.285526 sampleDepth: Calculating sample adjustments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:26.604328 sampleDepth: Calculating sample quantiles</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 06:01:26.610114 sampleDepth: Calculating sample adjustments</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Build the models</span></span></span>
 <span class="r-in"><span><span class="va">group</span> <span class="op">&lt;-</span> <span class="va">genomeInfo</span><span class="op">$</span><span class="va">pop</span></span></span>
