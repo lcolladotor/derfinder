@@ -94,8 +94,9 @@
 #' )
 #' names(dataReady)
 #' dataReady
-preprocessCoverage <- function(coverageInfo, groupInfo = NULL, cutoff = 5,
-    colsubset = NULL, lowMemDir = NULL, ...) {
+preprocessCoverage <- function(
+        coverageInfo, groupInfo = NULL, cutoff = 5,
+        colsubset = NULL, lowMemDir = NULL, ...) {
     ## Check that the input is from loadCoverage()
     stopifnot(length(intersect(names(coverageInfo), c(
         "coverage",

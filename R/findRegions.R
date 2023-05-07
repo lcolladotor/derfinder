@@ -113,11 +113,11 @@
 #' )
 #' ## Compare against the object regs obtained earlier
 #' regs_smooth
-findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
-    maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-    segmentIR = NULL, smooth = FALSE, weights = NULL,
-    smoothFunction = bumphunter::locfitByCluster, ...) {
-
+findRegions <- function(
+        position = NULL, fstats, chr, oneTable = TRUE,
+        maxClusterGap = 300L, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
+        segmentIR = NULL, smooth = FALSE, weights = NULL,
+        smoothFunction = bumphunter::locfitByCluster, ...) {
     ## Advanged arguments
     # @param basic If \code{TRUE} a DataFrame is returned that has only basic
     # information on the candidate DERs. This is used in \link{calculatePvalues} to speed up permutation calculations.
@@ -361,7 +361,6 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 #'
 #' @noRd
 .getSegmentsRle <- function(x, cutoff = quantile(x, 0.99, na.rm = TRUE), ...) {
-
     ## Advanged arguments
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.
@@ -476,8 +475,9 @@ findRegions <- function(position = NULL, fstats, chr, oneTable = TRUE,
 }
 
 
-.smootherFstats <- function(fstats, position, weights = NULL,
-    smoothFunction = bumphunter::locfitByCluster, ...) {
+.smootherFstats <- function(
+        fstats, position, weights = NULL,
+        smoothFunction = bumphunter::locfitByCluster, ...) {
     ## Based on bumphunter::smoother
 
     ## Advanced arguments

@@ -48,7 +48,6 @@
 #'
 #' ## Exports a single sample to a BigWig file
 createBwSample <- function(sample, path = ".", fullCov, keepGR = TRUE, ...) {
-
     ## Advanced arguments
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.

@@ -86,9 +86,9 @@
 #' ## Filter again but only using the first two samples
 #' filt2 <- filterData(filt1$coverage[, 1:2], 5, index = filt1$position)
 #' filt2
-filterData <- function(data, cutoff = NULL, index = NULL, filter = "one",
-    totalMapped = NULL, targetSize = 80e6, ...) {
-
+filterData <- function(
+        data, cutoff = NULL, index = NULL, filter = "one",
+        totalMapped = NULL, targetSize = 80e6, ...) {
     ## Check filter
     stopifnot(filter %in% c("one", "mean"))
 

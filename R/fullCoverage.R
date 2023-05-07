@@ -83,8 +83,9 @@
 #' }, BPPARAM = p)
 #' }
 #'
-fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
-    outputs = NULL, cutoff = NULL, ...) {
+fullCoverage <- function(
+        files, chrs, bai = NULL, chrlens = NULL,
+        outputs = NULL, cutoff = NULL, ...) {
     stopifnot(length(files) > 0)
     stopifnot(length(chrlens) == length(chrs) | is.null(chrlens))
     stopifnot(is.character(chrs))
@@ -113,8 +114,9 @@ fullCoverage <- function(files, chrs, bai = NULL, chrlens = NULL,
     BPPARAM <- define_cluster(...)
 
     ## Subsetting function that runs loadCoverage
-    loadChr <- function(idx, files, chrs, bai, chrlens, outputs, cutoff,
-    mc.load, ...) {
+    loadChr <- function(
+        idx, files, chrs, bai, chrlens, outputs, cutoff,
+        mc.load, ...) {
         if (verbose) {
             message(paste(
                 Sys.time(), "fullCoverage: processing chromosome",

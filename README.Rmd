@@ -16,13 +16,18 @@ knitr::opts_chunk$set(
 # derfinder
 
 <!-- badges: start -->
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://www.tidyverse.org/lifecycle/#stable)
-[![BioC status](http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/derfinder)
-[![BioC dev status](http://www.bioconductor.org/shields/build/devel/bioc/derfinder.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder)
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+[![Bioc release status](http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg)](https://bioconductor.org/checkResults/release/bioc-LATEST/derfinder)
+[![Bioc devel status](http://www.bioconductor.org/shields/build/devel/bioc/derfinder.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder)
+[![Bioc downloads rank](https://bioconductor.org/shields/downloads/release/derfinder.svg)](http://bioconductor.org/packages/stats/bioc/derfinder/)
+[![Bioc support](https://bioconductor.org/shields/posts/derfinder.svg)](https://support.bioconductor.org/tag/derfinder)
+[![Bioc history](https://bioconductor.org/shields/years-in-bioc/derfinder.svg)](https://bioconductor.org/packages/release/bioc/html/derfinder.html#since)
+[![Bioc last commit](https://bioconductor.org/shields/lastcommit/devel/bioc/derfinder.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder/)
+[![Bioc dependencies](https://bioconductor.org/shields/dependencies/release/derfinder.svg)](https://bioconductor.org/packages/release/bioc/html/derfinder.html#since)
 [![Codecov test coverage](https://codecov.io/gh/lcolladotor/derfinder/branch/master/graph/badge.svg)](https://codecov.io/gh/lcolladotor/derfinder?branch=master)
 [![R build status](https://github.com/lcolladotor/derfinder/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/lcolladotor/derfinder/actions)
-[![Support site activity, last 6 months: tagged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts.](http://www.bioconductor.org/shields/posts/derfinder.svg)](https://support.bioconductor.org/t/derfinder/)
 [![GitHub issues](https://img.shields.io/github/issues/lcolladotor/derfinder)](https://github.com/lcolladotor/derfinder/issues)
+[![GitHub pulls](https://img.shields.io/github/issues-pr/lcolladotor/derfinder)](https://github.com/lcolladotor/derfinder/pulls)
 <!-- badges: end -->
 
 Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach. This package contains two different implementations of this approach. The first one is the single base-level F-statistics implementation and the second one is via identifying expressed regions. For more information about `derfinder` check the vignettes [here](http://www.bioconductor.org/packages/derfinder).

@@ -74,9 +74,9 @@
 #'     fullCov = fullCov,
 #'     genomicState = smallGenomicState$fullGenome, L = 36
 #' )
-coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
-    returnType = "raw", files = NULL, ...) {
-
+coverageToExon <- function(
+        fullCov = NULL, genomicState, L = NULL,
+        returnType = "raw", files = NULL, ...) {
     ## Run some checks
     stopifnot(length(intersect(returnType, c("raw", "rpkm"))) == 1)
     stopifnot(is(genomicState, "GRanges"))
@@ -164,8 +164,9 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
     return(theExons)
 }
 
-.coverageToExonStrandStep <- function(ii, fullCov, etab, L, nCores, chromosomes,
-    ...) {
+.coverageToExonStrandStep <- function(
+        ii, fullCov, etab, L, nCores, chromosomes,
+        ...) {
     verbose <- .advanced_argument("verbose", TRUE, ...)
 
     e <- etab[ii] # subset
@@ -179,11 +180,12 @@ coverageToExon <- function(fullCov = NULL, genomicState, L = NULL,
 
     ## Subset data
     # subset using logical rle (fastest way)
-    subsets <- mapply(function(covInfo, chr) {
-        subset(covInfo, cc[[chr]])
-    },
-    fullCov, chromosomes,
-    SIMPLIFY = FALSE
+    subsets <- mapply(
+        function(covInfo, chr) {
+            subset(covInfo, cc[[chr]])
+        },
+        fullCov, chromosomes,
+        SIMPLIFY = FALSE
     )
 
     # now count exons

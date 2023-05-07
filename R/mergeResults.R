@@ -112,9 +112,10 @@
 #'     xlab("Step")
 #' }
 #'
-mergeResults <- function(chrs = c(seq_len(22), "X", "Y"), prefix = ".",
-    significantCut = c(0.05, 0.1), genomicState, minoverlap = 20,
-    mergePrep = FALSE, ...) {
+mergeResults <- function(
+        chrs = c(seq_len(22), "X", "Y"), prefix = ".",
+        significantCut = c(0.05, 0.1), genomicState, minoverlap = 20,
+        mergePrep = FALSE, ...) {
     ## For R CMD check
     prep <- fstats <- regions <- annotation <- timeinfo <- NULL
 

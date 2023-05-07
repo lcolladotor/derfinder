@@ -50,8 +50,9 @@
 #' models <- makeModels(sampleDepths, testvars = group, adjustvars = adjustvars)
 #' names(models)
 #' models
-makeModels <- function(sampleDepths, testvars, adjustvars = NULL,
-    testIntercept = FALSE) {
+makeModels <- function(
+        sampleDepths, testvars, adjustvars = NULL,
+        testIntercept = FALSE) {
     ## Drop unused levels in testvars if it is a factor
     if (is.factor(testvars)) {
         testvars <- droplevels(testvars)

@@ -47,7 +47,6 @@
 #'
 #' ## Coerces fullCoverage() output to GRanges for a given sample
 coerceGR <- function(sample, fullCov, ...) {
-
     ## Advanged arguments
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.

@@ -154,13 +154,13 @@
 #' head(annotation)
 #' }
 #'
-calculatePvalues <- function(coveragePrep, models, fstats, nPermute = 1L,
-    seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    chr, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
-    significantCut = c(0.05, 0.1),
-    lowMemDir = NULL, smooth = FALSE, weights = NULL,
-    smoothFunction = bumphunter::locfitByCluster, ...) {
-
+calculatePvalues <- function(
+        coveragePrep, models, fstats, nPermute = 1L,
+        seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
+        chr, cutoff = quantile(fstats, 0.99, na.rm = TRUE),
+        significantCut = c(0.05, 0.1),
+        lowMemDir = NULL, smooth = FALSE, weights = NULL,
+        smoothFunction = bumphunter::locfitByCluster, ...) {
     ## Setup
     if (is.null(seeds)) {
         seeds <- rep(NA, nPermute)

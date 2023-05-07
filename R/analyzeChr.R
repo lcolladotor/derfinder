@@ -105,13 +105,13 @@
 #'     runAnnotation = FALSE
 #' )
 #' names(results)
-analyzeChr <- function(chr, coverageInfo, models, cutoffPre = 5,
-    cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1,
-    seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
-    groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
-    lowMemDir = file.path(chr, "chunksDir"), smooth = FALSE, weights = NULL,
-    smoothFunction = bumphunter::locfitByCluster, ...) {
-
+analyzeChr <- function(
+        chr, coverageInfo, models, cutoffPre = 5,
+        cutoffFstat = 1e-08, cutoffType = "theoretical", nPermute = 1,
+        seeds = as.integer(gsub("-", "", Sys.Date())) + seq_len(nPermute),
+        groupInfo, txdb = NULL, writeOutput = TRUE, runAnnotation = TRUE,
+        lowMemDir = file.path(chr, "chunksDir"), smooth = FALSE, weights = NULL,
+        smoothFunction = bumphunter::locfitByCluster, ...) {
     ## Run some checks
     stopifnot(length(intersect(cutoffType, c(
         "empirical", "theoretical",

@@ -112,9 +112,10 @@
 #'     regionMat$chr21$regions
 #'     dim(regionMat$chr21$coverageMatrix)
 #' }
-railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
-    maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6,
-    file.cores = 1L, chrlens = NULL, ...) {
+railMatrix <- function(
+        chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
+        maxClusterGap = 300L, totalMapped = NULL, targetSize = 40e6,
+        file.cores = 1L, chrlens = NULL, ...) {
     stopifnot(length(chrs) == length(summaryFiles))
     ## In the future, summaryFiles might be a vector or a list, but the length
     ## check must be maintained. It might be a list if the mean bigwig info
@@ -173,10 +174,11 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
 }
 
 
-.railMatrixChr <- function(chr, summaryFile, chrlen, sampleFiles, L = NULL,
-    cutoff = NULL, maxClusterGap = 300L, mappedPerXM = mappedPerXM,
-    regionschunk = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE,
-    verboseLoad = TRUE, ...) {
+.railMatrixChr <- function(
+        chr, summaryFile, chrlen, sampleFiles, L = NULL,
+        cutoff = NULL, maxClusterGap = 300L, mappedPerXM = mappedPerXM,
+        regionschunk = 1000, BPPARAM.railChr = BPPARAM.railChr, verbose = TRUE,
+        verboseLoad = TRUE, ...) {
     meanCov <- loadCoverage(files = summaryFile, chr = chr, chrlen = chrlen)
 
     filteredMean <- filterData(meanCov$coverage, cutoff = cutoff, filter = "mean", returnMean = TRUE, ...)
@@ -233,8 +235,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     return(result)
 }
 
-.railMatChrRegion <- function(regions, sampleFiles, chr, mappedPerXM, L,
-    verbose = TRUE, verboseLoad = TRUE, chrlen, BPPARAM.railChr) {
+.railMatChrRegion <- function(
+        regions, sampleFiles, chr, mappedPerXM, L,
+        verbose = TRUE, verboseLoad = TRUE, chrlen, BPPARAM.railChr) {
     if (verbose) message(paste(Sys.time(), "railMatrix: processing regions", paste(range(as.integer(names(regions))), collapse = " to ")))
 
     ## Get the region coverage matrix
@@ -258,8 +261,9 @@ railMatrix <- function(chrs, summaryFiles, sampleFiles, L, cutoff = NULL,
     return(res)
 }
 
-.railMatChrRegionCov <- function(sampleFile, mappedPerXM, L, chr, regs,
-    verbose = TRUE) {
+.railMatChrRegionCov <- function(
+        sampleFile, mappedPerXM, L, chr, regs,
+        verbose = TRUE) {
     if (verbose) message(paste(Sys.time(), "railMatrix: processing file", sampleFile))
 
     ## Based on http://bioconductor.org/developers/how-to/web-query/

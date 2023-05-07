@@ -81,12 +81,12 @@
 #' extendedMapSeqlevels("2")
 #' }
 #'
-extendedMapSeqlevels <- function(seqnames, style = getOption(
-        "chrsStyle",
-        "UCSC"
-    ), species = getOption("species", "homo_sapiens"),
-    currentStyle = NULL, ...) {
-
+extendedMapSeqlevels <- function(
+        seqnames, style = getOption(
+            "chrsStyle",
+            "UCSC"
+        ), species = getOption("species", "homo_sapiens"),
+        currentStyle = NULL, ...) {
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.
     verbose <- .advanced_argument("verbose", TRUE, ...)

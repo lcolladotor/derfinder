@@ -136,8 +136,9 @@
 #' ## to store the data.
 #' }
 #'
-loadCoverage <- function(files, chr, cutoff = NULL, filter = "one",
-    chrlen = NULL, output = NULL, bai = NULL, ...) {
+loadCoverage <- function(
+        files, chr, cutoff = NULL, filter = "one",
+        chrlen = NULL, output = NULL, bai = NULL, ...) {
     stopifnot(is.character(chr))
 
     ## Advanged arguments

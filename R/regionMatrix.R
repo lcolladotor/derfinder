@@ -121,9 +121,9 @@
 #'     "regions" = regs, "coverageMatrix" = covMat,
 #'     "bpCoverage" = covBp
 #' )
-regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
-    targetSize = 80e6, runFilter = TRUE, returnBP = TRUE, ...) {
-
+regionMatrix <- function(
+        fullCov, cutoff = 5, L, totalMapped = 80e6,
+        targetSize = 80e6, runFilter = TRUE, returnBP = TRUE, ...) {
     ## Have to filter by something
     stopifnot(!is.null(cutoff))
 
@@ -167,8 +167,9 @@ regionMatrix <- function(fullCov, cutoff = 5, L, totalMapped = 80e6,
     )
 }
 
-.regionMatrixByChr <- function(covInfo, chr, cutoff, L, totalMapped,
-    targetSize, runFilter, returnBP, ...) {
+.regionMatrixByChr <- function(
+        covInfo, chr, cutoff, L, totalMapped,
+        targetSize, runFilter, returnBP, ...) {
     verbose <- .advanced_argument("verbose", TRUE, ...)
     chrsStyle <- .advanced_argument("chrsStyle", getOption(
         "chrsStyle",

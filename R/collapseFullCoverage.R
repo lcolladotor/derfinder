@@ -42,7 +42,6 @@
 #' }
 #'
 collapseFullCoverage <- function(fullCov, colsubset = NULL, save = FALSE, ...) {
-
     ## Advanged arguments
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.

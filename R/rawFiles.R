@@ -34,8 +34,9 @@
 #'     fileterm = NULL
 #' )
 #' files
-rawFiles <- function(datadir = NULL, sampledirs = NULL, samplepatt = NULL,
-    fileterm = "accepted_hits.bam") {
+rawFiles <- function(
+        datadir = NULL, sampledirs = NULL, samplepatt = NULL,
+        fileterm = "accepted_hits.bam") {
     ## Determine the full paths to the sample directories
     if (!is.null(sampledirs)) {
         if (!is.null(datadir)) {

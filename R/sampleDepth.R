@@ -52,7 +52,6 @@
 #' sampleDepths <- sampleDepth(collapsedFull, probs = c(0.5, 1), verbose = TRUE)
 #' sampleDepths
 sampleDepth <- function(collapsedFull, probs = c(0.5, 1), scalefac = 32, ...) {
-
     ## Check probs are valid
     stopifnot(all(probs >= 0) & all(probs <= 1))
 

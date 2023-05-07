@@ -80,9 +80,9 @@
 #'
 #' ## Finally, get the region coverage
 #' regionCov <- getRegionCoverage(fullCov = fullCov, regions = regions)
-getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
-    targetSize = 80e6, files = NULL, ...) {
-
+getRegionCoverage <- function(
+        fullCov = NULL, regions, totalMapped = NULL,
+        targetSize = 80e6, files = NULL, ...) {
     ## Advanged arguments
     # @param verbose If \code{TRUE} basic status updates will be printed along the
     # way.
@@ -121,56 +121,56 @@ getRegionCoverage <- function(fullCov = NULL, regions, totalMapped = NULL,
     ## Define cluster
     BPPARAM <- define_cluster(...)
 
-    counts <- bpmapply(function(chr, covInfo, g, totalMapped, verbose) {
-
-        ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
-        if (verbose) {
-            message(paste(Sys.time(), "getRegionCoverage: processing", chr))
-        }
-
-
-        ind <- rep(names(g), width(g)) # to split along
-
-        ## Check whether fullCov has been filtered, then subset
-        if (all(c("coverage", "position") %in% names(covInfo))) {
-            if (!is.null(g$indexStart) & !is.null(g$indexEnd)) {
-                ## Subset if appropriate
-                yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
-                ind <- rep(names(g), g$indexEnd - g$indexStart + 1) # to split along
-            } else if (is.null(covInfo$position)) {
-                yy <- covInfo$coverage[ranges(g), ]
-            } else {
-                stop("It seems that you have filtered the coverage but your 'regions' object is missing the 'indexStart' and 'indexEnd' information produced by findRegions().")
+    counts <- bpmapply(
+        function(chr, covInfo, g, totalMapped, verbose) {
+            ## Parallel by chr, so no point in using mc.cores beyond the number of chrs
+            if (verbose) {
+                message(paste(Sys.time(), "getRegionCoverage: processing", chr))
             }
-        } else {
-            yy <- covInfo[ranges(g), ] # better subset
-        }
 
-        # depth-adjust, like for plotting
-        if (!is.null(totalMapped) & targetSize != 0) {
-            yy <- DataFrame(mapply(
-                function(x, d) x / d,
-                yy, totalMapped / targetSize
-            ), check.names = FALSE)
-        }
 
-        ind <- factor(ind, levels = unique(ind)) # make factor in order
-        # split(yy,ind) # 'CompressedSplitDataFrameList', faster but
-        # less clear how to unlist below, so leave out
-        res <- split(as.data.frame(yy), ind)
+            ind <- rep(names(g), width(g)) # to split along
 
-        if (verbose) {
-            message(paste(
-                Sys.time(), "getRegionCoverage: done processing",
-                chr
-            ))
-        }
+            ## Check whether fullCov has been filtered, then subset
+            if (all(c("coverage", "position") %in% names(covInfo))) {
+                if (!is.null(g$indexStart) & !is.null(g$indexEnd)) {
+                    ## Subset if appropriate
+                    yy <- covInfo$coverage[IRanges(start = g$indexStart, end = g$indexEnd), ]
+                    ind <- rep(names(g), g$indexEnd - g$indexStart + 1) # to split along
+                } else if (is.null(covInfo$position)) {
+                    yy <- covInfo$coverage[ranges(g), ]
+                } else {
+                    stop("It seems that you have filtered the coverage but your 'regions' object is missing the 'indexStart' and 'indexEnd' information produced by findRegions().")
+                }
+            } else {
+                yy <- covInfo[ranges(g), ] # better subset
+            }
 
-        ## Done
-        return(res)
-    }, names(fullCov), fullCov, grl,
-    MoreArgs = moreArgs, BPPARAM = BPPARAM,
-    SIMPLIFY = FALSE
+            # depth-adjust, like for plotting
+            if (!is.null(totalMapped) & targetSize != 0) {
+                yy <- DataFrame(mapply(
+                    function(x, d) x / d,
+                    yy, totalMapped / targetSize
+                ), check.names = FALSE)
+            }
+
+            ind <- factor(ind, levels = unique(ind)) # make factor in order
+            # split(yy,ind) # 'CompressedSplitDataFrameList', faster but
+            # less clear how to unlist below, so leave out
+            res <- split(as.data.frame(yy), ind)
+
+            if (verbose) {
+                message(paste(
+                    Sys.time(), "getRegionCoverage: done processing",
+                    chr
+                ))
+            }
+
+            ## Done
+            return(res)
+        }, names(fullCov), fullCov, grl,
+        MoreArgs = moreArgs, BPPARAM = BPPARAM,
+        SIMPLIFY = FALSE
     )
     covList <- do.call("c", counts) # collect list elements into one large list
 

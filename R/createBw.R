@@ -50,7 +50,6 @@
 #'
 #' ## Exports fullCoverage() output to BigWig files
 createBw <- function(fullCov, path = ".", keepGR = TRUE, ...) {
-
     ## Determine sample names
     samples <- names(fullCov[[1]])
     if ("coverage" %in% samples) {
