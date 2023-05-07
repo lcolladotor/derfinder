@@ -245,13 +245,13 @@ null region originated from.</p></dd>
 <span class="r-in"><span><span class="va">collapsedFull</span> <span class="op">&lt;-</span> <span class="fu"><a href="collapseFullCoverage.html">collapseFullCoverage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">genomeData</span><span class="op">$</span><span class="va">coverage</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:33.680293 collapseFullCoverage: Sorting fullCov</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:33.682628 collapseFullCoverage: Collapsing chromosomes information by sample</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:27.545574 collapseFullCoverage: Sorting fullCov</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:27.550411 collapseFullCoverage: Collapsing chromosomes information by sample</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Calculate library size adjustments</span></span></span>
 <span class="r-in"><span><span class="va">sampleDepths</span> <span class="op">&lt;-</span> <span class="fu"><a href="sampleDepth.html">sampleDepth</a></span><span class="op">(</span><span class="va">collapsedFull</span>, probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:33.684622 sampleDepth: Calculating sample quantiles</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:33.690066 sampleDepth: Calculating sample adjustments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:27.553867 sampleDepth: Calculating sample quantiles</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:27.564051 sampleDepth: Calculating sample adjustments</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Build the models</span></span></span>
 <span class="r-in"><span><span class="va">group</span> <span class="op">&lt;-</span> <span class="va">genomeInfo</span><span class="op">$</span><span class="va">pop</span></span></span>
@@ -280,15 +280,15 @@ null region originated from.</p></dd>
 <span class="r-in"><span>    nPermute <span class="op">=</span> <span class="fl">1</span>, seeds <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    chr <span class="op">=</span> <span class="st">"chr21"</span>, cutoff <span class="op">=</span> <span class="va">cutoff</span>, mc.cores <span class="op">=</span> <span class="fl">1</span>, method <span class="op">=</span> <span class="st">"regular"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.005467 calculatePvalues: identifying data segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.009133 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.012656 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.055888 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.1508 calculatePvalues: calculating F-statistics for permutation 1 and seed 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.412897 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.416028 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.461975 calculatePvalues: calculating the p-values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:11:34.483293 calculatePvalues: skipping q-value calculation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.079834 calculatePvalues: identifying data segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.084235 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.088627 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.139562 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.254204 calculatePvalues: calculating F-statistics for permutation 1 and seed 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.574442 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.57919 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.64981 calculatePvalues: calculating the p-values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 05:15:28.687381 calculatePvalues: skipping q-value calculation.</span>
 <span class="r-in"><span><span class="va">regsWithP</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $regions</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 33 ranges and 14 metadata columns:</span>
@@ -335,7 +335,7 @@ null region originated from.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   seqinfo: 1 sequence from an unspecified genome; no seqlengths</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $nullStats</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> numeric-Rle of length 56 with 54 runs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> numeric-Rle of length 56 with 52 runs</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Lengths:       1       1       1       1 ...       1       1       1       1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Values : 2.25473 3.63681 4.12769 9.73262 ... 1.16174 8.10124 5.20438 1.16174</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
