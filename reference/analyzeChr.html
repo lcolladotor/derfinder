@@ -279,16 +279,16 @@ example:
 <span class="r-in"><span><span class="va">collapsedFull</span> <span class="op">&lt;-</span> <span class="fu"><a href="collapseFullCoverage.html">collapseFullCoverage</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">genomeData</span><span class="op">$</span><span class="va">coverage</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:46.274007 collapseFullCoverage: Sorting fullCov</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:46.279638 collapseFullCoverage: Collapsing chromosomes information by sample</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:03.346095 collapseFullCoverage: Sorting fullCov</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:03.353534 collapseFullCoverage: Collapsing chromosomes information by sample</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Calculate library size adjustments</span></span></span>
 <span class="r-in"><span><span class="va">sampleDepths</span> <span class="op">&lt;-</span> <span class="fu"><a href="sampleDepth.html">sampleDepth</a></span><span class="op">(</span><span class="va">collapsedFull</span>,</span></span>
 <span class="r-in"><span>    probs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span><span class="op">)</span>, nonzero <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:46.283256 sampleDepth: Calculating sample quantiles</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:46.294342 sampleDepth: Calculating sample adjustments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:03.357272 sampleDepth: Calculating sample quantiles</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:03.371248 sampleDepth: Calculating sample adjustments</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Build the models</span></span></span>
 <span class="r-in"><span><span class="va">groupInfo</span> <span class="op">&lt;-</span> <span class="va">genomeInfo</span><span class="op">$</span><span class="va">pop</span></span></span>
@@ -303,21 +303,21 @@ example:
 <span class="r-in"><span>    runAnnotation <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> extendedMapSeqlevels: sequence names mapped from NCBI to UCSC for species homo_sapiens</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.180357 analyzeChr: Pre-processing the coverage data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.596579 analyzeChr: Calculating statistics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.604873 calculateStats: calculating the F-statistics</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.67367 analyzeChr: Calculating pvalues</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.673971 analyzeChr: Using the following manual cutoff for the F-statistics 1</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.67516 calculatePvalues: identifying data segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.685086 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.692626 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.775036 findRegions: identifying region clusters</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:47.947191 calculatePvalues: calculating F-statistics for permutation 1 and seed 20230508</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:48.006135 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:48.010265 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:48.102272 calculatePvalues: calculating the p-values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:48.14843 calculatePvalues: skipping q-value calculation.</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:05:48.18245 analyzeChr: Annotating regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:04.442273 analyzeChr: Pre-processing the coverage data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:04.960211 analyzeChr: Calculating statistics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:04.970756 calculateStats: calculating the F-statistics</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.057494 analyzeChr: Calculating pvalues</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.057855 analyzeChr: Using the following manual cutoff for the F-statistics 1</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.05913 calculatePvalues: identifying data segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.071521 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.08059 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.180454 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.388656 calculatePvalues: calculating F-statistics for permutation 1 and seed 20230508</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.465367 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.470568 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.584459 calculatePvalues: calculating the p-values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.636481 calculatePvalues: skipping q-value calculation.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2023-05-07 03:53:05.676549 analyzeChr: Annotating regions</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "timeinfo"     "optionsStats" "coveragePrep" "fstats"       "regions"     </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "annotation"  </span>
