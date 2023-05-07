@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,23 +40,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.35.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,8 +70,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lcolladotor/derfinder/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/lcolladotor/derfinder/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -91,185 +87,194 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="derfinder" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#derfinder" class="anchor"></a>derfinder</h1></div>
+<div class="section level1">
+<div class="page-header"><h1 id="derfinder">derfinder<a class="anchor" aria-label="anchor" href="#derfinder"></a>
+</h1></div>
 <!-- badges: start -->
 
-<p>Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach. This package contains two different implementations of this approach. The first one is the single base-level F-statistics implementation and the second one is via identifying expressed regions. For more information about <code>derfinder</code> check the vignettes <a href="http://www.bioconductor.org/packages/derfinder">here</a>.</p>
-<div id="documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h2>
-<p>For more information about <code>derfinder</code> check the vignettes <a href="http://bioconductor.org/packages/derfinder">through Bioconductor</a> or at the <a href="http://lcolladotor.github.io/derfinder">documentation website</a>.</p>
+<p>Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach. This package contains two different implementations of this approach. The first one is the single base-level F-statistics implementation and the second one is via identifying expressed regions. For more information about <code>derfinder</code> check the vignettes <a href="http://www.bioconductor.org/packages/derfinder" class="external-link">here</a>.</p>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<p>For more information about <code>derfinder</code> check the vignettes <a href="http://bioconductor.org/packages/derfinder" class="external-link">through Bioconductor</a> or at the <a href="http://lcolladotor.github.io/derfinder" class="external-link">documentation website</a>.</p>
 </div>
-<div id="further-documentation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#further-documentation" class="anchor"></a>Further documentation</h2>
-<p>You can generate HTML reports from the results using <strong>regionReport</strong> available <a href="https://github.com/lcolladotor/regionReport">here</a>.</p>
+<div class="section level2">
+<h2 id="further-documentation">Further documentation<a class="anchor" aria-label="anchor" href="#further-documentation"></a>
+</h2>
+<p>You can generate HTML reports from the results using <strong>regionReport</strong> available <a href="https://github.com/lcolladotor/regionReport" class="external-link">here</a>.</p>
 </div>
-<div id="installation-instructions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation-instructions" class="anchor"></a>Installation instructions</h2>
-<p>Get the latest stable <code>R</code> release from <a href="http://cran.r-project.org/">CRAN</a>. Then install <code>derfinder</code> using from <a href="http://bioconductor.org/">Bioconductor</a> the following code:</p>
-<div class="sourceCode" id="cb1"><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)
-
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"derfinder"</span>)</pre></div>
+<div class="section level2">
+<h2 id="installation-instructions">Installation instructions<a class="anchor" aria-label="anchor" href="#installation-instructions"></a>
+</h2>
+<p>Get the latest stable <code>R</code> release from <a href="http://cran.r-project.org/" class="external-link">CRAN</a>. Then install <code>derfinder</code> using from <a href="http://bioconductor.org/" class="external-link">Bioconductor</a> the following code:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"derfinder"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="citation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citation" class="anchor"></a>Citation</h2>
-<p>Below is the citation output from using <code><a href="https://rdrr.io/r/utils/citation.html">citation('derfinder')</a></code> in R. Please run this yourself to check for any updates on how to cite <strong>derfinder</strong>.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span>(<span class="st">'derfinder'</span>), <span class="kw">bibtex</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Langmead B,</span>
-<span class="co">#&gt; Irizarry RA, Leek JT, Jaffe AE (2017). "Flexible expressed region</span>
-<span class="co">#&gt; analysis for RNA-seq with derfinder." _Nucl. Acids Res._. doi:</span>
-<span class="co">#&gt; 10.1093/nar/gkw852 (URL: https://doi.org/10.1093/nar/gkw852), &lt;URL:</span>
-<span class="co">#&gt; http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852&gt;.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   @Article{,</span>
-<span class="co">#&gt;     title = {Flexible expressed region analysis for RNA-seq with derfinder},</span>
-<span class="co">#&gt;     author = {Leonardo Collado-Torres and Abhinav Nellore and Alyssa C. Frazee and Christopher Wilks and Michael I. Love and Ben Langmead and Rafael A. Irizarry and Jeffrey T. Leek and Andrew E. Jaffe},</span>
-<span class="co">#&gt;     year = {2017},</span>
-<span class="co">#&gt;     journal = {Nucl. Acids Res.},</span>
-<span class="co">#&gt;     doi = {10.1093/nar/gkw852},</span>
-<span class="co">#&gt;     url = {http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852},</span>
-<span class="co">#&gt;   }</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA, Leek JT (2014).</span>
-<span class="co">#&gt; "Differential expression analysis of RNA-seq data at single-base</span>
-<span class="co">#&gt; resolution." _Biostatistics_, *15 (3)*, 413-426. doi:</span>
-<span class="co">#&gt; 10.1093/biostatistics/kxt053 (URL:</span>
-<span class="co">#&gt; https://doi.org/10.1093/biostatistics/kxt053), &lt;URL:</span>
-<span class="co">#&gt; http://biostatistics.oxfordjournals.org/content/15/3/413.long&gt;.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   @Article{,</span>
-<span class="co">#&gt;     title = {Differential expression analysis of RNA-seq data at single-base resolution},</span>
-<span class="co">#&gt;     author = {Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizarry and Jeffrey T. Leek},</span>
-<span class="co">#&gt;     year = {2014},</span>
-<span class="co">#&gt;     journal = {Biostatistics},</span>
-<span class="co">#&gt;     volume = {15 (3)},</span>
-<span class="co">#&gt;     pages = {413-426},</span>
-<span class="co">#&gt;     doi = {10.1093/biostatistics/kxt053},</span>
-<span class="co">#&gt;     url = {http://biostatistics.oxfordjournals.org/content/15/3/413.long},</span>
-<span class="co">#&gt;   }</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Collado-Torres L, Jaffe AE, Leek JT (2017). _derfinder:</span>
-<span class="co">#&gt; Annotation-agnostic differential expression analysis of RNA-seq data at</span>
-<span class="co">#&gt; base-pair resolution via the DER Finder approach_. doi:</span>
-<span class="co">#&gt; 10.18129/B9.bioc.derfinder (URL:</span>
-<span class="co">#&gt; https://doi.org/10.18129/B9.bioc.derfinder),</span>
-<span class="co">#&gt; https://github.com/lcolladotor/derfinder - R package version 1.23.1,</span>
-<span class="co">#&gt; &lt;URL: http://www.bioconductor.org/packages/derfinder&gt;.</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; A BibTeX entry for LaTeX users is</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt;   @Manual{,</span>
-<span class="co">#&gt;     title = {derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach},</span>
-<span class="co">#&gt;     author = {Leonardo Collado-Torres and Andrew E. Jaffe and Jeffrey T. Leek},</span>
-<span class="co">#&gt;     year = {2017},</span>
-<span class="co">#&gt;     url = {http://www.bioconductor.org/packages/derfinder},</span>
-<span class="co">#&gt;     note = {https://github.com/lcolladotor/derfinder - R package version 1.23.1},</span>
-<span class="co">#&gt;     doi = {10.18129/B9.bioc.derfinder},</span>
-<span class="co">#&gt;   }</span></pre></div>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>Below is the citation output from using <code>citation('derfinder')</code> in R. Please run this yourself to check for any updates on how to cite <strong>derfinder</strong>.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"derfinder"</span><span class="op">)</span>, bibtex <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Langmead B,</span></span>
+<span><span class="co">#&gt; Irizarry RA, Leek JT, Jaffe AE (2017). "Flexible expressed region</span></span>
+<span><span class="co">#&gt; analysis for RNA-seq with derfinder." _Nucl. Acids Res._. doi:</span></span>
+<span><span class="co">#&gt; 10.1093/nar/gkw852 (URL: https://doi.org/10.1093/nar/gkw852), &lt;URL:</span></span>
+<span><span class="co">#&gt; http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Article{,</span></span>
+<span><span class="co">#&gt;     title = {Flexible expressed region analysis for RNA-seq with derfinder},</span></span>
+<span><span class="co">#&gt;     author = {Leonardo Collado-Torres and Abhinav Nellore and Alyssa C. Frazee and Christopher Wilks and Michael I. Love and Ben Langmead and Rafael A. Irizarry and Jeffrey T. Leek and Andrew E. Jaffe},</span></span>
+<span><span class="co">#&gt;     year = {2017},</span></span>
+<span><span class="co">#&gt;     journal = {Nucl. Acids Res.},</span></span>
+<span><span class="co">#&gt;     doi = {10.1093/nar/gkw852},</span></span>
+<span><span class="co">#&gt;     url = {http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852},</span></span>
+<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA, Leek JT (2014).</span></span>
+<span><span class="co">#&gt; "Differential expression analysis of RNA-seq data at single-base</span></span>
+<span><span class="co">#&gt; resolution." _Biostatistics_, *15 (3)*, 413-426. doi:</span></span>
+<span><span class="co">#&gt; 10.1093/biostatistics/kxt053 (URL:</span></span>
+<span><span class="co">#&gt; https://doi.org/10.1093/biostatistics/kxt053), &lt;URL:</span></span>
+<span><span class="co">#&gt; http://biostatistics.oxfordjournals.org/content/15/3/413.long&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Article{,</span></span>
+<span><span class="co">#&gt;     title = {Differential expression analysis of RNA-seq data at single-base resolution},</span></span>
+<span><span class="co">#&gt;     author = {Alyssa C. Frazee and Sarven Sabunciyan and Kasper D. Hansen and Rafael A. Irizarry and Jeffrey T. Leek},</span></span>
+<span><span class="co">#&gt;     year = {2014},</span></span>
+<span><span class="co">#&gt;     journal = {Biostatistics},</span></span>
+<span><span class="co">#&gt;     volume = {15 (3)},</span></span>
+<span><span class="co">#&gt;     pages = {413-426},</span></span>
+<span><span class="co">#&gt;     doi = {10.1093/biostatistics/kxt053},</span></span>
+<span><span class="co">#&gt;     url = {http://biostatistics.oxfordjournals.org/content/15/3/413.long},</span></span>
+<span><span class="co">#&gt;   }</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Collado-Torres L, Jaffe AE, Leek JT (2017). _derfinder:</span></span>
+<span><span class="co">#&gt; Annotation-agnostic differential expression analysis of RNA-seq data at</span></span>
+<span><span class="co">#&gt; base-pair resolution via the DER Finder approach_. doi:</span></span>
+<span><span class="co">#&gt; 10.18129/B9.bioc.derfinder (URL:</span></span>
+<span><span class="co">#&gt; https://doi.org/10.18129/B9.bioc.derfinder),</span></span>
+<span><span class="co">#&gt; https://github.com/lcolladotor/derfinder - R package version 1.25.3,</span></span>
+<span><span class="co">#&gt; &lt;URL: http://www.bioconductor.org/packages/derfinder&gt;.</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; A BibTeX entry for LaTeX users is</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;   @Manual{,</span></span>
+<span><span class="co">#&gt;     title = {derfinder: Annotation-agnostic differential expression analysis of RNA-seq data at base-pair resolution via the DER Finder approach},</span></span>
+<span><span class="co">#&gt;     author = {Leonardo Collado-Torres and Andrew E. Jaffe and Jeffrey T. Leek},</span></span>
+<span><span class="co">#&gt;     year = {2017},</span></span>
+<span><span class="co">#&gt;     url = {http://www.bioconductor.org/packages/derfinder},</span></span>
+<span><span class="co">#&gt;     note = {https://github.com/lcolladotor/derfinder - R package version 1.25.3},</span></span>
+<span><span class="co">#&gt;     doi = {10.18129/B9.bioc.derfinder},</span></span>
+<span><span class="co">#&gt;   }</span></span></code></pre></div>
 <p>Please note that the <code>derfinder</code> was only made possible thanks to many other R and bioinformatics software authors, which are cited either in the vignettes and/or the paper(s) describing this package.</p>
 </div>
-<div id="der-finder-versions" class="section level2">
-<h2 class="hasAnchor">
-<a href="#der-finder-versions" class="anchor"></a>DER Finder versions</h2>
+<div class="section level2">
+<h2 id="der-finder-versions">DER Finder versions<a class="anchor" aria-label="anchor" href="#der-finder-versions"></a>
+</h2>
 <ul>
-<li>The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at <a href="https://github.com/leekgroup/derfinder">derfinder</a>.</li>
-<li>The version implementing the single base-level approach via calculating F-stastics as described in the pre-print Collado-Torres et al, Nucleic Acids Research 2017 is available via Bioconductor at <a href="http://bioconductor.org/packages/derfinder">derfinder</a>. The same package has the functions required for the expressed regions-level approach.</li>
+<li>The original implementation of the DER Finder approach as published in Frazee et al, Biostatistics 2014 is available via GitHub at <a href="https://github.com/leekgroup/derfinder" class="external-link">derfinder</a>.</li>
+<li>The version implementing the single base-level approach via calculating F-stastics as described in the pre-print Collado-Torres et al, Nucleic Acids Research 2017 is available via Bioconductor at <a href="http://bioconductor.org/packages/derfinder" class="external-link">derfinder</a>. The same package has the functions required for the expressed regions-level approach.</li>
 </ul>
 </div>
-<div id="code-of-conduct" class="section level2">
-<h2 class="hasAnchor">
-<a href="#code-of-conduct" class="anchor"></a>Code of Conduct</h2>
-<p>Please note that the derfinder project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
+</h2>
+<p>Please note that the derfinder project is released with a <a href="https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html" class="external-link">Contributor Code of Conduct</a>. By contributing to this project, you agree to abide by its terms.</p>
 </div>
-<div id="development-tools" class="section level2">
-<h2 class="hasAnchor">
-<a href="#development-tools" class="anchor"></a>Development tools</h2>
+<div class="section level2">
+<h2 id="development-tools">Development tools<a class="anchor" aria-label="anchor" href="#development-tools"></a>
+</h2>
 <ul>
-<li>Continuous code testing is possible thanks to <a href="https://www.tidyverse.org/blog/2020/04/usethis-1-6-0/">GitHub actions</a> through <em><a href="https://CRAN.R-project.org/package=usethis">usethis</a></em>, <em><a href="https://CRAN.R-project.org/package=remotes">remotes</a></em>, <em><a href="https://github.com/r-hub/sysreqs">sysreqs</a></em> and <em><a href="https://CRAN.R-project.org/package=rcmdcheck">rcmdcheck</a></em> customized to use <a href="https://www.bioconductor.org/help/docker/">Bioconductor’s docker containers</a> and <em><a href="https://bioconductor.org/packages/3.11/BiocCheck">BiocCheck</a></em>.</li>
-<li>Code coverage assessment is possible thanks to <a href="https://codecov.io/gh">codecov</a> and <em><a href="https://CRAN.R-project.org/package=covr">covr</a></em>.</li>
-<li>The <a href="http://lcolladotor.github.io/derfinder">documentation website</a> is automatically updated thanks to <em><a href="https://CRAN.R-project.org/package=pkgdown">pkgdown</a></em>.</li>
-<li>The code is styled automatically thanks to <em><a href="https://CRAN.R-project.org/package=styler">styler</a></em>.</li>
-<li>The documentation is formatted thanks to <em><a href="https://CRAN.R-project.org/package=devtools">devtools</a></em> and <em><a href="https://CRAN.R-project.org/package=roxygen2">roxygen2</a></em>.</li>
+<li>Continuous code testing is possible thanks to <a href="https://www.tidyverse.org/blog/2020/04/usethis-1-6-0/" class="external-link">GitHub actions</a> through <em><a href="https://CRAN.R-project.org/package=usethis" class="external-link">usethis</a></em>, <em><a href="https://CRAN.R-project.org/package=remotes" class="external-link">remotes</a></em>, <em><a href="https://github.com/r-hub/sysreqs" class="external-link">sysreqs</a></em> and <em><a href="https://CRAN.R-project.org/package=rcmdcheck" class="external-link">rcmdcheck</a></em> customized to use <a href="https://www.bioconductor.org/help/docker/" class="external-link">Bioconductor’s docker containers</a> and <em><a href="https://bioconductor.org/packages/3.13/BiocCheck" class="external-link">BiocCheck</a></em>.</li>
+<li>Code coverage assessment is possible thanks to <a href="https://codecov.io/gh" class="external-link">codecov</a> and <em><a href="https://CRAN.R-project.org/package=covr" class="external-link">covr</a></em>.</li>
+<li>The <a href="http://lcolladotor.github.io/derfinder" class="external-link">documentation website</a> is automatically updated thanks to <em><a href="https://CRAN.R-project.org/package=pkgdown" class="external-link">pkgdown</a></em>.</li>
+<li>The code is styled automatically thanks to <em><a href="https://CRAN.R-project.org/package=styler" class="external-link">styler</a></em>.</li>
+<li>The documentation is formatted thanks to <em><a href="https://CRAN.R-project.org/package=devtools" class="external-link">devtools</a></em> and <em><a href="https://CRAN.R-project.org/package=roxygen2" class="external-link">roxygen2</a></em>.</li>
 </ul>
 <p>For more details, check the <code>dev</code> directory.</p>
+<p>This package was developed using <em><a href="https://bioconductor.org/packages/3.13/biocthis" class="external-link">biocthis</a></em>.</p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from BIOC at <br><a href="https://www.bioconductor.org/packages/derfinder">https://​www.bioconductor.org/​packages/​derfinder</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/lcolladotor/derfinder/">https://​github.com/​lcolladotor/​derfinder/​</a>
-</li>
-<li>Report a bug at <br><a href="https://support.bioconductor.org/t/derfinder/">https://​support.bioconductor.org/​t/​derfinder/​</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/Artistic-2.0">Artistic-2.0</a></li>
-</ul>
-</div>
-<div class="community">
-<h2>Community</h2>
-<ul class="list-unstyled">
-<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
-<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
-</ul>
-</div>
-<div class="citation">
-<h2>Citation</h2>
-<ul class="list-unstyled">
-<li><a href="authors.html">Citing derfinder</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Leonardo Collado-Torres <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2140-308X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Andrew E. Jaffe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6886-1454" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li>Jeffrey T. Leek <br><small class="roles"> Author, thesis advisor </small> <a href="https://orcid.org/0000-0002-2873-2671" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://www.bioconductor.org/packages/derfinder" class="external-link">View on Bioconductor</a></li>
+<li><a href="https://github.com/lcolladotor/derfinder/" class="external-link">Browse source code</a></li>
+<li><a href="https://support.bioconductor.org/t/derfinder/" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
-<li><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/derfinder"><img src="http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg" alt="BioC status"></a></li>
-<li><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder"><img src="http://www.bioconductor.org/shields/build/devel/bioc/derfinder.svg" alt="BioC dev status"></a></li>
-<li><a href="https://codecov.io/gh/lcolladotor/derfinder?branch=master"><img src="https://codecov.io/gh/lcolladotor/derfinder/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://github.com/lcolladotor/derfinder/actions"><img src="https://github.com/lcolladotor/derfinder/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></li>
-<li><a href="https://support.bioconductor.org/t/derfinder/"><img src="http://www.bioconductor.org/shields/posts/derfinder.svg" alt="Support site activity, last 6 months: tagged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts."></a></li>
-<li><a href="https://github.com/lcolladotor/derfinder/issues"><img src="https://img.shields.io/github/issues/lcolladotor/derfinder" alt="GitHub issues"></a></li>
+<li><a href="https://www.r-project.org/Licenses/Artistic-2.0" class="external-link">Artistic-2.0</a></li>
 </ul>
 </div>
+
+<div class="community">
+<h2 data-toc-skip>Community</h2>
+<ul class="list-unstyled">
+<li><a href="CONTRIBUTING.html">Contributing guide</a></li>
+<li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
+<li><a href="SUPPORT.html">Getting help</a></li>
+</ul>
 </div>
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing derfinder</a></li>
+</ul>
+</div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Leonardo Collado-Torres <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-2140-308X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Andrew E. Jaffe <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-6886-1454" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Jeffrey T. Leek <br><small class="roles"> Author, thesis advisor </small> <a href="https://orcid.org/0000-0002-2873-2671" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://www.tidyverse.org/lifecycle/#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></li>
+<li><a href="https://bioconductor.org/checkResults/release/bioc-LATEST/derfinder" class="external-link"><img src="http://www.bioconductor.org/shields/build/release/bioc/derfinder.svg" alt="BioC status"></a></li>
+<li><a href="https://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder" class="external-link"><img src="http://www.bioconductor.org/shields/build/devel/bioc/derfinder.svg" alt="BioC dev status"></a></li>
+<li><a href="https://codecov.io/gh/lcolladotor/derfinder?branch=master" class="external-link"><img src="https://codecov.io/gh/lcolladotor/derfinder/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://github.com/lcolladotor/derfinder/actions" class="external-link"><img src="https://github.com/lcolladotor/derfinder/workflows/R-CMD-check-bioc/badge.svg" alt="R build status"></a></li>
+<li><a href="https://support.bioconductor.org/t/derfinder/" class="external-link"><img src="http://www.bioconductor.org/shields/posts/derfinder.svg" alt="Support site activity, last 6 months: tagged questions/avg. answers per question/avg. comments per question/accepted answers, or 0 if no tagged posts."></a></li>
+<li><a href="https://github.com/lcolladotor/derfinder/issues" class="external-link"><img src="https://img.shields.io/github/issues/lcolladotor/derfinder" alt="GitHub issues"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Leonardo Collado-Torres, Andrew E. Jaffe, Jeffrey T. Leek.</p>
+  <p></p>
+<p>Developed by Leonardo Collado-Torres, Andrew E. Jaffe, Jeffrey T. Leek.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -277,6 +282,8 @@
 
   
 
+
+  
 
   </body>
 </html>

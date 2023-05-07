@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.23.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.35.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,8 +63,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/lcolladotor/derfinder/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/lcolladotor/derfinder/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -86,398 +82,527 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>derfinder quick start guide</h1>
-                        <h4 class="author">Leonardo Collado-Torres</h4>
+                        <h4 data-toc-skip class="author">Leonardo
+Collado-Torres</h4>
             <address class="author_afil">
-      Lieber Institute for Brain Development, Johns Hopkins Medical Campus<br><a class="author_email" href="mailto:#"></a><a href="mailto:lcolladotor@gmail.com" class="email">lcolladotor@gmail.com</a>
+      Lieber Institute for Brain Development, Johns Hopkins Medical
+CampusCenter for Computational Biology, Johns Hopkins
+University<br><a class="author_email" href="mailto:#"></a><a href="mailto:lcolladotor@gmail.com" class="email">lcolladotor@gmail.com</a>
       </address>
                   
-            <h4 class="date">27 May 2020</h4>
+            <h4 data-toc-skip class="date">7 May 2023</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/lcolladotor/derfinder/blob/master/vignettes/derfinder-quickstart.Rmd"><code>vignettes/derfinder-quickstart.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/lcolladotor/derfinder/blob/HEAD/vignettes/derfinder-quickstart.Rmd" class="external-link"><code>vignettes/derfinder-quickstart.Rmd</code></a></small>
       <div class="hidden name"><code>derfinder-quickstart.Rmd</code></div>
 
     </div>
 
     
     
-<div id="basics" class="section level1">
-<h1 class="hasAnchor">
-<a href="#basics" class="anchor"></a>Basics</h1>
-<div id="install-derfinder" class="section level2">
-<h2 class="hasAnchor">
-<a href="#install-derfinder" class="anchor"></a>Install <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>
+<div class="section level2">
+<h2 id="basics">Basics<a class="anchor" aria-label="anchor" href="#basics"></a>
 </h2>
-<p><code>R</code> is an open-source statistical environment which can be easily modified to enhance its functionality via packages. <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> is a <code>R</code> package available via the <a href="http://bioconductor/packages/derfinder">Bioconductor</a> repository for packages. <code>R</code> can be installed on any operating system from <a href="https://cran.r-project.org/">CRAN</a> after which you can install <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> by using the following commands in your <code>R</code> session:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>)) {
-      <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)
-  }
-
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="st">"derfinder"</span>)
-
-<span class="co">## Check that you have a valid Bioconductor installation</span>
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/valid.html">valid</a></span>()</pre></body></html></div>
+<div class="section level3">
+<h3 id="install-derfinder">Install <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em><a class="anchor" aria-label="anchor" href="#install-derfinder"></a>
+</h3>
+<p><code>R</code> is an open-source statistical environment which can be
+easily modified to enhance its functionality via packages. <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+is a <code>R</code> package available via the <a href="http://bioconductor/packages/derfinder" class="external-link">Bioconductor</a>
+repository for packages. <code>R</code> can be installed on any
+operating system from <a href="https://cran.r-project.org/" class="external-link">CRAN</a>
+after which you can install <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+by using the following commands in your <code>R</code> session:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html" class="external-link">install</a></span><span class="op">(</span><span class="st">"derfinder"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Check that you have a valid Bioconductor installation</span></span>
+<span><span class="fu">BiocManager</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/valid.html" class="external-link">valid</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="required-knowledge" class="section level2">
-<h2 class="hasAnchor">
-<a href="#required-knowledge" class="anchor"></a>Required knowledge</h2>
-<p><em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> is based on many other packages and in particular in those that have implemented the infrastructure needed for dealing with RNA-seq data. That is, packages like <em><a href="https://bioconductor.org/packages/3.12/Rsamtools">Rsamtools</a></em>, <em><a href="https://bioconductor.org/packages/3.12/GenomicAlignments">GenomicAlignments</a></em> and <em><a href="https://bioconductor.org/packages/3.12/rtracklayer">rtracklayer</a></em> that allow you to import the data. A <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> user is not expected to deal with those packages directly but will need to be familiar with <em><a href="https://bioconductor.org/packages/3.12/GenomicRanges">GenomicRanges</a></em> to understand the results <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> generates. It might also prove to be highly beneficial to check the <em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> package for performing parallel computations.</p>
-<p>If you are asking yourself the question “Where do I start using Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU">this blog post</a>.</p>
+<div class="section level3">
+<h3 id="required-knowledge">Required knowledge<a class="anchor" aria-label="anchor" href="#required-knowledge"></a>
+</h3>
+<p><em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+is based on many other packages and in particular in those that have
+implemented the infrastructure needed for dealing with RNA-seq data.
+That is, packages like <em><a href="https://bioconductor.org/packages/3.17/Rsamtools" class="external-link">Rsamtools</a></em>,
+<em><a href="https://bioconductor.org/packages/3.17/GenomicAlignments" class="external-link">GenomicAlignments</a></em>
+and <em><a href="https://bioconductor.org/packages/3.17/rtracklayer" class="external-link">rtracklayer</a></em>
+that allow you to import the data. A <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+user is not expected to deal with those packages directly but will need
+to be familiar with <em><a href="https://bioconductor.org/packages/3.17/GenomicRanges" class="external-link">GenomicRanges</a></em>
+to understand the results <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+generates. It might also prove to be highly beneficial to check the
+<em><a href="https://bioconductor.org/packages/3.17/BiocParallel" class="external-link">BiocParallel</a></em>
+package for performing parallel computations.</p>
+<p>If you are asking yourself the question “Where do I start using
+Bioconductor?” you might be interested in <a href="http://lcolladotor.github.io/2014/10/16/startbioc/#.VkOKbq6rRuU" class="external-link">this
+blog post</a>.</p>
 </div>
-<div id="asking-for-help" class="section level2">
-<h2 class="hasAnchor">
-<a href="#asking-for-help" class="anchor"></a>Asking for help</h2>
-<p>As package developers, we try to explain clearly how to use our packages and in which order to use the functions. But <code>R</code> and <code>Bioconductor</code> have a steep learning curve so it is critical to learn where to ask for help. The blog post quoted above mentions some but we would like to highlight the <a href="https://support.bioconductor.org/">Bioconductor support site</a> as the main resource for getting help: remember to use the <code>derfinder</code> tag and check <a href="https://support.bioconductor.org/t/derfinder/">the older posts</a>. Other alternatives are available such as creating GitHub issues and tweeting. However, please note that if you want to receive help you should adhere to the <a href="http://www.bioconductor.org/help/support/posting-guide/">posting guidelines</a>. It is particularly critical that you provide a small reproducible example and your session information so package developers can track down the source of the error.</p>
-<p>We would like to highlight the <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> user <a href="https://support.bioconductor.org/u/6877/">Jessica Hekman</a>. She has used <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> with non-human data, and in the process of doing so discovered some small bugs or sections of the documentation that were not clear.</p>
+<div class="section level3">
+<h3 id="asking-for-help">Asking for help<a class="anchor" aria-label="anchor" href="#asking-for-help"></a>
+</h3>
+<p>As package developers, we try to explain clearly how to use our
+packages and in which order to use the functions. But <code>R</code> and
+<code>Bioconductor</code> have a steep learning curve so it is critical
+to learn where to ask for help. The blog post quoted above mentions some
+but we would like to highlight the <a href="https://support.bioconductor.org/" class="external-link">Bioconductor support site</a>
+as the main resource for getting help: remember to use the
+<code>derfinder</code> tag and check <a href="https://support.bioconductor.org/t/derfinder/" class="external-link">the older
+posts</a>. Other alternatives are available such as creating GitHub
+issues and tweeting. However, please note that if you want to receive
+help you should adhere to the <a href="http://www.bioconductor.org/help/support/posting-guide/" class="external-link">posting
+guidelines</a>. It is particularly critical that you provide a small
+reproducible example and your session information so package developers
+can track down the source of the error.</p>
+<p>We would like to highlight the <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+user <a href="https://support.bioconductor.org/u/6877/" class="external-link">Jessica
+Hekman</a>. She has used <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+with non-human data, and in the process of doing so discovered some
+small bugs or sections of the documentation that were not clear.</p>
 </div>
-<div id="citing-derfinder" class="section level2">
-<h2 class="hasAnchor">
-<a href="#citing-derfinder" class="anchor"></a>Citing <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>
+<div class="section level3">
+<h3 id="citing-derfinder">Citing <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em><a class="anchor" aria-label="anchor" href="#citing-derfinder"></a>
+</h3>
+<p>We hope that <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+will be useful for your research. Please use the following information
+to cite the package and the overall approach. Thank you!</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Citation info</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/citation.html" class="external-link">citation</a></span><span class="op">(</span><span class="st">"derfinder"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## To cite package 'derfinder' in publications use:</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Langmead B,</span></span>
+<span><span class="co">##   Irizarry RA, Leek JT, Jaffe AE (2017). "Flexible expressed region</span></span>
+<span><span class="co">##   analysis for RNA-seq with derfinder." _Nucl. Acids Res._.</span></span>
+<span><span class="co">##   doi:10.1093/nar/gkw852 &lt;https://doi.org/10.1093/nar/gkw852&gt;,</span></span>
+<span><span class="co">##   &lt;http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852&gt;.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA, Leek JT (2014).</span></span>
+<span><span class="co">##   "Differential expression analysis of RNA-seq data at single-base</span></span>
+<span><span class="co">##   resolution." _Biostatistics_, *15 (3)*, 413-426.</span></span>
+<span><span class="co">##   doi:10.1093/biostatistics/kxt053</span></span>
+<span><span class="co">##   &lt;https://doi.org/10.1093/biostatistics/kxt053&gt;,</span></span>
+<span><span class="co">##   &lt;http://biostatistics.oxfordjournals.org/content/15/3/413.long&gt;.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   Collado-Torres L, Jaffe AE, Leek JT (2017). _derfinder:</span></span>
+<span><span class="co">##   Annotation-agnostic differential expression analysis of RNA-seq data</span></span>
+<span><span class="co">##   at base-pair resolution via the DER Finder approach_.</span></span>
+<span><span class="co">##   doi:10.18129/B9.bioc.derfinder</span></span>
+<span><span class="co">##   &lt;https://doi.org/10.18129/B9.bioc.derfinder&gt;,</span></span>
+<span><span class="co">##   https://github.com/lcolladotor/derfinder - R package version 1.35.0,</span></span>
+<span><span class="co">##   &lt;http://www.bioconductor.org/packages/derfinder&gt;.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## To see these entries in BibTeX format, use 'print(&lt;citation&gt;,</span></span>
+<span><span class="co">## bibtex=TRUE)', 'toBibtex(.)', or set</span></span>
+<span><span class="co">## 'options(citation.bibtex.max=999)'.</span></span></code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2 id="quick-start-to-using-to-derfinder">Quick start to using to <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em><a class="anchor" aria-label="anchor" href="#quick-start-to-using-to-derfinder"></a>
 </h2>
-<p>We hope that <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> will be useful for your research. Please use the following information to cite the package and the overall approach. Thank you!</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co">## Citation info</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/citation.html">citation</a></span>(<span class="st">"derfinder"</span>)</pre></body></html></div>
-<pre><code>## 
-## Collado-Torres L, Nellore A, Frazee AC, Wilks C, Love MI, Langmead B,
-## Irizarry RA, Leek JT, Jaffe AE (2017). "Flexible expressed region
-## analysis for RNA-seq with derfinder." _Nucl. Acids Res._. doi:
-## 10.1093/nar/gkw852 (URL: https://doi.org/10.1093/nar/gkw852), &lt;URL:
-## http://nar.oxfordjournals.org/content/early/2016/09/29/nar.gkw852&gt;.
-## 
-## Frazee AC, Sabunciyan S, Hansen KD, Irizarry RA, Leek JT (2014).
-## "Differential expression analysis of RNA-seq data at single-base
-## resolution." _Biostatistics_, *15 (3)*, 413-426. doi:
-## 10.1093/biostatistics/kxt053 (URL:
-## https://doi.org/10.1093/biostatistics/kxt053), &lt;URL:
-## http://biostatistics.oxfordjournals.org/content/15/3/413.long&gt;.
-## 
-## Collado-Torres L, Jaffe AE, Leek JT (2017). _derfinder:
-## Annotation-agnostic differential expression analysis of RNA-seq data at
-## base-pair resolution via the DER Finder approach_. doi:
-## 10.18129/B9.bioc.derfinder (URL:
-## https://doi.org/10.18129/B9.bioc.derfinder),
-## https://github.com/lcolladotor/derfinder - R package version 1.23.1,
-## &lt;URL: http://www.bioconductor.org/packages/derfinder&gt;.
-## 
-## To see these entries in BibTeX format, use 'print(&lt;citation&gt;,
-## bibtex=TRUE)', 'toBibtex(.)', or set
-## 'options(citation.bibtex.max=999)'.</code></pre>
+<p>Here is a very quick example of a DER Finder analysis. This analysis
+is explained in more detail later on in this document.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lcolladotor/derfinder" class="external-link">"derfinder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/leekgroup/derfinderData" class="external-link">"derfinderData"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">"GenomicRanges"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Determine the files to use and fix the names</span></span>
+<span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rawFiles.html">rawFiles</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"AMY"</span>, package <span class="op">=</span> <span class="st">"derfinderData"</span><span class="op">)</span>,</span>
+<span>    samplepatt <span class="op">=</span> <span class="st">"bw"</span>, fileterm <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">".bw"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Load the data from disk -- On Windows you have to load data from Bam files</span></span>
+<span><span class="va">fullCov</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fullCoverage.html">fullCoverage</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">files</span>, chrs <span class="op">=</span> <span class="st">"chr21"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Get the region matrix of Expressed Regions (ERs)</span></span>
+<span><span class="va">regionMat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regionMatrix.html">regionMatrix</a></span><span class="op">(</span><span class="va">fullCov</span>, cutoff <span class="op">=</span> <span class="fl">30</span>, L <span class="op">=</span> <span class="fl">76</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Get pheno table</span></span>
+<span><span class="va">pheno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">brainspanPheno</span>, <span class="va">structure_acronym</span> <span class="op">==</span> <span class="st">"AMY"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Identify which ERs are differentially expressed, that is, find the DERs</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/mikelove/DESeq2" class="external-link">"DESeq2"</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Round matrix</span></span>
+<span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">coverageMatrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Round matrix and specify design</span></span>
+<span><span class="va">dse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html" class="external-link">DESeqDataSetFromMatrix</a></span><span class="op">(</span><span class="va">counts</span>, <span class="va">pheno</span>, <span class="op">~</span> <span class="va">group</span> <span class="op">+</span> <span class="va">gender</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Perform DE analysis</span></span>
+<span><span class="va">dse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html" class="external-link">DESeq</a></span><span class="op">(</span><span class="va">dse</span>, test <span class="op">=</span> <span class="st">"LRT"</span>, reduced <span class="op">=</span> <span class="op">~</span><span class="va">gender</span>, fitType <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Extract results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">mcols</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">mcols</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html" class="external-link">results</a></span><span class="op">(</span><span class="va">dse</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Save info in an object with a shorter name</span></span>
+<span><span class="va">ers</span> <span class="op">&lt;-</span> <span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span></span>
+<span><span class="va">ers</span></span></code></pre></div>
 </div>
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<p><em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+is an R package that implements the DER Finder approach (Frazee,
+Sabunciyan, Hansen, Irizarry, and Leek, 2014) for RNA-seq data. Briefly,
+this approach is an alternative to feature-counting and transcript
+assembly. The basic idea is to identify contiguous base-pairs in the
+genome that present differential expression signal. These base-pairs are
+grouped into _d_ifferentially _e_xpressed _r_regions (DERs). This
+approach is annotation-agnostic which is a feature you might be
+interested in. In particular, <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+contains functions that allow you to identify DERs via two alternative
+methods. You can find more details on the full <a href="derfinder-users-guide.html">derfinder users guide</a>.</p>
 </div>
-<div id="quick-start-to-using-to-derfinder" class="section level1">
-<h1 class="hasAnchor">
-<a href="#quick-start-to-using-to-derfinder" class="anchor"></a>Quick start to using to <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em>
-</h1>
-<p>Here is a very quick example of a DER Finder analysis. This analysis is explained in more detail later on in this document.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co">## Load libraries</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"derfinder"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"derfinderData"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"GenomicRanges"</span>)
-
-<span class="co">## Determine the files to use and fix the names</span>
-<span class="no">files</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/rawFiles.html">rawFiles</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"AMY"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"derfinderData"</span>),
-    <span class="kw">samplepatt</span> <span class="kw">=</span> <span class="st">"bw"</span>, <span class="kw">fileterm</span> <span class="kw">=</span> <span class="kw">NULL</span>
-)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">files</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">".bw"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">files</span>))
-
-<span class="co">## Load the data from disk -- On Windows you have to load data from Bam files</span>
-<span class="no">fullCov</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fullCoverage.html">fullCoverage</a></span>(<span class="kw">files</span> <span class="kw">=</span> <span class="no">files</span>, <span class="kw">chrs</span> <span class="kw">=</span> <span class="st">"chr21"</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-
-<span class="co">## Get the region matrix of Expressed Regions (ERs)</span>
-<span class="no">regionMat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/regionMatrix.html">regionMatrix</a></span>(<span class="no">fullCov</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">30</span>, <span class="kw">L</span> <span class="kw">=</span> <span class="fl">76</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-
-<span class="co">## Get pheno table</span>
-<span class="no">pheno</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">brainspanPheno</span>, <span class="no">structure_acronym</span> <span class="kw">==</span> <span class="st">"AMY"</span>)
-
-<span class="co">## Identify which ERs are differentially expressed, that is, find the DERs</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"DESeq2"</span>)
-
-<span class="co">## Round matrix</span>
-<span class="no">counts</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">coverageMatrix</span>)
-
-<span class="co">## Round matrix and specify design</span>
-<span class="no">dse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSetFromMatrix</a></span>(<span class="no">counts</span>, <span class="no">pheno</span>, ~ <span class="no">group</span> + <span class="no">gender</span>)
-
-<span class="co">## Perform DE analysis</span>
-<span class="no">dse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dse</span>, <span class="kw">test</span> <span class="kw">=</span> <span class="st">"LRT"</span>, <span class="kw">reduced</span> <span class="kw">=</span> ~<span class="no">gender</span>, <span class="kw">fitType</span> <span class="kw">=</span> <span class="st">"local"</span>)
-
-<span class="co">## Extract results</span>
-<span class="fu">mcols</span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu">mcols</span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>), <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dse</span>))
-
-<span class="co">## Save info in an object with a shorter name</span>
-<span class="no">ers</span> <span class="kw">&lt;-</span> <span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>
-<span class="no">ers</span></pre></body></html></div>
-</div>
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
-<p><em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> is an R package that implements the DER Finder approach <a id="cite-Frazee_2014"></a>(<a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long">Frazee, Sabunciyan, Hansen, Irizarry, et al., 2014</a>) for RNA-seq data. Briefly, this approach is an alternative to feature-counting and transcript assembly. The basic idea is to identify contiguous base-pairs in the genome that present differential expression signal. These base-pairs are grouped into _d_ifferentially _e_xpressed _r_regions (DERs). This approach is annotation-agnostic which is a feature you might be interested in. In particular, <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> contains functions that allow you to identify DERs via two alternative methods. You can find more details on the full <a href="derfinder-users-guide.html">derfinder users guide</a>.</p>
-</div>
-<div id="sample-der-finder-analysis" class="section level1">
-<h1 class="hasAnchor">
-<a href="#sample-der-finder-analysis" class="anchor"></a>Sample DER Finder analysis</h1>
-<p>This is a brief overview of what a DER Finder analysis looks like. In particular, here we will be identifying expressed regions (ERs) without relying on annotation. Next, we’ll identify candidate differentially expressed regions (DERs). Finally, we’ll compare the DERs with known annotation features.</p>
+<div class="section level2">
+<h2 id="sample-der-finder-analysis">Sample DER Finder analysis<a class="anchor" aria-label="anchor" href="#sample-der-finder-analysis"></a>
+</h2>
+<p>This is a brief overview of what a DER Finder analysis looks like. In
+particular, here we will be identifying expressed regions (ERs) without
+relying on annotation. Next, we’ll identify candidate differentially
+expressed regions (DERs). Finally, we’ll compare the DERs with known
+annotation features.</p>
 <p>We first load the required packages.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co">## Load libraries</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"derfinder"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"derfinderData"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"GenomicRanges"</span>)</pre></body></html></div>
-<p>Next, we need to locate the chromosome 21 coverage files for a set of 12 samples. These samples are a small subset from the <em>BrainSpan Atlas of the Human Brain</em> <a id="cite-brainspan"></a>(<a href="http://www.brainspan.org/">BrainSpan, 2011</a>) publicly available data. The function <code><a href="../reference/rawFiles.html">rawFiles()</a></code> helps us in locating these files.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="co">## Determine the files to use and fix the names</span>
-<span class="no">files</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/rawFiles.html">rawFiles</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/system.file.html">system.file</a></span>(<span class="st">"extdata"</span>, <span class="st">"AMY"</span>, <span class="kw">package</span> <span class="kw">=</span> <span class="st">"derfinderData"</span>),
-    <span class="kw">samplepatt</span> <span class="kw">=</span> <span class="st">"bw"</span>, <span class="kw">fileterm</span> <span class="kw">=</span> <span class="kw">NULL</span>
-)
-<span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">files</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html">gsub</a></span>(<span class="st">".bw"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">files</span>))</pre></body></html></div>
-<p>Next, we can load the full coverage data into memory using the <code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> function. Note that the <em>BrainSpan</em> data is already normalized by the total number of mapped reads in each sample. However, that won’t be the case with most data sets in which case you might want to use the <code>totalMapped</code> and <code>targetSize</code> arguments. The function <code><a href="../reference/getTotalMapped.html">getTotalMapped()</a></code> will be helpful to get this information.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="co">## Load the data from disk</span>
-<span class="no">fullCov</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/fullCoverage.html">fullCoverage</a></span>(
-    <span class="kw">files</span> <span class="kw">=</span> <span class="no">files</span>, <span class="kw">chrs</span> <span class="kw">=</span> <span class="st">"chr21"</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
-    <span class="kw">totalMapped</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">files</span>)), <span class="kw">targetSize</span> <span class="kw">=</span> <span class="fl">1</span>
-)</pre></body></html></div>
-<p>Now that we have the data, we can identify expressed regions (ERs) by using a cutoff of 30 on the base-level mean coverage from these 12 samples. Once the regions have been identified, we can calculate a coverage matrix with one row per ER and one column per sample (12 in this case). For doing this calculation we need to know the length of the sequence reads, which in this study were 76 bp long.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co">## Get the region matrix of Expressed Regions (ERs)</span>
-<span class="no">regionMat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/regionMatrix.html">regionMatrix</a></span>(<span class="no">fullCov</span>, <span class="kw">cutoff</span> <span class="kw">=</span> <span class="fl">30</span>, <span class="kw">L</span> <span class="kw">=</span> <span class="fl">76</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
-<p><code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> returns a list of elements, each with three pieces of output. The actual ERs are arranged in a <code>GRanges</code> object named <code>regions</code>.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="co">## regions output</span>
-<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span></pre></body></html></div>
-<pre><code>## GRanges object with 45 ranges and 6 metadata columns:
-##      seqnames            ranges strand |     value      area indexStart
-##         &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt;  &lt;integer&gt;
-##    1    chr21   9827018-9827582      * |  313.6717 177224.53          1
-##    2    chr21 15457301-15457438      * |  215.0846  29681.68        566
-##    3    chr21 20230140-20230192      * |   38.8325   2058.12        704
-##    4    chr21 20230445-20230505      * |   41.3245   2520.80        757
-##    5    chr21 27253318-27253543      * |   34.9131   7890.37        818
-##   ..      ...               ...    ... .       ...       ...        ...
-##   41    chr21 33039644-33039688      * |   34.4705 1551.1742       2180
-##   42    chr21 33040784-33040798      * |   32.1342  482.0133       2225
-##   43    chr21          33040890      * |   30.0925   30.0925       2240
-##   44    chr21 33040900-33040901      * |   30.1208   60.2417       2241
-##   45    chr21 48019401-48019414      * |   31.1489  436.0850       2243
-##       indexEnd cluster clusterL
-##      &lt;integer&gt;   &lt;Rle&gt;    &lt;Rle&gt;
-##    1       565       1      565
-##    2       703       2      138
-##    3       756       3      366
-##    4       817       3      366
-##    5      1043       4      765
-##   ..       ...     ...      ...
-##   41      2224      17       45
-##   42      2239      18      118
-##   43      2240      18      118
-##   44      2242      18      118
-##   45      2256      19       14
-##   -------
-##   seqinfo: 1 sequence from an unspecified genome</code></pre>
-<p><code>bpCoverage</code> is the base-level coverage list which can then be used for plotting.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="co">## Base-level coverage matrices for each of the regions</span>
-<span class="co">## Useful for plotting</span>
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">bpCoverage</span>[<span class="fl">1</span>:<span class="fl">2</span>], <span class="no">head</span>, <span class="kw">n</span> <span class="kw">=</span> <span class="fl">2</span>)</pre></body></html></div>
-<pre><code>## $`1`
-##   HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178 HSB92
-## 1  93.20   3.32  28.22   5.62 185.17  98.34   5.88  16.71   3.52  15.71 47.40
-## 2 124.76   7.25  63.68  11.32 374.85 199.28  10.39  30.53   5.83  29.35 65.04
-##   HSB97
-## 1 36.54
-## 2 51.42
-## 
-## $`2`
-##     HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178 HSB92
-## 566  45.59   7.94  15.92  34.75 141.61 104.21  19.87  38.61   4.97   23.2 13.95
-## 567  45.59   7.94  15.92  35.15 141.64 104.30  19.87  38.65   4.97   23.2 13.95
-##     HSB97
-## 566 22.21
-## 567 22.21</code></pre>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="co">## Check dimensions. First region is 565 long, second one is 138 bp long.</span>
-<span class="co">## The columns match the number of samples (12 in this case).</span>
-<span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">bpCoverage</span>[<span class="fl">1</span>:<span class="fl">2</span>], <span class="no">dim</span>)</pre></body></html></div>
-<pre><code>## $`1`
-## [1] 565  12
-## 
-## $`2`
-## [1] 138  12</code></pre>
-<p>The end result of the coverage matrix is shown below. Note that the coverage has been adjusted for read length. Because reads might not fully align inside a given region, the numbers are generally not integers but can be rounded if needed.</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co">## Dimensions of the coverage matrix</span>
-<span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">coverageMatrix</span>)</pre></body></html></div>
-<pre><code>## [1] 45 12</code></pre>
-<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="co">## Coverage for each region. This matrix can then be used with limma or other pkgs</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">coverageMatrix</span>)</pre></body></html></div>
-<pre><code>##         HSB113     HSB123      HSB126      HSB130      HSB135      HSB136
-## 1 3653.1093346 277.072106 1397.068687 1106.722895 8987.460401 5570.221054
-## 2  333.3740816  99.987237  463.909476  267.354342 1198.713552 1162.313418
-## 3   35.3828948  20.153553   30.725394   23.483947   16.786842   17.168947
-## 4   42.3398681  29.931579   41.094474   24.724736   32.634080   19.309606
-## 5   77.7402631 168.939342  115.059342  171.861974  180.638684   93.503158
-## 6    0.7988158   1.770263    1.473421    2.231053    1.697368    1.007895
-##        HSB145       HSB153     HSB159      HSB178       HSB92        HSB97
-## 1 1330.158818 1461.2986829 297.939342 1407.288552 1168.519079 1325.9622371
-## 2  257.114210  313.8513139  67.940131  193.695657  127.543553  200.7834228
-## 3   22.895921   52.8756585  28.145395   33.127368   23.758816   20.4623685
-## 4   33.802632   51.6146040  31.244343   33.576974   29.546183   28.2011836
-## 5   90.950526   36.3046051  78.069605   97.151316  100.085790   35.5428946
-## 6    1.171316    0.4221053   1.000132    1.139079    1.136447    0.3956579</code></pre>
-<p>We can then use the coverage matrix and packages such as <em><a href="https://bioconductor.org/packages/3.12/limma">limma</a></em>, <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em> or <em><a href="https://bioconductor.org/packages/3.12/edgeR">edgeR</a></em> to identify which ERs are differentially expressed. Here we’ll use <em><a href="https://bioconductor.org/packages/3.12/DESeq2">DESeq2</a></em> for which we need some phenotype data.</p>
-<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="co">## Get pheno table</span>
-<span class="no">pheno</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span>(<span class="no">brainspanPheno</span>, <span class="no">structure_acronym</span> <span class="kw">==</span> <span class="st">"AMY"</span>)</pre></body></html></div>
-<p>Now we can identify the DERs using a rounded version of the coverage matrix.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="co">## Identify which ERs are differentially expressed, that is, find the DERs</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"DESeq2"</span>)</pre></body></html></div>
-<pre><code>## Loading required package: SummarizedExperiment</code></pre>
-<pre><code>## Loading required package: Biobase</code></pre>
-<pre><code>## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation("Biobase")', and for packages 'citation("pkgname")'.</code></pre>
-<pre><code>## Loading required package: DelayedArray</code></pre>
-<pre><code>## Loading required package: matrixStats</code></pre>
-<pre><code>## 
-## Attaching package: 'matrixStats'</code></pre>
-<pre><code>## The following objects are masked from 'package:Biobase':
-## 
-##     anyMissing, rowMedians</code></pre>
-<pre><code>## 
-## Attaching package: 'DelayedArray'</code></pre>
-<pre><code>## The following objects are masked from 'package:matrixStats':
-## 
-##     colMaxs, colMins, colRanges, rowMaxs, rowMins, rowRanges</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     aperm, apply, rowsum</code></pre>
-<div class="sourceCode" id="cb31"><html><body><pre class="r"><span class="co">## Round matrix</span>
-<span class="no">counts</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">coverageMatrix</span>)
-
-<span class="co">## Round matrix and specify design</span>
-<span class="no">dse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSetFromMatrix</a></span>(<span class="no">counts</span>, <span class="no">pheno</span>, ~ <span class="no">group</span> + <span class="no">gender</span>)</pre></body></html></div>
-<pre><code>## converting counts to integer mode</code></pre>
-<div class="sourceCode" id="cb33"><html><body><pre class="r"><span class="co">## Perform DE analysis</span>
-<span class="no">dse</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dse</span>, <span class="kw">test</span> <span class="kw">=</span> <span class="st">"LRT"</span>, <span class="kw">reduced</span> <span class="kw">=</span> ~<span class="no">gender</span>, <span class="kw">fitType</span> <span class="kw">=</span> <span class="st">"local"</span>)</pre></body></html></div>
-<pre><code>## estimating size factors</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## gene-wise dispersion estimates</code></pre>
-<pre><code>## mean-dispersion relationship</code></pre>
-<pre><code>## final dispersion estimates</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="co">## Extract results</span>
-<span class="fu">mcols</span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>) <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(
-    <span class="fu">mcols</span>(<span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>),
-    <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dse</span>)
-)
-
-<span class="co">## Save info in an object with a shorter name</span>
-<span class="no">ers</span> <span class="kw">&lt;-</span> <span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">regions</span>
-<span class="no">ers</span></pre></body></html></div>
-<pre><code>## GRanges object with 45 ranges and 12 metadata columns:
-##      seqnames            ranges strand |     value      area indexStart
-##         &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt;  &lt;integer&gt;
-##    1    chr21   9827018-9827582      * |  313.6717 177224.53          1
-##    2    chr21 15457301-15457438      * |  215.0846  29681.68        566
-##    3    chr21 20230140-20230192      * |   38.8325   2058.12        704
-##    4    chr21 20230445-20230505      * |   41.3245   2520.80        757
-##    5    chr21 27253318-27253543      * |   34.9131   7890.37        818
-##   ..      ...               ...    ... .       ...       ...        ...
-##   41    chr21 33039644-33039688      * |   34.4705 1551.1742       2180
-##   42    chr21 33040784-33040798      * |   32.1342  482.0133       2225
-##   43    chr21          33040890      * |   30.0925   30.0925       2240
-##   44    chr21 33040900-33040901      * |   30.1208   60.2417       2241
-##   45    chr21 48019401-48019414      * |   31.1489  436.0850       2243
-##       indexEnd cluster clusterL  baseMean log2FoldChange     lfcSE      stat
-##      &lt;integer&gt;   &lt;Rle&gt;    &lt;Rle&gt; &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;
-##    1       565       1      565 2846.2872     -1.6903182  0.831959  0.215262
-##    2       703       2      138  451.5196     -1.1640426  0.757490  0.871126
-##    3       756       3      366   29.5781      0.0461488  0.458097  3.132082
-##    4       817       3      366   36.0603     -0.1866200  0.390920  2.225708
-##    5      1043       4      765  101.6468     -0.1387377  0.320166  3.957987
-##   ..       ...     ...      ...       ...            ...       ...       ...
-##   41      2224      17       45 20.782035      -0.642056  0.427661 0.6047814
-##   42      2239      18      118  6.410542      -0.634321  0.512262 0.5454039
-##   43      2240      18      118  0.129717      -0.859549  3.116540 0.0206273
-##   44      2242      18      118  0.702291      -0.628285  2.247378 0.5825105
-##   45      2256      19       14  5.293293      -1.694563  1.252290 5.7895910
-##         pvalue      padj
-##      &lt;numeric&gt; &lt;numeric&gt;
-##    1 0.6426743  0.997155
-##    2 0.3506436  0.997155
-##    3 0.0767657  0.863614
-##    4 0.1357305  0.997155
-##    5 0.0466495  0.862040
-##   ..       ...       ...
-##   41 0.4367595  0.997155
-##   42 0.4602018  0.997155
-##   43 0.8857989  0.997155
-##   44 0.4453299  0.997155
-##   45 0.0161213  0.725460
-##   -------
-##   seqinfo: 1 sequence from an unspecified genome</code></pre>
-<p>We can then compare the DERs against known annotation to see which DERs overlap known exons, introns, or intergenic regions. A way to visualize this information is via a Venn diagram which we can create using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/vennRegions.html">vennRegions()</a></code> from the <em><a href="https://bioconductor.org/packages/3.12/derfinderPlot">derfinderPlot</a></em> package as shown in Figure @ref(fig:vennRegions).</p>
-<div class="sourceCode" id="cb42"><html><body><pre class="r"><span class="co">## Find overlaps between regions and summarized genomic annotation</span>
-<span class="no">annoRegs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/annotateRegions.html">annotateRegions</a></span>(<span class="no">ers</span>, <span class="no">genomicState</span>$<span class="no">fullGenome</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"derfinderPlot"</span>)</pre></body></html></div>
-<pre><code>## Registered S3 method overwritten by 'GGally':
-##   method from   
-##   +.gg   ggplot2</code></pre>
-<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="no">venn</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/derfinderPlot/man/vennRegions.html">vennRegions</a></span>(<span class="no">annoRegs</span>,
-    <span class="kw">counts.col</span> <span class="kw">=</span> <span class="st">"blue"</span>,
-    <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation"</span>
-)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load libraries</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/lcolladotor/derfinder" class="external-link">"derfinder"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/leekgroup/derfinderData" class="external-link">"derfinderData"</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://bioconductor.org/packages/GenomicRanges" class="external-link">"GenomicRanges"</a></span><span class="op">)</span></span></code></pre></div>
+<p>Next, we need to locate the chromosome 21 coverage files for a set of
+12 samples. These samples are a small subset from the <em>BrainSpan
+Atlas of the Human Brain</em> (BrainSpan, 2011) publicly available data.
+The function <code><a href="../reference/rawFiles.html">rawFiles()</a></code> helps us in locating these
+files.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Determine the files to use and fix the names</span></span>
+<span><span class="va">files</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rawFiles.html">rawFiles</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"extdata"</span>, <span class="st">"AMY"</span>, package <span class="op">=</span> <span class="st">"derfinderData"</span><span class="op">)</span>,</span>
+<span>    samplepatt <span class="op">=</span> <span class="st">"bw"</span>, fileterm <span class="op">=</span> <span class="cn">NULL</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">gsub</a></span><span class="op">(</span><span class="st">".bw"</span>, <span class="st">""</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p>Next, we can load the full coverage data into memory using the
+<code><a href="../reference/fullCoverage.html">fullCoverage()</a></code> function. Note that the <em>BrainSpan</em>
+data is already normalized by the total number of mapped reads in each
+sample. However, that won’t be the case with most data sets in which
+case you might want to use the <code>totalMapped</code> and
+<code>targetSize</code> arguments. The function
+<code><a href="../reference/getTotalMapped.html">getTotalMapped()</a></code> will be helpful to get this
+information.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load the data from disk</span></span>
+<span><span class="va">fullCov</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fullCoverage.html">fullCoverage</a></span><span class="op">(</span></span>
+<span>    files <span class="op">=</span> <span class="va">files</span>, chrs <span class="op">=</span> <span class="st">"chr21"</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>    totalMapped <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">files</span><span class="op">)</span><span class="op">)</span>, targetSize <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Now that we have the data, we can identify expressed regions (ERs) by
+using a cutoff of 30 on the base-level mean coverage from these 12
+samples. Once the regions have been identified, we can calculate a
+coverage matrix with one row per ER and one column per sample (12 in
+this case). For doing this calculation we need to know the length of the
+sequence reads, which in this study were 76 bp long.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Get the region matrix of Expressed Regions (ERs)</span></span>
+<span><span class="va">regionMat</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regionMatrix.html">regionMatrix</a></span><span class="op">(</span><span class="va">fullCov</span>, cutoff <span class="op">=</span> <span class="fl">30</span>, L <span class="op">=</span> <span class="fl">76</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<p><code><a href="../reference/regionMatrix.html">regionMatrix()</a></code> returns a list of elements, each with
+three pieces of output. The actual ERs are arranged in a
+<code>GRanges</code> object named <code>regions</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## regions output</span></span>
+<span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 45 ranges and 6 metadata columns:</span></span>
+<span><span class="co">##      seqnames            ranges strand |     value      area indexStart</span></span>
+<span><span class="co">##         &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt;  &lt;integer&gt;</span></span>
+<span><span class="co">##    1    chr21   9827018-9827582      * |  313.6717 177224.53          1</span></span>
+<span><span class="co">##    2    chr21 15457301-15457438      * |  215.0846  29681.68        566</span></span>
+<span><span class="co">##    3    chr21 20230140-20230192      * |   38.8325   2058.12        704</span></span>
+<span><span class="co">##    4    chr21 20230445-20230505      * |   41.3245   2520.80        757</span></span>
+<span><span class="co">##    5    chr21 27253318-27253543      * |   34.9131   7890.37        818</span></span>
+<span><span class="co">##   ..      ...               ...    ... .       ...       ...        ...</span></span>
+<span><span class="co">##   41    chr21 33039644-33039688      * |   34.4705 1551.1742       2180</span></span>
+<span><span class="co">##   42    chr21 33040784-33040798      * |   32.1342  482.0133       2225</span></span>
+<span><span class="co">##   43    chr21          33040890      * |   30.0925   30.0925       2240</span></span>
+<span><span class="co">##   44    chr21 33040900-33040901      * |   30.1208   60.2417       2241</span></span>
+<span><span class="co">##   45    chr21 48019401-48019414      * |   31.1489  436.0850       2243</span></span>
+<span><span class="co">##       indexEnd cluster clusterL</span></span>
+<span><span class="co">##      &lt;integer&gt;   &lt;Rle&gt;    &lt;Rle&gt;</span></span>
+<span><span class="co">##    1       565       1      565</span></span>
+<span><span class="co">##    2       703       2      138</span></span>
+<span><span class="co">##    3       756       3      366</span></span>
+<span><span class="co">##    4       817       3      366</span></span>
+<span><span class="co">##    5      1043       4      765</span></span>
+<span><span class="co">##   ..       ...     ...      ...</span></span>
+<span><span class="co">##   41      2224      17       45</span></span>
+<span><span class="co">##   42      2239      18      118</span></span>
+<span><span class="co">##   43      2240      18      118</span></span>
+<span><span class="co">##   44      2242      18      118</span></span>
+<span><span class="co">##   45      2256      19       14</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome</span></span></code></pre>
+<p><code>bpCoverage</code> is the base-level coverage list which can
+then be used for plotting.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Base-level coverage matrices for each of the regions</span></span>
+<span><span class="co">## Useful for plotting</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">bpCoverage</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">head</span>, n <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">##   HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178 HSB92</span></span>
+<span><span class="co">## 1  93.20   3.32  28.22   5.62 185.17  98.34   5.88  16.71   3.52  15.71 47.40</span></span>
+<span><span class="co">## 2 124.76   7.25  63.68  11.32 374.85 199.28  10.39  30.53   5.83  29.35 65.04</span></span>
+<span><span class="co">##   HSB97</span></span>
+<span><span class="co">## 1 36.54</span></span>
+<span><span class="co">## 2 51.42</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">##     HSB113 HSB123 HSB126 HSB130 HSB135 HSB136 HSB145 HSB153 HSB159 HSB178 HSB92</span></span>
+<span><span class="co">## 566  45.59   7.94  15.92  34.75 141.61 104.21  19.87  38.61   4.97   23.2 13.95</span></span>
+<span><span class="co">## 567  45.59   7.94  15.92  35.15 141.64 104.30  19.87  38.65   4.97   23.2 13.95</span></span>
+<span><span class="co">##     HSB97</span></span>
+<span><span class="co">## 566 22.21</span></span>
+<span><span class="co">## 567 22.21</span></span></code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Check dimensions. First region is 565 long, second one is 138 bp long.</span></span>
+<span><span class="co">## The columns match the number of samples (12 in this case).</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">bpCoverage</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span>, <span class="va">dim</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $`1`</span></span>
+<span><span class="co">## [1] 565  12</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $`2`</span></span>
+<span><span class="co">## [1] 138  12</span></span></code></pre>
+<p>The end result of the coverage matrix is shown below. Note that the
+coverage has been adjusted for read length. Because reads might not
+fully align inside a given region, the numbers are generally not
+integers but can be rounded if needed.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Dimensions of the coverage matrix</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">coverageMatrix</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 45 12</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Coverage for each region. This matrix can then be used with limma or other pkgs</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">coverageMatrix</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         HSB113     HSB123      HSB126      HSB130      HSB135      HSB136</span></span>
+<span><span class="co">## 1 3653.1093346 277.072106 1397.068687 1106.722895 8987.460401 5570.221054</span></span>
+<span><span class="co">## 2  333.3740816  99.987237  463.909476  267.354342 1198.713552 1162.313418</span></span>
+<span><span class="co">## 3   35.3828948  20.153553   30.725394   23.483947   16.786842   17.168947</span></span>
+<span><span class="co">## 4   42.3398681  29.931579   41.094474   24.724736   32.634080   19.309606</span></span>
+<span><span class="co">## 5   77.7402631 168.939342  115.059342  171.861974  180.638684   93.503158</span></span>
+<span><span class="co">## 6    0.7988158   1.770263    1.473421    2.231053    1.697368    1.007895</span></span>
+<span><span class="co">##        HSB145       HSB153     HSB159      HSB178       HSB92        HSB97</span></span>
+<span><span class="co">## 1 1330.158818 1461.2986829 297.939342 1407.288552 1168.519079 1325.9622371</span></span>
+<span><span class="co">## 2  257.114210  313.8513139  67.940131  193.695657  127.543553  200.7834228</span></span>
+<span><span class="co">## 3   22.895921   52.8756585  28.145395   33.127368   23.758816   20.4623685</span></span>
+<span><span class="co">## 4   33.802632   51.6146040  31.244343   33.576974   29.546183   28.2011836</span></span>
+<span><span class="co">## 5   90.950526   36.3046051  78.069605   97.151316  100.085790   35.5428946</span></span>
+<span><span class="co">## 6    1.171316    0.4221053   1.000132    1.139079    1.136447    0.3956579</span></span></code></pre>
+<p>We can then use the coverage matrix and packages such as <em><a href="https://bioconductor.org/packages/3.17/limma" class="external-link">limma</a></em>,
+<em><a href="https://bioconductor.org/packages/3.17/DESeq2" class="external-link">DESeq2</a></em> or
+<em><a href="https://bioconductor.org/packages/3.17/edgeR" class="external-link">edgeR</a></em> to
+identify which ERs are differentially expressed. Here we’ll use <em><a href="https://bioconductor.org/packages/3.17/DESeq2" class="external-link">DESeq2</a></em> for
+which we need some phenotype data.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Get pheno table</span></span>
+<span><span class="va">pheno</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/BiocGenerics/man/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">brainspanPheno</span>, <span class="va">structure_acronym</span> <span class="op">==</span> <span class="st">"AMY"</span><span class="op">)</span></span></code></pre></div>
+<p>Now we can identify the DERs using a rounded version of the coverage
+matrix.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Identify which ERs are differentially expressed, that is, find the DERs</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/mikelove/DESeq2" class="external-link">"DESeq2"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: SummarizedExperiment</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: MatrixGenerics</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: matrixStats</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'MatrixGenerics'</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:matrixStats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,</span></span>
+<span><span class="co">##     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,</span></span>
+<span><span class="co">##     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,</span></span>
+<span><span class="co">##     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,</span></span>
+<span><span class="co">##     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,</span></span>
+<span><span class="co">##     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,</span></span>
+<span><span class="co">##     colWeightedMeans, colWeightedMedians, colWeightedSds,</span></span>
+<span><span class="co">##     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,</span></span>
+<span><span class="co">##     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,</span></span>
+<span><span class="co">##     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,</span></span>
+<span><span class="co">##     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,</span></span>
+<span><span class="co">##     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,</span></span>
+<span><span class="co">##     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,</span></span>
+<span><span class="co">##     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,</span></span>
+<span><span class="co">##     rowWeightedSds, rowWeightedVars</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: Biobase</span></span></code></pre>
+<pre><code><span><span class="co">## Welcome to Bioconductor</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     Vignettes contain introductory material; view with</span></span>
+<span><span class="co">##     'browseVignettes()'. To cite Bioconductor, see</span></span>
+<span><span class="co">##     'citation("Biobase")', and for packages 'citation("pkgname")'.</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## Attaching package: 'Biobase'</span></span></code></pre>
+<pre><code><span><span class="co">## The following object is masked from 'package:MatrixGenerics':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     rowMedians</span></span></code></pre>
+<pre><code><span><span class="co">## The following objects are masked from 'package:matrixStats':</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##     anyMissing, rowMedians</span></span></code></pre>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Round matrix</span></span>
+<span><span class="va">counts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">coverageMatrix</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Round matrix and specify design</span></span>
+<span><span class="va">dse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html" class="external-link">DESeqDataSetFromMatrix</a></span><span class="op">(</span><span class="va">counts</span>, <span class="va">pheno</span>, <span class="op">~</span> <span class="va">group</span> <span class="op">+</span> <span class="va">gender</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## converting counts to integer mode</span></span></code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Perform DE analysis</span></span>
+<span><span class="va">dse</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html" class="external-link">DESeq</a></span><span class="op">(</span><span class="va">dse</span>, test <span class="op">=</span> <span class="st">"LRT"</span>, reduced <span class="op">=</span> <span class="op">~</span><span class="va">gender</span>, fitType <span class="op">=</span> <span class="st">"local"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## estimating size factors</span></span></code></pre>
+<pre><code><span><span class="co">## estimating dispersions</span></span></code></pre>
+<pre><code><span><span class="co">## gene-wise dispersion estimates</span></span></code></pre>
+<pre><code><span><span class="co">## mean-dispersion relationship</span></span></code></pre>
+<pre><code><span><span class="co">## final dispersion estimates</span></span></code></pre>
+<pre><code><span><span class="co">## fitting model and testing</span></span></code></pre>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Extract results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">mcols</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/S4Vectors/man/Vector-class.html" class="external-link">mcols</a></span><span class="op">(</span><span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html" class="external-link">results</a></span><span class="op">(</span><span class="va">dse</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Save info in an object with a shorter name</span></span>
+<span><span class="va">ers</span> <span class="op">&lt;-</span> <span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">regions</span></span>
+<span><span class="va">ers</span></span></code></pre></div>
+<pre><code><span><span class="co">## GRanges object with 45 ranges and 12 metadata columns:</span></span>
+<span><span class="co">##      seqnames            ranges strand |     value      area indexStart</span></span>
+<span><span class="co">##         &lt;Rle&gt;         &lt;IRanges&gt;  &lt;Rle&gt; | &lt;numeric&gt; &lt;numeric&gt;  &lt;integer&gt;</span></span>
+<span><span class="co">##    1    chr21   9827018-9827582      * |  313.6717 177224.53          1</span></span>
+<span><span class="co">##    2    chr21 15457301-15457438      * |  215.0846  29681.68        566</span></span>
+<span><span class="co">##    3    chr21 20230140-20230192      * |   38.8325   2058.12        704</span></span>
+<span><span class="co">##    4    chr21 20230445-20230505      * |   41.3245   2520.80        757</span></span>
+<span><span class="co">##    5    chr21 27253318-27253543      * |   34.9131   7890.37        818</span></span>
+<span><span class="co">##   ..      ...               ...    ... .       ...       ...        ...</span></span>
+<span><span class="co">##   41    chr21 33039644-33039688      * |   34.4705 1551.1742       2180</span></span>
+<span><span class="co">##   42    chr21 33040784-33040798      * |   32.1342  482.0133       2225</span></span>
+<span><span class="co">##   43    chr21          33040890      * |   30.0925   30.0925       2240</span></span>
+<span><span class="co">##   44    chr21 33040900-33040901      * |   30.1208   60.2417       2241</span></span>
+<span><span class="co">##   45    chr21 48019401-48019414      * |   31.1489  436.0850       2243</span></span>
+<span><span class="co">##       indexEnd cluster clusterL  baseMean log2FoldChange     lfcSE      stat</span></span>
+<span><span class="co">##      &lt;integer&gt;   &lt;Rle&gt;    &lt;Rle&gt; &lt;numeric&gt;      &lt;numeric&gt; &lt;numeric&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">##    1       565       1      565 2846.2872     -1.6903182  0.831959  0.215262</span></span>
+<span><span class="co">##    2       703       2      138  451.5196     -1.1640426  0.757490  0.871126</span></span>
+<span><span class="co">##    3       756       3      366   29.5781      0.0461488  0.458097  3.132082</span></span>
+<span><span class="co">##    4       817       3      366   36.0603     -0.1866200  0.390920  2.225708</span></span>
+<span><span class="co">##    5      1043       4      765  101.6468     -0.1387377  0.320166  3.957987</span></span>
+<span><span class="co">##   ..       ...     ...      ...       ...            ...       ...       ...</span></span>
+<span><span class="co">##   41      2224      17       45 20.782035      -0.642056  0.427661 0.6047814</span></span>
+<span><span class="co">##   42      2239      18      118  6.410542      -0.634321  0.512262 0.5454039</span></span>
+<span><span class="co">##   43      2240      18      118  0.129717      -0.859549  3.116540 0.0206273</span></span>
+<span><span class="co">##   44      2242      18      118  0.702291      -0.628285  2.247378 0.5825105</span></span>
+<span><span class="co">##   45      2256      19       14  5.293293      -1.694563  1.252290 5.7895910</span></span>
+<span><span class="co">##         pvalue      padj</span></span>
+<span><span class="co">##      &lt;numeric&gt; &lt;numeric&gt;</span></span>
+<span><span class="co">##    1 0.6426743  0.997155</span></span>
+<span><span class="co">##    2 0.3506436  0.997155</span></span>
+<span><span class="co">##    3 0.0767657  0.863614</span></span>
+<span><span class="co">##    4 0.1357305  0.997155</span></span>
+<span><span class="co">##    5 0.0466495  0.862040</span></span>
+<span><span class="co">##   ..       ...       ...</span></span>
+<span><span class="co">##   41 0.4367595  0.997155</span></span>
+<span><span class="co">##   42 0.4602018  0.997155</span></span>
+<span><span class="co">##   43 0.8857989  0.997155</span></span>
+<span><span class="co">##   44 0.4453299  0.997155</span></span>
+<span><span class="co">##   45 0.0161213  0.725460</span></span>
+<span><span class="co">##   -------</span></span>
+<span><span class="co">##   seqinfo: 1 sequence from an unspecified genome</span></span></code></pre>
+<p>We can then compare the DERs against known annotation to see which
+DERs overlap known exons, introns, or intergenic regions. A way to
+visualize this information is via a Venn diagram which we can create
+using <code><a href="https://rdrr.io/pkg/derfinderPlot/man/vennRegions.html" class="external-link">vennRegions()</a></code> from the <em><a href="https://bioconductor.org/packages/3.17/derfinderPlot" class="external-link">derfinderPlot</a></em>
+package as shown in Figure @ref(fig:vennRegions).</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Find overlaps between regions and summarized genomic annotation</span></span>
+<span><span class="va">annoRegs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/annotateRegions.html">annotateRegions</a></span><span class="op">(</span><span class="va">ers</span>, <span class="va">genomicState</span><span class="op">$</span><span class="va">fullGenome</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/leekgroup/derfinderPlot" class="external-link">"derfinderPlot"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Registered S3 method overwritten by 'GGally':</span></span>
+<span><span class="co">##   method from   </span></span>
+<span><span class="co">##   +.gg   ggplot2</span></span></code></pre>
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">venn</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/derfinderPlot/man/vennRegions.html" class="external-link">vennRegions</a></span><span class="op">(</span><span class="va">annoRegs</span>,</span>
+<span>    counts.col <span class="op">=</span> <span class="st">"blue"</span>,</span>
+<span>    main <span class="op">=</span> <span class="st">"Venn diagram using TxDb.Hsapiens.UCSC.hg19.knownGene annotation"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="derfinder-quickstart_files/figure-html/vennRegions-1.png" alt="Venn diagram showing ERs by annotation class." width="700"><p class="caption">
 Venn diagram showing ERs by annotation class.
 </p>
 </div>
-<p>We can also identify the nearest annotated feature. In this case, we’ll look for the nearest known gene from the UCSC hg19 annotation.</p>
-<div class="sourceCode" id="cb45"><html><body><pre class="r"><span class="co">## Load database of interest</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"TxDb.Hsapiens.UCSC.hg19.knownGene"</span>)</pre></body></html></div>
-<pre><code>## Loading required package: GenomicFeatures</code></pre>
-<pre><code>## Loading required package: AnnotationDbi</code></pre>
-<div class="sourceCode" id="cb48"><html><body><pre class="r"><span class="no">txdb</span> <span class="kw">&lt;-</span> <span class="fu">keepSeqlevels</span>(<span class="no">TxDb.Hsapiens.UCSC.hg19.knownGene</span>, <span class="st">"chr21"</span>)
-
-<span class="co">## Find nearest feature</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"bumphunter"</span>)</pre></body></html></div>
-<pre><code>## Loading required package: foreach</code></pre>
-<pre><code>## Loading required package: iterators</code></pre>
-<pre><code>## Loading required package: locfit</code></pre>
-<pre><code>## locfit 1.5-9.4    2020-03-24</code></pre>
-<div class="sourceCode" id="cb53"><html><body><pre class="r"><span class="no">genes</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bumphunter/man/annotateTranscripts.html">annotateTranscripts</a></span>(<span class="no">txdb</span>)</pre></body></html></div>
-<pre><code>## No annotationPackage supplied. Trying org.Hs.eg.db.</code></pre>
-<pre><code>## Loading required package: org.Hs.eg.db</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called 'org.Hs.eg.db'</code></pre>
-<pre><code>## Could not load org.Hs.eg.db. Will continue without annotation</code></pre>
-<pre><code>## Getting TSS and TSE.</code></pre>
-<pre><code>## Getting CSS and CSE.</code></pre>
-<pre><code>## Getting exons.</code></pre>
-<div class="sourceCode" id="cb61"><html><body><pre class="r"><span class="no">annotation</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bumphunter/man/matchGenes.html">matchGenes</a></span>(<span class="no">ers</span>, <span class="kw">subject</span> <span class="kw">=</span> <span class="no">genes</span>)
-
-<span class="co">## Restore seqlevels</span>
-<span class="no">txdb</span> <span class="kw">&lt;-</span> <span class="fu">restoreSeqlevels</span>(<span class="no">txdb</span>)
-
-<span class="co">## View annotation results</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">annotation</span>)</pre></body></html></div>
-<pre><code>##   name annotation description      region distance   subregion insideDistance
-## 1 &lt;NA&gt;       &lt;NA&gt; close to 3' close to 3'      815        &lt;NA&gt;             NA
-## 2 &lt;NA&gt;       &lt;NA&gt;  downstream  downstream   125774        &lt;NA&gt;             NA
-## 3 &lt;NA&gt;       &lt;NA&gt;    upstream    upstream   454170        &lt;NA&gt;             NA
-## 4 &lt;NA&gt;       &lt;NA&gt;    upstream    upstream   454475        &lt;NA&gt;             NA
-## 5 &lt;NA&gt;       &lt;NA&gt; inside exon      inside   289903 inside exon              0
-## 6 &lt;NA&gt;       &lt;NA&gt; inside exon      inside   289899 inside exon              0
-##   exonnumber nexons   UTR strand  geneL codingL    Geneid subjectHits
-## 1         NA      1  &lt;NA&gt;      +     60      NA 100500815          15
-## 2         NA      8  &lt;NA&gt;      - 102077  101886    149998         149
-## 3         NA     25  &lt;NA&gt;      - 134537  133653      5651         579
-## 4         NA     25  &lt;NA&gt;      - 134537  133653      5651         579
-## 5         16     16 3'UTR      - 290585  230434       351         354
-## 6         16     16 3'UTR      - 290585  230434       351         354</code></pre>
-<div class="sourceCode" id="cb63"><html><body><pre class="r"><span class="co">## You can use derfinderPlot::plotOverview() to visualize this information</span></pre></body></html></div>
-<p>We can check the base-level coverage information for some of our DERs. In this example we do so for the first 5 ERs (Figures @ref(fig:firstfive1), @ref(fig:firstfive2), @ref(fig:firstfive3), @ref(fig:firstfive4), @ref(fig:firstfive5)).</p>
-<div class="sourceCode" id="cb64"><html><body><pre class="r"><span class="co">## Extract the region coverage</span>
-<span class="no">regionCov</span> <span class="kw">&lt;-</span> <span class="no">regionMat</span>$<span class="no">chr21</span>$<span class="no">bpCoverage</span>
-<span class="fu"><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html">plotRegionCoverage</a></span>(
-    <span class="kw">regions</span> <span class="kw">=</span> <span class="no">ers</span>, <span class="kw">regionCoverage</span> <span class="kw">=</span> <span class="no">regionCov</span>,
-    <span class="kw">groupInfo</span> <span class="kw">=</span> <span class="no">pheno</span>$<span class="no">group</span>, <span class="kw">nearestAnnotation</span> <span class="kw">=</span> <span class="no">annotation</span>,
-    <span class="kw">annotatedRegions</span> <span class="kw">=</span> <span class="no">annoRegs</span>, <span class="kw">whichRegions</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span>(<span class="fl">5</span>), <span class="kw">txdb</span> <span class="kw">=</span> <span class="no">txdb</span>,
-    <span class="kw">scalefac</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">ask</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">verbose</span> <span class="kw">=</span> <span class="fl">FALSE</span>
-)</pre></body></html></div>
+<p>We can also identify the nearest annotated feature. In this case,
+we’ll look for the nearest known gene from the UCSC hg19 annotation.</p>
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Load database of interest</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st">"TxDb.Hsapiens.UCSC.hg19.knownGene"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: GenomicFeatures</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: AnnotationDbi</span></span></code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqlevels-wrappers.html" class="external-link">keepSeqlevels</a></span><span class="op">(</span><span class="va">TxDb.Hsapiens.UCSC.hg19.knownGene</span>, <span class="st">"chr21"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Find nearest feature</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rafalab/bumphunter" class="external-link">"bumphunter"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Loading required package: foreach</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: iterators</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: parallel</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: locfit</span></span></code></pre>
+<pre><code><span><span class="co">## locfit 1.5-9.7    2023-01-02</span></span></code></pre>
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">genes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bumphunter/man/annotateTranscripts.html" class="external-link">annotateTranscripts</a></span><span class="op">(</span><span class="va">txdb</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## No annotationPackage supplied. Trying org.Hs.eg.db.</span></span></code></pre>
+<pre><code><span><span class="co">## Loading required package: org.Hs.eg.db</span></span></code></pre>
+<pre><code><span><span class="co">## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,</span></span>
+<span><span class="co">## logical.return = TRUE, : there is no package called 'org.Hs.eg.db'</span></span></code></pre>
+<pre><code><span><span class="co">## Could not load org.Hs.eg.db. Will continue without annotation</span></span></code></pre>
+<pre><code><span><span class="co">## Getting TSS and TSE.</span></span></code></pre>
+<pre><code><span><span class="co">## Getting CSS and CSE.</span></span></code></pre>
+<pre><code><span><span class="co">## Getting exons.</span></span></code></pre>
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">annotation</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/bumphunter/man/matchGenes.html" class="external-link">matchGenes</a></span><span class="op">(</span><span class="va">ers</span>, subject <span class="op">=</span> <span class="va">genes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Restore seqlevels</span></span>
+<span><span class="va">txdb</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/GenomeInfoDb/man/seqlevels-wrappers.html" class="external-link">restoreSeqlevels</a></span><span class="op">(</span><span class="va">txdb</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## View annotation results</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">annotation</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##   name annotation description      region distance   subregion insideDistance</span></span>
+<span><span class="co">## 1 &lt;NA&gt;       &lt;NA&gt; close to 3' close to 3'      815        &lt;NA&gt;             NA</span></span>
+<span><span class="co">## 2 &lt;NA&gt;       &lt;NA&gt;  downstream  downstream   125774        &lt;NA&gt;             NA</span></span>
+<span><span class="co">## 3 &lt;NA&gt;       &lt;NA&gt;    upstream    upstream   454170        &lt;NA&gt;             NA</span></span>
+<span><span class="co">## 4 &lt;NA&gt;       &lt;NA&gt;    upstream    upstream   454475        &lt;NA&gt;             NA</span></span>
+<span><span class="co">## 5 &lt;NA&gt;       &lt;NA&gt; inside exon      inside   289903 inside exon              0</span></span>
+<span><span class="co">## 6 &lt;NA&gt;       &lt;NA&gt; inside exon      inside   289899 inside exon              0</span></span>
+<span><span class="co">##   exonnumber nexons   UTR strand  geneL codingL    Geneid subjectHits</span></span>
+<span><span class="co">## 1         NA      1  &lt;NA&gt;      +     60      NA 100500815          15</span></span>
+<span><span class="co">## 2         NA      8  &lt;NA&gt;      - 102077  101886    149998         149</span></span>
+<span><span class="co">## 3         NA     25  &lt;NA&gt;      - 134537  133653      5651         579</span></span>
+<span><span class="co">## 4         NA     25  &lt;NA&gt;      - 134537  133653      5651         579</span></span>
+<span><span class="co">## 5         16     16 3'UTR      - 290585  230434       351         354</span></span>
+<span><span class="co">## 6         16     16 3'UTR      - 290585  230434       351         354</span></span></code></pre>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## You can use derfinderPlot::plotOverview() to visualize this information</span></span></code></pre></div>
+<p>We can check the base-level coverage information for some of our
+DERs. In this example we do so for the first 5 ERs (Figures
+@ref(fig:firstfive1), @ref(fig:firstfive2), @ref(fig:firstfive3),
+@ref(fig:firstfive4), @ref(fig:firstfive5)).</p>
+<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Extract the region coverage</span></span>
+<span><span class="va">regionCov</span> <span class="op">&lt;-</span> <span class="va">regionMat</span><span class="op">$</span><span class="va">chr21</span><span class="op">$</span><span class="va">bpCoverage</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/derfinderPlot/man/plotRegionCoverage.html" class="external-link">plotRegionCoverage</a></span><span class="op">(</span></span>
+<span>    regions <span class="op">=</span> <span class="va">ers</span>, regionCoverage <span class="op">=</span> <span class="va">regionCov</span>,</span>
+<span>    groupInfo <span class="op">=</span> <span class="va">pheno</span><span class="op">$</span><span class="va">group</span>, nearestAnnotation <span class="op">=</span> <span class="va">annotation</span>,</span>
+<span>    annotatedRegions <span class="op">=</span> <span class="va">annoRegs</span>, whichRegions <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span>, txdb <span class="op">=</span> <span class="va">txdb</span>,</span>
+<span>    scalefac <span class="op">=</span> <span class="fl">1</span>, ask <span class="op">=</span> <span class="cn">FALSE</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
 <img src="derfinder-quickstart_files/figure-html/firstfive-1.png" alt="Base-pair resolution plot of differentially expressed region 1." width="700"><p class="caption">
 Base-pair resolution plot of differentially expressed region 1.
@@ -503,277 +628,464 @@ Base-pair resolution plot of differentially expressed region 4.
 Base-pair resolution plot of differentially expressed region 5.
 </p>
 </div>
-<p>You can then use the <em><a href="https://bioconductor.org/packages/3.12/regionReport">regionReport</a></em> package to generate interactive HTML reports exploring the results.</p>
-<p>If you are interested in using <em><a href="https://bioconductor.org/packages/3.12/derfinder">derfinder</a></em> we recommend checking the <a href="derfinder-users-guide.html">derfinder users guide</a> and good luck with your analyses!</p>
+<p>You can then use the <em><a href="https://bioconductor.org/packages/3.17/regionReport" class="external-link">regionReport</a></em>
+package to generate interactive HTML reports exploring the results.</p>
+<p>If you are interested in using <em><a href="https://bioconductor.org/packages/3.17/derfinder" class="external-link">derfinder</a></em>
+we recommend checking the <a href="derfinder-users-guide.html">derfinder
+users guide</a> and good luck with your analyses!</p>
 </div>
-<div id="reproducibility" class="section level1">
-<h1 class="hasAnchor">
-<a href="#reproducibility" class="anchor"></a>Reproducibility</h1>
+<div class="section level2">
+<h2 id="reproducibility">Reproducibility<a class="anchor" aria-label="anchor" href="#reproducibility"></a>
+</h2>
 <p>This package was made possible thanks to:</p>
 <ul>
-<li>R <a id="cite-R_Core_Team_2020"></a>(<a href="https://www.R-project.org/">R Core Team, 2020</a>)</li>
+<li>R (R Core Team, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/AnnotationDbi">AnnotationDbi</a></em> <a id="cite-AnnotationDbi"></a>(<a href="https://doi.org/10.18129/B9.bioc.AnnotationDbi">Pagès, Carlson, Falcon, and Li, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/AnnotationDbi" class="external-link">AnnotationDbi</a></em>
+(Pagès, Carlson, Falcon, and Li, 2017)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/BiocParallel">BiocParallel</a></em> <a id="cite-Morgan_2020"></a>(<a href="https://github.com/Bioconductor/BiocParallel">Morgan, Obenchain, Lang, Thompson, et al., 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/BiocParallel" class="external-link">BiocParallel</a></em>
+(Morgan, Wang, Obenchain, Lang, Thompson, and Turaga, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/bumphunter">bumphunter</a></em> <a id="cite-bumphunter"></a>(<a href="https://doi.org/10.1093/ije/dyr238">Jaffe, Murakami, Lee, Leek, et al., 2012</a>) and <a id="cite-bumphunterPaper"></a>(<a href="#bib-bumphunterPaper">Jaffe, Murakami, Lee, Leek, et al., 2012</a>)</li>
-<li><em><a href="https://bioconductor.org/packages/3.12/derfinderHelper">derfinderHelper</a></em></li>
+<em><a href="https://bioconductor.org/packages/3.17/bumphunter" class="external-link">bumphunter</a></em>
+(Jaffe, Murakami, Lee, Leek, Fallin, Feinberg, and Irizarry, 2012) and
+(Jaffe, Murakami, Lee, Leek, Fallin, Feinberg, and Irizarry, 2012)</li>
+<li><em><a href="https://bioconductor.org/packages/3.17/derfinderHelper" class="external-link">derfinderHelper</a></em></li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/GenomeInfoDb">GenomeInfoDb</a></em> <a id="cite-GenomeInfoDb"></a>(<a href="https://doi.org/10.18129/B9.bioc.GenomeInfoDb">Arora, Morgan, Carlson, and Pagès, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/GenomeInfoDb" class="external-link">GenomeInfoDb</a></em>
+(Arora, Morgan, Carlson, and Pagès, 2017)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/GenomicAlignments">GenomicAlignments</a></em> <a id="cite-Lawrence_2013"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/GenomicAlignments" class="external-link">GenomicAlignments</a></em>
+(Lawrence, Huber, Pagès, Aboyoun, Carlson, Gentleman, Morgan, and Carey,
+2013)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/GenomicFeatures">GenomicFeatures</a></em> <a id="cite-Lawrence_2013a"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/GenomicFeatures" class="external-link">GenomicFeatures</a></em>
+(Lawrence, Huber, Pagès et al., 2013)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/GenomicFiles">GenomicFiles</a></em> <a id="cite-Bioconductor_Package_Maintainer_2020"></a>(<a href="#bib-Bioconductor_Package_Maintainer_2020">Bioconductor Package Maintainer, Obenchain, Love, Shepherd, et al., 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/GenomicFiles" class="external-link">GenomicFiles</a></em>
+(Bioconductor Package Maintainer, Obenchain, Love, Shepherd, and Morgan,
+2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/GenomicRanges">GenomicRanges</a></em> <a id="cite-Lawrence_2013ab"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/GenomicRanges" class="external-link">GenomicRanges</a></em>
+(Lawrence, Huber, Pagès et al., 2013)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=Hmisc">Hmisc</a></em> <a id="cite-Harrell_Jr_2020"></a>(<a href="#bib-Harrell_Jr_2020">Harrell Jr, Dupont, and others., 2020</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=Hmisc" class="external-link">Hmisc</a></em> (Harrell
+Jr, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/IRanges">IRanges</a></em> <a id="cite-Lawrence_2013abc"></a>(<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118">Lawrence, Huber, Pagès, Aboyoun, et al., 2013</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/IRanges" class="external-link">IRanges</a></em>
+(Lawrence, Huber, Pagès et al., 2013)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/qvalue">qvalue</a></em> <a id="cite-Storey_2020"></a>(<a href="http://github.com/jdstorey/qvalue">Storey, Bass, Dabney, and Robinson, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/qvalue" class="external-link">qvalue</a></em>
+(Storey, Bass, Dabney, and Robinson, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/Rsamtools">Rsamtools</a></em> <a id="cite-Morgan_2020a"></a>(<a href="http://bioconductor.org/packages/Rsamtools">Morgan, Pagès, Obenchain, and Hayden, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/Rsamtools" class="external-link">Rsamtools</a></em>
+(Morgan, Pagès, Obenchain, and Hayden, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/rtracklayer">rtracklayer</a></em> <a id="cite-Lawrence_2009"></a>(<a href="http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract">Lawrence, Gentleman, and Carey, 2009</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/rtracklayer" class="external-link">rtracklayer</a></em>
+(Lawrence, Gentleman, and Carey, 2009)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/S4Vectors">S4Vectors</a></em> <a id="cite-S4Vectors"></a>(<a href="https://doi.org/10.18129/B9.bioc.S4Vectors">Pagès, Lawrence, and Aboyoun, 2017</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/S4Vectors" class="external-link">S4Vectors</a></em>
+(Pagès, Lawrence, and Aboyoun, 2017)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/derfinderData">derfinderData</a></em> <a id="cite-Collado-Torres_2020"></a>(<a href="https://github.com/leekgroup/derfinderData">Collado-Torres, Jaffe, and Leek, 2020</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/derfinderData" class="external-link">derfinderData</a></em>
+(Collado-Torres, Jaffe, and Leek, 2023)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=sessioninfo">sessioninfo</a></em> <a id="cite-Csardi_2018"></a>(<a href="https://github.com/r-lib/sessioninfo#readme">Csárdi, core, Wickham, Chang, et al., 2018</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=sessioninfo" class="external-link">sessioninfo</a></em>
+(Wickham, Chang, Flight, Müller, and Hester, 2021)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=ggplot2">ggplot2</a></em> <a id="cite-Wickham_2016"></a>(<a href="https://ggplot2.tidyverse.org">Wickham, 2016</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=ggplot2" class="external-link">ggplot2</a></em>
+(Wickham, 2016)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=knitcitations">knitcitations</a></em> <a id="cite-Boettiger_2019"></a>(<a href="https://github.com/cboettig/knitcitations">Boettiger, 2019</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie,
+2014)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> <a id="cite-Xie_2014"></a>(<a href="http://www.crcpress.com/product/isbn/9781466561595">Xie, 2014</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/BiocStyle" class="external-link">BiocStyle</a></em>
+(Oleś, 2023)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> <a id="cite-Oles_2020"></a>(<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em>
+(McLean, 2017)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> <a id="cite-Allaire_2020"></a>(<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em>
+(Allaire, Xie, Dervieux, McPherson, Luraschi, Ushey, Atkins, Wickham,
+Cheng, Chang, and Iannone, 2023)</li>
 <li>
-<em><a href="https://CRAN.R-project.org/package=testthat">testthat</a></em> <a id="cite-Wickham_2011"></a>(<a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf">Wickham, 2011</a>)</li>
+<em><a href="https://CRAN.R-project.org/package=testthat" class="external-link">testthat</a></em>
+(Wickham, 2011)</li>
 <li>
-<em><a href="https://bioconductor.org/packages/3.12/TxDb.Hsapiens.UCSC.hg19.knownGene">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em> <a id="cite-Carlson_2015"></a>(<a href="#bib-Carlson_2015">Carlson and Maintainer, 2015</a>)</li>
+<em><a href="https://bioconductor.org/packages/3.17/TxDb.Hsapiens.UCSC.hg19.knownGene" class="external-link">TxDb.Hsapiens.UCSC.hg19.knownGene</a></em>
+(Carlson and Maintainer, 2015)</li>
 </ul>
 <p>Code for creating the vignette</p>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="co">## Create the vignette</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"rmarkdown"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/system.time.html">system.time</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/rmarkdown/man/render.html">render</a></span>(<span class="st">"derfinder-quickstart.Rmd"</span>, <span class="st">"BiocStyle::html_document"</span>))
-
-<span class="co">## Extract the R code</span>
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="st">"knitr"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html">knit</a></span>(<span class="st">"derfinder-quickstart.Rmd"</span>, <span class="kw">tangle</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<div class="sourceCode" id="cb66"><html><body><pre class="r"><span class="co">## Clean up</span>
-<span class="fu"><a href="https://rdrr.io/r/base/files.html">file.remove</a></span>(<span class="st">"quickstartRef.bib"</span>)</pre></body></html></div>
-<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co">## Create the vignette</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rstudio/rmarkdown" class="external-link">"rmarkdown"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"derfinder-quickstart.Rmd"</span>, <span class="st">"BiocStyle::html_document"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">## Extract the R code</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://yihui.org/knitr/" class="external-link">"knitr"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/knit.html" class="external-link">knit</a></span><span class="op">(</span><span class="st">"derfinder-quickstart.Rmd"</span>, tangle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Date the vignette was generated.</p>
-<pre><code>## [1] "2020-05-27 19:49:04 UTC"</code></pre>
+<pre><code><span><span class="co">## [1] "2023-05-07 03:06:57 UTC"</span></span></code></pre>
 <p>Wallclock time spent generating the vignette.</p>
-<pre><code>## Time difference of 40.189 secs</code></pre>
+<pre><code><span><span class="co">## Time difference of 35.591 secs</span></span></code></pre>
 <p><code>R</code> session information.</p>
-<pre><code>## ─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────
-##  setting  value                       
-##  version  R version 4.0.0 (2020-04-24)
-##  os       Ubuntu 18.04.4 LTS          
-##  system   x86_64, linux-gnu           
-##  ui       X11                         
-##  language (EN)                        
-##  collate  en_US.UTF-8                 
-##  ctype    en_US.UTF-8                 
-##  tz       UTC                         
-##  date     2020-05-27                  
-## 
-## ─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────
-##  package                           * version    date       lib source                        
-##  acepack                             1.4.1      2016-10-29 [1] RSPM (R 4.0.0)                
-##  annotate                            1.67.0     2020-04-27 [1] Bioconductor                  
-##  AnnotationDbi                     * 1.51.0     2020-04-27 [1] Bioconductor                  
-##  AnnotationFilter                    1.13.0     2020-04-27 [1] Bioconductor                  
-##  askpass                             1.1        2019-01-13 [2] RSPM (R 4.0.0)                
-##  assertthat                          0.2.1      2019-03-21 [2] RSPM (R 4.0.0)                
-##  backports                           1.1.7      2020-05-13 [2] RSPM (R 4.0.0)                
-##  base64enc                           0.1-3      2015-07-28 [1] RSPM (R 4.0.0)                
-##  bibtex                              0.4.2.2    2020-01-02 [1] RSPM (R 4.0.0)                
-##  Biobase                           * 2.49.0     2020-04-27 [1] Bioconductor                  
-##  BiocFileCache                       1.13.0     2020-04-27 [1] Bioconductor                  
-##  BiocGenerics                      * 0.35.2     2020-05-06 [1] Bioconductor                  
-##  BiocManager                         1.30.10    2019-11-16 [2] CRAN (R 4.0.0)                
-##  BiocParallel                        1.23.0     2020-04-27 [1] Bioconductor                  
-##  BiocStyle                         * 2.17.0     2020-04-27 [1] Bioconductor                  
-##  biomaRt                             2.45.0     2020-04-27 [1] Bioconductor                  
-##  Biostrings                          2.57.1     2020-05-21 [1] Bioconductor                  
-##  biovizBase                          1.37.0     2020-04-27 [1] Bioconductor                  
-##  bit                                 1.1-15.2   2020-02-10 [1] RSPM (R 4.0.0)                
-##  bit64                               0.9-7      2017-05-08 [1] RSPM (R 4.0.0)                
-##  bitops                              1.0-6      2013-08-17 [1] RSPM (R 4.0.0)                
-##  blob                                1.2.1      2020-01-20 [1] RSPM (R 4.0.0)                
-##  bookdown                            0.19       2020-05-15 [1] RSPM (R 4.0.0)                
-##  BSgenome                            1.57.0     2020-04-27 [1] Bioconductor                  
-##  bumphunter                        * 1.31.0     2020-04-28 [1] Bioconductor                  
-##  checkmate                           2.0.0      2020-02-06 [1] RSPM (R 4.0.0)                
-##  cli                                 2.0.2      2020-02-28 [2] RSPM (R 4.0.0)                
-##  cluster                             2.1.0      2019-06-19 [3] CRAN (R 4.0.0)                
-##  codetools                           0.2-16     2018-12-24 [3] CRAN (R 4.0.0)                
-##  colorspace                          1.4-1      2019-03-18 [1] RSPM (R 4.0.0)                
-##  crayon                              1.3.4      2017-09-16 [2] RSPM (R 4.0.0)                
-##  curl                                4.3        2019-12-02 [2] RSPM (R 4.0.0)                
-##  data.table                          1.12.8     2019-12-09 [1] RSPM (R 4.0.0)                
-##  DBI                                 1.1.0      2019-12-15 [1] RSPM (R 4.0.0)                
-##  dbplyr                              1.4.3      2020-04-19 [1] RSPM (R 4.0.0)                
-##  DelayedArray                      * 0.15.1     2020-05-01 [1] Bioconductor                  
-##  derfinder                         * 1.23.1     2020-05-27 [1] Bioconductor                  
-##  derfinderData                     * 2.7.1      2020-05-11 [1] Bioconductor                  
-##  derfinderHelper                     1.23.1     2020-05-10 [1] Bioconductor                  
-##  derfinderPlot                     * 1.23.1     2020-05-10 [1] Bioconductor                  
-##  desc                                1.2.0      2018-05-01 [2] RSPM (R 4.0.0)                
-##  DESeq2                            * 1.29.4     2020-05-16 [1] Bioconductor                  
-##  dichromat                           2.0-0      2013-01-24 [1] RSPM (R 4.0.0)                
-##  digest                              0.6.25     2020-02-23 [2] RSPM (R 4.0.0)                
-##  doRNG                               1.8.2      2020-01-27 [1] RSPM (R 4.0.0)                
-##  dplyr                               0.8.5      2020-03-07 [1] RSPM (R 4.0.0)                
-##  ellipsis                            0.3.1      2020-05-15 [2] RSPM (R 4.0.0)                
-##  ensembldb                           2.13.1     2020-05-06 [1] Bioconductor                  
-##  evaluate                            0.14       2019-05-28 [2] RSPM (R 4.0.0)                
-##  fansi                               0.4.1      2020-01-08 [2] RSPM (R 4.0.0)                
-##  foreach                           * 1.5.0      2020-03-30 [1] RSPM (R 4.0.0)                
-##  foreign                             0.8-78     2020-04-13 [3] CRAN (R 4.0.0)                
-##  Formula                             1.2-3      2018-05-03 [1] RSPM (R 4.0.0)                
-##  fs                                  1.4.1      2020-04-04 [2] RSPM (R 4.0.0)                
-##  genefilter                          1.71.0     2020-04-27 [1] Bioconductor                  
-##  geneplotter                         1.67.0     2020-04-27 [1] Bioconductor                  
-##  generics                            0.0.2      2018-11-29 [1] RSPM (R 4.0.0)                
-##  GenomeInfoDb                      * 1.25.0     2020-04-27 [1] Bioconductor                  
-##  GenomeInfoDbData                    1.2.3      2020-05-27 [1] Bioconductor                  
-##  GenomicAlignments                   1.25.1     2020-05-21 [1] Bioconductor                  
-##  GenomicFeatures                   * 1.41.0     2020-04-27 [1] Bioconductor                  
-##  GenomicFiles                        1.25.0     2020-04-27 [1] Bioconductor                  
-##  GenomicRanges                     * 1.41.1     2020-05-02 [1] Bioconductor                  
-##  GGally                              1.5.0      2020-03-25 [1] RSPM (R 4.0.0)                
-##  ggbio                               1.37.0     2020-04-27 [1] Bioconductor                  
-##  ggplot2                             3.3.0      2020-03-05 [1] RSPM (R 4.0.0)                
-##  glue                                1.4.1      2020-05-13 [2] RSPM (R 4.0.0)                
-##  graph                               1.67.0     2020-04-27 [1] Bioconductor                  
-##  gridExtra                           2.3        2017-09-09 [1] RSPM (R 4.0.0)                
-##  gtable                              0.3.0      2019-03-25 [1] RSPM (R 4.0.0)                
-##  highr                               0.8        2019-03-20 [2] RSPM (R 4.0.0)                
-##  Hmisc                               4.4-0      2020-03-23 [1] RSPM (R 4.0.0)                
-##  hms                                 0.5.3      2020-01-08 [1] RSPM (R 4.0.0)                
-##  htmlTable                           1.13.3     2019-12-04 [1] RSPM (R 4.0.0)                
-##  htmltools                           0.4.0      2019-10-04 [2] RSPM (R 4.0.0)                
-##  htmlwidgets                         1.5.1      2019-10-08 [2] RSPM (R 4.0.0)                
-##  httr                                1.4.1      2019-08-05 [2] RSPM (R 4.0.0)                
-##  IRanges                           * 2.23.5     2020-05-21 [1] Bioconductor                  
-##  iterators                         * 1.0.12     2019-07-26 [1] RSPM (R 4.0.0)                
-##  jpeg                                0.1-8.1    2019-10-24 [1] RSPM (R 4.0.0)                
-##  jsonlite                            1.6.1      2020-02-02 [2] RSPM (R 4.0.0)                
-##  knitcitations                     * 1.0.10     2019-09-15 [1] RSPM (R 4.0.0)                
-##  knitr                               1.28       2020-02-06 [2] RSPM (R 4.0.0)                
-##  lattice                             0.20-41    2020-04-02 [3] CRAN (R 4.0.0)                
-##  latticeExtra                        0.6-29     2019-12-19 [1] RSPM (R 4.0.0)                
-##  lazyeval                            0.2.2      2019-03-15 [2] RSPM (R 4.0.0)                
-##  lifecycle                           0.2.0      2020-03-06 [2] RSPM (R 4.0.0)                
-##  limma                               3.45.0     2020-04-27 [1] Bioconductor                  
-##  locfit                            * 1.5-9.4    2020-03-25 [1] RSPM (R 4.0.0)                
-##  lubridate                           1.7.8      2020-04-06 [1] RSPM (R 4.0.0)                
-##  magrittr                            1.5        2014-11-22 [2] RSPM (R 4.0.0)                
-##  MASS                                7.3-51.5   2019-12-20 [3] CRAN (R 4.0.0)                
-##  Matrix                              1.2-18     2019-11-27 [3] CRAN (R 4.0.0)                
-##  matrixStats                       * 0.56.0     2020-03-13 [1] RSPM (R 4.0.0)                
-##  memoise                             1.1.0      2017-04-21 [2] RSPM (R 4.0.0)                
-##  munsell                             0.5.0      2018-06-12 [1] RSPM (R 4.0.0)                
-##  nnet                                7.3-13     2020-02-25 [3] CRAN (R 4.0.0)                
-##  openssl                             1.4.1      2019-07-18 [2] RSPM (R 4.0.0)                
-##  OrganismDbi                         1.31.0     2020-04-27 [1] Bioconductor                  
-##  pillar                              1.4.4      2020-05-05 [2] RSPM (R 4.0.0)                
-##  pkgconfig                           2.0.3      2019-09-22 [2] RSPM (R 4.0.0)                
-##  pkgdown                             1.5.1.9000 2020-05-27 [1] Github (r-lib/pkgdown@ac78596)
-##  plyr                                1.8.6      2020-03-03 [1] RSPM (R 4.0.0)                
-##  png                                 0.1-7      2013-12-03 [1] RSPM (R 4.0.0)                
-##  prettyunits                         1.1.1      2020-01-24 [2] RSPM (R 4.0.0)                
-##  progress                            1.2.2      2019-05-16 [1] RSPM (R 4.0.0)                
-##  ProtGenerics                        1.21.0     2020-04-27 [1] Bioconductor                  
-##  purrr                               0.3.4      2020-04-17 [2] RSPM (R 4.0.0)                
-##  qvalue                              2.21.0     2020-04-27 [1] Bioconductor                  
-##  R6                                  2.4.1      2019-11-12 [2] RSPM (R 4.0.0)                
-##  rappdirs                            0.3.1      2016-03-28 [1] RSPM (R 4.0.0)                
-##  RBGL                                1.65.0     2020-04-27 [1] Bioconductor                  
-##  RColorBrewer                        1.1-2      2014-12-07 [1] RSPM (R 4.0.0)                
-##  Rcpp                                1.0.4.6    2020-04-09 [2] RSPM (R 4.0.0)                
-##  RCurl                               1.98-1.2   2020-04-18 [1] RSPM (R 4.0.0)                
-##  RefManageR                          1.2.12     2019-04-03 [1] RSPM (R 4.0.0)                
-##  reshape                             0.8.8      2018-10-23 [1] RSPM (R 4.0.0)                
-##  reshape2                            1.4.4      2020-04-09 [1] RSPM (R 4.0.0)                
-##  rlang                               0.4.6      2020-05-02 [2] RSPM (R 4.0.0)                
-##  rmarkdown                           2.1        2020-01-20 [1] RSPM (R 4.0.0)                
-##  rngtools                            1.5        2020-01-23 [1] RSPM (R 4.0.0)                
-##  rpart                               4.1-15     2019-04-12 [3] CRAN (R 4.0.0)                
-##  rprojroot                           1.3-2      2018-01-03 [2] RSPM (R 4.0.0)                
-##  Rsamtools                           2.5.1      2020-05-21 [1] Bioconductor                  
-##  RSQLite                             2.2.0      2020-01-07 [1] RSPM (R 4.0.0)                
-##  rstudioapi                          0.11       2020-02-07 [2] RSPM (R 4.0.0)                
-##  rtracklayer                         1.49.2     2020-05-21 [1] Bioconductor                  
-##  S4Vectors                         * 0.27.8     2020-05-24 [1] Bioconductor                  
-##  scales                              1.1.1      2020-05-11 [1] RSPM (R 4.0.0)                
-##  sessioninfo                       * 1.1.1      2018-11-05 [2] RSPM (R 4.0.0)                
-##  stringi                             1.4.6      2020-02-17 [2] RSPM (R 4.0.0)                
-##  stringr                             1.4.0      2019-02-10 [2] RSPM (R 4.0.0)                
-##  SummarizedExperiment              * 1.19.4     2020-05-17 [1] Bioconductor                  
-##  survival                            3.1-12     2020-04-10 [3] CRAN (R 4.0.0)                
-##  tibble                              3.0.1      2020-04-20 [2] RSPM (R 4.0.0)                
-##  tidyselect                          1.1.0      2020-05-11 [1] RSPM (R 4.0.0)                
-##  TxDb.Hsapiens.UCSC.hg19.knownGene * 3.2.2      2020-05-27 [1] Bioconductor                  
-##  VariantAnnotation                   1.35.0     2020-04-27 [1] Bioconductor                  
-##  vctrs                               0.3.0      2020-05-11 [2] RSPM (R 4.0.0)                
-##  withr                               2.2.0      2020-04-20 [2] RSPM (R 4.0.0)                
-##  xfun                                0.14       2020-05-20 [2] RSPM (R 4.0.0)                
-##  XML                                 3.99-0.3   2020-01-20 [1] RSPM (R 4.0.0)                
-##  xml2                                1.3.2      2020-04-23 [2] RSPM (R 4.0.0)                
-##  xtable                              1.8-4      2019-04-21 [1] RSPM (R 4.0.0)                
-##  XVector                             0.29.1     2020-05-21 [1] Bioconductor                  
-##  yaml                                2.2.1      2020-02-01 [2] RSPM (R 4.0.0)                
-##  zlibbioc                            1.35.0     2020-04-27 [1] Bioconductor                  
-## 
-## [1] /usr/local/lib/R/host-site-library
-## [2] /usr/local/lib/R/site-library
-## [3] /usr/local/lib/R/library</code></pre>
+<pre><code><span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Session info ───────────────────────────────────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">##  <span style="color: #555555; font-style: italic;">setting </span> <span style="color: #555555; font-style: italic;">value</span></span></span>
+<span><span class="co">##  version  R version 4.3.0 (2023-04-21)</span></span>
+<span><span class="co">##  os       Ubuntu 22.04.2 LTS</span></span>
+<span><span class="co">##  system   x86_64, linux-gnu</span></span>
+<span><span class="co">##  ui       X11</span></span>
+<span><span class="co">##  language en</span></span>
+<span><span class="co">##  collate  en_US.UTF-8</span></span>
+<span><span class="co">##  ctype    en_US.UTF-8</span></span>
+<span><span class="co">##  tz       UTC</span></span>
+<span><span class="co">##  date     2023-05-07</span></span>
+<span><span class="co">##  pandoc   2.19.2 @ /usr/local/bin/ (via rmarkdown)</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">─ Packages ───────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">##  <span style="color: #555555; font-style: italic;">package                          </span> <span style="color: #555555; font-style: italic;">*</span> <span style="color: #555555; font-style: italic;">version  </span> <span style="color: #555555; font-style: italic;">date (UTC)</span> <span style="color: #555555; font-style: italic;">lib</span> <span style="color: #555555; font-style: italic;">source</span></span></span>
+<span><span class="co">##  AnnotationDbi                     * 1.62.1    <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  AnnotationFilter                    1.24.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  backports                           1.4.1     <span style="color: #555555;">2021-12-13</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  base64enc                           0.1-3     <span style="color: #555555;">2015-07-28</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  bibtex                              0.5.1     <span style="color: #555555;">2023-01-26</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  Biobase                           * 2.60.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocFileCache                       2.8.0     <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocGenerics                      * 0.46.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocIO                              1.10.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocManager                         1.30.20   <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  BiocParallel                        1.34.1    <span style="color: #555555;">2023-05-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  BiocStyle                         * 2.28.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  biomaRt                             2.56.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  Biostrings                          2.68.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  biovizBase                          1.48.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  bit                                 4.0.5     <span style="color: #555555;">2022-11-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  bit64                               4.0.5     <span style="color: #555555;">2020-08-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  bitops                              1.0-7     <span style="color: #555555;">2021-04-24</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  blob                                1.2.4     <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  bookdown                            0.33      <span style="color: #555555;">2023-03-06</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  BSgenome                            1.68.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  bslib                               0.4.2     <span style="color: #555555;">2022-12-16</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  bumphunter                        * 1.42.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  cachem                              1.0.8     <span style="color: #555555;">2023-05-01</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  checkmate                           2.2.0     <span style="color: #555555;">2023-04-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  cli                                 3.6.1     <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  cluster                             2.1.4     <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  codetools                           0.2-19    <span style="color: #555555;">2023-02-01</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  colorspace                          2.1-0     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  crayon                              1.5.2     <span style="color: #555555;">2022-09-29</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  curl                                5.0.0     <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  data.table                          1.14.8    <span style="color: #555555;">2023-02-17</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  DBI                                 1.1.3     <span style="color: #555555;">2022-06-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  dbplyr                              2.3.2     <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  DelayedArray                        0.26.2    <span style="color: #555555;">2023-05-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  derfinder                         * 1.35.0    <span style="color: #555555;">2023-05-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  derfinderData                     * 2.18.0    <span style="color: #555555;">2023-04-27</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  derfinderHelper                     1.34.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  derfinderPlot                     * 1.34.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  desc                                1.4.2     <span style="color: #555555;">2022-09-08</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  DESeq2                            * 1.40.1    <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  dichromat                           2.0-0.1   <span style="color: #555555;">2022-05-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  digest                              0.6.31    <span style="color: #555555;">2022-12-11</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  doRNG                               1.8.6     <span style="color: #555555;">2023-01-16</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  dplyr                               1.1.2     <span style="color: #555555;">2023-04-20</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  ensembldb                           2.24.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  evaluate                            0.20      <span style="color: #555555;">2023-01-17</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  fansi                               1.0.4     <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  fastmap                             1.1.1     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  filelock                            1.0.2     <span style="color: #555555;">2018-10-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  foreach                           * 1.5.2     <span style="color: #555555;">2022-02-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  foreign                             0.8-84    <span style="color: #555555;">2022-12-06</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  Formula                             1.2-5     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  fs                                  1.6.2     <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  generics                            0.1.3     <span style="color: #555555;">2022-07-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  GenomeInfoDb                      * 1.36.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomeInfoDbData                    1.2.10    <span style="color: #555555;">2023-05-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomicAlignments                   1.36.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomicFeatures                   * 1.52.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomicFiles                        1.36.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GenomicRanges                     * 1.52.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  GGally                              2.1.2     <span style="color: #555555;">2021-06-21</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  ggbio                               1.48.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  ggplot2                             3.4.2     <span style="color: #555555;">2023-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  glue                                1.6.2     <span style="color: #555555;">2022-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  graph                               1.78.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  gridExtra                           2.3       <span style="color: #555555;">2017-09-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  gtable                              0.3.3     <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  highr                               0.10      <span style="color: #555555;">2022-12-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  Hmisc                               5.0-1     <span style="color: #555555;">2023-03-08</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  hms                                 1.1.3     <span style="color: #555555;">2023-03-21</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  htmlTable                           2.4.1     <span style="color: #555555;">2022-07-07</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  htmltools                           0.5.5     <span style="color: #555555;">2023-03-23</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  htmlwidgets                         1.6.2     <span style="color: #555555;">2023-03-17</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  httr                                1.4.5     <span style="color: #555555;">2023-02-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  IRanges                           * 2.34.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  iterators                         * 1.0.14    <span style="color: #555555;">2022-02-05</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  jquerylib                           0.1.4     <span style="color: #555555;">2021-04-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  jsonlite                            1.8.4     <span style="color: #555555;">2022-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  KEGGREST                            1.40.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  knitr                               1.42      <span style="color: #555555;">2023-01-25</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  lattice                             0.21-8    <span style="color: #555555;">2023-04-05</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  lazyeval                            0.2.2     <span style="color: #555555;">2019-03-15</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  lifecycle                           1.0.3     <span style="color: #555555;">2022-10-07</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  limma                               3.56.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  locfit                            * 1.5-9.7   <span style="color: #555555;">2023-01-02</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  lubridate                           1.9.2     <span style="color: #555555;">2023-02-10</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  magrittr                            2.0.3     <span style="color: #555555;">2022-03-30</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  Matrix                              1.5-4     <span style="color: #555555;">2023-04-04</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  MatrixGenerics                    * 1.12.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  matrixStats                       * 0.63.0    <span style="color: #555555;">2022-11-18</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  memoise                             2.0.1     <span style="color: #555555;">2021-11-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  munsell                             0.5.0     <span style="color: #555555;">2018-06-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  nnet                                7.3-19    <span style="color: #555555;">2023-05-03</span> <span style="color: #555555;">[3]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  OrganismDbi                         1.42.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  pillar                              1.9.0     <span style="color: #555555;">2023-03-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  pkgconfig                           2.0.3     <span style="color: #555555;">2019-09-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  pkgdown                             2.0.7     <span style="color: #555555;">2022-12-14</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  plyr                                1.8.8     <span style="color: #555555;">2022-11-11</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  png                                 0.1-8     <span style="color: #555555;">2022-11-29</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  prettyunits                         1.1.1     <span style="color: #555555;">2020-01-24</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  progress                            1.2.2     <span style="color: #555555;">2019-05-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  ProtGenerics                        1.32.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  purrr                               1.0.1     <span style="color: #555555;">2023-01-10</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  qvalue                              2.32.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  R6                                  2.5.1     <span style="color: #555555;">2021-08-19</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  ragg                                1.2.5     <span style="color: #555555;">2023-01-12</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  rappdirs                            0.3.3     <span style="color: #555555;">2021-01-31</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  RBGL                                1.76.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  RColorBrewer                        1.1-3     <span style="color: #555555;">2022-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  Rcpp                                1.0.10    <span style="color: #555555;">2023-01-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  RCurl                               1.98-1.12 <span style="color: #555555;">2023-03-27</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  RefManageR                        * 1.4.0     <span style="color: #555555;">2022-09-30</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  reshape                             0.8.9     <span style="color: #555555;">2022-04-12</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  reshape2                            1.4.4     <span style="color: #555555;">2020-04-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  restfulr                            0.0.15    <span style="color: #555555;">2022-06-16</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  rjson                               0.2.21    <span style="color: #555555;">2022-01-09</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  rlang                               1.1.1     <span style="color: #555555;">2023-04-28</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  rmarkdown                           2.21      <span style="color: #555555;">2023-03-26</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  rngtools                            1.5.2     <span style="color: #555555;">2021-09-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  rpart                               4.1.19    <span style="color: #555555;">2022-10-21</span> <span style="color: #555555;">[3]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  rprojroot                           2.0.3     <span style="color: #555555;">2022-04-02</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  Rsamtools                           2.16.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  RSQLite                             2.3.1     <span style="color: #555555;">2023-04-03</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  rstudioapi                          0.14      <span style="color: #555555;">2022-08-22</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  rtracklayer                         1.60.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  S4Arrays                            1.0.1     <span style="color: #555555;">2023-05-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  S4Vectors                         * 0.38.1    <span style="color: #555555;">2023-05-02</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  sass                                0.4.6     <span style="color: #555555;">2023-05-03</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  scales                              1.2.1     <span style="color: #555555;">2022-08-20</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  sessioninfo                       * 1.2.2     <span style="color: #555555;">2021-12-06</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  stringi                             1.7.12    <span style="color: #555555;">2023-01-11</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  stringr                             1.5.0     <span style="color: #555555;">2022-12-02</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  SummarizedExperiment              * 1.30.1    <span style="color: #555555;">2023-05-01</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  systemfonts                         1.0.4     <span style="color: #555555;">2022-02-11</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  textshaping                         0.3.6     <span style="color: #555555;">2021-10-13</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  tibble                              3.2.1     <span style="color: #555555;">2023-03-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  tidyselect                          1.2.0     <span style="color: #555555;">2022-10-10</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">CRAN (R 4.3.0)</span></span></span>
+<span><span class="co">##  timechange                          0.2.0     <span style="color: #555555;">2023-01-11</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  TxDb.Hsapiens.UCSC.hg19.knownGene * 3.2.2     <span style="color: #555555;">2022-12-06</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  utf8                                1.2.3     <span style="color: #555555;">2023-01-31</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  VariantAnnotation                   1.46.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  vctrs                               0.6.2     <span style="color: #555555;">2023-04-19</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  xfun                                0.39      <span style="color: #555555;">2023-04-20</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  XML                                 3.99-0.14 <span style="color: #555555;">2023-03-19</span> <span style="color: #555555;">[1]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  xml2                                1.3.4     <span style="color: #555555;">2023-04-27</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  XVector                             0.40.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">##  yaml                                2.3.7     <span style="color: #555555;">2023-01-23</span> <span style="color: #555555;">[2]</span> <span style="color: #BB00BB; font-weight: bold;">RSPM (R 4.3.0)</span></span></span>
+<span><span class="co">##  zlibbioc                            1.46.0    <span style="color: #555555;">2023-04-25</span> <span style="color: #555555;">[1]</span> <span style="color: #555555;">Bioconductor</span></span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## <span style="color: #555555;"> [1] /__w/_temp/Library</span></span></span>
+<span><span class="co">## <span style="color: #555555;"> [2] /usr/local/lib/R/site-library</span></span></span>
+<span><span class="co">## <span style="color: #555555;"> [3] /usr/local/lib/R/library</span></span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## <span style="color: #00BBBB; font-weight: bold;">──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span></span></span></code></pre>
 </div>
-<div id="bibliography" class="section level1">
-<h1 class="hasAnchor">
-<a href="#bibliography" class="anchor"></a>Bibliography</h1>
-<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.12/BiocStyle">BiocStyle</a></em> (<a href="https://github.com/Bioconductor/BiocStyle">Oleś, Morgan, and Huber, 2020</a>) with <em><a href="https://CRAN.R-project.org/package=knitr">knitr</a></em> (<a href="http://www.crcpress.com/product/isbn/9781466561595">Xie, 2014</a>) and <em><a href="https://CRAN.R-project.org/package=rmarkdown">rmarkdown</a></em> (<a href="https://github.com/rstudio/rmarkdown">Allaire, Xie, McPherson, Luraschi, et al., 2020</a>) running behind the scenes.</p>
-<p>Citations made with <em><a href="https://CRAN.R-project.org/package=knitcitations">knitcitations</a></em> (<a href="https://github.com/cboettig/knitcitations">Boettiger, 2019</a>).</p>
-<p>[1] J. Allaire, Y. Xie, J. McPherson, J. Luraschi, et al. <em>rmarkdown: Dynamic Documents for R</em>. R package version 2.1. 2020. &lt;URL: <a href="https://github.com/rstudio/rmarkdown" class="uri">https://github.com/rstudio/rmarkdown</a>&gt;.</p>
-<p>[2] S. Arora, M. Morgan, M. Carlson, and H. Pagès. <em>GenomeInfoDb: Utilities for manipulating chromosome and other ‘seqname’ identifiers</em>. 2017. DOI: 10.18129/B9.bioc.GenomeInfoDb.</p>
-<p>[3] Bioconductor Package Maintainer, V. Obenchain, M. Love, L. Shepherd, et al. <em>GenomicFiles: Distributed computing by file or by range</em>. R package version 1.25.0. 2020.</p>
-<p>[4] C. Boettiger. <em>knitcitations: Citations for ‘Knitr’ Markdown Files</em>. R package version 1.0.10. 2019. &lt;URL: <a href="https://github.com/cboettig/knitcitations" class="uri">https://github.com/cboettig/knitcitations</a>&gt;.</p>
-<p>[5] BrainSpan. “Atlas of the Developing Human Brain [Internet]. Funded by ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.” 2011. &lt;URL: <a href="http://www.brainspan.org/" class="uri">http://www.brainspan.org/</a>&gt;.</p>
-<p>[6] M. Carlson and B. P. Maintainer. <em>TxDb.Hsapiens.UCSC.hg19.knownGene: Annotation package for TxDb object(s)</em>. R package version 3.2.2. 2015.</p>
-<p>[7] L. Collado-Torres, A. Jaffe, and J. Leek. <em>derfinderData: Processed BigWigs from BrainSpan for examples</em>. R package version 2.7.1. 2020. &lt;URL: <a href="https://github.com/leekgroup/derfinderData" class="uri">https://github.com/leekgroup/derfinderData</a>&gt;.</p>
-<p>[8] G. Csárdi, R. core, H. Wickham, W. Chang, et al. <em>sessioninfo: R Session Information</em>. R package version 1.1.1. 2018. &lt;URL: <a href="https://github.com/r-lib/sessioninfo#readme" class="uri">https://github.com/r-lib/sessioninfo#readme</a>&gt;.</p>
-<p>[9] A. C. Frazee, S. Sabunciyan, K. D. Hansen, R. A. Irizarry, et al. “Differential expression analysis of RNA-seq data at single-base resolution”. In: <em>Biostatistics</em> 15 (3) (2014), pp. 413-426. DOI: 10.1093/biostatistics/kxt053. &lt;URL: <a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long" class="uri">http://biostatistics.oxfordjournals.org/content/15/3/413.long</a>&gt;.</p>
-<p>[10] F. E. Harrell Jr, w. c. f. C. Dupont, and m. others. <em>Hmisc: Harrell Miscellaneous</em>. <a href="http://biostat.mc.vanderbilt.edu/Hmisc" class="uri">http://biostat.mc.vanderbilt.edu/Hmisc</a>, <a href="https://github.com/harrelfe/Hmisc" class="uri">https://github.com/harrelfe/Hmisc</a>. 2020.</p>
-<p>[11] A. E. Jaffe, P. Murakami, H. Lee, J. T. Leek, et al. “Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies”. In: <em>International journal of epidemiology</em> 41.1 (2012), pp. 200-209. DOI: 10.1093/ije/dyr238.</p>
-<p>[12] A. E. Jaffe, P. Murakami, H. Lee, J. T. Leek, et al. “Bump hunting to identify differentially methylated regions in epigenetic epidemiology studies”. In: <em>International Journal of Epidemiology</em> (2012).</p>
-<p>[13] M. Lawrence, R. Gentleman, and V. Carey. “rtracklayer: an R package for interfacing with genome browsers”. In: <em>Bioinformatics</em> 25 (2009), pp. 1841-1842. DOI: 10.1093/bioinformatics/btp328. &lt;URL: <a href="http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract" class="uri">http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract</a>&gt;.</p>
-<p>[14] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
-<p>[15] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
-<p>[16] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
-<p>[17] M. Lawrence, W. Huber, H. Pagès, P. Aboyoun, et al. “Software for Computing and Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8 2013). DOI: 10.1371/journal.pcbi.1003118. &lt;URL: <a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.&gt;</p>
-<p>[18] M. Morgan, V. Obenchain, M. Lang, R. Thompson, et al. <em>BiocParallel: Bioconductor facilities for parallel evaluation</em>. R package version 1.23.0. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocParallel" class="uri">https://github.com/Bioconductor/BiocParallel</a>&gt;.</p>
-<p>[19] M. Morgan, H. Pagès, V. Obenchain, and N. Hayden. <em>Rsamtools: Binary alignment (BAM), FASTA, variant call (BCF), and tabix file import</em>. R package version 2.5.1. 2020. &lt;URL: <a href="http://bioconductor.org/packages/Rsamtools" class="uri">http://bioconductor.org/packages/Rsamtools</a>&gt;.</p>
-<p>[20] A. Oleś, M. Morgan, and W. Huber. <em>BiocStyle: Standard styles for vignettes and other Bioconductor documents</em>. R package version 2.17.0. 2020. &lt;URL: <a href="https://github.com/Bioconductor/BiocStyle" class="uri">https://github.com/Bioconductor/BiocStyle</a>&gt;.</p>
-<p>[21] H. Pagès, M. Carlson, S. Falcon, and N. Li. <em>AnnotationDbi: Annotation Database Interface</em>. 2017. DOI: 10.18129/B9.bioc.AnnotationDbi.</p>
-<p>[22] H. Pagès, M. Lawrence, and P. Aboyoun. <em>S4Vectors: S4 implementation of vector-like and list-like objects</em>. 2017. DOI: 10.18129/B9.bioc.S4Vectors.</p>
-<p>[23] R Core Team. <em>R: A Language and Environment for Statistical Computing</em>. R Foundation for Statistical Computing. Vienna, Austria, 2020. &lt;URL: <a href="https://www.R-project.org/" class="uri">https://www.R-project.org/</a>&gt;.</p>
-<p>[24] J. D. Storey, A. J. Bass, A. Dabney, and D. Robinson. <em>qvalue: Q-value estimation for false discovery rate control</em>. R package version 2.21.0. 2020. &lt;URL: <a href="http://github.com/jdstorey/qvalue" class="uri">http://github.com/jdstorey/qvalue</a>&gt;.</p>
-<p>[25] H. Wickham. <em>ggplot2: Elegant Graphics for Data Analysis</em>. Springer-Verlag New York, 2016. ISBN: 978-3-319-24277-4. &lt;URL: <a href="https://ggplot2.tidyverse.org" class="uri">https://ggplot2.tidyverse.org</a>&gt;.</p>
-<p>[26] H. Wickham. “testthat: Get Started with Testing”. In: <em>The R Journal</em> 3 (2011), pp. 5-10. &lt;URL: <a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf" class="uri">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>&gt;.</p>
-<p>[27] Y. Xie. “knitr: A Comprehensive Tool for Reproducible Research in R”. In: <em>Implementing Reproducible Computational Research</em>. Ed. by V. Stodden, F. Leisch and R. D. Peng. ISBN 978-1466561595. Chapman and Hall/CRC, 2014. &lt;URL: <a href="http://www.crcpress.com/product/isbn/9781466561595" class="uri">http://www.crcpress.com/product/isbn/9781466561595</a>&gt;.</p>
+<div class="section level2">
+<h2 id="bibliography">Bibliography<a class="anchor" aria-label="anchor" href="#bibliography"></a>
+</h2>
+<p>This vignette was generated using <em><a href="https://bioconductor.org/packages/3.17/BiocStyle" class="external-link">BiocStyle</a></em>
+(Oleś, 2023) with <em><a href="https://CRAN.R-project.org/package=knitr" class="external-link">knitr</a></em> (Xie,
+2014) and <em><a href="https://CRAN.R-project.org/package=rmarkdown" class="external-link">rmarkdown</a></em>
+(Allaire, Xie, Dervieux et al., 2023) running behind the scenes.</p>
+<p>Citations made with <em><a href="https://CRAN.R-project.org/package=RefManageR" class="external-link">RefManageR</a></em>
+(McLean, 2017).</p>
+<p>
+<a id="bib-allaire2023rmarkdown"></a><a href="#cite-allaire2023rmarkdown">[1]</a><cite>
+J. Allaire, Y. Xie, C. Dervieux, et al. <em>rmarkdown: Dynamic Documents
+for R</em>. R package version 2.21. 2023. URL:
+<a href="https://github.com/rstudio/rmarkdown" class="external-link">https://github.com/rstudio/rmarkdown</a>.</cite>
+</p>
+<p>
+<a id="bib-GenomeInfoDb"></a><a href="#cite-GenomeInfoDb">[2]</a><cite>
+S. Arora, M. Morgan, M. Carlson, et al. <em>GenomeInfoDb: Utilities for
+manipulating chromosome and other ‘seqname’ identifiers</em>. 2017. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.GenomeInfoDb" class="external-link">10.18129/B9.bioc.GenomeInfoDb</a>.</cite>
+</p>
+<p>
+<a id="bib-2023genomicfiles"></a><a href="#cite-2023genomicfiles">[3]</a><cite>
+Bioconductor Package Maintainer, V. Obenchain, M. Love, et al.
+<em>GenomicFiles: Distributed computing by file or by range</em>. R
+package version 1.36.0. 2023. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.GenomicFiles" class="external-link">10.18129/B9.bioc.GenomicFiles</a>.
+URL:
+<a href="https://bioconductor.org/packages/GenomicFiles" class="external-link">https://bioconductor.org/packages/GenomicFiles</a>.</cite>
+</p>
+<p>
+<a id="bib-brainspan"></a><a href="#cite-brainspan">[4]</a><cite>
+BrainSpan. “Atlas of the Developing Human Brain [Internet]. Funded by
+ARRA Awards 1RC2MH089921-01, 1RC2MH090047-01, and 1RC2MH089929-01.”
+2011. URL:
+<a href="http://www.brainspan.org/" class="external-link">http://www.brainspan.org/</a>.</cite>
+</p>
+<p>
+<a id="bib-carlson2015txdb"></a><a href="#cite-carlson2015txdb">[5]</a><cite>
+M. Carlson and B. P. Maintainer. <em>TxDb.Hsapiens.UCSC.hg19.knownGene:
+Annotation package for TxDb object(s)</em>. R package version 3.2.2.
+2015.</cite>
+</p>
+<p>
+<a id="bib-colladotorres2023derfinderdata"></a><a href="#cite-colladotorres2023derfinderdata">[6]</a><cite>
+L. Collado-Torres, A. Jaffe, and J. Leek. <em>derfinderData: Processed
+BigWigs from BrainSpan for examples</em>. R package version 2.18.0.
+2023. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.derfinderData" class="external-link">10.18129/B9.bioc.derfinderData</a>.
+URL:
+<a href="https://bioconductor.org/packages/derfinderData" class="external-link">https://bioconductor.org/packages/derfinderData</a>.</cite>
+</p>
+<p>
+<a id="bib-frazee2014differential"></a><a href="#cite-frazee2014differential">[7]</a><cite>
+A. C. Frazee, S. Sabunciyan, K. D. Hansen, et al. “Differential
+expression analysis of RNA-seq data at single-base resolution”. In:
+<em>Biostatistics</em> 15 (3) (2014), pp. 413-426. DOI:
+<a href="https://doi.org/10.1093/biostatistics/kxt053" class="external-link">10.1093/biostatistics/kxt053</a>.
+URL:
+<a href="http://biostatistics.oxfordjournals.org/content/15/3/413.long" class="external-link">http://biostatistics.oxfordjournals.org/content/15/3/413.long</a>.</cite>
+</p>
+<p>
+<a id="bib-harrelljr2023hmisc"></a><a href="#cite-harrelljr2023hmisc">[8]</a><cite>
+F. Harrell Jr. <em>Hmisc: Harrell Miscellaneous</em>. R package version
+5.0-1. 2023. URL:
+<a href="https://hbiostat.org/R/Hmisc/" class="external-link">https://hbiostat.org/R/Hmisc/</a>.</cite>
+</p>
+<p>
+<a id="bib-bumphunter"></a><a href="#cite-bumphunter">[9]</a><cite> A.
+E. Jaffe, P. Murakami, H. Lee, et al. “Bump hunting to identify
+differentially methylated regions in epigenetic epidemiology studies”.
+In: <em>International journal of epidemiology</em> 41.1 (2012),
+pp. 200–209. DOI:
+<a href="https://doi.org/10.1093/ije/dyr238" class="external-link">10.1093/ije/dyr238</a>.</cite>
+</p>
+<p>
+<a id="bib-bumphunterPaper"></a><a href="#cite-bumphunterPaper">[10]</a><cite>
+A. E. Jaffe, P. Murakami, H. Lee, et al. “Bump hunting to identify
+differentially methylated regions in epigenetic epidemiology studies”.
+In: <em>International Journal of Epidemiology</em> (2012).</cite>
+</p>
+<p>
+<a id="bib-lawrence2009rtracklayer"></a><a href="#cite-lawrence2009rtracklayer">[11]</a><cite>
+M. Lawrence, R. Gentleman, and V. Carey. “rtracklayer: an R package for
+interfacing with genome browsers”. In: <em>Bioinformatics</em> 25
+(2009), pp. 1841-1842. DOI:
+<a href="https://doi.org/10.1093/bioinformatics/btp328" class="external-link">10.1093/bioinformatics/btp328</a>.
+URL:
+<a href="http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract" class="external-link">http://bioinformatics.oxfordjournals.org/content/25/14/1841.abstract</a>.</cite>
+</p>
+<p>
+<a id="bib-lawrence2013software"></a><a href="#cite-lawrence2013software">[12]</a><cite>
+M. Lawrence, W. Huber, H. Pagès, et al. “Software for Computing and
+Annotating Genomic Ranges”. In: <em>PLoS Computational Biology</em> 9 (8
+2013). DOI:
+<a href="https://doi.org/10.1371/journal.pcbi.1003118" class="external-link">10.1371/journal.pcbi.1003118</a>.
+URL:
+<a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118%7D." class="external-link"></a><a href="http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118" class="external-link uri">http://www.ploscompbiol.org/article/info%3Adoi%2F10.1371%2Fjournal.pcbi.1003118</a>}.
+</cite></p>
+
+
+<p>
+<a id="bib-mclean2017refmanager"></a><a href="#cite-mclean2017refmanager">[13]</a><cite>
+M. W. McLean. “RefManageR: Import and Manage BibTeX and BibLaTeX
+References in R”. In: <em>The Journal of Open Source Software</em>
+(2017). DOI:
+<a href="https://doi.org/10.21105/joss.00338" class="external-link">10.21105/joss.00338</a>.</cite>
+</p>
+<p>
+<a id="bib-morgan2023rsamtools"></a><a href="#cite-morgan2023rsamtools">[14]</a><cite>
+M. Morgan, H. Pagès, V. Obenchain, et al. <em>Rsamtools: Binary
+alignment (BAM), FASTA, variant call (BCF), and tabix file import</em>.
+R package version 2.16.0. 2023. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.Rsamtools" class="external-link">10.18129/B9.bioc.Rsamtools</a>.
+URL:
+<a href="https://bioconductor.org/packages/Rsamtools" class="external-link">https://bioconductor.org/packages/Rsamtools</a>.</cite>
+</p>
+<p>
+<a id="bib-morgan2023biocparallel"></a><a href="#cite-morgan2023biocparallel">[15]</a><cite>
+M. Morgan, J. Wang, V. Obenchain, et al. <em>BiocParallel: Bioconductor
+facilities for parallel evaluation</em>. R package version 1.34.1. 2023.
+DOI:
+<a href="https://doi.org/10.18129/B9.bioc.BiocParallel" class="external-link">10.18129/B9.bioc.BiocParallel</a>.
+URL:
+<a href="https://bioconductor.org/packages/BiocParallel" class="external-link">https://bioconductor.org/packages/BiocParallel</a>.</cite>
+</p>
+<p>
+<a id="bib-ole2023biocstyle"></a><a href="#cite-ole2023biocstyle">[16]</a><cite>
+A. Oleś. <em>BiocStyle: Standard styles for vignettes and other
+Bioconductor documents</em>. R package version 2.28.0. 2023. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.BiocStyle" class="external-link">10.18129/B9.bioc.BiocStyle</a>.
+URL:
+<a href="https://bioconductor.org/packages/BiocStyle" class="external-link">https://bioconductor.org/packages/BiocStyle</a>.</cite>
+</p>
+<p>
+<a id="bib-AnnotationDbi"></a><a href="#cite-AnnotationDbi">[17]</a><cite>
+H. Pagès, M. Carlson, S. Falcon, et al. <em>AnnotationDbi: Annotation
+Database Interface</em>. 2017. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.AnnotationDbi" class="external-link">10.18129/B9.bioc.AnnotationDbi</a>.</cite>
+</p>
+<p>
+<a id="bib-S4Vectors"></a><a href="#cite-S4Vectors">[18]</a><cite> H.
+Pagès, M. Lawrence, and P. Aboyoun. <em>S4Vectors: S4 implementation of
+vector-like and list-like objects</em>. 2017. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.S4Vectors" class="external-link">10.18129/B9.bioc.S4Vectors</a>.</cite>
+</p>
+<p>
+<a id="bib-2023language"></a><a href="#cite-2023language">[19]</a><cite>
+R Core Team. <em>R: A Language and Environment for Statistical
+Computing</em>. R Foundation for Statistical Computing. Vienna, Austria,
+2023. URL:
+<a href="https://www.R-project.org/" class="external-link">https://www.R-project.org/</a>.</cite>
+</p>
+<p>
+<a id="bib-storey2023qvalue"></a><a href="#cite-storey2023qvalue">[20]</a><cite>
+J. D. Storey, A. J. Bass, A. Dabney, et al. <em>qvalue: Q-value
+estimation for false discovery rate control</em>. R package version
+2.32.0. 2023. DOI:
+<a href="https://doi.org/10.18129/B9.bioc.qvalue" class="external-link">10.18129/B9.bioc.qvalue</a>.
+URL:
+<a href="https://bioconductor.org/packages/qvalue" class="external-link">https://bioconductor.org/packages/qvalue</a>.</cite>
+</p>
+<p>
+<a id="bib-wickham2016ggplot2"></a><a href="#cite-wickham2016ggplot2">[21]</a><cite>
+H. Wickham. <em>ggplot2: Elegant Graphics for Data Analysis</em>.
+Springer-Verlag New York, 2016. ISBN: 978-3-319-24277-4. URL:
+<a href="https://ggplot2.tidyverse.org" class="external-link">https://ggplot2.tidyverse.org</a>.</cite>
+</p>
+<p>
+<a id="bib-wickham2011testthat"></a><a href="#cite-wickham2011testthat">[22]</a><cite>
+H. Wickham. “testthat: Get Started with Testing”. In: <em>The R
+Journal</em> 3 (2011), pp. 5–10. URL:
+<a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf" class="external-link">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>.</cite>
+</p>
+<p>
+<a id="bib-wickham2021sessioninfo"></a><a href="#cite-wickham2021sessioninfo">[23]</a><cite>
+H. Wickham, W. Chang, R. Flight, et al. <em>sessioninfo: R Session
+Information</em>. <a href="https://github.com/r-lib/sessioninfo#readme" class="external-link uri">https://github.com/r-lib/sessioninfo#readme</a>, <a href="https://r-lib.github.io/sessioninfo/" class="external-link uri">https://r-lib.github.io/sessioninfo/</a>. 2021.</cite>
+</p>
+<p>
+<a id="bib-xie2014knitr"></a><a href="#cite-xie2014knitr">[24]</a><cite>
+Y. Xie. “knitr: A Comprehensive Tool for Reproducible Research in R”.
+In: <em>Implementing Reproducible Computational Research</em>. Ed. by V.
+Stodden, F. Leisch and R. D. Peng. ISBN 978-1466561595. Chapman and
+Hall/CRC, 2014.</cite>
+</p>
 </div>
   </div>
 
@@ -788,11 +1100,13 @@ Base-pair resolution plot of differentially expressed region 5.
 
 
       <footer><div class="copyright">
-  <p>Developed by Leonardo Collado-Torres, Andrew E. Jaffe, Jeffrey T. Leek.</p>
+  <p></p>
+<p>Developed by Leonardo Collado-Torres, Andrew E. Jaffe, Jeffrey T. Leek.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -800,6 +1114,8 @@ Base-pair resolution plot of differentially expressed region 5.
 
   
 
+
+  
 
   </body>
 </html>
