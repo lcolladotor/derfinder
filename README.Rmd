@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Bioc history](https://bioconductor.org/shields/years-in-bioc/derfinder.svg)](https://bioconductor.org/packages/release/bioc/html/derfinder.html#since)
 [![Bioc last commit](https://bioconductor.org/shields/lastcommit/devel/bioc/derfinder.svg)](http://bioconductor.org/checkResults/devel/bioc-LATEST/derfinder/)
 [![Bioc dependencies](https://bioconductor.org/shields/dependencies/release/derfinder.svg)](https://bioconductor.org/packages/release/bioc/html/derfinder.html#since)
-[![Codecov test coverage](https://codecov.io/gh/lcolladotor/derfinder/branch/master/graph/badge.svg)](https://codecov.io/gh/lcolladotor/derfinder?branch=master)
+[![Codecov test coverage](https://codecov.io/gh/lcolladotor/derfinder/branch/devel/graph/badge.svg)](https://codecov.io/gh/lcolladotor/derfinder?branch=devel)
 [![R build status](https://github.com/lcolladotor/derfinder/workflows/R-CMD-check-bioc/badge.svg)](https://github.com/lcolladotor/derfinder/actions)
 [![GitHub issues](https://img.shields.io/github/issues/lcolladotor/derfinder)](https://github.com/lcolladotor/derfinder/issues)
 [![GitHub pulls](https://img.shields.io/github/issues-pr/lcolladotor/derfinder)](https://github.com/lcolladotor/derfinder/pulls)
