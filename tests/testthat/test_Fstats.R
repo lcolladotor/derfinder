@@ -1,4 +1,5 @@
 library("GenomicRanges")
+library("derfinder")
 
 ## Check that the sample depths are correctly calculated
 collapsedFull <- collapseFullCoverage(list(genomeData$coverage),
