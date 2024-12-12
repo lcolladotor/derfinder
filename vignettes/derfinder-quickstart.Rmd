@@ -104,7 +104,7 @@ bib <- c(
         year = 2017, doi = "10.18129/B9.bioc.AnnotationDbi"
     ),
     BiocParallel = citation("BiocParallel"),
-    derfinderHelper = citation("derfinderHelper"),
+    derfinderHelper = citation("derfinderHelper")[1],
     GenomicAlignments = citation("GenomicAlignments"),
     GenomicFeatures = citation("GenomicFeatures"),
     GenomicFiles = citation("GenomicFiles"),
