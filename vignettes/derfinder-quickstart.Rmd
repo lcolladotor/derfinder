@@ -71,7 +71,7 @@ library("RefManageR")
 ## Write bibliography information
 bib <- c(
     derfinder = citation("derfinder")[1],
-    BiocStyle = citation("BiocStyle"),
+    BiocStyle = citation("BiocStyle")[1],
     knitr = citation("knitr")[3],
     rmarkdown = citation("rmarkdown")[1],
     brainspan = RefManageR::BibEntry(
@@ -82,9 +82,9 @@ bib <- c(
     ),
     originalder = citation("derfinder")[2],
     R = citation(),
-    IRanges = citation("IRanges"),
-    sessioninfo = citation("sessioninfo"),
-    testthat = citation("testthat"),
+    IRanges = citation("IRanges")[1],
+    sessioninfo = citation("sessioninfo")[1],
+    testthat = citation("testthat")[1],
     GenomeInfoDb = RefManageR::BibEntry(
         bibtype = "manual",
         key = "GenomeInfoDb",
@@ -92,10 +92,10 @@ bib <- c(
         title = "GenomeInfoDb: Utilities for manipulating chromosome and other 'seqname' identifiers",
         year = 2017, doi = "10.18129/B9.bioc.GenomeInfoDb"
     ),
-    GenomicRanges = citation("GenomicRanges"),
-    ggplot2 = citation("ggplot2"),
+    GenomicRanges = citation("GenomicRanges")[1],
+    ggplot2 = citation("ggplot2")[1],
     bumphunter = citation("bumphunter")[1],
-    TxDb.Hsapiens.UCSC.hg19.knownGene = citation("TxDb.Hsapiens.UCSC.hg19.knownGene"),
+    TxDb.Hsapiens.UCSC.hg19.knownGene = citation("TxDb.Hsapiens.UCSC.hg19.knownGene")[1],
     AnnotationDbi = RefManageR::BibEntry(
         bibtype = "manual",
         key = "AnnotationDbi",
@@ -103,15 +103,15 @@ bib <- c(
         title = "AnnotationDbi: Annotation Database Interface",
         year = 2017, doi = "10.18129/B9.bioc.AnnotationDbi"
     ),
-    BiocParallel = citation("BiocParallel"),
+    BiocParallel = citation("BiocParallel")[1],
     derfinderHelper = citation("derfinderHelper")[1],
-    GenomicAlignments = citation("GenomicAlignments"),
-    GenomicFeatures = citation("GenomicFeatures"),
-    GenomicFiles = citation("GenomicFiles"),
-    Hmisc = citation("Hmisc"),
-    qvalue = citation("qvalue"),
-    Rsamtools = citation("Rsamtools"),
-    rtracklayer = citation("rtracklayer"),
+    GenomicAlignments = citation("GenomicAlignments")[1],
+    GenomicFeatures = citation("GenomicFeatures")[1],
+    GenomicFiles = citation("GenomicFiles")[1],
+    Hmisc = citation("Hmisc")[1],
+    qvalue = citation("qvalue")[1],
+    Rsamtools = citation("Rsamtools")[1],
+    rtracklayer = citation("rtracklayer")[1],
     S4Vectors = RefManageR::BibEntry(
         bibtype = "manual", key = "S4Vectors",
         author = "Hervé Pagès and Michael Lawrence and Patrick Aboyoun",
@@ -125,7 +125,7 @@ bib <- c(
         author = "Jaffe, Andrew E and Murakami, Peter and Lee, Hwajin and Leek, Jeffrey T and Fallin, M Daniele and Feinberg, Andrew P and Irizarry, Rafael A",
         year = 2012, journal = "International Journal of Epidemiology"
     ),
-    derfinderData = citation("derfinderData"),
+    derfinderData = citation("derfinderData")[1],
     RefManageR = citation("RefManageR")[1]
 )
 ```
