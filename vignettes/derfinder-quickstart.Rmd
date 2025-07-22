@@ -312,7 +312,8 @@ We can also identify the nearest annotated feature. In this case, we'll look for
 ```{r 'nearestGene'}
 ## Load database of interest
 library("TxDb.Hsapiens.UCSC.hg19.knownGene")
-txdb <- keepSeqlevels(TxDb.Hsapiens.UCSC.hg19.knownGene, "chr21")
+txdb <- TxDb.Hsapiens.UCSC.hg19.knownGene
+seqlevels(txdb) <- "chr21"
 
 ## Find nearest feature
 library("bumphunter")

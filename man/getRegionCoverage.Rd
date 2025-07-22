@@ -83,7 +83,7 @@ You should use at most one core per chromosome.
 fullCov <- list("21" = genomeDataRaw$coverage)
 
 ## Assign chr lengths using hg19 information, use only first two regions
-library("GenomicRanges")
+library("GenomeInfoDb")  # for getChromInfoFromUCSC()
 regions <- genomeRegions$regions[1:2]
 seqlengths(regions) <- seqlengths(getChromInfoFromUCSC("hg19",
     as.Seqinfo = TRUE

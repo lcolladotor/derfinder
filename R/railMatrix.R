@@ -70,7 +70,7 @@
 #' @export
 #'
 #' @importFrom BiocParallel bpmapply
-#' @importFrom GenomeInfoDb 'seqlengths<-'
+#' @importFrom Seqinfo 'seqlengths<-'
 #' @importMethodsFrom GenomicRanges reduce
 #' @importFrom stats runif
 #'

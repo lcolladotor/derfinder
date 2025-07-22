@@ -42,8 +42,8 @@
 #' @seealso [fullCoverage], [calculatePvalues]
 #' @export
 #' @importFrom GenomicRanges seqnames
-#' @importFrom GenomeInfoDb seqlevels renameSeqlevels
-#' mapSeqlevels seqlevelsInUse
+#' @importFrom Seqinfo seqlevels seqlevelsInUse
+#' @importFrom GenomeInfoDb renameSeqlevels mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort
 #' width '$'
 #' @importMethodsFrom IRanges as.data.frame
@@ -70,7 +70,7 @@
 #' fullCov <- list("21" = genomeDataRaw$coverage)
 #'
 #' ## Assign chr lengths using hg19 information, use only first two regions
-#' library("GenomicRanges")
+#' library("GenomeInfoDb")  # for getChromInfoFromUCSC()
 #' regions <- genomeRegions$regions[1:2]
 #' seqlengths(regions) <- seqlengths(getChromInfoFromUCSC("hg19",
 #'     as.Seqinfo = TRUE

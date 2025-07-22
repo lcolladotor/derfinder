@@ -50,8 +50,8 @@
 #' @seealso [fullCoverage], [getRegionCoverage]
 #' @export
 #' @importFrom GenomicRanges seqnames
-#' @importFrom GenomeInfoDb seqlevels renameSeqlevels
-#' mapSeqlevels seqlevelsInUse
+#' @importFrom Seqinfo seqlevels seqlevelsInUse
+#' @importFrom GenomeInfoDb renameSeqlevels mapSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '[' coverage sort
 #' width strand as.data.frame
 #' @importMethodsFrom IRanges as.data.frame

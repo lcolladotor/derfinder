@@ -69,7 +69,7 @@
 #'
 #' @importMethodsFrom IRanges nrow
 #' @importFrom BiocParallel bpmapply
-#' @importFrom GenomeInfoDb 'seqlengths<-'
+#' @importFrom Seqinfo 'seqlengths<-'
 #'
 #' @examples
 #' ## Create some toy data

@@ -96,8 +96,8 @@
 #' @importFrom GenomicAlignments readGAlignments
 #' @importFrom IRanges IRanges
 #' @importFrom rtracklayer BigWigFileList BigWigFile
-#' @importFrom GenomeInfoDb seqlevels
-#' mapSeqlevels
+#' @importFrom Seqinfo seqlevels
+#' @importFrom GenomeInfoDb mapSeqlevels
 #' @importFrom GenomicRanges tileGenome
 #' @importFrom GenomicFiles reduceByFile
 #' @import S4Vectors

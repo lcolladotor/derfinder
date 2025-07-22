@@ -40,7 +40,8 @@
 #' @author Andrew Jaffe, Leonardo Collado-Torres
 #' @seealso [makeGenomicState], [calculatePvalues]
 #' @export
-#' @importFrom GenomeInfoDb renameSeqlevels seqlevels
+#' @importFrom Seqinfo seqlevels
+#' @importFrom GenomeInfoDb renameSeqlevels
 #' @importMethodsFrom GenomicRanges names 'names<-' length '$'
 #' countOverlaps findOverlaps '['
 #' @importFrom methods is

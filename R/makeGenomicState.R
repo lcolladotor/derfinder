@@ -29,7 +29,8 @@
 #' @importFrom IRanges CharacterList IntegerList
 #' @import S4Vectors
 #' @importFrom GenomicRanges GRangesList seqnames
-#' @importFrom GenomeInfoDb seqlengths seqlevels renameSeqlevels
+#' @importFrom Seqinfo seqlengths seqlevels
+#' @importFrom GenomeInfoDb renameSeqlevels
 #' @importMethodsFrom AnnotationDbi select
 #' @importMethodsFrom GenomicRanges names 'names<-' reduce '$'
 #' '$<-' '[' '[<-' sort disjoin length findOverlaps
