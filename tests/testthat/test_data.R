@@ -201,6 +201,7 @@ names(chr.lens) <- paste0("chr", c(1:22, "X", "Y"))
 
 
 regions <- genomeRegions$regions[1:2]
+library("GenomeInfoDb")  # for getChromInfoFromUCSC()
 seqlengths(regions) <- seqlengths(getChromInfoFromUCSC("hg19",
     as.Seqinfo = TRUE
 ))[
