@@ -21,7 +21,7 @@ calculatePvalues."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/aja
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">derfinder</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.41.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.45.0</span>
       </span>
     </div>
 
@@ -234,11 +234,11 @@ D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">## Find the regions</span></span></span>
 <span class="r-in"><span><span class="va">regs</span> <span class="op">&lt;-</span> <span class="fu">findRegions</span><span class="op">(</span><span class="va">prep</span><span class="op">$</span><span class="va">position</span>, <span class="va">fstats</span>, <span class="st">"chr21"</span>, verbose <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.029557 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.032077 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.032488 .getSegmentsRle: segmenting with cutoff(s) 19.7936614060235</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.037494 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.064273 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.007825 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.010615 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.011071 .getSegmentsRle: segmenting with cutoff(s) 19.7936614060235</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.016372 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.04377 findRegions: identifying region clusters</span>
 <span class="r-in"><span><span class="va">regs</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 3 ranges and 6 metadata columns:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      seqnames            ranges strand |     value      area indexStart</span>
@@ -266,11 +266,11 @@ D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 <span class="r-in"><span>    verbose <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>    smoothFunction <span class="op">=</span> <span class="fu">bumphunter</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/bumphunter/man/runmedByCluster.html" class="external-link">runmedByCluster</a></span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.118576 findRegions: identifying potential segments</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.121074 findRegions: segmenting information</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.121469 .getSegmentsRle: segmenting with cutoff(s) 19.7936614060235</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.126193 findRegions: identifying candidate regions</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> 2024-12-13 15:13:13.152258 findRegions: identifying region clusters</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.08573 findRegions: identifying potential segments</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.088333 findRegions: segmenting information</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.088766 .getSegmentsRle: segmenting with cutoff(s) 19.7936614060235</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.093626 findRegions: identifying candidate regions</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> 2026-03-31 17:41:17.120675 findRegions: identifying region clusters</span>
 <span class="r-in"><span><span class="co">## Compare against the object regs obtained earlier</span></span></span>
 <span class="r-in"><span><span class="va">regs_smooth</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> GRanges object with 3 ranges and 6 metadata columns:</span>
@@ -300,7 +300,7 @@ D. Hansen and Harris A. Jaffee. bumphunter: Bump Hunter. R package version
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
 </div>
 
       </footer></div>
